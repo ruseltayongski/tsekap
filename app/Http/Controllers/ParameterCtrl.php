@@ -630,13 +630,12 @@ class ParameterCtrl extends Controller
         return 0;
     }
 
-    public static function saveServiceGroup($profile_id,$sex,$group,$barangay_id,$muncity_id,$bracket_id,$dateP=null,$database=null)
+    public static function saveServiceGroup($profile_id,$sex,$group,$barangay_id,$muncity_id,$bracket_id,$dateP=null,$database=null,$year=null)
     {
         $dateNow = isset($dateP) ? $dateP : date('Y-m-d');
         $db = isset($database) ? $database : 'db_'.date('Y');
         $servicegroup = new ServiceGroup();
         $servicegroup->setConnection($db);
-        $year = date('Y',$dateNow);
         $check = $servicegroup->where('profile_id',$profile_id)->first();
         if($check){
             $servicegroup->where('profile_id',$profile_id)
