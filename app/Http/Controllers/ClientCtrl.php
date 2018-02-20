@@ -98,7 +98,10 @@ class ClientCtrl extends Controller
                 $end = '12/31/'.date('Y');
             }
             $enddate = date('Y-m-d',strtotime($end));
-            $count = ProfileServices::where('dateProfile','>=',$startdate)
+            $db = 'db_'.date('Y');
+            $profileservices = new ProfileServices();
+            $profileservices->setConnection($db);
+            $count = $profileservices->where('dateProfile','>=',$startdate)
                 ->where('dateProfile','<=',$enddate)
                 ->where('muncity_id',$user->muncity)
                 ->groupBy('profile_id');

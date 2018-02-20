@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8ece546-03ed-4fea-b0ef-538325cfba9a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,14 +14,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ApiCtrl.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ApiCtrl.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="132" column="31" lean-forward="false" selection-start-line="132" selection-start-column="31" selection-end-line="132" selection-end-column="31" />
+            <state relative-caret-position="-3902">
+              <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
               <folding>
                 <marker date="1519114648039" expanded="true" signature="4529:6123" ph="INSERT INTO profile... " />
                 <marker date="1519114648039" expanded="true" signature="6124:6910" ph="UPDATE famil... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientCtrl.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="29">
+              <caret line="101" column="49" lean-forward="true" selection-start-line="101" selection-start-column="49" selection-end-line="101" selection-end-column="49" />
+              <folding>
+                <marker date="1519115245253" expanded="true" signature="7710:8278" ph="INSERT INTO profile... " />
+                <marker date="1519115245253" expanded="true" signature="8279:8456" ph="UPDATE famil... " />
+                <marker date="1519115245253" expanded="true" signature="8279:8481" ph="UPDATE famil... " />
+                <marker date="1519115245253" expanded="true" signature="8279:8495" ph="UPDATE famil... " />
+                <marker date="1519115245253" expanded="true" signature="55835:56303" ph="INSERT INTO profile... " />
+                <marker date="1519115245253" expanded="true" signature="56304:56500" ph="UPDATE famil... " />
               </folding>
             </state>
           </provider>
@@ -109,9 +127,9 @@
         <option value="$PROJECT_DIR$/resources/views/client/updateProfile.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/script/profile.blade.php" />
         <option value="$PROJECT_DIR$/readme.md" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
       </list>
     </option>
   </component>
@@ -287,12 +305,12 @@
       <workItem from="1518050704723" duration="252000" />
       <workItem from="1518317705358" duration="2933000" />
       <workItem from="1519000863650" duration="38000" />
-      <workItem from="1519090958519" duration="7272000" />
+      <workItem from="1519090958519" duration="7870000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115915000" />
+    <option name="totallyTimeSpent" value="116513000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -695,28 +713,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2357">
-          <caret line="1274" column="20" lean-forward="false" selection-start-line="1274" selection-start-column="20" selection-end-line="1274" selection-end-column="20" />
+        <state relative-caret-position="-3902">
+          <caret line="150" column="0" lean-forward="true" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
           <folding>
-            <marker date="1519108335930" expanded="true" signature="7570:8138" ph="INSERT INTO profile... " />
-            <marker date="1519108335930" expanded="true" signature="8139:8316" ph="UPDATE famil... " />
-            <marker date="1519108335930" expanded="true" signature="8139:8341" ph="UPDATE famil... " />
-            <marker date="1519108335930" expanded="true" signature="8139:8355" ph="UPDATE famil... " />
-            <marker date="1519108335930" expanded="true" signature="55695:56163" ph="INSERT INTO profile... " />
-            <marker date="1519108335930" expanded="true" signature="56164:56360" ph="UPDATE famil... " />
+            <marker date="1519114648039" expanded="true" signature="4529:6123" ph="INSERT INTO profile... " />
+            <marker date="1519114648039" expanded="true" signature="6124:6910" ph="UPDATE famil... " />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="132" column="31" lean-forward="false" selection-start-line="132" selection-start-column="31" selection-end-line="132" selection-end-column="31" />
+        <state relative-caret-position="29">
+          <caret line="101" column="49" lean-forward="true" selection-start-line="101" selection-start-column="49" selection-end-line="101" selection-end-column="49" />
           <folding>
-            <marker date="1519114648039" expanded="true" signature="4529:6123" ph="INSERT INTO profile... " />
-            <marker date="1519114648039" expanded="true" signature="6124:6910" ph="UPDATE famil... " />
+            <marker date="1519115245253" expanded="true" signature="7710:8278" ph="INSERT INTO profile... " />
+            <marker date="1519115245253" expanded="true" signature="8279:8456" ph="UPDATE famil... " />
+            <marker date="1519115245253" expanded="true" signature="8279:8481" ph="UPDATE famil... " />
+            <marker date="1519115245253" expanded="true" signature="8279:8495" ph="UPDATE famil... " />
+            <marker date="1519115245253" expanded="true" signature="55835:56303" ph="INSERT INTO profile... " />
+            <marker date="1519115245253" expanded="true" signature="56304:56500" ph="UPDATE famil... " />
           </folding>
         </state>
       </provider>
