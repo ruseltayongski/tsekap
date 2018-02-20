@@ -43,7 +43,7 @@
                 @if($validBrgy)
                 <li class="list-group-item">
                     <a href="{{ url('/resources/apk/PHA Check-App.apk') }}" target="_blank" class="btn btn-warning col-xs-12">
-                        <i class="fa fa-android"></i> PHA Check-App v1.3
+                        <i class="fa fa-android"></i> PHA Check-App v1.7
                     </a>
                     <div class="clearfix"></div>
                 </li>

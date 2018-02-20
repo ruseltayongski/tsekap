@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8ece546-03ed-4fea-b0ef-538325cfba9a" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/sidebar.blade.php" afterPath="$PROJECT_DIR$/resources/views/sidebar.blade.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,15 +15,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ApiCtrl.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ApiCtrl.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="54" column="97" lean-forward="false" selection-start-line="54" selection-start-column="97" selection-end-line="54" selection-end-column="97" />
+            <state relative-caret-position="315">
+              <caret line="50" column="105" lean-forward="false" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
               <folding>
-                <marker date="1519116436323" expanded="true" signature="4762:6356" ph="INSERT INTO profile... " />
-                <marker date="1519116436323" expanded="true" signature="6357:7143" ph="UPDATE famil... " />
+                <marker date="1519117050078" expanded="true" signature="4720:6314" ph="INSERT INTO profile... " />
+                <marker date="1519117050078" expanded="true" signature="6315:7101" ph="UPDATE famil... " />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sidebar.blade.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/sidebar.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="45" column="72" lean-forward="false" selection-start-line="45" selection-start-column="72" selection-end-line="45" selection-end-column="72" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -129,6 +141,7 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php" />
+        <option value="$PROJECT_DIR$/resources/views/sidebar.blade.php" />
       </list>
     </option>
   </component>
@@ -304,12 +317,12 @@
       <workItem from="1518050704723" duration="252000" />
       <workItem from="1518317705358" duration="2933000" />
       <workItem from="1519000863650" duration="38000" />
-      <workItem from="1519090958519" duration="9059000" />
+      <workItem from="1519090958519" duration="9692000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117702000" />
+    <option name="totallyTimeSpent" value="118335000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -347,13 +360,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Barangay.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="36" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Bracket.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -730,12 +736,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ApiCtrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="54" column="97" lean-forward="false" selection-start-line="54" selection-start-column="97" selection-end-line="54" selection-end-column="97" />
+        <state relative-caret-position="315">
+          <caret line="50" column="105" lean-forward="false" selection-start-line="50" selection-start-column="105" selection-end-line="50" selection-end-column="105" />
           <folding>
-            <marker date="1519116436323" expanded="true" signature="4762:6356" ph="INSERT INTO profile... " />
-            <marker date="1519116436323" expanded="true" signature="6357:7143" ph="UPDATE famil... " />
+            <marker date="1519117050078" expanded="true" signature="4720:6314" ph="INSERT INTO profile... " />
+            <marker date="1519117050078" expanded="true" signature="6315:7101" ph="UPDATE famil... " />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/sidebar.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="45" column="72" lean-forward="false" selection-start-line="45" selection-start-column="72" selection-end-line="45" selection-end-column="72" />
+          <folding />
         </state>
       </provider>
     </entry>
