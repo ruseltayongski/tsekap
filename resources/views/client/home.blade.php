@@ -22,16 +22,10 @@
                             </p>
                         </div>
                         @endif
-                        <table class="table table-hover hide">
-                            <tr class="bg-warning">
-                                <td class="text-info" nowrap="true">
-                                    1. Uploading of data is now available!
-                                </td>
-                            </tr>
-                        </table>
+
                         <div class="alert alert-info">
                             <p class="text-info" style="font-size:1.1em;text-align: center;">
-                                <strong>DOWNLOADING and UPLOADING of DATA is now AVAILABLE!</strong>
+                                <strong>PHA Check-App version 1.7 is now AVAILABLE!</strong>
                             </p>
                         </div>
                         <div class="alert alert-success text-center">
@@ -129,7 +123,6 @@
 <script src="{{ asset('resources/plugin/Chart.js/Chart.min.js') }}"></script>
 
 <script>
-    $('#notificationModal').modal('show');
     <?php echo 'var url = "'.asset('user/home/count').'";';?>
        $.ajax({
             url: url,
@@ -194,5 +187,6 @@
             //end chart created docs
         }
     });
+    $('#notificationModal').modal('show');
 </script>
 @endsection
