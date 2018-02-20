@@ -47,8 +47,12 @@ class ApiCtrl extends Controller
         return array(
             'version' => '1.7',
             'description'=> '
+            \n - PIN Added
+            \n - Profile Verification
+            \n - Unmet for Females (15-49 years old)
+            \n - Initial Chat System (chat by specific name)
             \n - Minor bug fixes
-            \n - NOTE: Please uninstall the older version!
+            \n - NOTE: Please uninstall the older version first before installing the new version!
             '
         );
     }
