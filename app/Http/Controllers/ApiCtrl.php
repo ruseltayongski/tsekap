@@ -45,7 +45,7 @@ class ApiCtrl extends Controller
     public function getversion()
     {
         return array(
-            'version' => '1.4',
+            'version' => '1.6',
             'description'=> '\n - Modify 3 must services\n - Modify download & upload for uniformity\n - Minor bug fixes'
         );
     }
@@ -127,7 +127,10 @@ class ApiCtrl extends Controller
         $brgy_id = Input::get('brgy');
         $offset = Input::get('offset');
         $perPage = 100;
-        $list = ServiceGroup::where('servicegroup.barangay_id',$brgy_id)
+        $year = date('Y');
+        $servicegroup = new ServiceGroup();
+        $servicegroup->setConnection('db_'.$year);
+        $list = $servicegroup->where('servicegroup.barangay_id',$brgy_id)
             ->skip($offset)
             ->take($perPage)
             ->get();
@@ -234,7 +237,9 @@ class ApiCtrl extends Controller
                 '".$data['barangay_id']."',
                 '$muncity_id'
             )";
-        DB::select($q);
+        $year = date('Y');
+        $db = 'db_'.$year;
+        DB::connection($db)->select($q);
         return array(
             'status' => 'success'
         );
@@ -252,6 +257,7 @@ class ApiCtrl extends Controller
         {
             $service_id = $s['id'];
             $unique_id = date('mdY',strtotime($req->dateProfile)).''.$req->profile_id.''.$req->bracket_id.''.$service_id;
+
             $q = "INSERT IGNORE profileservices(
                         unique_id, 
                         dateProfile, 
@@ -280,15 +286,18 @@ class ApiCtrl extends Controller
                         '$dateNow'
                     )
             ";
-            DB::select($q);
+            $year = date('Y',strtotime($req->dateProfile));
+            $db = 'db_'.$year;
+            DB::connection($db)->select($q);
             $group = ParameterCtrl::checkGroup($service_id);
-            ParameterCtrl::saveServiceGroup($req->profile_id,$req->sex,$group,$req->barangay_id,$req->muncity_id,$req->bracket_id,$req->dateProfile);
+            ParameterCtrl::saveServiceGroup($req->profile_id,$req->sex,$group,$req->barangay_id,$req->muncity_id,$req->bracket_id,$req->dateProfile,$db,$year);
         }
 
         foreach($cases as $c)
         {
             $case_id = $c['id'];
             $unique_id = date('mdY',strtotime($req->dateProfile)).''.$req->profile_id.''.$req->bracket_id.''.$case_id;
+            $year = date('Y',strtotime($req->dateProfile));
             $q = "INSERT IGNORE profilecases(
                         unique_id, 
                         dateProfile, 
@@ -315,8 +324,8 @@ class ApiCtrl extends Controller
                         '$dateNow',
                         '$dateNow'
                     )";
-
-            DB::select($q);
+            $db = 'db_'.$year;
+            DB::connection($db)->select($q);
         }
 
         foreach($options as $o)
@@ -345,7 +354,9 @@ class ApiCtrl extends Controller
                         '$dateNow',
                         '$dateNow')
                         ";
-                DB::select($q);
+                $year = date('Y',strtotime($req->dateProfile));
+                $db = 'db_'.$year;
+                DB::connection($db)->select($q);
             }
         }
         return array(
