@@ -636,6 +636,7 @@ class ParameterCtrl extends Controller
         $db = isset($database) ? $database : 'db_'.date('Y');
         $servicegroup = new ServiceGroup();
         $servicegroup->setConnection($db);
+        $year = date('Y',strtotime($dateNow));
         $check = $servicegroup->where('profile_id',$profile_id)->first();
         if($check){
             $servicegroup->where('profile_id',$profile_id)
@@ -643,6 +644,7 @@ class ParameterCtrl extends Controller
                     'group'.$group => 1,
                     'dateProfile' => $dateNow,
                     'sex' => $sex,
+                    'year' => $year,
                     'barangay_id' => $barangay_id,
                     'muncity_id' => $muncity_id,
                     'bracket_id' => $bracket_id
@@ -658,6 +660,7 @@ class ParameterCtrl extends Controller
             }
             $servicegroup->sex = $sex;
             $servicegroup->dateProfile = $dateNow;
+            $servicegroup->year= $year;
             $servicegroup->barangay_id = $barangay_id;
             $servicegroup->muncity_id = $muncity_id;
             $servicegroup->bracket_id = $bracket_id;
