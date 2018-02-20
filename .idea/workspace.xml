@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c8ece546-03ed-4fea-b0ef-538325cfba9a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,10 +14,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="ParameterCtrl.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ParameterCtrl.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
+            <state relative-caret-position="723">
               <caret line="662" column="38" lean-forward="false" selection-start-line="662" selection-start-column="38" selection-end-line="662" selection-end-column="38" />
               <folding />
             </state>
@@ -66,18 +66,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientCtrl.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ClientCtrl.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="612" column="26" lean-forward="true" selection-start-line="612" selection-start-column="26" selection-end-line="612" selection-end-column="26" />
+            <state relative-caret-position="365">
+              <caret line="612" column="101" lean-forward="false" selection-start-line="612" selection-start-column="101" selection-end-line="612" selection-end-column="101" />
               <folding>
-                <marker date="1517298625531" expanded="true" signature="7570:8138" ph="INSERT INTO profile... " />
-                <marker date="1517298625531" expanded="true" signature="8139:8316" ph="UPDATE famil... " />
-                <marker date="1517298625531" expanded="true" signature="8139:8341" ph="UPDATE famil... " />
-                <marker date="1517298625531" expanded="true" signature="8139:8355" ph="UPDATE famil... " />
-                <marker date="1517298625531" expanded="true" signature="55687:56155" ph="INSERT INTO profile... " />
-                <marker date="1517298625531" expanded="true" signature="56156:56352" ph="UPDATE famil... " />
+                <marker date="1519107874966" expanded="true" signature="7570:8138" ph="INSERT INTO profile... " />
+                <marker date="1519107874966" expanded="true" signature="8139:8316" ph="UPDATE famil... " />
+                <marker date="1519107874966" expanded="true" signature="8139:8341" ph="UPDATE famil... " />
+                <marker date="1519107874966" expanded="true" signature="8139:8355" ph="UPDATE famil... " />
+                <marker date="1519107874966" expanded="true" signature="55689:56157" ph="INSERT INTO profile... " />
+                <marker date="1519107874966" expanded="true" signature="56158:56354" ph="UPDATE famil... " />
               </folding>
             </state>
           </provider>
@@ -189,7 +189,6 @@
         <option value="$PROJECT_DIR$/.htaccess" />
         <option value="$PROJECT_DIR$/resources/views/client/services.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/routes.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
         <option value="$PROJECT_DIR$/resources/views/modal/checkProfile.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/client.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/client/addProfile.blade.php" />
@@ -198,6 +197,7 @@
         <option value="$PROJECT_DIR$/resources/views/script/profile.blade.php" />
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php" />
       </list>
     </option>
   </component>
@@ -373,12 +373,12 @@
       <workItem from="1518050704723" duration="252000" />
       <workItem from="1518317705358" duration="2933000" />
       <workItem from="1519000863650" duration="38000" />
-      <workItem from="1519090958519" duration="5380000" />
+      <workItem from="1519090958519" duration="5654000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114023000" />
+    <option name="totallyTimeSpent" value="114297000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -393,7 +393,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -781,26 +781,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="612" column="26" lean-forward="true" selection-start-line="612" selection-start-column="26" selection-end-line="612" selection-end-column="26" />
-          <folding>
-            <marker date="1517298625531" expanded="true" signature="7570:8138" ph="INSERT INTO profile... " />
-            <marker date="1517298625531" expanded="true" signature="8139:8316" ph="UPDATE famil... " />
-            <marker date="1517298625531" expanded="true" signature="8139:8341" ph="UPDATE famil... " />
-            <marker date="1517298625531" expanded="true" signature="8139:8355" ph="UPDATE famil... " />
-            <marker date="1517298625531" expanded="true" signature="55687:56155" ph="INSERT INTO profile... " />
-            <marker date="1517298625531" expanded="true" signature="56156:56352" ph="UPDATE famil... " />
-          </folding>
+        <state relative-caret-position="723">
+          <caret line="662" column="38" lean-forward="false" selection-start-line="662" selection-start-column="38" selection-end-line="662" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ParameterCtrl.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ClientCtrl.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="662" column="38" lean-forward="false" selection-start-line="662" selection-start-column="38" selection-end-line="662" selection-end-column="38" />
-          <folding />
+        <state relative-caret-position="365">
+          <caret line="612" column="101" lean-forward="false" selection-start-line="612" selection-start-column="101" selection-end-line="612" selection-end-column="101" />
+          <folding>
+            <marker date="1519107874966" expanded="true" signature="7570:8138" ph="INSERT INTO profile... " />
+            <marker date="1519107874966" expanded="true" signature="8139:8316" ph="UPDATE famil... " />
+            <marker date="1519107874966" expanded="true" signature="8139:8341" ph="UPDATE famil... " />
+            <marker date="1519107874966" expanded="true" signature="8139:8355" ph="UPDATE famil... " />
+            <marker date="1519107874966" expanded="true" signature="55689:56157" ph="INSERT INTO profile... " />
+            <marker date="1519107874966" expanded="true" signature="56158:56354" ph="UPDATE famil... " />
+          </folding>
         </state>
       </provider>
     </entry>
