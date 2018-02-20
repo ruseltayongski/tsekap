@@ -45,8 +45,11 @@ class ApiCtrl extends Controller
     public function getversion()
     {
         return array(
-            'version' => '1.6',
-            'description'=> '\n - Modify 3 must services\n - Modify download & upload for uniformity\n - Minor bug fixes'
+            'version' => '1.7',
+            'description'=> '
+            \n - Minor bug fixes
+            \n - NOTE: Please uninstall the older version!
+            '
         );
     }
     public function login()
