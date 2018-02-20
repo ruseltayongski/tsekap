@@ -636,7 +636,7 @@ class ParameterCtrl extends Controller
         $db = isset($database) ? $database : 'db_'.date('Y');
         $servicegroup = new ServiceGroup();
         $servicegroup->setConnection($db);
-        $year = date('Y',strtotime($dateNow));
+        $year = date('Y',$dateNow);
         $check = $servicegroup->where('profile_id',$profile_id)->first();
         if($check){
             $servicegroup->where('profile_id',$profile_id)
