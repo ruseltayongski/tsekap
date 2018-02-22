@@ -174,7 +174,7 @@ use App\Profile;
         $('a[href="#showServices"]').on('click',function(){
             <?php echo 'var year="'.$year.'";';?>
             <?php echo 'var url="'.asset('user/population/service').'";';?>
-            <?php echo 'var less="'.asset('user/population/service/less').'";';?>
+            <?php echo 'var less="'.asset('user/population/less/service').'";';?>
 
             var id = $(this).data('id');
             $('.service-list').html('<center><img src="<?php echo asset('resources/img/spin.gif');?>" width="100"></center>');

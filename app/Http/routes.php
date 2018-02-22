@@ -104,7 +104,7 @@ Route::post('user/population/less','ClientCtrl@searchPopulationLess');
 
 Route::get('user/population/member/{id}','ClientCtrl@memberPopulation');
 Route::get('user/population/service/{id}/{year}','ClientCtrl@servicePopulation');
-Route::get('user/population/service/less/{profileID}','ClientCtrl@servicePopulationLess');
+Route::get('user/population/less/service/{profileID}','ClientCtrl@servicePopulationLess');
 
 Route::get('user/profiles','ClientCtrl@getFamilyProfiles');
 Route::get('user/profiles/all','ClientCtrl@getProfiles');

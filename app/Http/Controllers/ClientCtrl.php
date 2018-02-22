@@ -615,7 +615,7 @@ class ClientCtrl extends Controller
             $unique_id = $dateP.''.$profileID.''.$req->femalestatus.''.$code;
 
             $group = Param::checkGroup($s[$i]);
-            Param::saveServiceGroup($profileID,$gender,$group,$brgy_id,$muncity_id,$bracket_id,$dateP,$db,$year);
+            Param::saveServiceGroup($profileID,$gender,$group,$brgy_id,$muncity_id,$bracket_id,$date,$db,$year);
         }
 
         for($i=0; $i<count($req->cases); $i++)

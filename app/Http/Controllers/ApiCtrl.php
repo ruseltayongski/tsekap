@@ -137,7 +137,8 @@ class ApiCtrl extends Controller
             ->skip($offset)
             ->take($perPage)
             ->get();
-
+        $data = array();
+        dd($list);
         foreach($list as $row)
         {
             $id = $row->profile_id;
