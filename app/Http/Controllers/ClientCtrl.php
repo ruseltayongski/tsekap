@@ -326,7 +326,9 @@ class ClientCtrl extends Controller
                 $update['unique_id'] = $unique_id;
                 //Profile::where('id',$req->currentID)
                 $data->update($update);
-                ServiceGroup::where('profile_id',$prevProfile)
+                $servicegroup = new ServiceGroup();
+                $servicegroup->setConnection('db_'.date('Y'));
+                $servicegroup->where('profile_id',$prevProfile)
                     ->update(['profile_id' => $unique_id]);
                 return redirect()->back()->with('status','updated');
             }else{
@@ -1682,6 +1684,10 @@ class ClientCtrl extends Controller
             if(count($tmpBrgy)==0){
                 $data = $data->where('profile.barangay_id',0);
             }
+        }
+        if($col=='unmet')
+        {
+            $data = $data->where('sex','Female');
         }
         $data = $data->where($col,$value)->count();
         return $data;
