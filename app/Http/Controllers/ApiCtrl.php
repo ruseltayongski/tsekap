@@ -63,11 +63,18 @@ class ApiCtrl extends Controller
         {
             if(Hash::check($pass,$user->password))
             {
-                $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target')
+                $count = 0;
+                $userBrgy = array();
+                if($user->user_priv==2){
+                    $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target')
                         ->where('user_id',$user->id)
                         ->leftJoin('barangay','userbrgy.barangay_id','=','barangay.id')
                         ->get();
-                $count = 0;
+                }else if($user->user_priv==0){
+                    $userBrgy = Barangay::select('description','target')
+                            ->where('muncity_id',$user->muncity)
+                            ->get();
+                }
                 foreach($userBrgy as $row)
                 {
                     $count += $row->target;
