@@ -119,7 +119,9 @@ class ApiCtrl extends Controller
     public function countMustServices()
     {
         $brgy_id = Input::get('brgy');
-        $count  = ServiceGroup::where('barangay_id',$brgy_id)->count();
+        $servicegroup = new ServiceGroup();
+        $servicegroup->setConnection('db_'.date('Y'));
+        $count  = $servicegroup->where('barangay_id',$brgy_id)->count();
         return array(
             'count' => $count
         );
