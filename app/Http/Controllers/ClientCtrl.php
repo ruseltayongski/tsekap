@@ -810,7 +810,7 @@ class ClientCtrl extends Controller
         foreach($list as $r)
         {
             $group = Param::checkGroup($r->service_id);
-            Param::saveServiceGroup($r->profile_id,$r->sex,$group,$r->barangay_id,$r->muncity_id,$r->bracket_id,$r->dateProfile,$db);
+            Param::saveServiceGroup($r->profile_id,$r->sex,$group,$r->barangay_id,$r->muncity_id,$r->bracket_id,$r->dateProfile,$db,$year);
         }
         return redirect()->back()->with('status','deleted');
     }
@@ -1722,7 +1722,7 @@ class ClientCtrl extends Controller
                 }
             });
         }else if($user->user_priv == 0){
-            $profile = $profile->where('muncity_id',$user->muncity_id);
+            $profile = $profile->where('muncity_id',$user->muncity);
         }
         $profile = $profile->orderBy('lname','asc')
                 ->limit(20)
