@@ -71,7 +71,7 @@ class ApiCtrl extends Controller
                         ->leftJoin('barangay','userbrgy.barangay_id','=','barangay.id')
                         ->get();
                 }else if($user->user_priv==0){
-                    $userBrgy = Barangay::select('description','target')
+                    $userBrgy = Barangay::select('id as barangay_id','description','target')
                             ->where('muncity_id',$user->muncity)
                             ->get();
                 }
