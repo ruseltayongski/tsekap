@@ -109,7 +109,7 @@ $cases = \App\Cases::get();
                                                     <br />
                                                     <div class="col-xs-offset-1 bp_option hide">
                                                         <label>
-                                                            <input type="radio" name="bp" value="0" />
+                                                            <input checked type="radio" name="bp" value="0" />
                                                             Normal
                                                         </label><br />
                                                         <label>
@@ -132,7 +132,7 @@ $cases = \App\Cases::get();
                                                     <br />
                                                     <div class="col-xs-offset-1 weight_option hide">
                                                         <label>
-                                                            <input type="radio" name="weight" value="0" />
+                                                            <input type="radio" checked name="weight" value="0" />
                                                             Normal
                                                         </label><br />
                                                         <label>
@@ -155,7 +155,7 @@ $cases = \App\Cases::get();
                                                     <br />
                                                     <div class="col-xs-offset-1 height_option hide">
                                                         <label>
-                                                            <input type="radio" name="height" value="0" />
+                                                            <input type="radio" checked name="height" value="0" />
                                                             Normal
                                                         </label><br />
                                                         <label>
