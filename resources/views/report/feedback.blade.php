@@ -27,10 +27,15 @@
                             @foreach($feedback as $row)
                             <?php
                                 $user = User::find($row->user_id);
-                                $name = $user->fname.' '.$user->mname.' '.$user->lname.' '.$user->suffix;
-                                $muncity = App\Muncity::find($user->muncity)->description;
-                                $province = App\Province::find($user->province)->description;
-                                $location = $muncity.', '.$province;
+                                $name = 'User Deleted';
+                                $location = 'N/A';
+                                if($user)
+                                {
+                                    $name = $user->fname.' '.$user->mname.' '.$user->lname.' '.$user->suffix;
+                                    $muncity = App\Muncity::find($user->muncity)->description;
+                                    $province = App\Province::find($user->province)->description;
+                                    $location = $muncity.', '.$province;
+                                }
                             ?>
                             <tr>
                                 <td nowrap="nowrap">

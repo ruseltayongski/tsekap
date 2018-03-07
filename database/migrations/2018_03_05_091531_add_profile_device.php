@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Cases extends Migration
+class AddProfileDevice extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,8 @@ class Cases extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('cases')){
-            return true;
-        }
-
-        Schema::create('cases',function(Blueprint $table){
-            $table->increments('id');
-            $table->string('description');
-            $table->timestamps();
+        Schema::table('profile', function($table) {
+            $table->string('device')->after('education');
         });
     }
 
@@ -30,6 +24,6 @@ class Cases extends Migration
      */
     public function down()
     {
-        Schema::drop('cases');
+        //
     }
 }
