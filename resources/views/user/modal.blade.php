@@ -64,6 +64,8 @@
                             <option value="0">Municipal Level</option>
                             <option value="2">Barangay Level</option>
                             <option value="4">Dentist</option>
+                            <option value="5">Rural Health Unit</option>
+                            <option value="6">Hospital</option>
                         </select>
                     </div>
                     <div class="form-group">

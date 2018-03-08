@@ -55,6 +55,10 @@
                                         <font class="text-danger text-bold">Provincial</font>
                                     @elseif($row->user_priv==4)
                                         <font class="text-danger text-bold">Dentist</font>
+                                    @elseif($row->user_priv==5)
+                                        <font class="text-danger text-bold">Rural Health Unit</font>
+                                    @elseif($row->user_priv==6)
+                                        <font class="text-danger text-bold">Hospital</font>
                                     @else
                                         <font class="text-warning text-bold">Barangay</font>
                                     @endif
