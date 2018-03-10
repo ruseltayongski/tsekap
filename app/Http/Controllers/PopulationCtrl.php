@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Device;
 use Illuminate\Http\Request;
 use App\Profile;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,7 @@ class PopulationCtrl extends Controller
         $province = Session::get('profileProvince');
         $muncity = Session::get('profileMuncity');
         $user = Auth::user();
-        $profiles = Profile::select('profile.familyID','profile.created_at','profile.head','profile.id','profile.lname','profile.mname','profile.fname','profile.suffix','profile.dob','profile.sex','profile.barangay_id','profile.muncity_id','profile.province_id');
+        $profiles = Profile::select('profile.unique_id','profile.familyID','profile.created_at','profile.head','profile.id','profile.lname','profile.mname','profile.fname','profile.suffix','profile.dob','profile.sex','profile.barangay_id','profile.muncity_id','profile.province_id');
 
         if($keyword || $keyword!='' || $keyword!=null)
         {
@@ -181,5 +182,18 @@ class PopulationCtrl extends Controller
             ->where('profileservices.profile_id',$tmp)
             ->get();
         return $services;
+    }
+
+    public static function getDevice($profile_id)
+    {
+        $device = Device::where('profile_id',$profile_id)
+                ->first();
+        if($device)
+        {
+            $device = $device->device;
+        }else{
+            $device = '';
+        }
+        return $device;
     }
 }

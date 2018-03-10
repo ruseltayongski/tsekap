@@ -226,6 +226,12 @@ class ClientCtrl extends Controller
             ";
         DB::select($q);
 
+        $q = "INSERT IGNORE profile_device(profile_id,device) values(
+                '$unique_id',
+                'web'
+            )";
+        DB::select($q);
+
         $q = "INSERT IGNORE servicegroup(profile_id,sex,barangay_id,muncity_id) VALUES(
                 '$unique_id',
                 '$req->sex',
@@ -233,6 +239,7 @@ class ClientCtrl extends Controller
                 '$user->muncity'
             )";
         $db = 'db_'.date('Y');
+
         DB::connection($db)->select($q);
 
         return redirect()->back()->with('status','added');
@@ -255,7 +262,13 @@ class ClientCtrl extends Controller
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
                 '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education')
             ";
-        echo $q;
+        //echo $q;
+        DB::select($q);
+
+        $q = "INSERT IGNORE profile_device(profile_id,device) values(
+                '$unique_id',
+                'web'
+            )";
         DB::select($q);
 
         $q = "INSERT IGNORE servicegroup(profile_id,sex,barangay_id,muncity_id) VALUES(

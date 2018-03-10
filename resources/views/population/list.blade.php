@@ -51,11 +51,11 @@ use App\FamilyProfile;
                         <thead>
                         <tr>
                             <th>Date Added</th>
-                            <th>Family ID</th>
                             <th>Complete Name</th>
                             <th>DOB</th>
                             <th>Sex</th>
                             <th>Location</th>
+                            <th class="text-center">Device</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -67,12 +67,15 @@ use App\FamilyProfile;
                                         ({{ date('h:i A',strtotime($p->created_at)) }})
                                     </font>
                                 </td>
-                                <td>
-                                    <a href="#familyProfile" data-backdrop="static" data-id="{{ $p->familyID }}" data-toggle="modal" class="title-info">
+                                <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">
+                                    {{ $p->fname }} {{ $p->mname }} {{ $p->lname }} {{ $p->suffix }}
+                                    <br />
+                                    <small>
+                                        <a href="#familyProfile" data-backdrop="static" data-id="{{ $p->familyID }}" data-toggle="modal" class="title-info">
                                         {{ $p->familyID }}
+                                    </small>
                                     </a>
                                 </td>
-                                <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname }} {{ $p->mname }} {{ $p->lname }} {{ $p->suffix }}</td>
                                 <td>
                                    {{ date('M d, Y',strtotime($p->dob)) }}
                                 </td>
@@ -81,6 +84,16 @@ use App\FamilyProfile;
                                     {{ \App\Barangay::find($p->barangay_id)->description }},
                                     {{ App\Muncity::find($p->muncity_id)->description }},
                                     {{ App\Province::find($p->province_id)->description }}
+                                </td>
+                                <td class="text-center">
+                                    <?php
+                                        $device = \App\Http\Controllers\PopulationCtrl::getDevice($p->unique_id);
+                                    ?>
+                                    @if($device=='web')
+                                        <i class="fa fa-tv text-aqua"></i>
+                                    @elseif($device=='mobile')
+                                        <i class="fa fa-android text-success"></i>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

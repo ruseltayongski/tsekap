@@ -244,6 +244,12 @@ class ApiCtrl extends Controller
 
         DB::select($q);
 
+        $q = "INSERT IGNORE profile_device(profile_id,device) values(
+                '".$data['unique_id']."',
+                'mobile'
+            )";
+        DB::select($q);
+
         $q = "INSERT IGNORE servicegroup(profile_id,sex,barangay_id,muncity_id) VALUES(
                 '".$data['unique_id']."',
                 '".$data['sex']."',
