@@ -223,7 +223,3 @@ Route::get('negros',function(){
 Route::get('api','ApiCtrl@api');
 Route::post('api/syncprofile','ApiCtrl@syncProfile');
 Route::post('api/syncservices','ApiCtrl@syncServices');
-
-//Route::get('fix/{process}','SystemCtrl@index');
-
-Route::get('sample/query','SampleCtrl@index');

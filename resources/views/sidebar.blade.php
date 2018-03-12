@@ -50,7 +50,13 @@
                 @endif
                 <li class="list-group-item hide">
                     <a href="https://www.dropbox.com/sh/5xvg3h20k9k8hr3/AAC1Ccp7_Ev4kMnyLJ1LXPyxa?dl=0" target="_blank" class="btn btn-warning col-xs-12">
-                        <i class="fa fa-puzzle-piece"></i> Patch v1.2
+                        <i class="fa fa-tv"></i> NOX Android Emulator
+                    </a>
+                    <div class="clearfix"></div>
+                </li>
+                <li class="list-group-item">
+                    <a href="https://res05.bignox.com/g3/M00/00/D1/CqypflqVA2GAVryKE9kFoK8x4dw009.exe?filename=nox_setup_v6.0.5.3_full_intl.exe" target="_blank" class="btn btn-warning col-xs-12">
+                        <i class="fa fa-tv"></i> NOX Android Emulator
                     </a>
                     <div class="clearfix"></div>
                 </li>

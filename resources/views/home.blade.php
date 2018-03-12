@@ -33,7 +33,7 @@
                         <i class="fa fa-users"></i>
                     </div>
                     <a href="{{ asset('#') }}" class="small-box-footer">
-                        &nbsp;
+                        Target Poor ( <font class="old_target"><i class="fa fa-refresh fa-spin"></i></font> )
                     </a>
                 </div>
             </div>
@@ -101,6 +101,7 @@
             type: 'GET',
             success: function(jim) {
                 console.log(jim);
+                $('.old_target').html(jim.old_target);
                 $('.target').html(jim.target);
                 $('.countPopulation').html(jim.countPopulation);
                 $('.profilePercentage').html(jim.profilePercentage);

@@ -40,13 +40,16 @@ class HomeCtrl extends Controller
             return array('countBarangay' => number_format($countBarangay));
         }else if($type=='target'){
             if($user_priv==1){
+                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->first()->count;
                 $target = Barangay::select(DB::raw("SUM(target) as count"))->first()->count;
                 $countPopulation = Profile::count();
             }else if($user_priv==3){
+                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->where('province_id',$province_id)->first()->count;
                 $target = Barangay::select(DB::raw("SUM(target) as count"))->where('province_id',$province_id)->first()->count;
                 $countPopulation = Profile::where('province_id',$province_id)->count();
             }
             if($target==0){
+                $old_target=$countPopulation;
                 $target=$countPopulation;
             }
 
@@ -58,13 +61,16 @@ class HomeCtrl extends Controller
             return array(
                 'countPopulation' => number_format($countPopulation),
                 'profilePercentage' => number_format($profilePercentage,1),
-                'target' => number_format($target)
+                'target' => number_format($target),
+                'old_target' => number_format($old_target)
             );
         }else if($type=='validServices'){
             if($user_priv==1){
+                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->first()->count;
                 $target = Barangay::select(DB::raw("SUM(target) as count"))->first()->count;
                 $validServices = Param::countMustService('');
             }else if($user_priv==3){
+                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->where('province_id',$province_id)->first()->count;
                 $target = Barangay::select(DB::raw("SUM(target) as count"))->where('province_id',$province_id)->first()->count;
                 $validServices = Param::countMustService('province');
             }
@@ -139,7 +145,10 @@ class HomeCtrl extends Controller
                 $end = '12/31/'.date('Y');
             }
             $enddate = date('Y-m-d',strtotime($end));
-            $count = ProfileServices::leftJoin('muncity','profileservices.muncity_id','=','muncity.id')
+            $db = 'db_'.date('Y');
+            $profileservices = new ProfileServices();
+            $profileservices->setConnection($db);
+            $count = $profileservices->leftJoin('tsekap_main.muncity as muncity','profileservices.muncity_id','=','muncity.id')
                 ->where('profileservices.dateProfile','>=',$startdate)
                 ->where('profileservices.dateProfile','<=',$enddate);
             if($user->user_priv == 3){
