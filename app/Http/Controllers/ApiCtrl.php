@@ -115,10 +115,13 @@ class ApiCtrl extends Controller
         $perPage = 100;
 
         $user_id = Input::get('user_id');
-        $check = User::find($user_id);
-        if(!$check){
-            return false;
+        if($user_id){
+            $check = User::find($user_id);
+            if(!$check){
+                return false;
+            }
         }
+
 
         $data = Profile::where('barangay_id',$brgy_id)
                 ->orderBy('lname','asc')
@@ -177,9 +180,12 @@ class ApiCtrl extends Controller
     public function syncProfile(Request $req)
     {
         $user_id = $req->user_id;
-        $check = User::find($user_id);
-        if(!$check){
-            return false;
+        if($user_id){
+            $check = User::find($user_id);
+            if(!$check){
+                return false;
+            }
+
         }
         $data = $req->data;
         $dateNow = date('Y-m-d H:i:s');
