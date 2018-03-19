@@ -149,13 +149,13 @@ $peF = 0;
                     <tr>
                         <th class="text-right">Height Measurement</th>
                         @for($i=0; $i<=22; $i++)
-                            <td></td>
+                            <td class="hm{{$i}}"></td>
                         @endfor
                     </tr>
                     <tr>
                         <td class="text-right">Stunted</td>
                         @for($i=0; $i<=22; $i++)
-                            <td></td>
+                            <td class="stunted{{$i}}"></td>
                         @endfor
                     </tr>
                     <tr>
@@ -342,7 +342,7 @@ $peF = 0;
     var month = $('.month').val();
     var year = $('.year').val();
     var step = 0;
-    var services = ['pe','bp','wm','obese'];
+    var services = ['pe','bp','wm','obese','under','hm','stunted'];
     console.log(services[step]);
 
     countServices();
@@ -350,7 +350,6 @@ $peF = 0;
     function countServices()
     {
         var service_code = services[step];
-
         if(step < services.length){
             var url = "<?php echo asset('user/report/monthly/count/');?>";
             var action = false;
@@ -363,9 +362,10 @@ $peF = 0;
                     var interval = setInterval(function(){
                         var cell = '.'+service_code+c;
                         var val = data[c];
+                        console.log(cell);
                         $(cell).html(val);
                         c++;
-
+                        console.log(url+'/'+service_code+'/'+month+'/'+year);
                         if(c>22)
                         {
                             countServices();

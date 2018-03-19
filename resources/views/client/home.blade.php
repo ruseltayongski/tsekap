@@ -13,9 +13,9 @@
 
                         <h3 style="font-weight: bold" class="text-success">WHAT'S NEW?</h3>
                         <?php
-                            $dateNow = date('m-d-Y');
+                            $dateNow = date('Y-m-d');
                         ?>
-                        @if($dateNow==='10-11-2017')
+                        @if($dateNow==='2017-11-10')
                         <div class="alert alert-info">
                             <p class="text-info" style="font-size:1.3em;text-align: center;">
                                 <strong>There will be a server maintenance tomorrow (October 12, 2017), 9:00AM. Don't forget to backup your data. Thank you!</strong>
@@ -23,11 +23,13 @@
                         </div>
                         @endif
 
+                        @if($dateNow<='2018-03-16')
                         <div class="alert alert-info">
                             <p class="text-info" style="font-size:1.1em;text-align: center;">
-                                <strong>PHA Check-App version 1.7 is now AVAILABLE!</strong>
+                                <strong>Target population per Barangay has been updated!</strong>
                             </p>
                         </div>
+                        @endif
                         <div class="alert alert-success text-center">
                             <p class="text-success">
                             For further assistance, please contact <i class="fa fa-phone-square"></i> 418-7633 or 418-4822.<br /> or chat with us <i class="fa fa-facebook-square"></i>

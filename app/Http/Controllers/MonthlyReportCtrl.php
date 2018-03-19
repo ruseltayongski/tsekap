@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ProfileServices;
 use App\Service;
+use App\ServiceOption;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -30,7 +31,11 @@ class MonthlyReportCtrl extends Controller
 
         if($code==='obese')
         {
-            self::serviceOption($code,$month,$year);
+            return self::serviceOption($code,$month,$year);
+        }else if($code==='under'){
+            return self::serviceOption($code,$month,$year);
+        }else if($code==='stunted'){
+            return self::serviceOption($code,$month,$year);
         }else{
             $service_id = Service::where('code',strtoupper($code))->first()->id;
 
@@ -102,6 +107,98 @@ class MonthlyReportCtrl extends Controller
 
     public function serviceOption($code,$month,$year)
     {
+        $start = "$year-$month-01";
+        $end = "$year-$month-31";
+        if($month==="ALL")
+        {
+            $start = "$year-01-01";
+            $end = "$year-12-31";
+        }
+        $status = 0;
+        $service = '';
+        if($code=='obese') {
+            $status = 1;
+            $service = 'weight';
+        }else if($code=='under'){
+            $status = 2;
+            $service = 'weight';
+        }else if($code=='stunted'){
+            $status = 1;
+            $service = 'height';
+        }
+
+        $brackets = self::brackets();
+
+        $user = Auth::user();
+        $province_id = $user->province;
+        $muncity_id = $user->muncity;
+        $db = 'db_'.$year;
+        $options = new ServiceOption();
+        $options->setConnection($db);
+        $data = array();
+        $male = 0;
+        $female = 0;
+        foreach($brackets as $b)
+        {
+            $bracket = $b[0];
+            $sex = $b[1];
+
+            $count = $options->leftJoin('profileservices','profileservices.profile_id','=','serviceoption.profile_id')
+                ->where('profileservices.bracket_id',$bracket)
+                ->where('serviceoption.option',$service)
+                ->where('serviceoption.status',$status);
+
+            if($bracket==5|| $bracket==6)
+            {
+                if($status=='Male')
+                {
+                    $count = $count->where('profileservices.sex',$sex);
+                }else{
+                    $count = $count->where('profileservices.status',$sex);
+                }
+            }else{
+                $count = $count->where('profileservices.sex',$sex);
+            }
+            if($user->user_priv == 3){
+                //$count = $count->where('muncity.province_id',$province_id);
+            }else if($user->user_priv == 0){
+                //$count = $count->where('serviceoption.muncity_id',$muncity_id);
+            }else if($user->user_priv == 2){
+                $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+                $count = $count->where(function($q) use ($tmpBrgy){
+                    foreach($tmpBrgy as $tmp){
+                        $q->orwhere('serviceoption.barangay_id',$tmp->barangay_id);
+                    }
+                });
+                if(count($tmpBrgy)==0){
+                    $count = $count->where('serviceoption.barangay_id',0);
+                }
+            }
+            $count = $count->where('serviceoption.dateProfile','>=',$start)
+                ->where('serviceoption.dateProfile','<=',$end)
+                ->groupBy('serviceoption.profile_id')
+                ->get();
+            echo 'bracket: '.$bracket . ' <br>';
+            echo 'option: '.$service. ' <br>';
+            echo 'status: '.$status. ' <br>';
+
+            $count = count($count);
+            echo 'count: '.$count. ' <br>';
+            echo '<br>';
+
+            if($sex=='Male')
+            {
+                $male = $male + $count;
+            }else{
+                $female = $female + $count;
+            }
+            $data[] = $count;
+        }
+        $data[] = $male;
+        $data[] = $female;
+        $data[] = $male + $female;
+
+        //return $data;
 
     }
 

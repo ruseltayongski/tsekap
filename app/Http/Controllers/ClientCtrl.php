@@ -1697,6 +1697,8 @@ class ClientCtrl extends Controller
             if(count($tmpBrgy)==0){
                 $data = $data->where('profile.barangay_id',0);
             }
+        }else if($user->user_priv == 0){
+            $data = $data->where('profile.muncity_id',$user->muncity);
         }
         if($col=='unmet')
         {
