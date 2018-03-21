@@ -17,7 +17,11 @@ class LocationCtrl extends Controller
 
     static function getMuncity($id)
     {
-        return Muncity::find($id)->description;
+        $muncity = Muncity::find($id);
+        if($muncity){
+            return $muncity->description;
+        }
+        return 'N/A';
     }
 
     static function getProvince($id)
