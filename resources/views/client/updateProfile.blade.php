@@ -54,6 +54,7 @@ $brgy = $brgy->orderBy('description','asc')
                 {{ csrf_field() }}
                 <table class="table table-bordered table-hover" border="1">
                     <input type="hidden" name="currentID" value="{{ $info->profile_id }}" />
+                    <input type="hidden" name="unique_id" value="{{ $info->unique_id }}" />
                     <tr>
                         <td>Family Profile ID :</td>
                         <input type="hidden" name="familyName" value="{{ $info->familyID }}" />

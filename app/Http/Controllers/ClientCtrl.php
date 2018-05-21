@@ -290,7 +290,7 @@ class ClientCtrl extends Controller
             'id' => $id
         );
         Session::put('toDelete',$delete);
-        $info = Profile::select('id as profile_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','relation','phicID','nhtsID','income','unmet','water','toilet','education')
+        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','relation','phicID','nhtsID','income','unmet','water','toilet','education')
             ->where('id',$id)
             ->first();
         return view('client.updateProfile',['info' => $info ]);
@@ -331,7 +331,8 @@ class ClientCtrl extends Controller
                 $update['water'] = $req->water;
                 $update['toilet'] = $req->toilet;
             }
-            $unique_id =$fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$muncity_id;
+            //$unique_id =$fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$muncity_id;
+            $unique_id = $req->unique_id;
             $validate = self::validatePopulation($unique_id,$req->currentID);
             if(!$validate){
                 $data = Profile::where('id',$req->currentID);
@@ -611,7 +612,8 @@ class ClientCtrl extends Controller
         $brgy_id = $req->brgy_id;
         $muncity_id = Auth::user()->muncity;
         $bracket_id = $req->bracket_id;
-        $profileID = self::getPrefix($profileID);
+        //$profileID = self::getPrefix($profileID);
+        $profileID = Profile::find($profileID)->unique_id;
         $gender = Profile::where('unique_id',$profileID)->first()->sex;
         $status = isset($req->femalestatus) ? $req->femalestatus : null;
         for($i=0; $i<count($req->services); $i++)
