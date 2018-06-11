@@ -123,7 +123,15 @@ use App\Province;
                         <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ url('/user/services') }}"><i class="fa fa-stethoscope"></i>Services Availed</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ asset('/user/dengvaxia')  }}"><i class="fa fa-hourglass-half"></i>&nbsp;&nbsp; Pending List</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ url('/user/dengvaxia/cross') }}"><i class="fa fa-exchange"></i>&nbsp;&nbsp; Cross Match</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ url('/user/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;Services Availed</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
                     <ul class="dropdown-menu">

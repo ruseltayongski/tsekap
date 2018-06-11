@@ -94,6 +94,20 @@ return [
             'engine' => null,
         ],
 
+        'db_dengvaxia' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'port' => '3306',
+            'database' => 'doh_dengvaxia', //doh_tsekap_vii sdn_v2 doh_tsekap_nir doh_tsekap_training
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', 'localhost'),

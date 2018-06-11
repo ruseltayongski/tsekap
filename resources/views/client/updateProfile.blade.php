@@ -4,6 +4,7 @@ use App\FamilyProfile;
 use App\Profile;
 use App\UserBrgy;
 
+$status = session('status');
 $brgy = Barangay::where('muncity_id',Auth::user()->muncity);
 
 if(Auth::user()->user_priv==2){
@@ -50,6 +51,13 @@ $brgy = $brgy->orderBy('description','asc')
                 Profile Details
             </h2>
             <div class="page-divider"></div>
+            @if($status=='add_dengvaxia')
+            <div class="alert alert-success">
+                <div class="text-success">
+                    Profile successfully added to dengvaxia pending list!
+                </div>
+            </div>
+            @endif
             <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('user/population/update') }}">
                 {{ csrf_field() }}
                 <table class="table table-bordered table-hover" border="1">
@@ -251,6 +259,9 @@ $brgy = $brgy->orderBy('description','asc')
                             <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                 <i class="fa fa-trash"></i> Delete
                             </button>
+                            <button type="button" class="btn btn-primary btn-sm" data-target="#link" data-toggle="modal">
+                                <i class="fa fa-link"></i> Link Profile
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -259,6 +270,7 @@ $brgy = $brgy->orderBy('description','asc')
     </div>
     @include('sidebar')
     @include('modal.profile')
+    @include('modal.link')
 @endsection
 
 @section('js')

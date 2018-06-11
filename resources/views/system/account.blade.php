@@ -2,6 +2,7 @@
     use App\Muncity;
     use App\Province;
     $muncity = Muncity::orderBy('province_id','asc')
+            ->where('province_id',2)
             ->orderBy('description','asc')
             ->get();
 ?>
@@ -29,8 +30,9 @@
                     <tr>
                         <th>Province</th>
                         <th>Municipality / City</th>
-                        <th>Username</th>
-                        <th>Password</th>
+                        <th class="text-right">Users</th>
+                        <th class="text-right">PHA</th>
+                        <th class="text-right">NDP</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,15 +51,17 @@
                         </td>
                         <td>{{ Muncity::find($m->id)->description }}</td>
 
-                        <td>
+                        <td class="text-right">
                             <?php
-                                $user = str_pad($count, 3, '0', STR_PAD_LEFT);
-                                $count++;
+                                $count = \App\User::where('muncity',$m->id)->count();
                             ?>
-                            {{ 'DOH'.$user }}
+                            {{ $count }}
                         </td>
-                        <td>
-                            {{ 'DOH'.$user }}
+                        <td class="text-right">
+                            {{ \App\User::where('muncity',$m->id)->where('user_priv',0)->count() }}
+                        </td>
+                        <td class="text-right">
+                            {{ \App\User::where('muncity',$m->id)->where('user_priv',2)->count() }}
                         </td>
                     </tr>
                     @endforeach
