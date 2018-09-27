@@ -23,6 +23,14 @@ Route::get('service/info/{id}','ServiceCtrl@info');
 Route::post('services/update','ServiceCtrl@update');
 //end service
 
+//Dengvaxia
+Route::match(['get', 'post'],'dengvaxia/profile','DengvaxiaCtrl@index');
+Route::match(['get', 'post'],'dengvaxia/link','DengvaxiaCtrl@link');
+Route::get('dengvaxia/count/{id}','DengvaxiaCtrl@countProfile');
+Route::get('dengvaxia/link/{id}/{offset}','DengvaxiaCtrl@linkProfile');
+Route::get('dengvaxia/finish/{id}','DengvaxiaCtrl@finish');
+//End Dengvaxia
+
 //REPORT
 Route::get('report/status','ReportCtrl@status');
 Route::post('report/status','ReportCtrl@status');
@@ -143,33 +151,42 @@ Route::get('user/upload/temp',function(){
     return view('temp');
 });
 
+//Dengvaxia
+Route::get('user/dengvaxia','client\DengvaxiaCtrl@index');
+Route::get('user/dengvaxia/add/{id}','client\DengvaxiaCtrl@add');
+Route::post('user/dengvaxia/save','client\DengvaxiaCtrl@save');
+
+Route::get('user/dengvaxia/validate/date_given/{start}/{end}','client\DengvaxiaCtrl@validateDoseDateGiven');
+//end Dengvaxia
+
+
 //Downloading of Data of 1.4
-Route::get('user/download/data','Client\ReportCtrl@download');
-Route::get('user/download/data/countprofile/{year}','Client\ReportCtrl@countProfile');
-Route::get('user/download/data/{offset}','Client\ReportCtrl@downloadProfile');
+//Route::get('user/download/data','Client\ReportCtrl@download');
+//Route::get('user/download/data/countprofile/{year}','Client\ReportCtrl@countProfile');
+//Route::get('user/download/data/{offset}','Client\ReportCtrl@downloadProfile');
 
-//Downloading of Services
-Route::get('user/download/services/{year}/{offset}','Client\ReportCtrl@getServices');
+////Downloading of Services
+//Route::get('user/download/services/{year}/{offset}','Client\ReportCtrl@getServices');
+//
+////Downloading of Cases
+//Route::get('user/download/cases/{year}/{offset}','Client\ReportCtrl@getCases');
+//
+////Downloading of Options
+//Route::get('user/download/options/{year}/{offset}','Client\ReportCtrl@getOptions');
 
-//Downloading of Cases
-Route::get('user/download/cases/{year}/{offset}','Client\ReportCtrl@getCases');
 
-//Downloading of Options
-Route::get('user/download/options/{year}/{offset}','Client\ReportCtrl@getOptions');
-
-
-//Uploading of Data
-Route::get('user/upload/data','Client\ReportCtrl@upload');
-Route::post('user/upload/data','Client\ReportCtrl@uploadData');
-
-//UPloading old data
-Route::get('user/upload/old/data','Client\ReportCtrl@uploadOld');
-Route::post('user/upload/old/data','Client\ReportCtrl@uploadDataOld');
-
-//Downloading of Data of 1.2
-Route::get('user/download/old/data','Client\OldDataCtrl@download');
-Route::get('user/download/old/data/countprofile/{year}','Client\OldDataCtrl@countProfile');
-Route::get('user/download/old/data/{offset}','Client\OldDataCtrl@downloadProfile');
+////Uploading of Data
+//Route::get('user/upload/data','Client\ReportCtrl@upload');
+//Route::post('user/upload/data','Client\ReportCtrl@uploadData');
+//
+////UPloading old data
+//Route::get('user/upload/old/data','Client\ReportCtrl@uploadOld');
+//Route::post('user/upload/old/data','Client\ReportCtrl@uploadDataOld');
+//
+////Downloading of Data of 1.2
+//Route::get('user/download/old/data','Client\OldDataCtrl@download');
+//Route::get('user/download/old/data/countprofile/{year}','Client\OldDataCtrl@countProfile');
+//Route::get('user/download/old/data/{offset}','Client\OldDataCtrl@downloadProfile');
 
 //Downloading of Services
 Route::get('user/download/old/services/{year}/{offset}','Client\OldDataCtrl@getServices');
