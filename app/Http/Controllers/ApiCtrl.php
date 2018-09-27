@@ -14,6 +14,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
+use App\Dengvaxia;
 
 
 class ApiCtrl extends Controller
@@ -45,9 +46,9 @@ class ApiCtrl extends Controller
     public function getversion()
     {
         return array(
-            'version' => '1.7',
+            'version' => '2.0',
             'description'=> '
-            \n - PIN Added\n - Profile Verification\n - Unmet for Females (15-49 years old)\n - Initial Chat System (chat by specific name)\n - Minor bug fixes
+            \n - Dengvaxia Profiling added in profile update\n - Automatic update after upload is removed\n - Check for Update is added in drawer\n - Minor bug fixes
             \n - NOTE: Please UNINSTALL the older version and DOWNLOAD the new VERSION thru ONLINE System.  
             '
         );
@@ -399,6 +400,37 @@ class ApiCtrl extends Controller
         return array(
             'status' => 'success'
         );
+    }
+
+    public function insertDengvaxia(Request $request){
+        $data = $request->all();
+
+        $data['phic_membership'] = json_encode($request->phic_membership);
+        $data['family_history'] = json_encode($request->family_history);
+        $data['medical_history'] = json_encode($request->medical_history);
+        $data['disability_injury'] = json_encode($request->disability_injury);
+        $data['hospital_history'] = json_encode($request->hospital_history);
+        $data['surgical_history'] = json_encode($request->surgical_history);
+        $data['personal_history'] = json_encode($request->personal_history);
+        $data['mens_gyne_history'] = json_encode($request->mens_gyne_history);
+        $data['vaccine_history'] = json_encode($request->vaccine_history);
+        $data['review_systems'] = json_encode($request->review_systems);
+        $data['physical_exam'] = json_encode($request->physical_exam);
+        $data['bronchial_asthma'] = json_encode($request->bronchial_asthma);
+        $data['tuberculosis'] = json_encode($request->tuberculosis);
+        $data['other_procedures'] = json_encode($request->other_procedures);
+        $data['platform'] = "mobile";
+
+        Dengvaxia::updateOrCreate(['unique_id' => $data['unique_id']], $data);
+
+        return array(
+            'status' => 'Successfully Registered'
+        );
+    }
+
+    public function patient_api($id){
+        $data = Dengvaxia::find($id);
+        return $data;
     }
 
 

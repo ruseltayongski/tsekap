@@ -4,6 +4,7 @@ use App\FamilyProfile;
 use App\Profile;
 use App\UserBrgy;
 
+$status = session('status');
 $brgy = Barangay::where('muncity_id',Auth::user()->muncity);
 
 if(Auth::user()->user_priv==2){
@@ -50,6 +51,13 @@ $brgy = $brgy->orderBy('description','asc')
                 Profile Details
             </h2>
             <div class="page-divider"></div>
+            @if($status=='add_dengvaxia')
+            <div class="alert alert-success">
+                <div class="text-success">
+                    Profile successfully added to dengvaxia pending list!
+                </div>
+            </div>
+            @endif
             <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('user/population/update') }}">
                 {{ csrf_field() }}
                 <table class="table table-bordered table-hover" border="1">
@@ -83,7 +91,7 @@ $brgy = $brgy->orderBy('description','asc')
                         <td>
                             <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
                                 <option value="">Select...</option>
-                                <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
+                                    <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
                                 <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
                                 <option <?php if($info->relation=='Wife') echo 'selected'; ?>>Wife</option>
                                 <option <?php if($info->relation=='Husband') echo 'selected'; ?>>Husband</option>
@@ -251,6 +259,15 @@ $brgy = $brgy->orderBy('description','asc')
                             <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                 <i class="fa fa-trash"></i> Delete
                             </button>
+
+                            <a href="#add_dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
+                                <i class="fa fa-plus"></i> Add Dengvaxia
+                            </a>
+
+                            <button type="button" class="btn btn-primary btn-sm" data-target="#link" data-toggle="modal">
+                                <i class="fa fa-link"></i> Link Profile
+                            </button>
+
                         </td>
                     </tr>
                 </table>
@@ -259,6 +276,7 @@ $brgy = $brgy->orderBy('description','asc')
     </div>
     @include('sidebar')
     @include('modal.profile')
+    @include('modal.link')
 @endsection
 
 @section('js')
@@ -317,5 +335,21 @@ $brgy = $brgy->orderBy('description','asc')
             console.log(gender);
             $("input[name=sex][value=" + gender + "]").prop('checked',true);
         }
+
+        $('a[href="#add_dengvaxia"]').on('click',function(){
+            var id = $(this).data('id');
+            var url = "{{ asset('verify_dengvaxia') }}"+"/"+id;
+            $('.verify-dengvaxia').html('<center><img src="<?php echo asset('resources/img/spin.gif');?>" width="100"></center>');
+            setTimeout(function(){
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(result){
+                        $('.verify-dengvaxia').html(result);
+                    }
+                });
+            },300);
+
+        });
     </script>
 @endsection

@@ -13,7 +13,7 @@
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('resources/img/favicon.png') }}">
     <meta http-equiv="cache-control" content="max-age=0" />
-    <title>PHA Check-Up</title>
+    <title>{{ (isset($title)) ? $title: 'PHA Check-Up' }}</title>
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/css/bootstrap-theme.min.css') }}" rel="stylesheet">
@@ -129,7 +129,14 @@
                         <li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
                     </ul>
                 </li>
-
+                @if(Auth::user()->user_priv==1)
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cogs"></i> Other Programs<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ asset('/dengvaxia/profile')  }}"><i class="fa fa-group"></i>&nbsp;&nbsp; Dengvaxia Profile</a></li>
+                    </ul>
+                </li>
+                @endif
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
                     <ul class="dropdown-menu">
