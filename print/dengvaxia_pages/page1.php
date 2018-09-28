@@ -1,20 +1,15 @@
 <?php
     //$api = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT']."/tsekap/vii/patient_api/191042"));
-    function connect(){
-        return new PDO("mysql:host=localhost;dbname=doh_dengvaxia",'root','');
-    }
+    include('database.php');
     $dengvaxiaId = "191042";
-    function query_dengvaxia($dengvaxiaId){
-        $db=connect();
-        $sql = "SELECT * FROM dengvaxia_profiles where id = ?";
-        $pdo=$db->prepare($sql);
-        $pdo->execute(array($dengvaxiaId));
-        $row=$pdo->fetch(PDO::FETCH_OBJ);
-        $db=null;
 
-        return $row;
-    }
     $api = query_dengvaxia($dengvaxiaId);
+    $bar = barangay($api->barangay_id);
+    $mun = muncity($api->muncity_id);
+    $pro = province($api->province_id);
+    $bar ? $barangay = $bar->description : $barangay = "NO BARANGAY";
+    $mun ? $muncity = $mun->description : $muncity = "NO MUNICIPALITY";
+    $pro ? $province = $pro->description : $province = "NO PROVINCE";
 
     $x = 15;
     $y = 3;
@@ -79,10 +74,10 @@
     $pdf->SetXY($x,$y);
     $pdf->Cell(0,0,'Address:',0,0,'L');
     $pdf->SetXY(30,$y);
-    $pdf->Cell(0,0,' ________________________________________   _______________________________   ________________________________   ___________________________________________   ________________________________',0,0,'L');
+    $pdf->Cell(0,0,' ________________________________________   _______________________________   ____________________________   ________________________________   ________________________________',0,0,'L');
     $y+=4;
     $pdf->SetXY(30,$y);
-    $pdf->Cell(0,0,'                   (House No. & Street Name)                                          (Sitio/Purok)                                           (Barangay)                                                  (Municipality/City)                                            (Province)',0,0,'L');
+    $pdf->Cell(0,0,'                   (House No. & Street Name)                                          (Sitio/Purok)                                            (Barangay)                                       (Municipality/City)                                             (Province)',0,0,'L');
 
     $y+=5;
     $pdf->SetXY($x,$y);
@@ -419,7 +414,6 @@
     //retrieve
     $pdf->SetFont('Arial','B',$con_font_size);
     $pdf->SetXY(40,42);
-    $lname = "lname";
     $pdf->Cell(66,5,$api->lname,0,0,'C');
     $pdf->SetXY(110,42);
     $pdf->Cell(100,5,$api->fname,0,0,'C');
@@ -433,10 +427,30 @@
     $pdf->Cell(0,0,$api->gen_res,0,0,'L');
     $pdf->SetXY(235,54);
     $pdf->Cell(0,0,$api->gen_con,0,0,'L');
-    $pdf->SetXY(32,56);
+    $pdf->SetXY(32,57);
     $pdf->Cell(59,5,$api->gen_hou_r,0,0,'C');
-    $pdf->SetXY(93,56);
+    $pdf->SetXY(93,57);
     $pdf->Cell(45,5,$api->gen_sit_r,0,0,'C');
+    $pdf->SetXY(141,57);
+    $pdf->Cell(41,5,$barangay,0,0,'C');
+    $pdf->SetXY(184,57);
+    $pdf->Cell(47,5,$muncity,0,0,'C');
+    $pdf->SetXY(233,57);
+    $pdf->Cell(47,5,$province,0,0,'C');
+
+    $api->sex == 'Male' ? $check_sex_x = 38: $check_sex_x = 58;
+    $pdf->SetXY($check_sex_x,70);
+    $pdf->SetFont('ZapfDingbats','', 9);
+    $pdf->Cell(0, 0, 4, 0, 0);
+
+    if( $api->gen_reli == "RC" )
+        $check_reli_x = 125;
+    elseif( $api->gen_reli == "Christian" )
+        $check_reli_x = 135;
+
+    $pdf->SetXY($check_reli_x,70);
+    $pdf->SetFont('ZapfDingbats','', 9);
+    $pdf->Cell(0, 0, 4, 0, 0);
 
     $pdf->Output();
 
