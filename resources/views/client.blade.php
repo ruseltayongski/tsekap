@@ -123,6 +123,7 @@ use App\Province;
                         <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
                     </ul>
                 </li>
+                <!--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -131,6 +132,7 @@ use App\Province;
                         <li><a href="{{ url('/user/dengvaxia/cross') }}"><i class="fa fa-exchange"></i>&nbsp;&nbsp; Cross Match</a></li>
                     </ul>
                 </li>
+                -->
                 <li><a href="{{ url('/user/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;Services Availed</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
