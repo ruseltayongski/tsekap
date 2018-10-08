@@ -263,11 +263,11 @@ $brgy = $brgy->orderBy('description','asc')
                             <a href="#add_dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
                                 <i class="fa fa-plus"></i> Add Dengvaxia
                             </a>
-
+                            <!--
                             <button type="button" class="btn btn-primary btn-sm" data-target="#link" data-toggle="modal">
                                 <i class="fa fa-link"></i> Link Profile
                             </button>
-
+                            -->
                         </td>
                     </tr>
                 </table>
