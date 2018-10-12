@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dengvaxia extends Model
 {
-    protected $connection = 'dengvaxia';
+    protected $connection = 'dengvaxia_dummy';
     protected $table = 'dengvaxia_profiles';
     protected $guarded = array();
 }

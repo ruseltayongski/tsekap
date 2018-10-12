@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Dengvaxia;
 use App\Profile;
+use App\Province;
 use Illuminate\Http\Request;
 use Codedge\Fpdf\Fpdf;
+use Illuminate\Support\Facades\Session;
 
 class DengvaxiaController extends Controller
 {
@@ -16,34 +18,128 @@ class DengvaxiaController extends Controller
 
     public function verify_dengvaxia($id){
         $tsekap = Profile::find($id);
-        $dengvaxia = \DB::connection('dengvaxia')->select("SELECT id,dob,fname,lname,mname,barangay_id,
+        $dengvaxia = \DB::connection('dengvaxia_dummy')->select("SELECT id,dob,fname,lname,mname,barangay_id,
                     muncity_id,province_id,sex,gen_age from `dengvaxia_profiles` WHERE fname = '$tsekap->fname' and lname = '$tsekap->lname' 
                     and DATE_FORMAT(dob,'%Y-%m-%d') = '$tsekap->dob' and province_id = '$tsekap->province_id' and muncity_id = '$tsekap->muncity_id' ");
 
         return view('dengvaxia.verify_dengvaxia',[
+            "unique_id" => $tsekap->unique_id,
             "dengvaxia" => $dengvaxia
         ]);
     }
 
-    public function form_dengvaxia($dengvaxiaID){
+    public function form_dengvaxia($dengvaxiaID,$unique_id){
         $dengvaxia = Dengvaxia::find($dengvaxiaID);
 
         return view('dengvaxia.form_dengvaxia',[
-            "dengvaxia" => $dengvaxia
+            "dengvaxia" => $dengvaxia,
+            "unique_id" => $unique_id
         ]);
     }
 
-    public function post_dengvaxia(Request $request,$dengvaxiaID){
-        $data = $request->except(['_token','gen_reli_oth','phi_typ_oth','phi_ben_spe','ale_spe','can_spe','imm_spe','epi_spe','hea_spe','kid_spe']);
-        $data['gen_reli'] = json_encode([
-            [
-                'rel' => $request->gen_reli,
-                'oth' => $request->gen_reli_oth
-            ]
+    public function post_dengvaxia(Request $request,$dengvaxiaID,$unique_id){
+        strpos($request->gen_reli, 'Others') !== false ? $religion = $request->gen_reli.' - '.$request->gen_reli_oth : $religion = $request->gen_reli;
+
+        if(strpos($request->phic_sponsoredby, 'Sponsored') !== false){
+            if($request->phic_sponsored == "Others"){
+                $phic_type = $request->phic_sponsoredby.' '.$request->phic_sponsored.' - '.$request->phic_sponsored_others;
+            } else {
+                $phic_type = $request->phic_sponsoredby.' '.$request->phic_sponsored;
+            }
+        }
+
+        if($request->phic_ben == "Yes"){
+            $phic_ben = $request->phic_ben.' - '.$request->phic_ben_spe;
+        }
+        else if($request->phic_ben == "No") {
+            $phic_ben = $request->phic_ben;
+        }
+
+        $phic_membership = json_encode([
+            "status" => $request->phic_status,
+            "type" => $phic_type,
+            "employment" => $request->phic_employed,
+            "benefit" => $phic_ben
         ]);
 
-        Dengvaxia::where('id','=',$dengvaxiaID)->first()->update($data);
+        foreach($request->fam_his as $row){
+            if(isset($request->$row)){
+                $fam_concat = $request->$row;
+            } else {
+                $fam_concat = '';
+            }
+            $fam_his[$row] = $row.' - '.$fam_concat;
+        }
+        $family_history = json_encode($fam_his);
+
+        foreach($request->med_his as $row){
+            if(isset($request->$row)){
+                $med_concat = $request->$row;
+            } else {
+                $med_concat = '';
+            }
+            $med_his[$row] = $row.' - '.$med_concat;
+        }
+        $medical_history = json_encode($med_his);
+
+        $request->with_medication == "Yes" ? $with_medication = $request->with_medication.' - '.$request->with_medication_spe : $with_medication = $request->with_medication;
+        $bronchial_asthma = json_encode([
+            "diagnosed" => $request->diagnosed,
+            "no_attacks" => $request->no_attacks,
+            "with_medication" => $with_medication,
+        ]);
+
+        Dengvaxia::updateOrCreate(
+            ['id' => $dengvaxiaID], [
+                "unique_id" => $unique_id,
+                "lname" => $request->lname,
+                "fname" => $request->fname,
+                "mname" => $request->mname,
+                "suffix" => $request->suffix,
+                "head" => $request->head,
+                "gen_res" => $request->gen_res,
+                "gen_con" => $request->gen_con,
+                "gen_hou_r" => $request->gen_hou_r,
+                "barangay_id" => $request->barangay_id,
+                "muncity_id" => $request->muncity_id,
+                "province_id" => $request->province_id,
+                "sex" => $request->sex,
+                "gen_age" => $request->gen_age,
+                "gen_reli" => $religion,
+                "dob" => $request->dob,
+                "birthplace" => $request->birthplace,
+                "gen_rel_yrs" => $request->gen_rel_yrs,
+                "education" => $request->education,
+                "phic_membership" => $phic_membership,
+                "family_history" => $family_history,
+                "medical_history" => $medical_history,
+                "bronchial_asthma" => $bronchial_asthma,
+                "platform" => "web",
+            ]
+        );
+
+        Profile::updateOrCreate(
+            ['unique_id' => $unique_id], [
+                "lname" => $request->lname,
+                "fname" => $request->fname,
+                "mname" => $request->mname,
+                "suffix" => $request->suffix,
+                "head" => $request->head,
+                "dob" => $request->dob,
+                "barangay_id" => $request->barangay_id,
+                "muncity_id" => $request->muncity_id,
+                "province_id" => $request->province_id,
+                "education" => $request->education,
+            ]
+        );
+
+        Session::flash('deng_updated',"Successfully Updated!");
         return redirect()->back();
+    }
+
+    public function sessionProcessPrint($unique_id){
+        session_start();
+        $_SESSION['unique_id'] = $unique_id;
     }
 
     public function fpdf(){

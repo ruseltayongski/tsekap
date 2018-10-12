@@ -242,10 +242,12 @@ Route::post('api/syncprofile','ApiCtrl@syncProfile');
 Route::post('api/syncservices','ApiCtrl@syncServices');
 
 //RUSEL
-Route::get('verify_dengvaxia/{id}','DengvaxiaController@verify_dengvaxia');
-Route::get('form_dengvaxia/{id}','DengvaxiaController@form_dengvaxia');
-Route::post('post_dengvaxia/{id}','DengvaxiaController@post_dengvaxia');
+Route::get('verify_dengvaxia/{id}/{unique_id}','DengvaxiaController@verify_dengvaxia');
+Route::get('form_dengvaxia/{id}/{unique_id}','DengvaxiaController@form_dengvaxia');
+Route::post('post_dengvaxia/{id}/{unique_id}','DengvaxiaController@post_dengvaxia');
 Route::post('api/insertDengvaxia','ApiCtrl@insertDengvaxia');
 
 Route::get('fpdf','DengvaxiaController@fpdf');
 Route::get('patient_api/{id}','ApiCtrl@patient_api');
+
+Route::get('sessionProcessPrint/{id}', 'DengvaxiaController@sessionProcessPrint');

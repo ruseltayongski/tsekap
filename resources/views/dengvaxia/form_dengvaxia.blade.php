@@ -32,8 +32,14 @@
                 <i class="fa fa-user"></i>
                 Dengvaxia Details
             </h2>
-            <div class="page-divider"></div>
-            <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('post_dengvaxia').'/'.$dengvaxia->id }}">
+            @if(Session::has('deng_updated'))
+                <div class="alert alert-success">
+                    <font class="text-success">
+                        <i class="fa fa-check"></i> {{ Session::get('deng_updated') }}
+                    </font>
+                </div>
+            @endif
+            <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('post_dengvaxia').'/'.$dengvaxia->id.'/'.$unique_id }}">
                 {{ csrf_field() }}
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#general_information" role="button" aria-expanded="false" aria-controls="collapseExample">
                     GENERAL INFORMATION
@@ -42,107 +48,116 @@
                     <table class="table table-bordered table-hover"  border="1">
                         <tr>
                             <td>Last Name :</td>
-                            <td><input type="text" value="{{ $dengvaxia->lname }}" name="gen_lname" class="form-control" /></td>
+                            <td><input type="text" value="{{ $dengvaxia->lname }}" name="lname" class="form-control" /></td>
                         </tr>
 
                         <tr>
                             <td>First Name :</td>
-                            <td><input type="text" value="{{ $dengvaxia->fname }}" name="gen_fname" class="form-control" /></td>
+                            <td><input type="text" value="{{ $dengvaxia->fname }}" name="fname" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Middle Initial :</td>
                             <td>
-                                <input type="text" value="{{ $dengvaxia->mname }}" name="gen_mname" class="form-control" />
+                                <input type="text" value="{{ $dengvaxia->mname }}" name="mname" class="form-control" />
                             </td>
                         </tr>
                         <tr class="relation has-group" >
                             <td>Extension: Sr,Jr Etc :</td>
                             <td>
-                                <select name="gen_ext" class="form-control chosen-select" id="suffix" style="width: 100%">
+                                <select name="suffix" class="form-control chosen-select" id="suffix" style="width: 100%">
                                     <option value="">Select...</option>
-                                    <option selected>Jr.</option>
-                                    <option>Sr.</option>
-                                    <option>I</option>
-                                    <option>II</option>
-                                    <option>III</option>
+                                    <option <?php if($dengvaxia->suffix=='Jr.') echo 'selected'; ?>>Jr.</option>
+                                    <option <?php if($dengvaxia->suffix=='Sr.') echo 'selected'; ?>>Sr.</option>
+                                    <option <?php if($dengvaxia->suffix=='I') echo 'selected'; ?>>I</option>
+                                    <option <?php if($dengvaxia->suffix=='II') echo 'selected'; ?>>II</option>
+                                    <option <?php if($dengvaxia->suffix=='III') echo 'selected'; ?>>III</option>
                                 </select>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Relation to Head :</td>
                             <td>
-                                <select name="gen_rel" id="relation" class="form-control chosen-select" style="width: 100%">
+                                <select name="head" id="relation" class="form-control chosen-select" style="width: 100%">
                                     <option value="">Select...</option>
-                                    <option selected>Son</option>
-                                    <option>Daughter</option>
-                                    <option>Wife</option>
-                                    <option>Husband</option>
-                                    <option>Father</option>
-                                    <option>Mother</option>
-                                    <option>Brother</option>
-                                    <option>Sister</option>
-                                    <option>Nephew</option>
-                                    <option>Niece</option>
-                                    <option>Grandfather</option>
-                                    <option>Grandmother</option>
-                                    <option>Grandson</option>
-                                    <option>Granddaughter</option>
-                                    <option>Cousin</option>
-                                    <option>Relative</option>
-                                    <option>Daughter in Law</option>
-                                    <option>Son in Law</option>
-                                    <option>Sister in Law</option>
-                                    <option>Brother in Law</option>
-                                    <option>Father in Law</option>
-                                    <option>Mother in Law</option>
-                                    <option>Live-in Partner</option>
-                                    <option>Deceased</option>
-                                    <option>Others</option>
+                                    <option <?php if($dengvaxia->head=='Son') echo 'selected'; ?>>Son</option>
+                                    <option <?php if($dengvaxia->head=='Daughter') echo 'selected'; ?>>Daughter</option>
+                                    <option <?php if($dengvaxia->head=='Wife') echo 'selected'; ?>>Wife</option>
+                                    <option <?php if($dengvaxia->head=='Husband') echo 'selected'; ?>>Husband</option>
+                                    <option <?php if($dengvaxia->head=='Father') echo 'selected'; ?>>Father</option>
+                                    <option <?php if($dengvaxia->head=='Mother') echo 'selected'; ?>>Mother</option>
+                                    <option <?php if($dengvaxia->head=='Brother') echo 'selected'; ?>>Brother</option>
+                                    <option <?php if($dengvaxia->head=='Sister') echo 'selected'; ?>>Sister</option>
+                                    <option <?php if($dengvaxia->head=='Nephew') echo 'selected'; ?>>Nephew</option>
+                                    <option <?php if($dengvaxia->head=='Niece') echo 'selected'; ?>>Niece</option>
+                                    <option <?php if($dengvaxia->head=='Grandfather') echo 'selected'; ?>>Grandfather</option>
+                                    <option <?php if($dengvaxia->head=='Grandmother') echo 'selected'; ?>>Grandmother</option>
+                                    <option <?php if($dengvaxia->head=='Grandson') echo 'selected'; ?>>Grandson</option>
+                                    <option <?php if($dengvaxia->head=='Granddaughter') echo 'selected'; ?>>Granddaughter</option>
+                                    <option <?php if($dengvaxia->head=='Cousin') echo 'selected'; ?>>Cousin</option>
+                                    <option <?php if($dengvaxia->head=='Relative') echo 'selected'; ?>>Relative</option>
+                                    <option <?php if($dengvaxia->head=='Daughter in Law') echo 'selected'; ?>>Daughter in Law</option>
+                                    <option <?php if($dengvaxia->head=='Son in Law') echo 'selected'; ?>>Son in Law</option>
+                                    <option <?php if($dengvaxia->head=='Sister in Law') echo 'selected'; ?>>Sister in Law</option>
+                                    <option <?php if($dengvaxia->head=='Brother in Law') echo 'selected'; ?>>Brother in Law</option>
+                                    <option <?php if($dengvaxia->head=='Father in Law') echo 'selected'; ?>>Father in Law</option>
+                                    <option <?php if($dengvaxia->head=='Mother in Law') echo 'selected'; ?>>Mother in Law</option>
+                                    <option <?php if($dengvaxia->head=='partner') echo 'selected'; ?>>Live-in Partner</option>
+                                    <option <?php if($dengvaxia->head=='Deceased') echo 'selected'; ?>>Deceased</option>
+                                    <option <?php if($dengvaxia->head=='Others') echo 'selected'; ?>>Others</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>Respondent :</td>
-                            <td><input type="text" name="gen_res" value="" class="form-control" /> </td>
+                            <td><input type="text" name="gen_res" value="{{ $dengvaxia->gen_res }}" class="form-control" /> </td>
                         </tr>
                         <tr class="has-group">
                             <td>Contact No :</td>
-                            <td><input type="text" name="gen_con" value="" class="form-control"  /> </td>
+                            <td><input type="text" name="gen_con" value="{{ $dengvaxia->gen_con }}" class="form-control"  /> </td>
                         </tr>
                         <tr class="has-group">
                             <td>House No. & Street Name :<br/> <small class="text-info"><em>(Residential Address)</em></small></td>
-                            <td><input type="text" name="gen_hou_r" value="" class="form-control"  /> </td>
+                            <td><input type="text" name="gen_hou_r" value="{{ $dengvaxia->gen_hou_r }}" class="form-control"  /> </td>
                         </tr>
                         <tr class="has-group">
                             <td>Barangay :<br/> <small class="text-info"><em>(Residential Address)</em></small></td>
                             <td>
-                                <select name="gen_bar_r" class="form-control chosen-select"  style="width: 100%">
+                                <select name="barangay_id" class="form-control chosen-select"  style="width: 100%">
                                     <option value="">Select...</option>
+                                    @foreach(\App\Barangay::get() as $row)
+                                        <option <?php if($dengvaxia->barangay_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Municipality :<br/> <small class="text-info"><em>(Residential Address)</em></small></td>
                             <td>
-                                <select name="gen_mun_r" class="form-control chosen-select"  style="width: 100%">
+                                <select name="muncity_id" class="form-control chosen-select"  style="width: 100%">
                                     <option value="">Select...</option>
+                                    @foreach(\App\Muncity::get() as $row)
+                                        <option <?php if($dengvaxia->muncity_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Province :<br/> <small class="text-info"><em>(Residential Address)</em></small></td>
                             <td>
-                                <select name="gen_pro_r" class="form-control chosen-select"  style="width: 100%">
+                                <select name="province_id" class="form-control chosen-select"  style="width: 100%">
                                     <option value="">Select...</option>
+                                    @foreach(\App\Province::get() as $row)
+                                        <option <?php if($dengvaxia->province_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
+                                    @endforeach
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>Sex :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" checked name="gen_sex" class="sex" value="Male"  style="display:inline;"> Male</label>
+                                <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($dengvaxia->sex=='Male') echo 'checked'; ?> name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="gen_sex" class="sex" value="Female" > Female</label>
+                                <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($dengvaxia->sex=='Female') echo 'checked'; ?> name="sex" class="sex" value="Female" required> Female</label>
                                 <span class="span"></span>
                             </td>
                         </tr>
@@ -150,58 +165,42 @@
                             <td>Age :</td>
                             <td>
                                 <div class="form-inline">
-                                    <input type="text" name="gen_age" class="form-control" />
+                                    <input type="text" name="gen_age" value="{{ $dengvaxia->gen_age }}" class="form-control" />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>Religion :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="gen_reli" value="RC"  style="display:inline;"> RC</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->gen_reli=='RC') echo 'checked'; ?> name="gen_reli" value="RC"  style="display:inline;"> RC</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="gen_reli" value="Christian" > Christian</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->gen_reli=='Christian') echo 'checked'; ?> name="gen_reli" value="Christian" > Christian</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="gen_reli" value="INC"  style="display:inline;"> INC</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->gen_reli=='INC') echo 'checked'; ?> name="gen_reli" value="INC"  style="display:inline;"> INC</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="gen_reli" value="Islam" > Islam</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->gen_reli=='Islam') echo 'checked'; ?> name="gen_reli" value="Islam" > Islam</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="gen_reli" value="Jehovah"  style="display:inline;"> Jehovah</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->gen_reli=='Jehovah') echo 'checked'; ?> name="gen_reli" value="Jehovah"  style="display:inline;"> Jehovah</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <input type="text" name="gen_reli_oth" ><label style="cursor: pointer;"> Others</label>
+                                <input type="radio" <?php if(strpos($dengvaxia->gen_reli, 'Others') !== false) echo 'checked'; ?> name="gen_reli" value="Others" style="display:inline;">
+                                <label style="cursor: pointer;">Others:</label>
+                                <input type="text" value="<?php if (strpos($dengvaxia->gen_reli, '-') !== false) echo explode(' - ',$dengvaxia->gen_reli)[1]; ?>" name="gen_reli_oth" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Birth Date(mm/dd/yyyy) :</td>
-                            <td><input type="date" name="gen_dob" id="dob" class="form-control" value=""  /> </td>
+                            <td><input type="date" name="dob" id="dob" class="form-control" value="{{ $dengvaxia->dob }}" /> </td>
                         </tr>
                         <tr class="has-group">
-                            <td>Barangay :<br/> <small class="text-info"><em>(Birthplace)</em></small></td>
+                            <td>Birthplace (Mun/City/Prov):</td>
                             <td>
-                                <select name="gen_bar_p" class="form-control chosen-select"  style="width: 100%">
-                                    <option value="">Select...</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>Municipality :<br/> <small class="text-info"><em>(Birthplace)</em></small></td>
-                            <td>
-                                <select name="gen_mun_p" class="form-control chosen-select"  style="width: 100%">
-                                    <option value="">Select...</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>Province :<br/> <small class="text-info"><em>(Birthplace)</em></small></td>
-                            <td>
-                                <select name="gen_pro_p" class="form-control chosen-select"  style="width: 100%">
-                                    <option value="">Select...</option>
-                                </select>
+                                <input type="text" name="birthplace" value="{{ $dengvaxia->birthplace }}" class="form-control" />
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Years. at Current Address:</td>
                             <td>
-                                <input type="number" name="gen_rel_yrs" class="form-control">
+                                <input type="number" name="gen_rel_yrs" value="{{ $dengvaxia->gen_rel_yrs }}" class="form-control">
                             </td>
                         </tr>
 
@@ -216,13 +215,13 @@
                         <tr class="has-group">
                             <td>Level of Education :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="lvl_edu[]" value="elementary" > Elementary</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->education=='Elementary') echo 'checked'; ?> name="education" value="Elementary" > Elementary</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="lvl_edu[]" value="high_school" > High School</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->education=='High School') echo 'checked'; ?> name="education" value="High School" > High School</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="lvl_edu[]" value="vocational" > Vocational</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->education=='Vocational') echo 'checked'; ?> name="education" value="Vocational" > Vocational</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="lvl_edu[]" value="no_complete_school" > No Completed Schooling</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if($dengvaxia->education=='No Completed Schooling') echo 'checked'; ?> name="education" value="No Completed Schooling" > No Completed Schooling</label>
                             </td>
                         </tr>
                     </table>
@@ -233,48 +232,58 @@
                 </a>
                 <div class="collapse" id="phic">
                     <table class="table table-bordered table-hover"  border="1">
+                        <?php $phic = json_decode($dengvaxia->phic_membership) ?>
                         <tr class="has-group">
                             <td>Status :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_stat" value="member"  style="display:inline;"> Member</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Member') echo 'checked'; ?> value="Member" style="display:inline;"> Member</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_stat" value="dependent" > Dependent</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Dependent') echo 'checked'; ?> value="Dependent" > Dependent</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_stat" value="non_member" > Non-Member</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Non-Member') echo 'checked'; ?> value="Non-Member" > Non-Member</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Type :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="lifetime"  style="display:inline;"> Lifetime</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if($phic->status=='Lifetime') echo 'checked'; ?> value="Lifetime" style="display:inline;"> Lifetime</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="sponsored" > Sponsored</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="doh" > DOH</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="plgu" > PLGU</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="mlgu" > MLGU</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="private" > Private</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="employed" > Employed</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="government" > Government</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="phi_typ" value="self_employed" > Self-Employed</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <input type="text" name="phi_typ_oth" > <label style="cursor: pointer;">Others</label>
+                                <div class="alert alert-warning">
+                                    <font class="text-warning">
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if(strpos($phic->type, 'Sponsored') !== false) echo 'checked'; ?> value="Sponsored By" > Sponsored By:</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By DOH') echo 'checked'; ?> value="DOH" > DOH</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By PLGU') echo 'checked'; ?> value="PLGU" > PLGU</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By MLGU') echo 'checked'; ?> value="MLGU" > MLGU</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By Private') echo 'checked'; ?> value="Private" > Private</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(strpos($phic->type, 'Others') !== false) echo 'checked'; ?> value="Others" > Others:</label> <input type="text" name="phic_sponsored_others" value="<?php if(strpos($phic->type, 'Others') !== false) echo explode(' - ',$phic->type)[1]; ?>" >
+                                    </font>
+                                </div>
+                                <div class="alert alert-success">
+                                    <font class="text-success">
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employedby" <?php if($phic->employment) echo 'checked'; ?> value="Employed By" > Employed By:</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Government') echo 'checked'; ?> value="Government" > Government</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Private') echo 'checked'; ?> value="Private" > Private</label>
+                                        &nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Self-Employed') echo 'checked'; ?> value="Self-Employed" > Self-Employed</label>
+                                    </font>
+                                </div>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Are you aware of your PHIC benefits? :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="phi_ben" value="yes"  style="display:inline;"> Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if(strpos($phic->benefit, ' - ') !== false) echo 'checked'; ?> value="Yes"  style="display:inline;"> Yes</label>
+                                &nbsp;&nbsp;
+                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if($phic->benefit=='No') echo 'checked'; ?> value="No" > No</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="phi_ben" value="no" > No</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <input type="text" name="phi_ben_spe" > <label style="cursor: pointer;">If yes, specify</label>
+                                <input type="text" name="phic_ben_spe" value="<?php if(strpos($phic->benefit, ' - ') !== false) echo explode(' - ',$phic->benefit)[1]; ?>" > <label style="cursor: pointer;">If yes, specify</label>
                             </td>
                         </tr>
                     </table>
@@ -284,29 +293,30 @@
                     FAMILY HISTORY <small style="color: white"><em>(Among mother,father,and siblings. Tick all that apply.)</em></small>
                 </a>
                 <div class="collapse" id="family_history">
+                    <?php $fam_his = json_decode($dengvaxia->family_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Family History :</td>
                             <td class="has-group">
-                                <input type="checkbox" name="fam_his[]" value="alergy"> <label style="cursor: pointer;">Allergy, specify:</label> <input type="text" name="ale_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Allergy_fam)) echo 'checked'; ?> name="fam_his[]" value="Allergy_fam"> Allergy, specify:</label> <input type="text" value="<?php if(isset($fam_his->Allergy_fam)){if($Allergy_fam=explode(' - ',$fam_his->Allergy_fam)[1])echo $Allergy_fam;} ?>" name="Allergy_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="astma" > Asthma</label>
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Asthma_fam)) echo 'checked'; ?> name="fam_his[]" value="Asthma_fam" > Asthma</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="cancer" > Cancer, specify organ:</label> <input type="text" name="can_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Cancer_fam)) echo 'checked'; ?> name="fam_his[]" value="Cancer_fam" > Cancer, specify organ:</label> <input type="text" value="<?php if(isset($fam_his->Cancer_fam)){if($Cancer_fam=explode(' - ',$fam_his->Cancer_fam)[1])echo $Cancer_fam;} ?>" name="Cancer_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="immune" > Immune Deficiency Disease, specify:</label> <input type="text" name="imm_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Immune_fam)) echo 'checked'; ?> name="fam_his[]" value="Immune_fam" > Immune Deficiency Disease, specify:</label> <input type="text" value="<?php if(isset($fam_his->Immune_fam)){if($Immune_fam=explode(' - ',$fam_his->Immune_fam)[1])echo $Immune_fam;} ?>" name="Immune_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="epilepsy" > Epilepsy/Seizure Disorder, specify:</label> <input type="text" name="epi_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Epilepsy_fam)) echo 'checked'; ?> name="fam_his[]" value="Epilepsy_fam" > Epilepsy/Seizure Disorder, specify:</label> <input type="text" value="<?php if(isset($fam_his->Epilepsy_fam)){if($Epilepsy_fam=explode(' - ',$fam_his->Epilepsy_fam)[1])echo $Epilepsy_fam;} ?>" name="Epilepsy_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="heart_disease" > Heart Disease &/or Heart Attach, specify:</label> <input type="text" name="hea_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Heart_fam)) echo 'checked'; ?> name="fam_his[]" value="Heart_fam" > Heart Disease &/or Heart Attach, specify:</label> <input type="text" value="<?php if(isset($fam_his->Heart_fam)){if($Heart_fam=explode(' - ',$fam_his->Heart_fam)[1])echo $Heart_fam;} ?>" name="Heart_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="kidney" > Kidney Disease, specify:</label> <input type="text" name="kid_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Kidney_fam)) echo 'checked'; ?> name="fam_his[]" value="Kidney_fam" > Kidney Disease, specify:</label> <input type="text" value="<?php if(isset($fam_his->Kidney_fam)){if($Kidney_fam=explode(' - ',$fam_his->Kidney_fam)[1])echo $Kidney_fam;} ?>" name="Kidney_fam">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="mental" > Mental Health Condition</label>
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Mental_fam)) echo 'checked'; ?> name="fam_his[]" value="Mental_fam" > Mental Health Condition</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="thyroid" > Thyroid Disease</label>
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Thyroid_fam)) echo 'checked'; ?> name="fam_his[]" value="Thyroid_fam" > Thyroid Disease</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="fam_his[]" value="tuberculosis" > Tuberculosis</label>
+                                <label style="cursor: pointer;"><input type="checkbox" <?php if(isset($fam_his->Tuberculosis_fam)) echo 'checked'; ?> name="fam_his[]" value="Tuberculosis_fam" > Tuberculosis</label>
                             </td>
                         </tr>
                     </table>
@@ -316,47 +326,138 @@
                     MEDICAL HISTORY OF CACCINEE <small style="color: white"><em>(Tick all past and present health condition of the respondent.)</em></small>
                 </a>
                 <div class="collapse" id="medical_history">
+                    <?php $med_his = json_decode($dengvaxia->medical_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Medical History :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="alergy"> Allergy, specify:</label> <input type="text" name="m_ale_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Allergy_med)) echo 'checked'; ?> value="Allergy_med"> Allergy, specify:</label> <input type="text" value="<?php if(isset($med_his->Allergy_med)){if($Allergy_med=explode(' - ',$med_his->Allergy_med)[1])echo $Allergy_med;} ?>" name="Allergy_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="astma" > Asthma (Fill-up Bronchial Astma Section)</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Asthma_med)) echo 'checked'; ?> value="Asthma_med" > Asthma (Fill-up Bronchial Astma Section)</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="tuberculosis" > Tuberculosis (If yes, fill-up Tuberculosis Section):</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Tuberculosis_med)) echo 'checked'; ?> value="Tuberculosis_med" > Tuberculosis (If yes, fill-up Tuberculosis Section):</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="peptic" > Peptic Ulcer Disease:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Peptic)) echo 'checked'; ?> value="Peptic" > Peptic Ulcer Disease:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="diabetes" > Diabetes mellitus (Fill-up Diabetes Mellitus Section)</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Diabetes)) echo 'checked'; ?> value="Diabetes" > Diabetes mellitus (Fill-up Diabetes Mellitus Section)</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="urinary" > Urinary Tract Infection:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Urinary)) echo 'checked'; ?> value="Urinary" > Urinary Tract Infection:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="malaria" > Malaria </label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Malaria)) echo 'checked'; ?> value="Malaria" > Malaria </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="pnuemonia" > Pnuemonia</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Pnuemonia)) echo 'checked'; ?> value="Pnuemonia" > Pnuemonia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="epilepsy" > Epilepsy/Seizure Disorder, specify:</label> <input type="text" name="med_epi_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Epilepsy_med)) echo 'checked'; ?> value="Epilepsy_med" > Epilepsy/Seizure Disorder, specify:</label> <input type="text" value="<?php if(isset($med_his->Epilepsy_med)){if($Epilepsy_med=explode(' - ',$med_his->Epilepsy_med)[1])echo $Epilepsy_med;} ?>" name="Epilepsy_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="kidney" > Kidney Disease, specify:</label> <input type="text" name="med_kid_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Kidney_med)) echo 'checked'; ?> value="Kidney_med" > Kidney Disease, specify:</label> <input type="text" value="<?php if(isset($med_his->Kidney_med)){if($Kidney_med=explode(' - ',$med_his->Kidney_med)[1])echo $Kidney_med;} ?>" name="Kidney_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="immune" > Immune Deficiency Disease: specify</label> <input type="text" name="med_imm_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Immune_med)) echo 'checked'; ?> value="Immune_med" > Immune Deficiency Disease: specify</label> <input type="text" value="<?php if(isset($med_his->Immune_med)){if($Immune_med=explode(' - ',$med_his->Immune_med)[1])echo $Immune_med;} ?>" name="Immune_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="hepatitis" > Hepatitis, specify:</label> <input type="text" name="med_hep_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Hepatitis)) echo 'checked'; ?> value="Hepatitis" > Hepatitis, specify:</label> <input type="text" value="<?php if(isset($med_his->Hepatitis)){if($Hepatitis=explode(' - ',$med_his->Hepatitis)[1])echo $Hepatitis;} ?>" name="Hepatitis">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="heart" > Heart Disease, specify:</label> <input type="text" name="med_hea_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Heart_med)) echo 'checked'; ?> value="Heart_med" > Heart Disease, specify:</label> <input type="text" value="<?php if(isset($med_his->Heart_med)){if($Heart_med=explode(' - ',$med_his->Heart_med)[1])echo $Heart_med;} ?>" name="Heart_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="poisoning" > Poisoning, specify:</label> <input type="text" name="med_poi_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Poisoning)) echo 'checked'; ?> value="Poisoning" > Poisoning, specify:</label> <input type="text" value="<?php if(isset($med_his->Poisoning)){if($Poisoning=explode(' - ',$med_his->Poisoning)[1])echo $Poisoning;} ?>" name="Poisoning">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="stis" > STIs, specify:</label> <input type="text" name="med_sti_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Stis)) echo 'checked'; ?> value="Stis" > STIs, specify:</label> <input type="text" value="<?php if(isset($med_his->Stis)){if($Stis=explode(' - ',$med_his->Stis)[1])echo $Stis;} ?>" name="Stis">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="thyroid" > Thyroid Disease, specify:</label> <input type="text" name="med_thy_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Thyroid_med)) echo 'checked'; ?> value="Thyroid_med" > Thyroid Disease, specify:</label> <input type="text" value="<?php if(isset($med_his->Thyroid_med)){if($Thyroid_med=explode(' - ',$med_his->Thyroid_med)[1])echo $Thyroid_med;} ?>" name="Thyroid_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="cancer" > Cancer, specify:</label> <input type="text" name="med_can_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Cancer_med)) echo 'checked'; ?> value="Cancer_med" > Cancer, specify:</label> <input type="text" value="<?php if(isset($med_his->Cancer_med)){if($Cancer_med=explode(' - ',$med_his->Cancer_med)[1])echo $Cancer_med;} ?>" name="Cancer_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" value="others" > Others, specify:</label> <input type="text" name="med_oth_spe">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Others_med)) echo 'checked'; ?> value="Others_med" > Others, specify:</label> <input type="text" value="<?php if(isset($med_his->Others_med)){if($Others_med=explode(' - ',$med_his->Others_med)[1])echo $Others_med;} ?>" name="Others_med">
                             </td>
                         </tr>
+                    </table>
+                </div>
+
+                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#bronchial_asthma" aria-expanded="false" aria-controls="collapseExample">
+                    BRONCHIAL ASTHMA
+                </a>
+                <div class="collapse" id="bronchial_asthma">
+                    <?php $bronchial_asthma = json_decode($dengvaxia->bronchial_asthma); ?>
+                    <table class="table table-bordered table-hover"  border="1">
+                        <tr class="has-group">
+                            <td> </td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="radio" name="diagnosed" <?php if(isset($bronchial_asthma->diagnosed)){if($bronchial_asthma->diagnosed == 'Yes')echo 'checked';} ?> value="Yes" > Diagnosed, No. of attacks per week:</label> <input type="text" value="<?php if(isset($bronchial_asthma->no_attacks)) echo $bronchial_asthma->no_attacks; ?>" name="no_attacks" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="diagnosed" <?php if(isset($bronchial_asthma->diagnosed)){if($bronchial_asthma->diagnosed == 'No')echo 'checked';} ?> value="No" > Not Diagnosed</label>
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>With Medications?</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="radio" name="with_medication" <?php if(isset($bronchial_asthma->with_medication)){if(explode(' - ',$bronchial_asthma->with_medication)[0] == 'Yes')echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" value="<?php if(isset($bronchial_asthma->with_medication)){if($with_medication=explode(' - ',$bronchial_asthma->with_medication)[1])echo $with_medication;} ?>" name="with_medication_spe" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="with_medication" <?php if(isset($bronchial_asthma->with_medication)){if($bronchial_asthma->with_medication == 'No')echo 'checked';} ?> value="No" > No</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#tuberculosis" aria-expanded="false" aria-controls="collapseExample">
+                    TUBERCULOSIS
+                </a>
+                <div class="collapse" id="tuberculosis">
+                    <table class="table table-bordered table-hover"  border="1">
+                        <tr class="has-group">
+                            <td>Any of the following?(Tick all that apply)</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="weight_loss" > Weight loss</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="fever" > Fever</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="loss_appetite" > Loss Appetite</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="cough" > Cough > 2 weeks</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="chest_pain" > Chest pain</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="back_pain" > Back pain</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="neck_nodes" > Neck nodes</label>
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>Labs done:</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="ppd" > PPD</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_ppd_res" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="sputum_exam" > Sputum Exam</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_spu_res" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="cxr" > CXR</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_cxr_res" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="genxpert" > GenXpert</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="pro_gen_res" >
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>Diagnosed with TB this year?</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="yes" > If Yes, form of TB:</label> <input type="text" name="tb_for" >
+                                &nbsp;<label style="cursor: pointer;"><input type="radio" name="tb_dia" value="no" > No</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > New, smear positive</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_negative" > New, smear negative</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="relapse" > Relapse</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > Extrapulmonary, specify:</label> <input type="radio" name="tb_ext_spe" value="catI" > Cat I <input type="radio" name="tb_ext_spe" value="catII" > Cat I <input type="radio" name="tb_ext_spe" value="catIII" > Cat III <input type="radio" name="tb_ext_spe" value="in_children" > TB in Children
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="clinically_diagnosed" > Clinically diagnosed</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="in_children" > TB in Children</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#disability" aria-expanded="false" aria-controls="collapseExample">
+                    DISABILITY
+                </a>
+                <div class="collapse" id="disability">
+                    <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Disability :</td>
                             <td class="has-group">
@@ -381,6 +482,14 @@
                                 <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="need_assistive" > Need for assistive device/s? <input type="radio" name="need_ass_yes" value="yes" > Yes, specify:</label> <input type="text" name="need_ass_spe"> <label style="cursor: pointer;"><input type="radio" name="need_ass_no" value="no" > No </label>
                             </td>
                         </tr>
+                    </table>
+                </div>
+
+                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#injury" aria-expanded="false" aria-controls="collapseExample">
+                    INJURY
+                </a>
+                <div class="collapse" id="injury">
+                    <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Injury :</td>
                             <td class="has-group">
@@ -647,6 +756,30 @@
                     </table>
                 </div>
 
+                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#other_procedure" aria-expanded="false" aria-controls="collapseExample">
+                    OTHER PROCEDURE DONE
+                </a>
+                <div class="collapse" id="other_procedure">
+                    <table class="table table-bordered table-hover"  border="1">
+                        <tr class="has-group">
+                            <td></td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="cbc" > CBC</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="urinalysis" > urinalysis</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="chest" > Chest X-ray, Specify Finding (Result)</label> <input type="text" name="oth_che_spe" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="oth_che_igg" value="igg_positive"> IgG Positive <input type="radio" name="enzymes_result" value="oth_che_igm"> IgM Positive
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="ns1_test" > NS1 Test</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="pcr" > PCR</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#review_system" aria-expanded="false" aria-controls="collapseExample">
                     REVIEW OF SYSTEMS<small style="color: white"><em>(Tick all that apply)</em></small>
                 </a>
@@ -864,117 +997,6 @@
                                 <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="gross_deformity,describe:" > Joint swelling:</label> <input type="text" name="per_ext_des" >
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="others" > Others,specify:</label> <input type="text" name="per_ext_oth" >
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#bronchial_asthma" aria-expanded="false" aria-controls="collapseExample">
-                    BRONCHIAL ASTHMA
-                </a>
-                <div class="collapse" id="bronchial_asthma">
-                    <table class="table table-bordered table-hover"  border="1">
-                        <tr class="has-group">
-                            <td> </td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="radio" name="bro_dia" value="diagnosed" > Diagnosed</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="bro_dia" value="not_diagnosed" > Not Diagnosed</label>
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>No. of attacks per week:</td>
-                            <td>
-                                <input type="text" name="bro_att" class="form-control" >
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>With Medications?</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="radio" name="bro_med" value="yes" > Yes, specify:</label> <input type="text" name="bro_spe" >
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="bro_med" value="no" > No</label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#tuberculosis" aria-expanded="false" aria-controls="collapseExample">
-                    TUBERCULOSIS
-                </a>
-                <div class="collapse" id="tuberculosis">
-                    <table class="table table-bordered table-hover"  border="1">
-                        <tr class="has-group">
-                            <td>Any of the following?(Tick all that apply)</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="weight_loss" > Weight loss</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="fever" > Fever</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="loss_appetite" > Loss Appetite</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="cough" > Cough > 2 weeks</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="chest_pain" > Chest pain</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="back_pain" > Back pain</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="neck_nodes" > Neck nodes</label>
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>Labs done:</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="ppd" > PPD</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_ppd_res" >
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="sputum_exam" > Sputum Exam</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_spu_res" >
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="cxr" > CXR</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_cxr_res" >
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="genxpert" > GenXpert</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="pro_gen_res" >
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>Diagnosed with TB this year?</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="yes" > If Yes, form of TB:</label> <input type="text" name="tb_for" >
-                                &nbsp;<label style="cursor: pointer;"><input type="radio" name="tb_dia" value="no" > No</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > New, smear positive</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_negative" > New, smear negative</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="relapse" > Relapse</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > Extrapulmonary, specify:</label> <input type="radio" name="tb_ext_spe" value="catI" > Cat I <input type="radio" name="tb_ext_spe" value="catII" > Cat I <input type="radio" name="tb_ext_spe" value="catIII" > Cat III <input type="radio" name="tb_ext_spe" value="in_children" > TB in Children
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="clinically_diagnosed" > Clinically diagnosed</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="in_children" > TB in Children</label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#other_procedure" aria-expanded="false" aria-controls="collapseExample">
-                    OTHER PROCEDURE DONE
-                </a>
-                <div class="collapse" id="other_procedure">
-                    <table class="table table-bordered table-hover"  border="1">
-                        <tr class="has-group">
-                            <td></td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="cbc" > CBC</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="urinalysis" > urinalysis</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="chest" > Chest X-ray, Specify Finding (Result)</label> <input type="text" name="oth_che_spe" >
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="oth_che_igg" value="igg_positive"> IgG Positive <input type="radio" name="enzymes_result" value="oth_che_igm"> IgM Positive
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="ns1_test" > NS1 Test</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="pcr" > PCR</label>
                             </td>
                         </tr>
                     </table>

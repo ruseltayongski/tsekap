@@ -8,4 +8,5 @@ class Profile extends Model
 {
     protected $connection = 'mysql';
     protected $table = 'profile';
+    protected $guarded = array();
 }

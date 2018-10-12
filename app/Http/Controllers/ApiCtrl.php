@@ -404,7 +404,6 @@ class ApiCtrl extends Controller
 
     public function insertDengvaxia(Request $request){
         $data = $request->all();
-
         $data['phic_membership'] = json_encode($request->phic_membership);
         $data['family_history'] = json_encode($request->family_history);
         $data['medical_history'] = json_encode($request->medical_history);
