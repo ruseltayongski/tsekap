@@ -400,54 +400,67 @@
                     TUBERCULOSIS
                 </a>
                 <div class="collapse" id="tuberculosis">
+                    <?php $tuberculosis = json_decode($dengvaxia->tuberculosis); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Any of the following?(Tick all that apply)</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="weight_loss" > Weight loss</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Weight_Loss)) echo 'checked'; ?> value="Weight_Loss" > Weight loss</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="fever" > Fever</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Fever)) echo 'checked'; ?> value="Fever" > Fever</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="loss_appetite" > Loss Appetite</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Loss_Appetite)) echo 'checked'; ?> value="Loss_Appetite" > Loss Appetite</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="cough" > Cough > 2 weeks</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Cough)) echo 'checked'; ?> value="Cough" > Cough > 2 weeks</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="chest_pain" > Chest pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Chest_Pain)) echo 'checked'; ?> value="Chest_Pain" > Chest pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="back_pain" > Back pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Back_Pain)) echo 'checked'; ?> value="Back_Pain" > Back pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_fol[]" value="neck_nodes" > Neck nodes</label>
-                            </td>
-                        </tr>
-                        <tr class="has-group">
-                            <td>Labs done:</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="ppd" > PPD</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_ppd_res" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Neck_Nodes)) echo 'checked'; ?> value="Neck_Nodes" > Neck nodes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="sputum_exam" > Sputum Exam</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_spu_res" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->New_smear_positive)) echo 'checked'; ?> value="New_smear_positive" > New, smear positive</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="cxr" > CXR</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="bro_cxr_res" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->New_smear_negative)) echo 'checked'; ?> value="New_smear_negative" > New, smear negative</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="bro_lab[]" value="genxpert" > GenXpert</label> <label style="cursor: pointer;">Result:</label> <input type="text" name="pro_gen_res" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Relapse)) echo 'checked'; ?> value="Relapse" > Relapse</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Extrapulmonary)) echo 'checked'; ?> value="Extrapulmonary" > Extrapulmonary, specify:</label> <input type="text" value="<?php if(isset($tuberculosis->Any_Following->Extrapulmonary)){if($Extrapulmonary=explode(' - ',$tuberculosis->Any_Following->Extrapulmonary)[1])echo$Extrapulmonary;} ?>" name="Extrapulmonary" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Clinically_Diagnosed)) echo 'checked'; ?> value="Clinically_Diagnosed" > Clinically diagnosed</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->TB_in_children)) echo 'checked'; ?> value="TB_in_children" > TB in Children</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Diagnosed with TB this year?</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="yes" > If Yes, form of TB:</label> <input type="text" name="tb_for" >
-                                &nbsp;<label style="cursor: pointer;"><input type="radio" name="tb_dia" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="Diagnosed" <?php if(isset($tuberculosis->Diagnosed)){if(strpos($tuberculosis->Diagnosed, 'Yes') !== false)echo 'checked';} ?> value="Yes" > If Yes, form of TB:</label> <input type="text" value="<?php if(isset($tuberculosis->Diagnosed)){if($Diagnosed=explode(' - ',$tuberculosis->Diagnosed)[1])echo$Diagnosed;} ?>" name="Diagnosed_Form" >
+                                &nbsp;<label style="cursor: pointer;"><input type="radio" name="Diagnosed" <?php if(isset($tuberculosis->Diagnosed)){if($tuberculosis->Diagnosed=='No')echo 'checked';} ?> value="No" > No</label>
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>Labs done:</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Labs_Done[]" <?php if(isset($tuberculosis->Labs_Done->PPD)) echo 'checked'; ?> value="PPD" > PPD</label> <label style="cursor: pointer;">Result:</label> <input type="text" value="<?php if(isset($tuberculosis->Labs_Done->PPD)){if($PPD=explode(' - ',$tuberculosis->Labs_Done->PPD)[1])echo$PPD;} ?>" name="PPD" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > New, smear positive</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Labs_Done[]" <?php if(isset($tuberculosis->Labs_Done->Sputum_Exam)) echo 'checked'; ?> value="Sputum_Exam" > Sputum Exam</label> <label style="cursor: pointer;">Result:</label> <input type="text" value="<?php if(isset($tuberculosis->Labs_Done->Sputum_Exam)){if($Labs_Done=explode(' - ',$tuberculosis->Labs_Done->Sputum_Exam)[1])echo$Labs_Done;} ?>" name="Sputum_Exam" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_negative" > New, smear negative</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Labs_Done[]" <?php if(isset($tuberculosis->Labs_Done->CXR)) echo 'checked'; ?> value="CXR" > CXR</label> <label style="cursor: pointer;">Result:</label> <input type="text" value="<?php if(isset($tuberculosis->Labs_Done->CXR)){if($Labs_Done=explode(' - ',$tuberculosis->Labs_Done->CXR)[1])echo$Labs_Done;} ?>" name="CXR" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="relapse" > Relapse</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Labs_Done[]" <?php if(isset($tuberculosis->Labs_Done->Genxpert)) echo 'checked'; ?> value="Genxpert" > GenXpert</label> <label style="cursor: pointer;">Result:</label> <input type="text" value="<?php if(isset($tuberculosis->Labs_Done->Genxpert)){if($Genxpert=explode(' - ',$tuberculosis->Labs_Done->Genxpert)[1])echo$Genxpert;} ?>" name="Genxpert" >
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>Medications:</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[0])) echo 'checked'; ?> value="CatI" > Cat I</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="smear_positive" > Extrapulmonary, specify:</label> <input type="radio" name="tb_ext_spe" value="catI" > Cat I <input type="radio" name="tb_ext_spe" value="catII" > Cat I <input type="radio" name="tb_ext_spe" value="catIII" > Cat III <input type="radio" name="tb_ext_spe" value="in_children" > TB in Children
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[1])) echo 'checked'; ?> value="CatII" > Cat II</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="clinically_diagnosed" > Clinically diagnosed</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[2])) echo 'checked'; ?> value="CatIII" > Cat III </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="tb_dia" value="in_children" > TB in Children</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[3])) echo 'checked'; ?> value="TTB_in_Children" > TB in Children</label>
                             </td>
                         </tr>
                     </table>

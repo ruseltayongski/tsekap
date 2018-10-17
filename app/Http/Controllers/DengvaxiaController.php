@@ -38,6 +38,7 @@ class DengvaxiaController extends Controller
     }
 
     public function post_dengvaxia(Request $request,$dengvaxiaID,$unique_id){
+
         strpos($request->gen_reli, 'Others') !== false ? $religion = $request->gen_reli.' - '.$request->gen_reli_oth : $religion = $request->gen_reli;
 
         if(strpos($request->phic_sponsoredby, 'Sponsored') !== false){
@@ -89,6 +90,29 @@ class DengvaxiaController extends Controller
             "with_medication" => $with_medication,
         ]);
 
+        foreach($request->Any_Following as $row){
+            if(isset($request->$row)){
+                $any_following_concat = $request->$row;
+            } else {
+                $any_following_concat = '';
+            }
+            $Any_Following[$row] = $row.' - '.$any_following_concat;
+        }
+        foreach($request->Labs_Done as $row){
+            if(isset($request->$row)){
+                $labs_done_concat = $request->$row;
+            } else {
+                $labs_done_concat = '';
+            }
+            $Labs_Done[$row] = $row.' - '.$labs_done_concat;
+        }
+        $tuberculosis = json_encode([
+            "Any_Following" => $Any_Following,
+            "Diagnosed" => $request->Diagnosed.' - '.$request->Diagnosed_Form,
+            "Labs_Done" => $Labs_Done,
+            "Medications" => $request->Medications,
+        ]);
+
         Dengvaxia::updateOrCreate(
             ['id' => $dengvaxiaID], [
                 "unique_id" => $unique_id,
@@ -114,6 +138,7 @@ class DengvaxiaController extends Controller
                 "family_history" => $family_history,
                 "medical_history" => $medical_history,
                 "bronchial_asthma" => $bronchial_asthma,
+                "tuberculosis" => $tuberculosis,
                 "platform" => "web",
             ]
         );

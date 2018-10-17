@@ -251,3 +251,4 @@ Route::get('fpdf','DengvaxiaController@fpdf');
 Route::get('patient_api/{id}','ApiCtrl@patient_api');
 
 Route::get('sessionProcessPrint/{id}', 'DengvaxiaController@sessionProcessPrint');
+Route::get('topNdp', 'TopController@index');
