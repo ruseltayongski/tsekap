@@ -15,7 +15,7 @@
                 <?php $fullname = $row->lname.', '.$row->fname.' '.$row->mname; ?>
                 <tr>
                     <td style="width: 10%">
-                        <a href="{{ asset('form_dengvaxia').'/'.$row->id }}" class="btn btn-xs btn-info">
+                        <a href="{{ asset('form_dengvaxia').'/'.$row->id.'/'.$unique_id }}" class="btn btn-xs btn-info">
                             <i class="fa fa-user-plus"></i> Update
                         </a>
                     </td>

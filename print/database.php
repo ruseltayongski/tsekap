@@ -1,16 +1,16 @@
 <?php
     function connect(){
-        return new PDO("mysql:host=localhost;dbname=doh_dengvaxia",'root','');
+        return new PDO("mysql:host=localhost;dbname=doh_dengvaxia_dummy",'root','');
     }
     function connect_tsekap(){
         return new PDO("mysql:host=localhost;dbname=tsekap_main",'root','');
     }
 
-    function query_dengvaxia($dengvaxiaId){
+    function query_dengvaxia($unique_id){
         $db=connect();
-        $sql = "SELECT * FROM dengvaxia_profiles where id = ?";
+        $sql = "SELECT * FROM dengvaxia_profiles where unique_id = ?";
         $pdo=$db->prepare($sql);
-        $pdo->execute(array($dengvaxiaId));
+        $pdo->execute(array($unique_id));
         $row=$pdo->fetch(PDO::FETCH_OBJ);
         $db=null;
 

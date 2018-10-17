@@ -79,7 +79,7 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr class="has-group">
                         <td>Family Head? :</td>
                         <td>
-                            <select name="head" id="head" class="form-control chosen-select required" id="suffix" style="width: 100%" required>
+                            <select name="head" id="head" class="form-control chosen-select required" style="width: 100%" required>
                                 <option value="">Select...</option>
                                 <option <?php if($info->head=='YES') echo 'selected'; ?> value="YES">YES</option>
                                 <option <?php if($info->head=='NO') echo 'selected'; ?> value="NO">NO</option>
@@ -91,7 +91,7 @@ $brgy = $brgy->orderBy('description','asc')
                         <td>
                             <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
                                 <option value="">Select...</option>
-                                    <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
+                                <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
                                 <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
                                 <option <?php if($info->relation=='Wife') echo 'selected'; ?>>Wife</option>
                                 <option <?php if($info->relation=='Husband') echo 'selected'; ?>>Husband</option>
@@ -259,9 +259,11 @@ $brgy = $brgy->orderBy('description','asc')
                             <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                 <i class="fa fa-trash"></i> Delete
                             </button>
-
-                            <a href="#add_dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
+                            <a href="#add_dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
                                 <i class="fa fa-plus"></i> Add Dengvaxia
+                            </a>
+                            <a href="#" data-backdrop="static" class="btn btn-warning btn-sm" onclick="print_dengvaxia()">
+                                <i class="fa fa-print"></i> Print Dengvaxia
                             </a>
                             <!--
                             <button type="button" class="btn btn-primary btn-sm" data-target="#link" data-toggle="modal">
@@ -338,7 +340,8 @@ $brgy = $brgy->orderBy('description','asc')
 
         $('a[href="#add_dengvaxia"]').on('click',function(){
             var id = $(this).data('id');
-            var url = "{{ asset('verify_dengvaxia') }}"+"/"+id;
+            var unique_id = $(this).data('unique');
+            var url = "{{ asset('verify_dengvaxia') }}"+"/"+id+"/"+unique_id;
             $('.verify-dengvaxia').html('<center><img src="<?php echo asset('resources/img/spin.gif');?>" width="100"></center>');
             setTimeout(function(){
                 $.ajax({
@@ -351,5 +354,20 @@ $brgy = $brgy->orderBy('description','asc')
             },300);
 
         });
+
+        function print_dengvaxia(){
+            var unique_id = "<?php echo $info->unique_id ?>";
+            console.log(unique_id);
+            event.preventDefault();
+            $.get("<?php echo asset('sessionProcessPrint').'/' ?>"+unique_id,function(result){
+                var win = window.open("<?php echo asset('print/print_dengvaxia_form.php'); ?>");
+                if (win) {
+                    win.focus();
+                } else {
+                    //Browser has blocked it
+                    alert('Please allow popups for this website');
+                }
+            });
+        }
     </script>
 @endsection
