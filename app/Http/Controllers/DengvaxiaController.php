@@ -106,11 +106,28 @@ class DengvaxiaController extends Controller
             }
             $Labs_Done[$row] = $row.' - '.$labs_done_concat;
         }
+
+        foreach($request->Medications as $row){
+            $Medications[$row] = $row;
+        }
+
         $tuberculosis = json_encode([
             "Any_Following" => $Any_Following,
             "Diagnosed" => $request->Diagnosed.' - '.$request->Diagnosed_Form,
             "Labs_Done" => $Labs_Done,
-            "Medications" => $request->Medications,
+            "Medications" => $Medications,
+        ]);
+
+        foreach($request->disability_injury as $row){
+            $selected_options[$row] = $row;
+        }
+
+        $disability_injury = json_encode([
+            "selected_options" => $selected_options,
+            "with_assistive" => $request->with_assistive_diagnosed.' - '.$request->with_assistive_spe,
+            "need_assistive" => $request->need_assistive_diagnosed.' - '.$request->need_assistive_spe,
+            "description" => $request->disability_description,
+            "medication" => $request->injury_medication
         ]);
 
         Dengvaxia::updateOrCreate(
@@ -139,6 +156,7 @@ class DengvaxiaController extends Controller
                 "medical_history" => $medical_history,
                 "bronchial_asthma" => $bronchial_asthma,
                 "tuberculosis" => $tuberculosis,
+                "disability_injury" => $disability_injury,
                 "platform" => "web",
             ]
         );

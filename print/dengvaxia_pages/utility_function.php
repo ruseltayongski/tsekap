@@ -206,6 +206,79 @@
 
     }
 
+    function Any_Following($description,$pdf){
+        switch ($description) {
+            case strpos($description,'Weight_Loss - ') !== false:
+                displayCheck($pdf, ['65','33']);
+                return;
+            case strpos($description,'Chest_Pain - ') !== false:
+                displayCheck($pdf, ['100','33']);
+                return;
+            case strpos($description,'Fever - ') !== false:
+                displayCheck($pdf, ['65','38']);
+                return;
+            case strpos($description,'Back_Pain - ') !== false:
+                displayCheck($pdf, ['100','38']);
+                return;
+            case strpos($description,'Loss_Appetite - ') !== false:
+                displayCheck($pdf, ['65','43']);
+                return;
+            case strpos($description,'Neck_Nodes - ') !== false:
+                displayCheck($pdf, ['100','43']);
+                return;
+            case strpos($description,'Cough - ') !== false:
+                displayCheck($pdf, ['65','48']);
+                return;
+            case strpos($description,'New_smear_positive - ') !== false:
+                displayCheck($pdf, ['100','53']);
+                return;
+            case strpos($description,'New_smear_negative - ') !== false:
+                displayCheck($pdf, ['100','58']);
+                return;
+            case strpos($description,'Relapse - ') !== false:
+                displayCheck($pdf, ['100','63']);
+                return;
+            case strpos($description,'Extrapulmonary - ') !== false:
+                displayCheck($pdf, ['133','53']);
+                displayCell($pdf,[167,50],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Clinically_Diagnosed - ') !== false:
+                displayCheck($pdf, ['133','58']);
+                return;
+            case strpos($description,'TB_in_children - ') !== false:
+                displayCheck($pdf, ['133','63']);
+                return;
+            case strpos($description,'PPD - ') !== false:
+                displayCheck($pdf, ['152','33']);
+                displayCell($pdf,[188,30],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Sputum_Exam - ') !== false:
+                displayCheck($pdf, ['152','38']);
+                displayCell($pdf,[188,35],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'CXR - ') !== false:
+                displayCheck($pdf, ['152','43']);
+                displayCell($pdf,[188,40],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Genxpert - ') !== false:
+                displayCheck($pdf, ['152','48']);
+                displayCell($pdf,[188,45],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case 'CatI':
+                displayCheck($pdf, ['205','58']);
+                return;
+            case 'CatII':
+                displayCheck($pdf, ['220','58']);
+                return;
+            case 'CatIII':
+                displayCheck($pdf, ['205','63']);
+                return;
+            case 'TTB_in_Children':
+                displayCheck($pdf, ['220','63']);
+                return;
+        }
+    }
+
     function cellContent(){
         return [
             'medical_history' => [
@@ -236,4 +309,6 @@
             ]
         ];
     }
+
+
 ?>

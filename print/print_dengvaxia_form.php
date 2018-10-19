@@ -24,13 +24,15 @@ class PDF_MC_Table extends FPDF
         $this->aligns=$a;
     }
 
-    function Row($data)
+    function Row($data,$pdf,$border)
     {
         //Calculate the height of the row
         $nb=0;
         for($i=0;$i<count($data);$i++)
             $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
+
         $h=5*$nb;
+
         //Issue a page break first if needed
         $this->CheckPageBreak($h);
         //Draw the cells of the row
@@ -41,14 +43,25 @@ class PDF_MC_Table extends FPDF
             //Save the current position
             $x=$this->GetX();
             $y=$this->GetY();
-            //Draw the border
-            $this->Rect($x,$y,$w,$h);
-            //Print the text
-            $this->MultiCell($w,5,$data[$i],0,$a);
+
+            if($i == 0 && $data[$i] == "box"){
+                //Draw the border
+                $this->Rect($x,$border == 1 ? $y : 0,$w,1);
+                //Print the text
+                $this->MultiCell($w,5,"",1,$a);
+            } else {
+                //Draw the border
+                $this->Rect($x,$border == 1 ? $y : 0,$w,$h);
+                //Print the text
+                $this->MultiCell($w,5,$data[$i],0,$a);
+            }
+
             //Put the position to the right of the cell
             $this->SetXY($x+$w,$y);
+
         }
         //Go to the next line
+        $GLOBALS['y'] = $y+$h;
         $this->Ln($h);
     }
 

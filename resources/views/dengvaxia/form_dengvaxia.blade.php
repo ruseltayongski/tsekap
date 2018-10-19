@@ -454,67 +454,59 @@
                         <tr class="has-group">
                             <td>Medications:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[0])) echo 'checked'; ?> value="CatI" > Cat I</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications->CatI)) echo 'checked'; ?> value="CatI" > Cat I</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[1])) echo 'checked'; ?> value="CatII" > Cat II</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications->CatII)) echo 'checked'; ?> value="CatII" > Cat II</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[2])) echo 'checked'; ?> value="CatIII" > Cat III </label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications->CatIII)) echo 'checked'; ?> value="CatIII" > Cat III </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications[3])) echo 'checked'; ?> value="TTB_in_Children" > TB in Children</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="Medications[]" <?php if(isset($tuberculosis->Medications->TTB_in_Children)) echo 'checked'; ?> value="TTB_in_Children" > TB in Children</label>
                             </td>
                         </tr>
                     </table>
                 </div>
 
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#disability" aria-expanded="false" aria-controls="collapseExample">
-                    DISABILITY
+                    DISABILITY AND INJURY
                 </a>
                 <div class="collapse" id="disability">
+                    <?php $disability_injury = json_decode($dengvaxia->disability_injury); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
-                            <td>Disability :</td>
+                            <td>Disability and Injury</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="psychosocial"> Psychosocial and Behavioral Conditions:</label>
+                                <label style="cursor: pointer;color: orange;">Disability</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Psychosocial)) echo 'checked'; ?> value="Psychosocial"> Psychosocial and Behavioral Conditions:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="learning" > Learning or Intellectual Disability</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Learning)) echo 'checked'; ?> value="Learning" > Learning or Intellectual Disability</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="mental" > Mental Condition</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Mental)) echo 'checked'; ?> value="Mental" > Mental Condition</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="visual" > Visual or Seeing Impairment</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Visual)) echo 'checked'; ?> value="Visual" > Visual or Seeing Impairment</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="hearing" > Hearing Impairement</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Hearing)) echo 'checked'; ?> value="Hearing" > Hearing Impairement</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="speech" > Speech Impairment</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Speech)) echo 'checked'; ?> value="Speech" > Speech Impairment</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="musculo" > Musculo-Skeletal or injury impairments</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Musculo)) echo 'checked'; ?> value="Musculo" > Musculo-Skeletal or injury impairments</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"> Give description of disability:</label> <textarea name="dis[]" ></textarea>
+                                <label style="cursor: pointer;"> Give description of disability:</label> <textarea name="disability_description" ><?php if(isset($disability_injury->description)) echo $disability_injury->description; ?></textarea>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="with_assistive" > With assistive device/s? <input type="radio" name="wit_ass_yes" value="yes" > Yes, specify:</label> <input type="text" name="with_ass_spe" > <label style="cursor: pointer;"><input type="radio" name="with_ass_no" value="no" > No </label>
+                                <label style="cursor: pointer;"><input type="radio" name="with_assistive" <?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked'; ?> value="with_assistive" > With assistive device/s? <input type="radio" name="with_assistive_diagnosed" <?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked'; ?> value="Yes" > Yes, specify:</label> <input type="text" name="with_assistive_spe" value="<?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->with_assistive)[1]; ?>" > <label style="cursor: pointer;"><input type="radio" name="with_assistive_diagnosed" <?php if(strpos($disability_injury->with_assistive, 'No') !== false) echo 'checked'; ?> value="No" > No </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="dis[]" value="need_assistive" > Need for assistive device/s? <input type="radio" name="need_ass_yes" value="yes" > Yes, specify:</label> <input type="text" name="need_ass_spe"> <label style="cursor: pointer;"><input type="radio" name="need_ass_no" value="no" > No </label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                                <label style="cursor: pointer;"><input type="radio" name="need_assistive" <?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked'; ?> value="need_assistive" > Need for assistive device/s? <input type="radio" name="need_assistive_diagnosed" <?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked'; ?> value="Yes" > Yes, specify:</label> <input type="text" name="need_assistive_spe" value="<?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->need_assistive)[1]; ?>" > <label style="cursor: pointer;"><input type="radio" name="need_assistive_diagnosed" <?php if(strpos($disability_injury->need_assistive, 'No') !== false) echo 'checked'; ?> value="No" > No </label>
 
-                <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#injury" aria-expanded="false" aria-controls="collapseExample">
-                    INJURY
-                </a>
-                <div class="collapse" id="injury">
-                    <table class="table table-bordered table-hover"  border="1">
-                        <tr class="has-group">
-                            <td>Injury :</td>
-                            <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="inj[]" value="vehicular"> Vehicular Accident/Traffic-Related Injuries</label>
+                                <br>
+                                <label style="cursor: pointer;color: orange;">Injury</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->vehicular)) echo 'checked'; ?> value="vehicular"> Vehicular Accident/Traffic-Related Injuries</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="inj[]" value="burns" > Burns</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->burns)) echo 'checked'; ?> value="burns" > Burns</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="inj[]" value="mental" > Drowning</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->mental)) echo 'checked'; ?> value="mental" > Drowning</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="inj[]" value="visual" > Fall</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->visual)) echo 'checked'; ?> value="visual" > Fall</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <textarea name="inj[]" ></textarea> <label style="cursor: pointer;"> MEDICATIONS (List all current medicines <br>and food supplements being taken):</label>
+                                <textarea name="injury_medication" ><?php if(isset($disability_injury->medication)) echo $disability_injury->medication; ?></textarea> <label style="cursor: pointer;"> MEDICATIONS (List all current medicines <br>and food supplements being taken):</label>
                             </td>
                         </tr>
                     </table>
