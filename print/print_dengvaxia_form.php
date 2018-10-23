@@ -7,11 +7,6 @@ class PDF_MC_Table extends FPDF
     var $widths;
     var $aligns;
 
-    function Header()
-    {
-
-    }
-
     function SetWidths($w)
     {
         //Set the array of column widths
@@ -24,44 +19,75 @@ class PDF_MC_Table extends FPDF
         $this->aligns=$a;
     }
 
-    function Row($data,$pdf,$border)
+    function Row($data,$description,$bigBox,$border,$position)
     {
         //Calculate the height of the row
         $nb=0;
-        for($i=0;$i<count($data);$i++)
-            $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
-
-        $h=5*$nb;
-
-        //Issue a page break first if needed
-        $this->CheckPageBreak($h);
+        for($i=0;$i<count($data);$i++) {
+            if($data[$i] != 'box'){
+                $nb = max($nb, $this->NbLines($this->widths[$i], $data[$i]));
+            }
+        }
         //Draw the cells of the row
+        $h=5*$nb;
+        $this->CheckPageBreak($h);
         for($i=0;$i<count($data);$i++)
         {
             $w=$this->widths[$i];
-            $a=isset($this->aligns[$i]) ? $this->aligns[$i] : 'L';
+            $a=isset($this->aligns[$i]) ? $this->aligns[$i] : $position;
             //Save the current position
             $x=$this->GetX();
             $y=$this->GetY();
 
-            if($i == 0 && $data[$i] == "box"){
-                //Draw the border
-                $this->Rect($x,$border == 1 ? $y : 0,$w,1);
+            //Draw the border
+            if($border == 1) $this->Rect($x,$y,$w,$h);
+            if($data[$i] == "box"){
                 //Print the text
-                $this->MultiCell($w,5,"",1,$a);
+                $this->MultiCell($w,5,'',1,$a);
             } else {
-                //Draw the border
-                $this->Rect($x,$border == 1 ? $y : 0,$w,$h);
                 //Print the text
                 $this->MultiCell($w,5,$data[$i],0,$a);
             }
 
             //Put the position to the right of the cell
             $this->SetXY($x+$w,$y);
-
         }
+
+        $GLOBALS[$description.'_h'] += $h;
+        if( isset($GLOBALS[$description.'_h']) && $bigBox){
+            $this->Rect(15,$GLOBALS[$description.'_y'],270,$GLOBALS[$description.'_h']-5);
+        }
+
         //Go to the next line
         $GLOBALS['y'] = $y+$h;
+        $this->Ln($h);
+    }
+
+    function patient_answer($data,$border,$position)
+    {
+        //Calculate the height of the row
+        $nb=0;
+        for($i=0;$i<count($data);$i++)
+            $nb=max($nb,$this->NbLines($this->widths[$i],$data[$i]));
+        $h=5*$nb;
+        //Issue a page break first if needed
+        $this->CheckPageBreak($h);
+        //Draw the cells of the row
+        for($i=0;$i<count($data);$i++)
+        {
+            $w=$this->widths[$i];
+            $a=isset($this->aligns[$i]) ? $this->aligns[$i] : $position;
+            //Save the current position
+            $x=$this->GetX();
+            $y=$this->GetY();
+            //Draw the border
+            if($border == 1) $this->Rect($x,$y,$w,$h);
+            //Print the text
+            $this->MultiCell($w,5,$data[$i],0,$a);
+            //Put the position to the right of the cell
+            $this->SetXY($x+$w,$y);
+        }
+        //Go to the next line
         $this->Ln($h);
     }
 
@@ -128,7 +154,7 @@ $pdf=new PDF_MC_Table('L','mm','A4');
 include 'dengvaxia_pages/utility_function.php';
 $pdf->AddPage();
 include 'dengvaxia_pages/page1.php';
-$pdf->AddPage();
+/*$pdf->AddPage();*/
 include 'dengvaxia_pages/page2.php';
 
 $pdf->Output();

@@ -498,13 +498,13 @@
 
                                 <br>
                                 <label style="cursor: pointer;color: orange;">Injury</label>
-                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->vehicular)) echo 'checked'; ?> value="vehicular"> Vehicular Accident/Traffic-Related Injuries</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Vehicular)) echo 'checked'; ?> value="Vehicular"> Vehicular Accident/Traffic-Related Injuries</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->burns)) echo 'checked'; ?> value="burns" > Burns</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Burns)) echo 'checked'; ?> value="Burns" > Burns</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->mental)) echo 'checked'; ?> value="mental" > Drowning</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Drowning)) echo 'checked'; ?> value="Drowning" > Drowning</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->visual)) echo 'checked'; ?> value="visual" > Fall</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="disability_injury[]" <?php if(isset($disability_injury->selected_options->Fall)) echo 'checked'; ?> value="Fall" > Fall</label>
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <textarea name="injury_medication" ><?php if(isset($disability_injury->medication)) echo $disability_injury->medication; ?></textarea> <label style="cursor: pointer;"> MEDICATIONS (List all current medicines <br>and food supplements being taken):</label>
                             </td>
