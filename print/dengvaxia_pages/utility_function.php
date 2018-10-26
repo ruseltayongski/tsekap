@@ -221,72 +221,72 @@
     function Any_Following($description,$pdf,$difference){
         switch ($description) {
             case strpos($description,'Weight_Loss - ') !== false:
-                displayCheck($pdf, ['65','31'-$difference]);
+                displayCheck($pdf, ['65','35'-$difference]);
                 return;
             case strpos($description,'Chest_Pain - ') !== false:
-                displayCheck($pdf, ['100','31'-$difference]);
+                displayCheck($pdf, ['100','35'-$difference]);
                 return;
             case strpos($description,'Fever - ') !== false:
-                displayCheck($pdf, ['65','36'-$difference]);
+                displayCheck($pdf, ['65','40'-$difference]);
                 return;
             case strpos($description,'Back_Pain - ') !== false:
-                displayCheck($pdf, ['100','36'-$difference]);
+                displayCheck($pdf, ['100','40'-$difference]);
                 return;
             case strpos($description,'Loss_Appetite - ') !== false:
-                displayCheck($pdf, ['65','41'-$difference]);
+                displayCheck($pdf, ['65','45'-$difference]);
                 return;
             case strpos($description,'Neck_Nodes - ') !== false:
-                displayCheck($pdf, ['100','41'-$difference]);
+                displayCheck($pdf, ['100','45'-$difference]);
                 return;
             case strpos($description,'Cough - ') !== false:
-                displayCheck($pdf, ['65','46'-$difference]);
+                displayCheck($pdf, ['65','50'-$difference]);
                 return;
             case strpos($description,'New_smear_positive - ') !== false:
-                displayCheck($pdf, ['100','51'-$difference]);
+                displayCheck($pdf, ['100','55'-$difference]);
                 return;
             case strpos($description,'New_smear_negative - ') !== false:
-                displayCheck($pdf, ['100','56'-$difference]);
+                displayCheck($pdf, ['100','60'-$difference]);
                 return;
             case strpos($description,'Relapse - ') !== false:
-                displayCheck($pdf, ['100','61'-$difference]);
+                displayCheck($pdf, ['100','65'-$difference]);
                 return;
             case strpos($description,'Extrapulmonary - ') !== false:
-                displayCheck($pdf, ['133','51'-$difference]);
-                displayCell($pdf,[167,48-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                displayCheck($pdf, ['133','55'-$difference]);
+                displayCell($pdf,[167,52-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
                 return;
             case strpos($description,'Clinically_Diagnosed - ') !== false:
-                displayCheck($pdf, ['133','56'-$difference]);
+                displayCheck($pdf, ['133','60'-$difference]);
                 return;
             case strpos($description,'TB_in_children - ') !== false:
-                displayCheck($pdf, ['133','61'-$difference]);
+                displayCheck($pdf, ['133','65'-$difference]);
                 return;
             case strpos($description,'PPD - ') !== false:
-                displayCheck($pdf, ['152','31'-$difference]);
-                displayCell($pdf,[188,28-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                displayCheck($pdf, ['152','35'-$difference]);
+                displayCell($pdf,[188,32-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
                 return;
             case strpos($description,'Sputum_Exam - ') !== false:
-                displayCheck($pdf, ['152','36'-$difference]);
-                displayCell($pdf,[188,33-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                displayCheck($pdf, ['152','40'-$difference]);
+                displayCell($pdf,[188,37-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
                 return;
             case strpos($description,'CXR - ') !== false:
-                displayCheck($pdf, ['152','41'-$difference]);
-                displayCell($pdf,[188,38-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                displayCheck($pdf, ['152','45'-$difference]);
+                displayCell($pdf,[188,42-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
                 return;
             case strpos($description,'Genxpert - ') !== false:
-                displayCheck($pdf, ['152','46'-$difference]);
-                displayCell($pdf,[188,43-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                displayCheck($pdf, ['152','50'-$difference]);
+                displayCell($pdf,[188,47-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
                 return;
             case 'CatI':
-                displayCheck($pdf, ['205','56'-$difference]);
+                displayCheck($pdf, ['205','60'-$difference]);
                 return;
             case 'CatII':
-                displayCheck($pdf, ['220','56'-$difference]);
+                displayCheck($pdf, ['220','60'-$difference]);
                 return;
             case 'CatIII':
-                displayCheck($pdf, ['205','61'-$difference]);
+                displayCheck($pdf, ['205','65'-$difference]);
                 return;
             case 'TTB_in_Children':
-                displayCheck($pdf, ['220','61'-$difference]);
+                displayCheck($pdf, ['220','65'-$difference]);
                 return;
         }
     }

@@ -243,8 +243,9 @@ Route::post('api/syncservices','ApiCtrl@syncServices');
 
 //RUSEL
 Route::get('verify_dengvaxia/{id}/{unique_id}','DengvaxiaController@verify_dengvaxia');
-Route::get('form_dengvaxia/{id}/{unique_id}','DengvaxiaController@form_dengvaxia');
-Route::post('post_dengvaxia/{id}/{unique_id}','DengvaxiaController@post_dengvaxia');
+Route::get('form_dengvaxia/{id}/{unique_id}/{tsekap_id}','DengvaxiaController@form_dengvaxia');
+Route::get('form_dengvaxia_add/{unique_id}/{tsekap_id}','DengvaxiaController@form_dengvaxia_add');
+Route::post('post_dengvaxia/{id}/{unique_id}/{tsekap_id}','DengvaxiaController@post_dengvaxia');
 Route::post('api/insertDengvaxia','ApiCtrl@insertDengvaxia');
 
 Route::get('fpdf','DengvaxiaController@fpdf');

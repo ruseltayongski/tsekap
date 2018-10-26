@@ -39,7 +39,15 @@
                     </font>
                 </div>
             @endif
-            <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('post_dengvaxia').'/'.$dengvaxia->id.'/'.$unique_id }}">
+            <?php
+                if($dengvaxia->id)
+                    $dengvaxiaId = $dengvaxia->id;
+                else
+                    $dengvaxiaId = "No_Id";
+
+                \Request::segments()[0] == "form_dengvaxia_add" ? Session::set("dengvaxia_option","add") : Session::set("dengvaxia_option","update");
+            ?>
+            <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('post_dengvaxia').'/'.$dengvaxiaId.'/'.$unique_id.'/'.$tsekap_id }}">
                 {{ csrf_field() }}
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#general_information" role="button" aria-expanded="false" aria-controls="collapseExample">
                     GENERAL INFORMATION
@@ -155,9 +163,9 @@
                         <tr>
                             <td>Sex :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($dengvaxia->sex=='Male') echo 'checked'; ?> name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if(strcasecmp("Male", $dengvaxia->sex) == 0) echo 'checked'; ?> name="sex" class="sex" value="Male" style="display:inline;"> Male</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($dengvaxia->sex=='Female') echo 'checked'; ?> name="sex" class="sex" value="Female" required> Female</label>
+                                <label style="cursor: pointer;"><input type="radio" <?php if(strcasecmp("Female", $dengvaxia->sex) == 0) echo 'checked'; ?> name="sex" class="sex" value="Female" > Female</label>
                                 <span class="span"></span>
                             </td>
                         </tr>
@@ -236,42 +244,42 @@
                         <tr class="has-group">
                             <td>Status :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Member') echo 'checked'; ?> value="Member" style="display:inline;"> Member</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if(isset($phic->status)){if($phic->status=='Member')echo'checked';} ?> value="Member" style="display:inline;"> Member</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Dependent') echo 'checked'; ?> value="Dependent" > Dependent</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if(isset($phic->status)){if($phic->status=='Dependent')echo'checked';} ?> value="Dependent" > Dependent</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if($phic->status=='Non-Member') echo 'checked'; ?> value="Non-Member" > Non-Member</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_status" <?php if(isset($phic->status)){if($phic->status=='Non-Member') echo 'checked';} ?> value="Non-Member" > Non-Member</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Type :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if($phic->status=='Lifetime') echo 'checked'; ?> value="Lifetime" style="display:inline;"> Lifetime</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if(isset($phic->status)){if($phic->status=='Lifetime') echo 'checked';} ?> value="Lifetime" style="display:inline;"> Lifetime</label>
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <div class="alert alert-warning">
                                     <font class="text-warning">
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if(strpos($phic->type, 'Sponsored') !== false) echo 'checked'; ?> value="Sponsored By" > Sponsored By:</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsoredby" <?php if(isset($phic->type)){if(strpos($phic->type, 'Sponsored') !== false) echo 'checked';} ?> value="Sponsored By" > Sponsored By:</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By DOH') echo 'checked'; ?> value="DOH" > DOH</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(isset($phic->type)){if($phic->type=='Sponsored By DOH') echo 'checked';} ?> value="DOH" > DOH</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By PLGU') echo 'checked'; ?> value="PLGU" > PLGU</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(isset($phic->type)){if($phic->type=='Sponsored By PLGU') echo 'checked';} ?> value="PLGU" > PLGU</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By MLGU') echo 'checked'; ?> value="MLGU" > MLGU</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(isset($phic->type)){if($phic->type=='Sponsored By MLGU') echo 'checked';} ?> value="MLGU" > MLGU</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if($phic->type=='Sponsored By Private') echo 'checked'; ?> value="Private" > Private</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(isset($phic->type)){if($phic->type=='Sponsored By Private') echo 'checked';} ?> value="Private" > Private</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(strpos($phic->type, 'Others') !== false) echo 'checked'; ?> value="Others" > Others:</label> <input type="text" name="phic_sponsored_others" value="<?php if(strpos($phic->type, 'Others') !== false) echo explode(' - ',$phic->type)[1]; ?>" >
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_sponsored" <?php if(isset($phic->type)){if(strpos($phic->type, 'Others') !== false) echo 'checked';} ?> value="Others" > Others:</label> <input type="text" name="phic_sponsored_others" value="<?php if(isset($phic->type)){if(strpos($phic->type, 'Others') !== false) echo explode(' - ',$phic->type)[1];} ?>" >
                                     </font>
                                 </div>
                                 <div class="alert alert-success">
                                     <font class="text-success">
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_employedby" <?php if($phic->employment) echo 'checked'; ?> value="Employed By" > Employed By:</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employedby" <?php if(isset($phic->type)){if($phic->employment) echo 'checked';} ?> value="Employed By" > Employed By:</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Government') echo 'checked'; ?> value="Government" > Government</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if(isset($phic->type)){if($phic->employment=='Government') echo 'checked';} ?> value="Government" > Government</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Private') echo 'checked'; ?> value="Private" > Private</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if(isset($phic->type)){if($phic->employment=='Private') echo 'checked';} ?> value="Private" > Private</label>
                                         &nbsp;
-                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if($phic->employment=='Self-Employed') echo 'checked'; ?> value="Self-Employed" > Self-Employed</label>
+                                        <label style="cursor: pointer;"><input type="radio" name="phic_employed" <?php if(isset($phic->type)){if($phic->employment=='Self-Employed') echo 'checked';} ?> value="Self-Employed" > Self-Employed</label>
                                     </font>
                                 </div>
                             </td>
@@ -279,11 +287,11 @@
                         <tr class="has-group">
                             <td>Are you aware of your PHIC benefits? :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if(strpos($phic->benefit, ' - ') !== false) echo 'checked'; ?> value="Yes"  style="display:inline;"> Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if(isset($phic->benefit)){if(strpos($phic->benefit, ' - ') !== false) echo 'checked';} ?> value="Yes"  style="display:inline;"> Yes</label>
                                 &nbsp;&nbsp;
-                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if($phic->benefit=='No') echo 'checked'; ?> value="No" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="phic_ben" <?php if(isset($phic->benefit)){if($phic->benefit=='No') echo 'checked';} ?> value="No" > No</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <input type="text" name="phic_ben_spe" value="<?php if(strpos($phic->benefit, ' - ') !== false) echo explode(' - ',$phic->benefit)[1]; ?>" > <label style="cursor: pointer;">If yes, specify</label>
+                                <input type="text" name="phic_ben_spe" value="<?php if(isset($phic->benefit)){if(strpos($phic->benefit, ' - ') !== false) echo explode(' - ',$phic->benefit)[1];} ?>" > <label style="cursor: pointer;">If yes, specify</label>
                             </td>
                         </tr>
                     </table>
@@ -388,7 +396,7 @@
                         <tr class="has-group">
                             <td>With Medications?</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="radio" name="with_medication" <?php if(isset($bronchial_asthma->with_medication)){if(explode(' - ',$bronchial_asthma->with_medication)[0] == 'Yes')echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" value="<?php if(isset($bronchial_asthma->with_medication)){if($with_medication=explode(' - ',$bronchial_asthma->with_medication)[1])echo $with_medication;} ?>" name="with_medication_spe" >
+                                <label style="cursor: pointer;"><input type="radio" name="with_medication" <?php if(isset($bronchial_asthma->with_medication)){if(explode(' - ',$bronchial_asthma->with_medication)[0] == 'Yes')echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" value="<?php if(isset($bronchial_asthma->with_medication)){if(isset(explode(' - ',$bronchial_asthma->with_medication)[1])){echo explode(' - ',$bronchial_asthma->with_medication)[1];}} ?>" name="with_medication_spe" >
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="radio" name="with_medication" <?php if(isset($bronchial_asthma->with_medication)){if($bronchial_asthma->with_medication == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
@@ -425,7 +433,7 @@
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Relapse)) echo 'checked'; ?> value="Relapse" > Relapse</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Extrapulmonary)) echo 'checked'; ?> value="Extrapulmonary" > Extrapulmonary, specify:</label> <input type="text" value="<?php if(isset($tuberculosis->Any_Following->Extrapulmonary)){if($Extrapulmonary=explode(' - ',$tuberculosis->Any_Following->Extrapulmonary)[1])echo$Extrapulmonary;} ?>" name="Extrapulmonary" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Extrapulmonary)) echo 'checked'; ?> value="Extrapulmonary" > Extrapulmonary, specify:</label> <input type="text" value="<?php if(isset($tuberculosis->Any_Following->Extrapulmonary)){if(isset(explode(' - ',$tuberculosis->Any_Following->Extrapulmonary)[1]))echo explode(' - ',$tuberculosis->Any_Following->Extrapulmonary)[1];} ?>" name="Extrapulmonary" >
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="checkbox" name="Any_Following[]" <?php if(isset($tuberculosis->Any_Following->Clinically_Diagnosed)) echo 'checked'; ?> value="Clinically_Diagnosed" > Clinically diagnosed</label>
                                 &nbsp;&nbsp;&nbsp;<br />
@@ -492,9 +500,9 @@
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"> Give description of disability:</label> <textarea name="disability_description" ><?php if(isset($disability_injury->description)) echo $disability_injury->description; ?></textarea>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="with_assistive" <?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked'; ?> value="with_assistive" > With assistive device/s? <input type="radio" name="with_assistive_diagnosed" <?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked'; ?> value="Yes" > Yes, specify:</label> <input type="text" name="with_assistive_spe" value="<?php if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->with_assistive)[1]; ?>" > <label style="cursor: pointer;"><input type="radio" name="with_assistive_diagnosed" <?php if(strpos($disability_injury->with_assistive, 'No') !== false) echo 'checked'; ?> value="No" > No </label>
+                                <label style="cursor: pointer;"><input type="radio" name="with_assistive" <?php if(isset($disability_injury->with_assistive)){if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked';} ?> value="with_assistive" > With assistive device/s? <input type="radio" name="with_assistive_diagnosed" <?php if(isset($disability_injury->with_assistive)){if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" name="with_assistive_spe" value="<?php if(isset($disability_injury->with_assistive)){if(strpos($disability_injury->with_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->with_assistive)[1];} ?>" > <label style="cursor: pointer;"><input type="radio" name="with_assistive_diagnosed" <?php if(isset($disability_injury->with_assistive)){if(strpos($disability_injury->with_assistive, 'No') !== false) echo 'checked';} ?> value="No" > No </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="need_assistive" <?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked'; ?> value="need_assistive" > Need for assistive device/s? <input type="radio" name="need_assistive_diagnosed" <?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked'; ?> value="Yes" > Yes, specify:</label> <input type="text" name="need_assistive_spe" value="<?php if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->need_assistive)[1]; ?>" > <label style="cursor: pointer;"><input type="radio" name="need_assistive_diagnosed" <?php if(strpos($disability_injury->need_assistive, 'No') !== false) echo 'checked'; ?> value="No" > No </label>
+                                <label style="cursor: pointer;"><input type="radio" name="need_assistive" <?php if(isset($disability_injury->need_assistive)){if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked';} ?> value="need_assistive" > Need for assistive device/s? <input type="radio" name="need_assistive_diagnosed" <?php if(isset($disability_injury->need_assistive)){if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" name="need_assistive_spe" value="<?php if(isset($disability_injury->need_assistive)){if(strpos($disability_injury->need_assistive, 'Yes') !== false) echo explode(' - ',$disability_injury->need_assistive)[1];} ?>" > <label style="cursor: pointer;"><input type="radio" name="need_assistive_diagnosed" <?php if(isset($disability_injury->need_assistive)){if(strpos($disability_injury->need_assistive, 'No') !== false) echo 'checked';} ?> value="No" > No </label>
 
                                 <br>
                                 <label style="cursor: pointer;color: orange;">Injury</label>
@@ -517,12 +525,8 @@
                 </a>
                 <div class="collapse" id="hospital_history">
                     <div class="table-responsive">
+                        <?php $hospital_history = json_decode($dengvaxia->hospital_history); ?>
                         <table class="table table-bordered table-hover"  border="1">
-                            <tr class="has-group">
-                                <th> </th>
-                                <th colspan="2"> Where you previously hospitalized?</th>
-                                <th colspan="3"><input type="radio" name="hos_pre" value="yes"> Yes <input type="radio" name="hos_pre" value="no"> No</th>
-                            </tr>
                             <tr class="has-group">
                                 <th> </th>
                                 <th> Resason/Diagnosis</th>
@@ -534,11 +538,11 @@
                             @for($i = 1; $i<=5; $i++)
                             <tr class="has-group">
                                 <td>{{ $i }}</td>
-                                <td><input type="text" name="hos_rea[]"></td>
-                                <td><input type="text" name="hos_dat[]"></td>
-                                <td><input type="text" name="hos_pla[]"></td>
-                                <td><input type="text" name="hos_phi[]"></td>
-                                <td><input type="text" name="hos_cos[]"></td>
+                                <td><input type="text" name="reason[]" value="<?php if(isset($hospital_history[$i-1]->reason))echo$hospital_history[$i-1]->reason; ?>"></td>
+                                <td><input type="text" name="date[]" value="<?php if(isset($hospital_history[$i-1]->date))echo$hospital_history[$i-1]->date; ?>"></td>
+                                <td><input type="text" name="place[]" value="<?php if(isset($hospital_history[$i-1]->place))echo$hospital_history[$i-1]->place; ?>"></td>
+                                <td><input type="text" name="phicUsed[]" value="<?php if(isset($hospital_history[$i-1]->phicUsed))echo$hospital_history[$i-1]->phicUsed; ?>"></td>
+                                <td><input type="text" name="costNotCovered[]" value="<?php if(isset($hospital_history[$i-1]->costNotCovered))echo$hospital_history[$i-1]->costNotCovered; ?>"></td>
                             </tr>
                             @endfor
                         </table>
@@ -549,19 +553,16 @@
                     PAST SURGICAL HISTORY <small style="color: white"><em>(Tick all operations,both minor and major,underwent by the respondent.)</em></small>
                 </a>
                 <div class="collapse" id="surgical_history">
+                    <?php $surgical_history = json_decode($dengvaxia->surgical_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <th> </th>
-                            <th> Operation</th>
-                            <th> Date From</th>
-                            <th> Date To</th>
+                            <th style="text-align: center"> Operation</th>
                         </tr>
-                        @for($i = 1; $i<=5; $i++)
+                        @for($i = 1; $i<=4; $i++)
                             <tr class="has-group">
                                 <td style="width: 5%">{{ $i }}</td>
-                                <td><input type="date" name="sur_ope[]" class="form-control"></td>
-                                <td><input type="date" name="sur_to[]" class="form-control"></td>
-                                <td><input type="date" name="sur_fro[]" class="form-control"></td>
+                                <td><input type="text" name="operation[]" value="<?php if(isset($surgical_history[$i-1]->operation))echo$surgical_history[$i-1]->operation; ?>" class="form-control"></td>
                             </tr>
                         @endfor
                     </table>
@@ -571,93 +572,94 @@
                     PERSONAL/SOCIAL HISTORY
                 </a>
                 <div class="collapse" id="social_history">
+                    <?php $personal_history = json_decode($dengvaxia->personal_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>
                                 Have you tried smoking?
                             </td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_smo" value="never_smoked" > Never Smoked</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_smoking" <?php if(isset($personal_history->tried_smoking)){if($personal_history->tried_smoking == 'Never Smoked')echo 'checked';} ?> value="Never Smoked" > Never Smoked</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_smo" value="current_smoker" > Current Smoker</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_smoking" <?php if(isset($personal_history->tried_smoking)){if($personal_history->tried_smoking == 'Current Smoker')echo 'checked';} ?> value="Current Smoker" > Current Smoker</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_smo" value="former_smoker" > Current Smoker</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_smoking" <?php if(isset($personal_history->tried_smoking)){if($personal_history->tried_smoking == 'Former Smoker')echo 'checked';} ?> value="Former Smoker" > Former Smoker</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_smo" value="secondhand_smoker" > Secondhand Smoker</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_smoking" <?php if(isset($personal_history->tried_smoking)){if($personal_history->tried_smoking == 'Secondhand Smoker')echo 'checked';} ?> value="Secondhand Smoker" > Secondhand Smoker</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_smo" value="thirdhand_smoker" > Thirdhand Smoker</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_smoking" <?php if(isset($personal_history->tried_smoking)){if($personal_history->tried_smoking == 'Thirdhand Smoker')echo 'checked';} ?> value="Thirdhand Smoker" > Thirdhand Smoker</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Age started:</td>
-                            <td class="has-group"><input type="text" value="" name="soc_age_sta" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($personal_history->smoking_age_started))echo$personal_history->smoking_age_started; ?>" name="smoking_age_started" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Age quit:</td>
-                            <td class="has-group"><input type="text" value="" name="soc_age_qui" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($personal_history->smoking_age_quit))echo$personal_history->smoking_age_quit; ?>" name="smoking_age_quit" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>No. of stick/s per day:</td>
-                            <td class="has-group"><input type="text" value="" name="soc_sti_day" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($personal_history->smoking_no_sticks))echo$personal_history->smoking_no_sticks; ?>" name="smoking_no_sticks" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>No. of Pack-Years:</td>
-                            <td class="has-group"><input type="text" value="" name="soc_sti_yea" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($personal_history->smoking_no_packs))echo$personal_history->smoking_no_packs; ?>" name="smoking_no_packs" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Do you eat fast food/street food(e.g. instant noodles,canned goods,fries,fried chicken skin,etc) weekly?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_fas_foo" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="fat_salt_intake" <?php if(isset($personal_history->fat_salt_intake)){if($personal_history->fat_salt_intake == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_fas_foo" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="fat_salt_intake" <?php if(isset($personal_history->fat_salt_intake)){if($personal_history->fat_salt_intake == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Do you eat 3 servings of vegetable daily?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_veg" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="daily_vegetable" <?php if(isset($personal_history->daily_vegetable)){if($personal_history->daily_vegetable == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_veg" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="daily_vegetable" <?php if(isset($personal_history->daily_vegetable)){if($personal_history->daily_vegetable == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Do you eat 2-3 servings of fruits daily?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_fru" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="daily_fruit" <?php if(isset($personal_history->daily_fruit)){if($personal_history->daily_fruit == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_fru" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="daily_fruit" <?php if(isset($personal_history->daily_fruit)){if($personal_history->daily_fruit == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Does at least 30 minutes per day of moderate-to vigorous-intensity physical activity?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_act" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="physical_activity" <?php if(isset($personal_history->physical_activity)){if($personal_history->physical_activity == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_act" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="physical_activity" <?php if(isset($personal_history->physical_activity)){if($personal_history->physical_activity == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Have you tried drinking alcohol?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_alc" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_alcohol" <?php if(isset($personal_history->tried_alcohol)){if($personal_history->tried_alcohol == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_alc" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_alcohol" <?php if(isset($personal_history->tried_alcohol)){if($personal_history->tried_alcohol == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>In the past 5 months, have you drunk alcohol?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_dru" value="yes" > Yes</label>
+                                <label style="cursor: pointer;"><input type="radio" name="drunk_in_5mos" <?php if(isset($personal_history->drunk_in_5mos)){if($personal_history->drunk_in_5mos == 'Yes')echo 'checked';} ?> value="Yes" > Yes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_dru" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="drunk_in_5mos" <?php if(isset($personal_history->drunk_in_5mos)){if($personal_history->drunk_in_5mos == 'No')echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Ever tried any illicit drug/substance?</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="radio" name="soc_ill" value="yes" > Yes, specify:</label> <input type="text" name="soc_dru_spe">
+                                <label style="cursor: pointer;"><input type="radio" name="tried_drugs" <?php if(isset($personal_history->tried_drugs)){if(strpos($personal_history->tried_drugs, 'Yes') !== false)echo 'checked';} ?> value="Yes" > Yes, specify:</label> <input type="text" value="<?php if(isset($personal_history->tried_drugs)){if(isset(explode(' - ',$personal_history->tried_drugs)[1]))echo explode(' - ',$personal_history->tried_drugs)[1];} ?>" name="tried_drugs_spe">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="soc_ill" value="no" > No</label>
+                                <label style="cursor: pointer;"><input type="radio" name="tried_drugs" <?php if(isset($personal_history->tried_drugs)){if(strpos($personal_history->tried_drugs, 'No') !== false)echo 'checked';} ?> value="No" > No</label>
                             </td>
                         </tr>
                     </table>

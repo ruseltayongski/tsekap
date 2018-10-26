@@ -152,10 +152,12 @@ class PDF_MC_Table extends FPDF
 
 $pdf=new PDF_MC_Table('L','mm','A4');
 include 'dengvaxia_pages/utility_function.php';
-$pdf->AddPage();
+/*$pdf->AddPage();*/
 include 'dengvaxia_pages/page1.php';
 /*$pdf->AddPage();*/
 include 'dengvaxia_pages/page2.php';
+$pdf->AddPage();
+include 'dengvaxia_pages/page3.php';
 
 $pdf->Output();
 

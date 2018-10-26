@@ -9,7 +9,7 @@
     $dif = 13;
     $pdf->SetLeftMargin($x);
 
-    displayCell($pdf,[$x,$GLOBALS['y']],[0,0],'BRONCHIAL ASTHMA',0,'L',$con_font_size,'B');
+    /*displayCell($pdf,[$x,$GLOBALS['y']],[0,0],'BRONCHIAL ASTHMA',0,'L',$con_font_size,'B');
     $GLOBALS['y']+=2;
     displayCell($pdf,[$x,$GLOBALS['y']],[$box_w,10],'',1,'C',$con_font_size,'');
 
@@ -30,14 +30,14 @@
     displayCell($pdf,[$lvl_edu_x+185,$GLOBALS['y']],[0,0],'No',0,'L',$con_font_size,'');
 
     if($bronchial_asthma = json_decode($api->bronchial_asthma)){
-        strpos($bronchial_asthma->diagnosed,'Yes') !== false ? displayCheck($pdf, [15,7]): displayCheck($pdf, [15,7]);
-        displayCell($pdf,[$lvl_edu_x+97,12-7],[$box_content_w,$box_content_h],$bronchial_asthma->no_attacks,'','C',$con_font_size,'B');
+        strpos($bronchial_asthma->diagnosed,'Yes') !== false ? displayCheck($pdf, [15,7]): displayCheck($pdf, [15,12]);
+        displayCell($pdf,[$lvl_edu_x+97,5],[$box_content_w,$box_content_h],$bronchial_asthma->no_attacks,'','C',$con_font_size,'B');
         if(strpos($bronchial_asthma->with_medication,'Yes') !== false){
-            displayCheck($pdf, ['195', 13.5-$dif]);
+            displayCheck($pdf, ['195', 7]);
             if(isset(explode(' - ',$bronchial_asthma->with_medication)[1]))
-                displayCell($pdf,[$lvl_edu_x+215,10-$dif],[$box_content_w,$box_content_h],explode(' - ',$bronchial_asthma->with_medication)[1],'','C',$con_font_size,'B');
+                displayCell($pdf,[$lvl_edu_x+215,5],[$box_content_w,$box_content_h],explode(' - ',$bronchial_asthma->with_medication)[1],'','C',$con_font_size,'B');
         } else {
-            displayCheck($pdf, ['195', '18.5'-$dif]);
+            displayCheck($pdf, ['195',12]);
         }
     }
 
@@ -117,20 +117,27 @@
     displayCell($pdf,[$lvl_edu_x+210,$GLOBALS['y']],[0,0],'TB in Children',0,'L',$con_font_size,'');
 
     if($tuberculosis = json_decode($api->tuberculosis)){
-        foreach($tuberculosis->Any_Following as $row){
-            Any_Following($row,$pdf,$dif);
+        if(isset($tuberculosis->Any_Following)){
+            foreach($tuberculosis->Any_Following as $row){
+                Any_Following($row,$pdf,$dif);
+            }
         }
         if(strpos($tuberculosis->Diagnosed,'Yes') !== false){
-            displayCheck($pdf, ['70','51'-$dif]);
+            displayCheck($pdf, ['70','55'-$dif]);
             displayCell($pdf,[48,$GLOBALS['y']-5],[15,5],explode(' - ',$tuberculosis->Diagnosed)[1],0,'L',$con_font_size,'B');
         }
         else
-            displayCheck($pdf, ['85','51'-$dif]);
-        foreach($tuberculosis->Labs_Done as $row){
-            Any_Following($row,$pdf,$dif);
+            displayCheck($pdf, ['85','55'-$dif]);
+
+        if(isset($tuberculosis->Labs_Done)){
+            foreach($tuberculosis->Labs_Done as $row){
+                Any_Following($row,$pdf,$dif);
+            }
         }
-        foreach($tuberculosis->Medications as $row){
-            Any_Following($row,$pdf,$dif);
+        if(isset($tuberculosis->Medications)){
+            foreach($tuberculosis->Medications as $row){
+                Any_Following($row,$pdf,$dif);
+            }
         }
     }
 
@@ -296,21 +303,28 @@
             "Cost/s not covered by PhilHealth?"
         ],
         1,'',$con_font_size,$position);
-    for($i=1;$i<=5;$i++)
-    rowCell($pdf,$description,false,array(5,58,49,54,45,59),$x,$GLOBALS['y'],
-        [$i, "", "", "", "", ""],
-        1,'',$con_font_size,$position);
+
+    if($hospital_history = json_decode($api->hospital_history)){
+        count($hospital_history) > 0 ? displayCheck($pdf, ['85','140'-$dif]) : displayCheck($pdf, ['103','140'-$dif]);
+        $position = "L";
+        for($i=0;$i<count($hospital_history);$i++){
+            rowCell($pdf, $description, false, array(5, 58, 49, 54, 45, 59), $x, $GLOBALS['y'],
+                [$i+1, $hospital_history[$i]->reason,$hospital_history[$i]->date,$hospital_history[$i]->place,$hospital_history[$i]->phicUsed,$hospital_history[$i]->costNotCovered],
+                1, 'B', $con_font_size, $position);
+        }
+    } else {
+        for($i=1;$i<=5;$i++) {
+            rowCell($pdf, $description, false, array(5, 58, 49, 54, 45, 59), $x, $GLOBALS['y'],
+                [$i, "", "", "", "", ""],
+                1, '', $con_font_size, $position);
+        }
+    }
+
     $position = "L";
     rowCell($pdf,$description,false,array(270),$x,$GLOBALS['y'],
         ["(Please use another sheet if needed.)"],
         1,'',$con_font_size,$position);
 
-    rowCell($pdf,$description,true,array(270),$x,$GLOBALS['y'],
-        [""],
-        0,'',$con_font_size,$position);
-
-
-    $GLOBALS['y'] -= 5;
     rowCell($pdf,$description,false,array(270),$x,$GLOBALS['y'],
         [
             "PAST SURGICAL HISTORY (Tick all operations, both minor and major, underwent by the vaccinee.)"],
@@ -318,11 +332,19 @@
     $description = "surgical";
     $GLOBALS['surgical_y'] = $GLOBALS['y'];
     $GLOBALS['surgical_h'] = 0;
-    foreach(range(0,3) as $index)
-    rowCell($pdf,$description,false,array(270),$x,$GLOBALS['y'],
-        ["Operations"],
-        1,'',$con_font_size,$position);
-
+    if($surgical_history = json_decode($api->surgical_history)){
+        for($i=0;$i<count($surgical_history);$i++){
+            rowCell($pdf,$description,false,array(20,250),$x,$GLOBALS['y'],
+                ["Operations",$surgical_history[$i]->operation],
+                1,'',$con_font_size,$position);
+        }
+    }
+    else {
+        foreach(range(0,3) as $index)
+            rowCell($pdf,$description,false,array(20,250),$x,$GLOBALS['y'],
+                ["Operations",""],
+                1,'',$con_font_size,$position);
+    }*/
 
 
 ?>

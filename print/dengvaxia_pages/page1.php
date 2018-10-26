@@ -13,13 +13,13 @@ $bar ? $barangay = $bar->description : $barangay = "NO BARANGAY";
 $mun ? $muncity = $mun->description : $muncity = "NO MUNICIPALITY";
 $pro ? $province = $pro->description : $province = "NO PROVINCE";
 
-$x = 15;
+/*$x = 15;
 $y = 3;
 $con_font_size = 7.5;
 $box_content_w = 5;
 $box_content_h = 5;
 // Logo
-/*$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
+$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
 $pdf->Image(__DIR__.'/../image/logo.png',240,$y,30);
 
 $pdf->SetFont('Arial','B',15);

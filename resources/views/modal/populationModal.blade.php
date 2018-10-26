@@ -1,3 +1,24 @@
+<div class="modal fade" role="dialog" id="dengvaxia">
+    <div class="modal-dialog modal-md" role="document">
+        <input type="hidden" name="currentID" id="currentID">
+        <div class="modal-content">
+            <div class="modal-body">
+                <fieldset>
+                    <legend><i class="fa fa-user-md"></i> Dengvaxia</legend>
+                    <div class="verify-dengvaxia">
+                        <center>
+                            <img src="{{ asset('resources/img/spin.gif') }}" width="100" />
+                        </center>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" role="dialog" id="familyProfile">
     <div class="modal-dialog modal-sm" role="document">
         <input type="hidden" name="currentID" id="currentID">
