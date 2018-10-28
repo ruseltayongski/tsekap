@@ -214,6 +214,25 @@ class DengvaxiaController extends Controller
             "tried_drugs" => $request->tried_drugs.' - '.$request->tried_drugs_spe,
         ]);
 
+        if(isset($request->gyne_history)){
+            foreach($request->gyne_history as $row){
+                $gyne_options[$row] = $row;
+            }
+        } else {
+            $gyne_options = [];
+        }
+        if(isset($request->gyne_history_others)){
+            $gyne_options["Others"] = $request->gyne_history_others;
+        }
+        $gyne_history = json_encode([
+            "selected_options" => $gyne_options,
+            "age_menarche" => $request->age_menarche,
+            "last_period" => $request->last_period,
+            "no_pads" => $request->no_pads,
+            "duration" => $request->duration,
+            "interval" => $request->interval
+        ]);
+
         Dengvaxia::updateOrCreate(
             ['id' => $dengvaxiaID], [
                 "unique_id" => $unique_id,
@@ -244,6 +263,7 @@ class DengvaxiaController extends Controller
                 "hospital_history" => json_encode($hospital_history),
                 "surgical_history" => json_encode($surgical_history),
                 "personal_history" => $personal_history,
+                "mens_gyne_history" => $gyne_history,
                 "platform" => "web",
                 "tsekap_id" => $tsekap_id
             ]
@@ -292,6 +312,35 @@ class DengvaxiaController extends Controller
         \Fpdf::Output();
 
         //return response(\Fpdf::Output(), 200)->header('Content-Type', 'application/pdf');
+    }
+
+    public function crossMatching($provinceId,$muncityId){
+        $data = [];
+        $dengvaxia = Dengvaxia::where("province_id","=",$provinceId)
+            ->where('muncity_id','=',$muncityId)
+            ->get(["id","unique_id","tsekap_id","fname","lname","province_id","muncity_id","dob"]);
+
+        foreach( $dengvaxia as $deng ){
+            if($tsekap = Profile::where('province_id','=',$provinceId)
+                ->where('muncity_id','=',$muncityId)
+                ->where("fname","=",$deng->fname)
+                ->where("lname","=",$deng->lname)
+                ->where('dob','=',date("Y-m-d",strtotime($deng->dob)))
+                ->where('dengvaxia','!=','yes')
+                ->first()){
+                Dengvaxia::where("id","=",$deng->id)->where('tsekap_id','!=',' ')->first()->update([
+                    "unique_id" => $tsekap->unique_id,
+                    "tsekap_id" =>  $tsekap->id
+                ]);
+                $tsekap->update([
+                    "dengvaxia" => "yes"
+                ]);
+                $data[] = $tsekap;
+            }
+        }
+
+        Session::flash('crossMatch',count($data)." patient has been cross match");
+        return redirect()->back();
     }
 
 

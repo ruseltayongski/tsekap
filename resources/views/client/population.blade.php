@@ -29,6 +29,13 @@
                     </font>
                 </div>
             @endif
+            @if(Session::has('crossMatch'))
+                <div class="alert alert-success">
+                    <font class="text-success">
+                        <i class="fa fa-check"></i> {!! Session::get('crossMatch') !!}
+                    </font>
+                </div>
+            @endif
             <form class="form-inline" method="POST" action="{{ asset('user/population') }}">
                 {{ csrf_field() }}
                 <div class="form-group">
@@ -51,6 +58,10 @@
                 </div>
                 <div class="form-group">
                     <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-warning col-xs-12" href="{{ asset('crossMatching').'/'.Auth::user()->province.'/'.Auth::user()->muncity }}"><i class="fa fa-cloud-download"></i> Cross Matching</a>
                     <div class="clearfix"></div>
                 </div>
             </form>

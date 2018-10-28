@@ -669,39 +669,44 @@
                     MENSTRUAL AND GYNECOLOGICAL HISTORY<small style="color: white"><em>(for female respondent only)</em></small>
                 </a>
                 <div class="collapse" id="menstrual">
+                    <?php $gyne_history = json_decode($dengvaxia->mens_gyne_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>Age of Menarche:</td>
-                            <td class="has-group"><input type="text" value="" name="men_age_sta" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($gyne_history->age_menarche))echo$gyne_history->age_menarche; ?>" name="age_menarche" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Date of Last Mendtrual Period:</td>
-                            <td class="has-group"><input type="date" value="" name="men_per" class="form-control" /></td>
+                            <td class="has-group"><input type="date" value="<?php if(isset($gyne_history->last_period))echo$gyne_history->last_period; ?>" name="last_period" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Duration(number of days):</td>
-                            <td class="has-group"><input type="text" value="" name="men_day" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($gyne_history->duration))echo$gyne_history->duration; ?>" name="duration" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>Interval/Cycle:</td>
-                            <td class="has-group"><input type="text" value="" name="men_cyc" class="form-control" /></td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($gyne_history->interval))echo$gyne_history->interval; ?>" name="interval" class="form-control" /></td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>No. of pads per day:</td>
+                            <td class="has-group"><input type="text" value="<?php if(isset($gyne_history->no_pads))echo$gyne_history->no_pads; ?>" name="no_pads" class="form-control" /></td>
                         </tr>
                         <tr class="has-group">
                             <td>
                                 Gyne History(Abnormal signs and symptoms: Tick all that apply)
                             </td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="gyn_his[]" value="abnormal_vaginal" > Abnormal Vaginal/Uterine Bleeding</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="gyne_history[]" <?php if(isset($gyne_history->selected_options->Abnormal_Vaginal)) echo 'checked'; ?> value="Abnormal_Vaginal" > Abnormal Vaginal/Uterine Bleeding</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="gyn_his[]" value="dysmenorrhea" > Current Smoker</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="gyne_history[]" <?php if(isset($gyne_history->selected_options->Abnormal_Vaginal)) echo 'checked'; ?> value="Dysmenorrhea" > Dysmenorrhea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="gyn_his[]" value="dyspareunia" > Current Smoker</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="gyne_history[]" <?php if(isset($gyne_history->selected_options->Abnormal_Vaginal)) echo 'checked'; ?> value="Dyspareunia" > Dyspareunia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="gyn_his[]" value="foul_smelling" > Secondhand Smoker</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="gyne_history[]" <?php if(isset($gyne_history->selected_options->Abnormal_Vaginal)) echo 'checked'; ?> value="Foul_smelling" > Foul-smelling vaginal discharge</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="gyn_his[]" value="vaginal_pruritus" > Thirdhand Smoker</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="gyne_history[]" <?php if(isset($gyne_history->selected_options->Abnormal_Vaginal)) echo 'checked'; ?> value="Vaginal_Pruritus" > Vaginal Pruritus</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Others, specify:</label> <input type="text" name="gyn_his_oth" >
+                                <label style="cursor: pointer;">Others, specify:</label> <input type="text" value="<?php if(isset($gyne_history->selected_options->Others))echo $gyne_history->selected_options->Others; ?>" name="gyne_history_others" >
                             </td>
                         </tr>
                     </table>

@@ -9,7 +9,7 @@
     $dif = 13;
     $pdf->SetLeftMargin($x);
 
-    /*displayCell($pdf,[$x,$GLOBALS['y']],[0,0],'BRONCHIAL ASTHMA',0,'L',$con_font_size,'B');
+    displayCell($pdf,[$x,$GLOBALS['y']],[0,0],'BRONCHIAL ASTHMA',0,'L',$con_font_size,'B');
     $GLOBALS['y']+=2;
     displayCell($pdf,[$x,$GLOBALS['y']],[$box_w,10],'',1,'C',$con_font_size,'');
 
@@ -29,7 +29,7 @@
     displayCell($pdf,[$lvl_edu_x+180,$GLOBALS['y']-2],[$box_content_w,$box_content_h],'',1,'L',$con_font_size,'');
     displayCell($pdf,[$lvl_edu_x+185,$GLOBALS['y']],[0,0],'No',0,'L',$con_font_size,'');
 
-    if($bronchial_asthma = json_decode($api->bronchial_asthma)){
+    if($bronchial_asthma = json_decode($GLOBALS['api']->bronchial_asthma)){
         strpos($bronchial_asthma->diagnosed,'Yes') !== false ? displayCheck($pdf, [15,7]): displayCheck($pdf, [15,12]);
         displayCell($pdf,[$lvl_edu_x+97,5],[$box_content_w,$box_content_h],$bronchial_asthma->no_attacks,'','C',$con_font_size,'B');
         if(strpos($bronchial_asthma->with_medication,'Yes') !== false){
@@ -116,7 +116,7 @@
     displayCell($pdf,[$lvl_edu_x+205,$GLOBALS['y']-2],[$box_content_w,$box_content_h],'',1,'L',$con_font_size,'');
     displayCell($pdf,[$lvl_edu_x+210,$GLOBALS['y']],[0,0],'TB in Children',0,'L',$con_font_size,'');
 
-    if($tuberculosis = json_decode($api->tuberculosis)){
+    if($tuberculosis = json_decode($GLOBALS['api']->tuberculosis)){
         if(isset($tuberculosis->Any_Following)){
             foreach($tuberculosis->Any_Following as $row){
                 Any_Following($row,$pdf,$dif);
@@ -253,7 +253,7 @@
         [""],
         0,'',$con_font_size,$position);
 
-    if($disability_injury = json_decode($api->disability_injury)){
+    if($disability_injury = json_decode($GLOBALS['api']->disability_injury)){
         foreach($disability_injury->selected_options as $row){
             disability_injured($row,$pdf,$dif);
         }
@@ -304,7 +304,7 @@
         ],
         1,'',$con_font_size,$position);
 
-    if($hospital_history = json_decode($api->hospital_history)){
+    if($hospital_history = json_decode($GLOBALS['api']->hospital_history)){
         count($hospital_history) > 0 ? displayCheck($pdf, ['85','140'-$dif]) : displayCheck($pdf, ['103','140'-$dif]);
         $position = "L";
         for($i=0;$i<count($hospital_history);$i++){
@@ -332,7 +332,7 @@
     $description = "surgical";
     $GLOBALS['surgical_y'] = $GLOBALS['y'];
     $GLOBALS['surgical_h'] = 0;
-    if($surgical_history = json_decode($api->surgical_history)){
+    if($surgical_history = json_decode($GLOBALS['api']->surgical_history)){
         for($i=0;$i<count($surgical_history);$i++){
             rowCell($pdf,$description,false,array(20,250),$x,$GLOBALS['y'],
                 ["Operations",$surgical_history[$i]->operation],
@@ -344,7 +344,7 @@
             rowCell($pdf,$description,false,array(20,250),$x,$GLOBALS['y'],
                 ["Operations",""],
                 1,'',$con_font_size,$position);
-    }*/
+    }
 
 
 ?>
