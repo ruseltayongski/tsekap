@@ -233,6 +233,24 @@ class DengvaxiaController extends Controller
             "interval" => $request->interval
         ]);
 
+        $dengvaxia_history = [];
+        for($i=0;$i<count($request->history_count);$i++){
+            $place = "place".$i;
+            $dengvaxia_history[] = [
+                "history_count" => $request->history_count[$i],
+                "place" => $request->$place,
+                "date" => $request->vaccine_date[$i],
+            ];
+        }
+        $vaccine_history = json_encode([
+            "vaccine_received" => $request->vaccine_received,
+            "no_dose" => $request->no_dose,
+            "dengvaxia_history" => $dengvaxia_history,
+            "supplementation_date" => $request->supplementation_date,
+            "capsule_date" => $request->capsule_date,
+            "dewormed_date" => $request->dewormed_date,
+        ]);
+
         Dengvaxia::updateOrCreate(
             ['id' => $dengvaxiaID], [
                 "unique_id" => $unique_id,
@@ -264,6 +282,7 @@ class DengvaxiaController extends Controller
                 "surgical_history" => json_encode($surgical_history),
                 "personal_history" => $personal_history,
                 "mens_gyne_history" => $gyne_history,
+                "vaccine_history" => $vaccine_history,
                 "platform" => "web",
                 "tsekap_id" => $tsekap_id
             ]

@@ -24,6 +24,7 @@
             text-align: left;
         }
 
+
     </style>
 
     <div class="col-md-9 wrapper">
@@ -716,53 +717,78 @@
                     VACCINATION HISTORY
                 </a>
                 <div class="collapse" id="vaccination_history">
+                    <?php $vaccine_history = json_decode($dengvaxia->vaccine_history); ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
-                            <td>
+                            <td style="width: 17%;">
                                 Vaccine/s received:
                             </td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_his[]" value="mr" > MR</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_his[]" value="dyphteria" > Diphteria/Tetanus</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_his[]" value="mmr" > MMR</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_his[]" value="hpv" > HPV</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_his[]" value="doses" > Tetanus Toxoid, No. of Doses:</label> <input type="text" name="vac_dos" >
-                            </td>
-                        </tr>
-                        @foreach(range(1,3) as $index)
-                        <tr class="has-group">
-                            <td></td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_deng[]" value="vac_deng{{ $index }}" > DENGVAXIA {{ $index }}</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="vaccine_received[]" <?php if(isset($vaccine_history->vaccine_received)){if(in_array('MR', $vaccine_history->vaccine_received))echo 'checked';} ?> value="MR" > MR</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label style="cursor: pointer;"><input type="checkbox" name="vaccine_received[]" <?php if(isset($vaccine_history->vaccine_received)){if(in_array('Diphtheria/Tetanus', $vaccine_history->vaccine_received)) echo 'checked';} ?> value="Diphtheria/Tetanus" > Diphtheria/Tetanus</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label style="cursor: pointer;"><input type="checkbox" name="vaccine_received[]" <?php if(isset($vaccine_history->vaccine_received)){if(in_array('MMR', $vaccine_history->vaccine_received)) echo 'checked';} ?> value="MMR" > MMR</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <label style="cursor: pointer;"><input type="checkbox" name="vaccine_received[]" <?php if(isset($vaccine_history->vaccine_received)){if(in_array('HPV', $vaccine_history->vaccine_received)) echo 'checked';} ?> value="HPV" > HPV</label>
                             </td>
                         </tr>
                         <tr class="has-group">
-                            <td>Date Received</td>
+                            <td>Tetanus Toxoid, No. of Doses:</td>
+                            <td><input type="text" name="no_dose" value="<?php if(isset($vaccine_history->no_dose)) echo $vaccine_history->no_dose; ?>" class="form-control"></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-hover" border="1">
+                        @if(isset($vaccine_history->dengvaxia_history))
+                            @for($index=0;$index<count($vaccine_history->dengvaxia_history);$index++)
+                                <tr class="has-group">
+                                    <td style="width: 17%;"><input type="hidden" value="<?php if(isset($vaccine_history->dengvaxia_history[$index]->history_count)) echo $vaccine_history->dengvaxia_history[$index]->history_count; ?>" name="history_count[]">Dengvaxia {{ $index+1 }}</td>
+                                    <td>
+                                        Date Received: <input type="date" name="vaccine_date[]" value="<?php if(isset($vaccine_history->dengvaxia_history[$index]->date)) echo $vaccine_history->dengvaxia_history[$index]->date; ?>" class="form-control">
+                                    </td>
+                                    <td>
+                                        Place Received:
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" <?php if(isset($vaccine_history->dengvaxia_history[$index]->place)){if($vaccine_history->dengvaxia_history[$index]->place == 'School')echo'checked';} ?> value="School"> School</label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" <?php if(isset($vaccine_history->dengvaxia_history[$index]->place)){if($vaccine_history->dengvaxia_history[$index]->place == 'Health Center/Community')echo'checked';} ?> value="Health Center/Community"> Health Center/Community</label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" <?php if(isset($vaccine_history->dengvaxia_history[$index]->place)){if($vaccine_history->dengvaxia_history[$index]->place == 'Priv. MD')echo'checked';} ?> value="Priv. MD"> Priv. MD</label>
+                                    </td>
+                                </tr>
+                            @endfor
+                        @else
+                            @foreach(range(1,3) as $index)
+                                <tr class="has-group">
+                                    <td style="width: 17%;"><input type="hidden" value="{{ $index }}" name="history_count[]">Dengvaxia {{ $index }}</td>
+                                    <td>
+                                        Date Received: <input type="date" name="vaccine_date[]" class="form-control">
+                                    </td>
+                                    <td>
+                                        Place Received:
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" value="School"> School</label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" value="Health Center/Community"> Health Center/Community</label>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <label style="cursor: pointer;"><input type="radio" name="place{{$index}}" value="Priv. MD"> Priv. MD</label>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </table>
+                    <table class="table table-bordered table-hover" border="1">
+                        <tr class="has-group">
+                            <td>For Adolescent Girls:</td>
                             <td>
-                                <input type="date" name="vac_dat_rec[]" class="form-control">
+                                Given Ferrous sulfate supplementation, Date: <input type="date" name="supplementation_date" value="<?php if(isset($vaccine_history->supplementation_date))echo $vaccine_history->supplementation_date; ?>" class="form-control">
+                            </td>
+                            <td>
+                                Given Iodized Oil Capsule, Date: <input type="date" name="capsule_date" value="<?php if(isset($vaccine_history->capsule_date))echo $vaccine_history->capsule_date; ?>" class="form-control">
                             </td>
                         </tr>
                         <tr class="has-group">
-                            <td>Place Received</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_sch[]" value="school{{ $index }}"> School</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_hea_cen[]" value="heath_center{{ $index }}"> Health Center/Community</label>
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="vac_priv[]" value="priv{{ $index }}"> Priv. MD</label>
-                            </td>
-                        </tr>
-                        @endforeach
-                        <tr class="has-group">
-                            <td>Dewormed?</td>
-                            <td>
-                                <label style="cursor: pointer;"><input type="radio" name="vac_dew" value="yes"> Yes</label> <label style="cursor: pointer;">,date last dewormed:</label> <input type="date" name="vac_dew_las">
-                                &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="vac_dew" value="no"> No</label>
+                            <td style="width: 17%;">Dewormed? </td>
+                            <td colspan="2">
+                                Yes, Date last dewormed: <input type="date" name="dewormed_date" value="<?php if(isset($vaccine_history->dewormed_date))echo $vaccine_history->dewormed_date; ?>" class="form-control">
                             </td>
                         </tr>
                     </table>

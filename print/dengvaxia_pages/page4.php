@@ -1,5 +1,5 @@
 <?php
-    $x = 15;
+    /*$x = 15;
     $GLOBALS['y'] = 3;
     $position = "L";
     $pdf->SetLeftMargin($x);
@@ -338,6 +338,6 @@
     $temp = $GLOBALS['y'];
     rowCell($pdf,$description,true,array(270),$x,$GLOBALS[$description.'_y'],
         [""],
-        0,'',$con_font_size,$position);
+        0,'',$con_font_size,$position);*/
 
 

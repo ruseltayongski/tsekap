@@ -14,13 +14,8 @@ $pro = province($GLOBALS['api']->province_id);
 $bar ? $barangay = $bar->description : $barangay = "NO BARANGAY";
 $mun ? $muncity = $mun->description : $muncity = "NO MUNICIPALITY";
 $pro ? $province = $pro->description : $province = "NO PROVINCE";
-$GLOBALS['tried_alcohol'] = "false";
-$GLOBALS['drunk_in_5mos'] = "false";
-$GLOBALS['tried_drugs'] = "false";
-$GLOBALS['fat_salt_intake'] = "false";
-$GLOBALS['daily_vegetable'] = "false";
-$GLOBALS['daily_fruit'] = "false";
-$GLOBALS['physical_activity'] = "false";
+$GLOBALS["deng_bol"] = "false";
+$GLOBALS["gyne_bol"] = "false";
 
 class PDF_MC_Table extends FPDF
 {
@@ -74,57 +69,105 @@ class PDF_MC_Table extends FPDF
 
             $personal_history = json_decode($GLOBALS['api']->personal_history);
             $gyne_history = json_decode($GLOBALS['api']->mens_gyne_history);
+            $vaccine_history = json_decode($GLOBALS['api']->vaccine_history);
             if($data[$i] == "box"){
                 //Print the text
-                if(isset($gyne_history->selected_options)){
-                    foreach($gyne_history->selected_options as $row){
-                        if(strpos($data[$i+1], $row) !== false || strpos($data[$i+1], explode('_',$row)[0]) !== false ){
-                            $this->display_check($w,$a);
-                        }
-                    }
-                }
                 if($personal_history->tried_drugs != " - "){
                     $tried_drugs = explode(" - ",$personal_history->tried_drugs)[0];
                 } else {
                     $tried_drugs = "no_needle";
                 }
 
-
+                if(isset($gyne_history->selected_options) && $GLOBALS['gyne_bol'] == "false"){
+                    foreach($gyne_history->selected_options as $row){
+                        if(strpos($data[$i+1], $row) !== false || strpos($data[$i+1], explode('_',$row)[0]) !== false ){
+                            $this->display_check($w,$a);
+                        }
+                    }
+                }
                 if($data[$i+1] == $personal_history->tried_smoking){
-                    $this->display_check($w,$a);
+                    $this->display_check($w,$y);
                 }
-                elseif($data[$i+1] == $personal_history->tried_alcohol && $GLOBALS['tried_alcohol'] == "false"){
-                    $GLOBALS['tried_alcohol'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->tried_alcohol && $GLOBALS['row'] == 1){
+                    $this->display_check($w,$y);
                 }
-                elseif($data[$i+1] == $personal_history->drunk_in_5mos && $GLOBALS['drunk_in_5mos'] == "false"){
-                    $GLOBALS['drunk_in_5mos'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->drunk_in_5mos && $GLOBALS['row'] == 2){
+                    $this->display_check($w,$y);
                 }
-                elseif(strpos($data[$i+1],$tried_drugs) !== false && $GLOBALS['tried_drugs'] == "false"){
-                    $GLOBALS['tried_drugs'] = "true";
-                    $this->display_check($w,$a);
+                elseif(strpos($data[$i+1],$tried_drugs) !== false && $GLOBALS['row'] == 4){
+                    $this->display_check($w,$y);
                     $this->display_text($x+22,$y,explode(" - ",$personal_history->tried_drugs)[1]);
                 }
-                elseif($data[$i+1] == $personal_history->fat_salt_intake && $GLOBALS['fat_salt_intake'] == "false"){
-                    $GLOBALS['fat_salt_intake'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->fat_salt_intake && $GLOBALS['row'] == 6){
+                    $this->display_check($w,$y);
                 }
-                elseif($data[$i+1] == $personal_history->daily_vegetable && $GLOBALS['daily_vegetable'] == "false" && $GLOBALS["row"] == 7){
-                    $GLOBALS['daily_vegetable'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->daily_vegetable && $GLOBALS["row"] == 7){
+                    $this->display_check($w,$y);
                 }
-                elseif($data[$i+1] == $personal_history->daily_fruit && $GLOBALS['daily_fruit'] == "false" && $GLOBALS["row"] == 8){
-                    $GLOBALS['daily_fruit'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->daily_fruit && $GLOBALS["row"] == 8){
+                    $this->display_check($w,$y);
                 }
-                elseif($data[$i+1] == $personal_history->physical_activity && $GLOBALS['physical_activity'] == "false" && $GLOBALS["row"] == 9){
-                    $GLOBALS['physical_activity'] = "true";
-                    $this->display_check($w,$a);
+                elseif($data[$i+1] == $personal_history->physical_activity && $GLOBALS["row"] == 9){
+                    $this->display_check($w,$y);
+                }
+                elseif(in_array($data[$i+1],$vaccine_history->vaccine_received) && $GLOBALS['row'] == 16){
+                    $this->display_check($w,$y);
+                }
+                elseif(strpos($data[$i+1], 'Tetanus Toxoid, No. of Doses:') !== false && isset($vaccine_history->no_dose) && $GLOBALS['row'] == 16){
+                    $this->display_check($w,$y);
+                    $this->display_text($x+45,$y,$vaccine_history->no_dose);
                 }
                 elseif(isset($gyne_history->selected_options->Others) && strpos($data[$i+1], 'Others') !== false){
-                    $this->display_check($w,$a);
+                    $this->display_check($w,$y);
                     $this->display_text($x+25,$y,$gyne_history->selected_options->Others);
+                }
+                elseif($GLOBALS['row'] == 17 && isset($vaccine_history->dengvaxia_history[0]) && $data[$i+1] == "Dengvaxia 1" ){
+                    $this->display_check($w,$y);
+                    if(isset($vaccine_history->dengvaxia_history[0]->date)){
+                        $month = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[1]));
+                        $day = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[2]));
+                        $year = implode('    ',str_split(explode('20',explode('-',$vaccine_history->dengvaxia_history[0]->date)[0])[1]));
+                        $format = $month.'            '.$day.'                    '.$year;
+                    } else {
+                        $format = "";
+                    }
+                    $this->display_text($x+56,$y,$format);
+                }
+                elseif($GLOBALS['row'] == 18 && isset($vaccine_history->dengvaxia_history[1]) && $data[$i+1] == "Dengvaxia 2"){
+                    $this->display_check($w,$y);
+                    if(isset($vaccine_history->dengvaxia_history[1]->date)){
+                        $month = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[1]));
+                        $day = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[2]));
+                        $year = implode('    ',str_split(explode('20',explode('-',$vaccine_history->dengvaxia_history[0]->date)[0])[1]));
+                        $format = $month.'            '.$day.'                    '.$year;
+                    } else {
+                        $format = "";
+                    }
+                    $this->display_text($x+56,$y,$format);
+                }
+                elseif($GLOBALS['row'] == 19 && isset($vaccine_history->dengvaxia_history[2]) && $data[$i+1] == "Dengvaxia 3"){
+                    $this->display_check($w,$y);
+                    if(isset($vaccine_history->dengvaxia_history[2]->date)){
+                        $month = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[1]));
+                        $day = implode('    ',str_split(explode('-',$vaccine_history->dengvaxia_history[0]->date)[2]));
+                        $year = implode('    ',str_split(explode('20',explode('-',$vaccine_history->dengvaxia_history[0]->date)[0])[1]));
+                        $format = $month.'            '.$day.'                    '.$year;
+                    } else {
+                        $format = "";
+                    }
+                    $this->display_text($x+56,$y,$format);
+                }
+                elseif($GLOBALS['row'] == 17 && $data[$i+1] == $vaccine_history->dengvaxia_history[0]->place ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 18 && $data[$i+1] == $vaccine_history->dengvaxia_history[1]->place ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 19 && $data[$i+1] == $vaccine_history->dengvaxia_history[2]->place ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 20 && isset($rusel) ){
+                    $this->display_check($w,$y);
                 }
                 else {
                     $this->MultiCell($w,5,'',1,$a);
@@ -132,7 +175,6 @@ class PDF_MC_Table extends FPDF
                 $this->SetFont('Arial','',7.5);
             } else {
                 //Print the text
-                $this->SetFont('Arial','',7.5);
                 $this->MultiCell($w,5,$data[$i],0,$a);
                 if(strpos($data[$i], 'Age started:') !== false){
                     $this->display_text($x+20,$y,$personal_history->smoking_age_started);
@@ -293,13 +335,13 @@ class PDF_MC_Table extends FPDF
 
 $pdf=new PDF_MC_Table('L','mm','A4');
 include 'dengvaxia_pages/utility_function.php';
-$pdf->AddPage();
+/*$pdf->AddPage();*/
 include 'dengvaxia_pages/page1.php';
-$pdf->AddPage();
+/*$pdf->AddPage();*/
 include 'dengvaxia_pages/page2.php';
 $pdf->AddPage();
 include 'dengvaxia_pages/page3.php';
-$pdf->AddPage();
+/*$pdf->AddPage();*/
 include 'dengvaxia_pages/page4.php';
 
 $pdf->Output();

@@ -262,6 +262,8 @@
         0,'',$con_font_size,$position);
     $GLOBALS['y'] += 4;
     $GLOBALS[$description.'_h'] += 4;
+    $GLOBALS['row'] = 17;
+    $GLOBALS['breaker'] = "dengvaxia_count";
     rowCell($pdf,$description,false,array(5,25,25,5,5,5,5,5,5,5,5,5,10,30,5,20,5,50,5,30),$x,$GLOBALS['y'],
         [
             "box",
@@ -286,10 +288,11 @@
             "Priv. MD"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 18;
     rowCell($pdf,$description,false,array(5,25,25,5,5,5,5,5,5,5,5,5,10,30,5,20,5,50,5,30),$x,$GLOBALS['y'],
         [
             "box",
-            "Dengvaxia 1",
+            "Dengvaxia 2",
             "Date received: ",
             "box",
             "box",
@@ -310,10 +313,11 @@
             "Priv. MD"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 19;
     rowCell($pdf,$description,false,array(5,25,25,5,5,5,5,5,5,5,5,5,10,30,5,20,5,50,5,30),$x,$GLOBALS['y'],
         [
             "box",
-            "Dengvaxia 1",
+            "Dengvaxia 3",
             "Date received: ",
             "box",
             "box",
@@ -334,6 +338,7 @@
             "Priv. MD"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['breaker'] = "break";
 
     $temp = $GLOBALS['y'];
     rowCell($pdf,$description,true,array(270),$x,$GLOBALS[$description.'_y'],
@@ -341,6 +346,7 @@
         0,'',$con_font_size,$position);
 
     $GLOBALS['y'] = $temp+4;
+    $GLOBALS['row'] = 20;
     rowCell($pdf,$description,false,array(70,5,95,5,95),$x,$GLOBALS['y'],
         [
             "For Adolescent Girls:",
@@ -350,6 +356,7 @@
             "Given Iodized Oil Capsule, Date:",
         ],
         1,'',$con_font_size,$position);
+    $GLOBALS['row'] = 21;
     rowCell($pdf,$description,false,array(70,5,95,5,95),$x,$GLOBALS['y'],
         [
             "Dewormed?",
