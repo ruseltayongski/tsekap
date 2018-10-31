@@ -380,6 +380,8 @@
     $GLOBALS[$description.'_y'] = $GLOBALS['y'];
     $GLOBALS[$description.'_h'] = 0;
     $temp = $GLOBALS['y'];
+
+    $GLOBALS['row'] = 22;
     rowCell($pdf,$description,false,array(5,265),$x,$GLOBALS['y'],
         [
             "box",

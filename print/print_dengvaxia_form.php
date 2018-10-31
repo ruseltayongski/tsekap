@@ -166,7 +166,10 @@ class PDF_MC_Table extends FPDF
                 elseif($GLOBALS['row'] == 19 && $data[$i+1] == $vaccine_history->dengvaxia_history[2]->place ){
                     $this->display_check($w,$y);
                 }
-                elseif($GLOBALS['row'] == 20 && isset($rusel) ){
+                elseif($GLOBALS['row'] == 20){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 21){
                     $this->display_check($w,$y);
                 }
                 else {
