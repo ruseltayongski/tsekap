@@ -1,17 +1,4 @@
 <?php
-session_start();
-//$api = json_decode(file_get_contents('http://'.$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT']."/tsekap/vii/patient_api/191042"));
-include('database.php');
-$unique_id = $_SESSION['unique_id'];
-//$dengvaxiaId = 191042;
-
-$api = query_dengvaxia($unique_id);
-$bar = barangay($api->barangay_id);
-$mun = muncity($api->muncity_id);
-$pro = province($api->province_id);
-$bar ? $barangay = $bar->description : $barangay = "NO BARANGAY";
-$mun ? $muncity = $mun->description : $muncity = "NO MUNICIPALITY";
-$pro ? $province = $pro->description : $province = "NO PROVINCE";
 
 $x = 15;
 $y = 3;
@@ -19,7 +6,7 @@ $con_font_size = 7.5;
 $box_content_w = 5;
 $box_content_h = 5;
 // Logo
-$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
+/*$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
 $pdf->Image(__DIR__.'/../image/logo.png',240,$y,30);
 
 $pdf->SetFont('Arial','B',15);
@@ -376,32 +363,32 @@ foreach(range(0,5) as $index){
 }
 
 //retrieve
-displayCell($pdf,[40,42],['66',5],$api->lname,0,'C',$con_font_size,'B');
-displayCell($pdf,[110,42],['100',5],$api->fname,0,'C',$con_font_size,'B');
-displayCell($pdf,[213,42],['36',5],$api->mname,0,'C',$con_font_size,'B');
-displayCell($pdf,[253,42],['24',5],$api->suffix,0,'C',$con_font_size,'B');
-displayCell($pdf,[58,54],['0',0],$api->head,0,'L',$con_font_size,'B');
-displayCell($pdf,[140,54],['0',0],$api->gen_res,0,'L',$con_font_size,'B');
-displayCell($pdf,[235,54],['0',0],$api->gen_con,0,'L',$con_font_size,'B');
-displayCell($pdf,[32,57],['59',5],$api->gen_hou_r,0,'C',$con_font_size,'B');
-displayCell($pdf,[93,57],['45',5],$api->gen_sit_r,0,'C',$con_font_size,'B');
+displayCell($pdf,[40,42],['66',5],$GLOBALS['api']->lname,0,'C',$con_font_size,'B');
+displayCell($pdf,[110,42],['100',5],$GLOBALS['api']->fname,0,'C',$con_font_size,'B');
+displayCell($pdf,[213,42],['36',5],$GLOBALS['api']->mname,0,'C',$con_font_size,'B');
+displayCell($pdf,[253,42],['24',5],$GLOBALS['api']->suffix,0,'C',$con_font_size,'B');
+displayCell($pdf,[58,54],['0',0],$GLOBALS['api']->head,0,'L',$con_font_size,'B');
+displayCell($pdf,[140,54],['0',0],$GLOBALS['api']->gen_res,0,'L',$con_font_size,'B');
+displayCell($pdf,[235,54],['0',0],$GLOBALS['api']->gen_con,0,'L',$con_font_size,'B');
+displayCell($pdf,[32,57],['59',5],$GLOBALS['api']->gen_hou_r,0,'C',$con_font_size,'B');
+displayCell($pdf,[93,57],['45',5],$GLOBALS['api']->gen_sit_r,0,'C',$con_font_size,'B');
 displayCell($pdf,[141,57],['45',5],$barangay,0,'C',$con_font_size,'B');
 displayCell($pdf,[184,57],['47',5],$muncity,0,'C',$con_font_size,'B');
 displayCell($pdf,[233,57],['47',5],$province,0,'C',$con_font_size,'B');
-displayCell($pdf,[69,66],['45',5],$api->gen_age,0,'C',$con_font_size,'B');
-displayCell($pdf,[46,73.5],['45',5],date('M d, Y',strtotime($api->dob)),0,'L',$con_font_size,'B');
-displayCell($pdf,[110,73.5],['110',5],$api->birthplace,0,'L',$con_font_size,'B');
-displayCell($pdf,[251,73.5],['30',5],$api->gen_yrs_cur,0,'L',$con_font_size,'B');
+displayCell($pdf,[69,66],['45',5],$GLOBALS['api']->gen_age,0,'C',$con_font_size,'B');
+displayCell($pdf,[46,73.5],['45',5],date('M d, Y',strtotime($GLOBALS['api']->dob)),0,'L',$con_font_size,'B');
+displayCell($pdf,[110,73.5],['110',5],$GLOBALS['api']->birthplace,0,'L',$con_font_size,'B');
+displayCell($pdf,[251,73.5],['30',5],$GLOBALS['api']->gen_yrs_cur,0,'L',$con_font_size,'B');
 
-cellXY($api->sex,$pdf);
-cellXY($api->education,$pdf);
+cellXY($GLOBALS['api']->sex,$pdf);
+cellXY($GLOBALS['api']->education,$pdf);
 
-cellXY($api->gen_reli,$pdf);
-if( $api->gen_reli != "Christian" && $api->gen_reli != "INC" && $api->gen_reli != "Islam" && $api->gen_reli != "Jehovah" && $api->gen_reli != " " ){
-    displayCell($pdf,[234,67],['45',5],$api->gen_reli,0,'L',$con_font_size,'B');
+cellXY($GLOBALS['api']->gen_reli,$pdf);
+if( $GLOBALS['api']->gen_reli != "Christian" && $GLOBALS['api']->gen_reli != "INC" && $GLOBALS['api']->gen_reli != "Islam" && $GLOBALS['api']->gen_reli != "Jehovah" && $GLOBALS['api']->gen_reli != " " ){
+    displayCell($pdf,[234,67],['45',5],$GLOBALS['api']->gen_reli,0,'L',$con_font_size,'B');
 }
 
-if($phic = json_decode($api->phic_membership)){
+if($phic = json_decode($GLOBALS['api']->phic_membership)){
     cellXY($phic->status,$pdf);
     if(strpos($phic->type, 'Sponsored') !== false){
         cellXY('Sponsored',$pdf);
@@ -419,16 +406,16 @@ if($phic = json_decode($api->phic_membership)){
     }
 }
 
-if($fam_his = json_decode($api->family_history)){
+if($fam_his = json_decode($GLOBALS['api']->family_history)){
     foreach( $fam_his as $row ){
         cellXY($row,$pdf);
     }
 }
 
-if($med_his = json_decode($api->medical_history)){
+if($med_his = json_decode($GLOBALS['api']->medical_history)){
     foreach( $med_his as $row ){
         cellXY($row,$pdf);
     }
-}
+}*/
 
 ?>

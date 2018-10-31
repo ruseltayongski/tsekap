@@ -1,4 +1,4 @@
-<div class="modal fade" role="dialog" id="add_dengvaxia">
+<div class="modal fade" role="dialog" id="dengvaxia">
     <div class="modal-dialog modal-md" role="document">
         <input type="hidden" name="currentID" id="currentID">
         <div class="modal-content">

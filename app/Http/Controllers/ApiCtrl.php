@@ -422,6 +422,22 @@ class ApiCtrl extends Controller
 
         Dengvaxia::updateOrCreate(['unique_id' => $data['unique_id']], $data);
 
+        Profile::updateOrCreate(
+            ['unique_id' => $data['unique_id']], [
+                "lname" => $request->lname,
+                "fname" => $request->fname,
+                "mname" => $request->mname,
+                "suffix" => $request->suffix,
+                "head" => $request->head,
+                "dob" => $request->dob,
+                "barangay_id" => $request->barangay_id,
+                "muncity_id" => $request->muncity_id,
+                "province_id" => $request->province_id,
+                "education" => $request->education,
+                "dengvaxia" => "yes"
+            ]
+        );
+
         return array(
             'status' => 'Successfully Registered'
         );

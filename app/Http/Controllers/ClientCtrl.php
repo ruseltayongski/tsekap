@@ -131,7 +131,7 @@ class ClientCtrl extends Controller
         $barangay = $temp['barangay'];
 
         $user = Auth::user();
-        $data['profiles'] = Profile::select('id','familyID','head','lname','mname','fname','suffix','sex','dob','barangay_id')
+        $data['profiles'] = Profile::select('id','unique_id','familyID','head','lname','mname','fname','suffix','sex','dob','barangay_id')
             ->where('barangay_id','!=',0);
 
         if($keyword || $keyword!='' || $keyword!=null){

@@ -51,13 +51,6 @@ $brgy = $brgy->orderBy('description','asc')
                 Profile Details
             </h2>
             <div class="page-divider"></div>
-            @if($status=='add_dengvaxia')
-            <div class="alert alert-success">
-                <div class="text-success">
-                    Profile successfully added to dengvaxia pending list!
-                </div>
-            </div>
-            @endif
             <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('user/population/update') }}">
                 {{ csrf_field() }}
                 <table class="table table-bordered table-hover" border="1">
@@ -259,17 +252,9 @@ $brgy = $brgy->orderBy('description','asc')
                             <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                 <i class="fa fa-trash"></i> Delete
                             </button>
-                            <a href="#add_dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
-                                <i class="fa fa-plus"></i> Add Dengvaxia
+                            <a href="#dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
+                                <i class="fa fa-user-md"></i> Dengvaxia
                             </a>
-                            <a href="#" data-backdrop="static" class="btn btn-warning btn-sm" onclick="print_dengvaxia()">
-                                <i class="fa fa-print"></i> Print Dengvaxia
-                            </a>
-                            <!--
-                            <button type="button" class="btn btn-primary btn-sm" data-target="#link" data-toggle="modal">
-                                <i class="fa fa-link"></i> Link Profile
-                            </button>
-                            -->
                         </td>
                     </tr>
                 </table>
@@ -338,11 +323,12 @@ $brgy = $brgy->orderBy('description','asc')
             $("input[name=sex][value=" + gender + "]").prop('checked',true);
         }
 
-        $('a[href="#add_dengvaxia"]').on('click',function(){
+        $('a[href="#dengvaxia"]').on('click',function(){
             var id = $(this).data('id');
             var unique_id = $(this).data('unique');
             var url = "{{ asset('verify_dengvaxia') }}"+"/"+id+"/"+unique_id;
             $('.verify-dengvaxia').html('<center><img src="<?php echo asset('resources/img/spin.gif');?>" width="100"></center>');
+            console.log(url);
             setTimeout(function(){
                 $.ajax({
                     url: url,
@@ -352,22 +338,7 @@ $brgy = $brgy->orderBy('description','asc')
                     }
                 });
             },300);
-
         });
 
-        function print_dengvaxia(){
-            var unique_id = "<?php echo $info->unique_id ?>";
-            console.log(unique_id);
-            event.preventDefault();
-            $.get("<?php echo asset('sessionProcessPrint').'/' ?>"+unique_id,function(result){
-                var win = window.open("<?php echo asset('print/print_dengvaxia_form.php'); ?>");
-                if (win) {
-                    win.focus();
-                } else {
-                    //Browser has blocked it
-                    alert('Please allow popups for this website');
-                }
-            });
-        }
     </script>
 @endsection

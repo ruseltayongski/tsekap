@@ -22,6 +22,20 @@
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header">Manage Population</h2>
+            @if(Session::has('deng_add'))
+                <div class="alert alert-success">
+                    <font class="text-success">
+                        <i class="fa fa-check"></i> {!! Session::get('deng_add') !!}
+                    </font>
+                </div>
+            @endif
+            @if(Session::has('crossMatch'))
+                <div class="alert alert-success">
+                    <font class="text-success">
+                        <i class="fa fa-check"></i> {!! Session::get('crossMatch') !!}
+                    </font>
+                </div>
+            @endif
             <form class="form-inline" method="POST" action="{{ asset('user/population') }}">
                 {{ csrf_field() }}
                 <div class="form-group">
@@ -46,6 +60,12 @@
                     <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
                     <div class="clearfix"></div>
                 </div>
+                <!--
+                <div class="form-group">
+                    <a class="btn btn-warning col-xs-12" href="{{ asset('crossMatching').'/'.Auth::user()->province.'/'.Auth::user()->muncity }}"><i class="fa fa-cloud-download"></i> Cross Matching</a>
+                    <div class="clearfix"></div>
+                </div>
+                -->
             </form>
             <div class="clearfix"></div>
             <div class="page-divider"></div>
@@ -75,6 +95,11 @@
                                 <a href="{{ asset('user/population/add/' . $p->familyID) }}" class="btn btn-xs btn-info">
                                     <i class="fa fa-user-plus"></i> Add Member
                                 </a>
+                                <!--
+                                <a href="#dengvaxia" data-backdrop="static" data-id="{{ $p->id }}" data-unique="{{ $p->unique_id }}" class="btn btn-xs btn-danger"  data-toggle="modal">
+                                    <i class="fa fa-user-md"></i> Dengvaxia
+                                </a>
+                                -->
                             </td>
                             <td>
                                 <a href="#familyProfile" data-backdrop="static" data-id="{{ $p->familyID }}" data-toggle="modal" class="title-info">
@@ -319,5 +344,22 @@
     $('.btn-update').on('click',function(){
         validateForm2();
     });
+
+    $('a[href="#dengvaxia"]').on('click',function(){
+        var id = $(this).data('id');
+        var unique_id = $(this).data('unique');
+        var url = "{{ asset('verify_dengvaxia') }}"+"/"+id+"/"+unique_id;
+        $('.verify-dengvaxia').html('<center><img src="<?php echo asset('resources/img/spin.gif');?>" width="100"></center>');
+        setTimeout(function(){
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(result){
+                    $('.verify-dengvaxia').html(result);
+                }
+            });
+        },300);
+    });
+
 </script>
 @endsection

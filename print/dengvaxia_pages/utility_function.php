@@ -10,6 +10,18 @@
         $pdf->SetXY($xy[0],$xy[1]);
         $pdf->Cell(0, 0, 4, 0, 0);
     }
+    function rowCell($pdf,$description,$bigBox,$widthArray,$x,$y,$data,$border,$fontWeight,$fontSize,$position){
+        $pdf->SetFont('Arial',$fontWeight,$fontSize);
+        $pdf->SetWidths($widthArray);
+        $pdf->SetXY($x,$y);
+        $pdf->Row($data,$description,$bigBox,$border,$position);
+    }
+    function patientAnswer($pdf,$data,$widthArray,$x,$y,$border,$fontWeight,$fontSize,$position){
+        $pdf->SetFont('Arial',$fontWeight,$fontSize);
+        $pdf->SetWidths($widthArray);
+        $pdf->SetXY($x,$y);
+        $pdf->patient_answer($data,$border,$position);
+    }
     function cellXY($description,$pdf){
         switch ($description){
             case 'Male':
@@ -206,6 +218,117 @@
 
     }
 
+    function Any_Following($description,$pdf,$difference){
+        switch ($description) {
+            case strpos($description,'Weight_Loss - ') !== false:
+                displayCheck($pdf, ['65','35'-$difference]);
+                return;
+            case strpos($description,'Chest_Pain - ') !== false:
+                displayCheck($pdf, ['100','35'-$difference]);
+                return;
+            case strpos($description,'Fever - ') !== false:
+                displayCheck($pdf, ['65','40'-$difference]);
+                return;
+            case strpos($description,'Back_Pain - ') !== false:
+                displayCheck($pdf, ['100','40'-$difference]);
+                return;
+            case strpos($description,'Loss_Appetite - ') !== false:
+                displayCheck($pdf, ['65','45'-$difference]);
+                return;
+            case strpos($description,'Neck_Nodes - ') !== false:
+                displayCheck($pdf, ['100','45'-$difference]);
+                return;
+            case strpos($description,'Cough - ') !== false:
+                displayCheck($pdf, ['65','50'-$difference]);
+                return;
+            case strpos($description,'New_smear_positive - ') !== false:
+                displayCheck($pdf, ['100','55'-$difference]);
+                return;
+            case strpos($description,'New_smear_negative - ') !== false:
+                displayCheck($pdf, ['100','60'-$difference]);
+                return;
+            case strpos($description,'Relapse - ') !== false:
+                displayCheck($pdf, ['100','65'-$difference]);
+                return;
+            case strpos($description,'Extrapulmonary - ') !== false:
+                displayCheck($pdf, ['133','55'-$difference]);
+                displayCell($pdf,[167,52-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Clinically_Diagnosed - ') !== false:
+                displayCheck($pdf, ['133','60'-$difference]);
+                return;
+            case strpos($description,'TB_in_children - ') !== false:
+                displayCheck($pdf, ['133','65'-$difference]);
+                return;
+            case strpos($description,'PPD - ') !== false:
+                displayCheck($pdf, ['152','35'-$difference]);
+                displayCell($pdf,[188,32-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Sputum_Exam - ') !== false:
+                displayCheck($pdf, ['152','40'-$difference]);
+                displayCell($pdf,[188,37-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'CXR - ') !== false:
+                displayCheck($pdf, ['152','45'-$difference]);
+                displayCell($pdf,[188,42-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case strpos($description,'Genxpert - ') !== false:
+                displayCheck($pdf, ['152','50'-$difference]);
+                displayCell($pdf,[188,47-$difference],[15,5],explode(' - ',$description)[1],0,'L',7.5,'B');
+                return;
+            case 'CatI':
+                displayCheck($pdf, ['205','60'-$difference]);
+                return;
+            case 'CatII':
+                displayCheck($pdf, ['220','60'-$difference]);
+                return;
+            case 'CatIII':
+                displayCheck($pdf, ['205','65'-$difference]);
+                return;
+            case 'TTB_in_Children':
+                displayCheck($pdf, ['220','65'-$difference]);
+                return;
+        }
+    }
+
+    function disability_injured($description,$pdf,$difference){
+        switch ($description) {
+            case 'Psychosocial':
+                displayCheck($pdf, ['15','75'-$difference]);
+                return;
+            case 'Learning':
+                displayCheck($pdf, ['15','80'-$difference]);
+                return;
+            case 'Mental':
+                displayCheck($pdf, ['15','85'-$difference]);
+                return;
+            case 'Visual':
+                displayCheck($pdf, ['15','90'-$difference]);
+                return;
+            case 'Hearing':
+                displayCheck($pdf, ['15','95'-$difference]);
+                return;
+            case 'Speech':
+                displayCheck($pdf, ['15','100'-$difference]);
+                return;
+            case 'Musculo':
+                displayCheck($pdf, ['15','105'-$difference]);
+                return;
+            case 'Vehicular':
+                displayCheck($pdf, ['15','115'-$difference]);
+                return;
+            case 'Burns':
+                displayCheck($pdf, ['15','120'-$difference]);
+                return;
+            case 'Drowning':
+                displayCheck($pdf, ['15','125'-$difference]);
+                return;
+            case 'Fall':
+                displayCheck($pdf, ['15','130'-$difference]);
+                return;
+        }
+    }
+
     function cellContent(){
         return [
             'medical_history' => [
@@ -236,4 +359,6 @@
             ]
         ];
     }
+
+
 ?>
