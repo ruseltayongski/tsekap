@@ -1,5 +1,5 @@
 <?php
-    /*$x = 15;
+    $x = 15;
     $GLOBALS['y'] = 3;
     $position = "L";
     $pdf->SetLeftMargin($x);
@@ -14,6 +14,8 @@
     $description = "review_system";
     $GLOBALS[$description.'_y'] = $GLOBALS['y'];
     $GLOBALS[$description.'_h'] = 0;
+
+    $GLOBALS['row'] = 28;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -28,6 +30,7 @@
             "Joint pain"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 29;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -42,6 +45,7 @@
             "Muscle wasting"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 30;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -56,6 +60,7 @@
             "Muscle weakness"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 31;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -70,6 +75,7 @@
             "Weight Loss"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 32;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -84,6 +90,7 @@
             "Others, specify:"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 33;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49,54),$x,$GLOBALS['y'],
         [
             "box",
@@ -97,6 +104,7 @@
             "________________"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 34;
     rowCell($pdf,$description,false,array(5,49,5,49,5,49,5,49),$x,$GLOBALS['y'],
         [
             "box",
@@ -146,6 +154,7 @@
             "Vital Signs:"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 35;
     rowCell($pdf,$description,false,array(54,54,54,54,54),$x,$GLOBALS['y'],
         [
             "BP:________________",
@@ -338,6 +347,6 @@
     $temp = $GLOBALS['y'];
     rowCell($pdf,$description,true,array(270),$x,$GLOBALS[$description.'_y'],
         [""],
-        0,'',$con_font_size,$position);*/
+        0,'',$con_font_size,$position);
 
 

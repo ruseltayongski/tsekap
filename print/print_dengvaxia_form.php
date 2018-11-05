@@ -15,7 +15,6 @@ $bar ? $barangay = $bar->description : $barangay = "NO BARANGAY";
 $mun ? $muncity = $mun->description : $muncity = "NO MUNICIPALITY";
 $pro ? $province = $pro->description : $province = "NO PROVINCE";
 $GLOBALS["deng_bol"] = "false";
-$GLOBALS["gyne_bol"] = "false";
 
 class PDF_MC_Table extends FPDF
 {
@@ -70,6 +69,29 @@ class PDF_MC_Table extends FPDF
             $personal_history = json_decode($GLOBALS['api']->personal_history);
             $gyne_history = json_decode($GLOBALS['api']->mens_gyne_history);
             $vaccine_history = json_decode($GLOBALS['api']->vaccine_history);
+            $other_procedures = json_decode($GLOBALS['api']->other_procedures);
+            $review_system = json_decode($GLOBALS['api']->review_systems);
+            $GLOBALS['chestChecked'] = '';
+            $GLOBALS['chestResult'] = '';
+            $pattern_other_procedure = 'Chest X-ray*';
+            array_filter($other_procedures, function($entry) use ($pattern_other_procedure) {
+                if(fnmatch($pattern_other_procedure, $entry)){
+                    $GLOBALS['chestChecked'] = 'checked';
+                    $GLOBALS['chestResult'] = explode(' - ',$entry)[1];
+                }
+            });
+            $GLOBALS['IgG'] = '';
+            $GLOBALS['IgM'] = '';
+            $pattern_other_procedure = 'Enzymes*';
+            array_filter($other_procedures, function($entry) use ($pattern_other_procedure) {
+                if(fnmatch($pattern_other_procedure, $entry)){
+                    $GLOBALS['EnzymesChecked'] = 'checked';
+                    if(explode(' - ',$entry)[1] == "IgG Positive")
+                        $GLOBALS['IgG'] = 'checked';
+                    elseif(explode(' - ',$entry)[1] == "IgM Positive")
+                        $GLOBALS['IgM'] = 'checked';
+                }
+            });
             if($data[$i] == "box"){
                 //Print the text
                 if($personal_history->tried_drugs != " - "){
@@ -78,14 +100,28 @@ class PDF_MC_Table extends FPDF
                     $tried_drugs = "no_needle";
                 }
 
-                if(isset($gyne_history->selected_options) && $GLOBALS['gyne_bol'] == "false"){
+                if(isset($gyne_history->selected_options) && ($GLOBALS['row'] == 13 || $GLOBALS['row'] == 14) ){
                     foreach($gyne_history->selected_options as $row){
                         if(strpos($data[$i+1], $row) !== false || strpos($data[$i+1], explode('_',$row)[0]) !== false ){
                             $this->display_check($w,$a);
                         }
                     }
                 }
-                if($data[$i+1] == $personal_history->tried_smoking){
+                elseif(isset($review_system) && ($GLOBALS['row'] == 28 || $GLOBALS['row'] == 29) ){
+                    foreach($review_system as $row){
+                        if(strpos($data[$i+1], $row) !== false ){
+                            $this->display_check($w,$a);
+                        }
+                    }
+                }
+                elseif($GLOBALS['row'] == 15 && isset($gyne_history->selected_options->Others) && $data[$i+1] == "Dyspareunia" ){
+                    $this->display_check($w,$a);
+                }
+                elseif($GLOBALS['row'] == 15 && isset($gyne_history->selected_options->Others) && strpos($data[$i+1], "Others") !== false){
+                    $this->display_check($w,$a);
+                    $this->display_text($x+25,$y,$gyne_history->selected_options->Others);
+                }
+                elseif($data[$i+1] == $personal_history->tried_smoking){
                     $this->display_check($w,$y);
                 }
                 elseif($data[$i+1] == $personal_history->tried_alcohol && $GLOBALS['row'] == 1){
@@ -116,10 +152,6 @@ class PDF_MC_Table extends FPDF
                 elseif(strpos($data[$i+1], 'Tetanus Toxoid, No. of Doses:') !== false && isset($vaccine_history->no_dose) && $GLOBALS['row'] == 16){
                     $this->display_check($w,$y);
                     $this->display_text($x+45,$y,$vaccine_history->no_dose);
-                }
-                elseif(isset($gyne_history->selected_options->Others) && strpos($data[$i+1], 'Others') !== false){
-                    $this->display_check($w,$y);
-                    $this->display_text($x+25,$y,$gyne_history->selected_options->Others);
                 }
                 elseif($GLOBALS['row'] == 17 && isset($vaccine_history->dengvaxia_history[0]) && $data[$i+1] == "Dengvaxia 1" ){
                     $this->display_check($w,$y);
@@ -167,9 +199,47 @@ class PDF_MC_Table extends FPDF
                     $this->display_check($w,$y);
                 }
                 elseif($GLOBALS['row'] == 20){
-                    $this->display_check($w,$y);
+                    if(isset($vaccine_history->supplementation_date) && $data[$i+1] == "Given Ferrous sulfate supplementation, Date:" ){
+                        $this->display_check($w,$y);
+                        $this->display_text($x+60,$y,date('F d, Y',strtotime($vaccine_history->supplementation_date)));
+                    }
+                    elseif(isset($vaccine_history->capsule_date) && $data[$i+1] == "Given Iodized Oil Capsule, Date:" ){
+                        $this->display_check($w,$y);
+                        $this->display_text($x+45,$y,date('F d, Y',strtotime($vaccine_history->capsule_date)));
+                    }
                 }
                 elseif($GLOBALS['row'] == 21){
+                    if(isset($vaccine_history->dewormed_date) && $data[$i+1] == "Yes, Date last dewormed:" ){
+                        $this->display_check($w,$y);
+                        $this->display_text($x+38,$y,date('F d, Y',strtotime($vaccine_history->dewormed_date)));
+                    }
+                    elseif(!isset($vaccine_history->dewormed_date) && $data[$i+1] == "No" ){
+                        $this->display_check($w,$y);
+                    }
+                }
+                elseif($GLOBALS['row'] == 22 && $data[$i+1] == "CBC" && in_array('CBC',$other_procedures) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 23 && $data[$i+1] == "Urinalysis" && in_array('Urinalysis',$other_procedures) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 24 && strpos($data[$i+1],'Chest X-ray') !== false && $GLOBALS['chestChecked'] == 'checked' ){
+                    $this->display_check($w,$y);
+                    $this->display_text($x+51,$y,$GLOBALS['chestResult']);
+                }
+                elseif($GLOBALS['row'] == 25 && strpos($data[$i+1],'Enzymes') !== false && $GLOBALS['EnzymesChecked'] == 'checked' ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 25 && $data[$i+1] == 'IgG Positive' && $GLOBALS['IgG'] == 'checked' ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 25 && $data[$i+1] == 'IgM Positive' && $GLOBALS['IgM'] == 'checked' ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 26 && $data[$i+1] == "NS1 Test" && in_array('NS1 Test',$other_procedures) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 27 && $data[$i+1] == "PCR" && in_array('PCR',$other_procedures) ){
                     $this->display_check($w,$y);
                 }
                 else {
@@ -344,7 +414,7 @@ include 'dengvaxia_pages/page1.php';
 include 'dengvaxia_pages/page2.php';
 $pdf->AddPage();
 include 'dengvaxia_pages/page3.php';
-/*$pdf->AddPage();*/
+$pdf->AddPage();
 include 'dengvaxia_pages/page4.php';
 
 $pdf->Output();

@@ -239,8 +239,8 @@
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#phic" aria-expanded="false" aria-controls="collapseExample">
                     PHIC MEMBERSHIP OF PRINCIPAL <small class="text-warning" style="color: white"><em>(PARENTS)</em></small>
                 </a>
-                <div class="collapse" id="phic">
-                    <table class="table table-bordered table-hover"  border="1">
+                <div class="collapse" id="phic" style="padding: 0;">
+                    <table class="table table-bordered table-hover" border="1">
                         <?php $phic = json_decode($dengvaxia->phic_membership) ?>
                         <tr class="has-group">
                             <td>Status :</td>
@@ -340,9 +340,9 @@
                         <tr class="has-group">
                             <td>Medical History :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Allergy_med)) echo 'checked'; ?> value="Allergy_med"> Allergy, specify:</label> <input type="text" value="<?php if(isset($med_his->Allergy_med)){if($Allergy_med=explode(' - ',$med_his->Allergy_med)[1])echo $Allergy_med;} ?>" name="Allergy_med">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Allergy_med)) echo 'checked'; ?> value="Allergy"> Allergy, specify:</label> <input type="text" value="<?php if(isset($med_his->Allergy_med)){if($Allergy_med=explode(' - ',$med_his->Allergy_med)[1])echo $Allergy_med;} ?>" name="Allergy_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Asthma_med)) echo 'checked'; ?> value="Asthma_med" > Asthma (Fill-up Bronchial Astma Section)</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Asthma_med)) echo 'checked'; ?> value="Asthma" > Asthma (Fill-up Bronchial Astma Section)</label>
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Tuberculosis_med)) echo 'checked'; ?> value="Tuberculosis_med" > Tuberculosis (If yes, fill-up Tuberculosis Section):</label>
                                 &nbsp;&nbsp;&nbsp;<br />
@@ -798,21 +798,48 @@
                     OTHER PROCEDURE DONE
                 </a>
                 <div class="collapse" id="other_procedure">
+                    <?php
+                    $other_procedures = json_decode($dengvaxia->other_procedures);
+                    $GLOBALS['chestChecked'] = '';
+                    $GLOBALS['chestResult'] = '';
+                    $GLOBALS['EnzymesChecked'] = '';
+                    $GLOBALS['IgG'] = '';
+                    $GLOBALS['IgM'] = '';
+                    if(isset($other_procedures)){
+                        $pattern = 'Chest X-ray*';
+                        $array = array_filter($other_procedures, function($entry) use ($pattern) {
+                            if(fnmatch($pattern, $entry)){
+                                $GLOBALS['chestChecked'] = 'checked';
+                                $GLOBALS['chestResult'] = explode(' - ',$entry)[1];
+                            }
+                        });
+                        $pattern = 'Enzymes*';
+                        $array = array_filter($other_procedures, function($entry) use ($pattern) {
+                            if(fnmatch($pattern, $entry)){
+                                $GLOBALS['EnzymesChecked'] = 'checked';
+                                if(explode(' - ',$entry)[1] == "IgG Positive")
+                                    $GLOBALS['IgG'] = 'checked';
+                                elseif(explode(' - ',$entry)[1] == "IgM Positive")
+                                    $GLOBALS['IgM'] = 'checked';
+                            }
+                        });
+                    }
+                    ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td></td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="cbc" > CBC</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('CBC', $other_procedures))echo 'checked';} ?> value="CBC" > CBC</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="urinalysis" > urinalysis</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('Urinalysis', $other_procedures))echo 'checked';} ?> value="Urinalysis" > Urinalysis</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="chest" > Chest X-ray, Specify Finding (Result)</label> <input type="text" name="oth_che_spe" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" {{ $GLOBALS['chestChecked'] }} value="Chest X-ray" > Chest X-ray, Specify Finding (Result)</label> <input type="text" value="{{ $GLOBALS['chestResult'] }}" name="xray_result" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="oth_che_igg" value="igg_positive"> IgG Positive <input type="radio" name="enzymes_result" value="oth_che_igm"> IgM Positive
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" {{ $GLOBALS['EnzymesChecked'] }} value="Enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="enzymes_result" {{ $GLOBALS['IgG'] }} value="IgG Positive"> IgG Positive <input type="radio" name="enzymes_result" {{ $GLOBALS['IgM'] }} value="IgM Positive"> IgM Positive
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="ns1_test" > NS1 Test</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('NS1 Test', $other_procedures))echo 'checked';} ?> value="NS1 Test" > NS1 Test</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="pcr" > PCR</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('PCR', $other_procedures))echo 'checked';} ?> value="PCR" > PCR</label>
                             </td>
                         </tr>
                     </table>
@@ -822,75 +849,90 @@
                     REVIEW OF SYSTEMS<small style="color: white"><em>(Tick all that apply)</em></small>
                 </a>
                 <div class="collapse" id="review_system">
+                    <?php
+                        $review_system = json_decode($dengvaxia->review_systems);
+                        if(isset($review_system)){
+                            $pattern = 'Others*';
+                            $GLOBALS['reviewOtherChecked'] = '';
+                            $GLOBALS['reviewOtherResult'] = '';
+                            $array = array_filter($review_system, function($entry) use ($pattern) {
+                                if(fnmatch($pattern, $entry)){
+                                    $GLOBALS['reviewOtherChecked'] = 'checked';
+                                    $GLOBALS['reviewOtherResult'] = explode(' - ',$entry)[1];
+                                }
+                            });
+                        }
+                    ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>
                                 REVIEW OF SYSTEMS:
                             </td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="jaundice" > Jaundice</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Jaundice', $review_system))echo 'checked';} ?> value="Jaundice" > Jaundice</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="pailor" > Pailor</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Pailor', $review_system))echo 'checked';} ?> value="Pailor" > Pailor</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="rashes" > Rashes</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Rashes', $review_system))echo 'checked';} ?> value="Rashes" > Rashes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="severe_headache" > Severe/Recurrent Headache</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent Headache', $review_system))echo 'checked';} ?> value="Severe/Recurrent Headache" > Severe/Recurrent Headache</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="sever_dizziness" > Severe/Recurrent Dizziness</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent Dizziness', $review_system))echo 'checked';} ?> value="Severe/Recurrent Dizziness" > Severe/Recurrent Dizziness</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="blurring" > Blurring og vision</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Blurring og vision', $review_system))echo 'checked';} ?> value="Blurring og vision" > Blurring og vision</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="seizures" > Seizures</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Seizures', $review_system))echo 'checked';} ?> value="Seizures" > Seizures</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="fatigability" > Easy Fatigability</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Easy Fatigability', $review_system))echo 'checked';} ?> value="Easy Fatigability" > Easy Fatigability</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="cough" > Cough/Colds</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Cough/Colds', $review_system))echo 'checked';} ?> value="Cough/Colds" > Cough/Colds</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="dyspnea" > Dyspnea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Dyspnea', $review_system))echo 'checked';} ?> value="Dyspnea" > Dyspnea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="orthopnea" > Orthopnea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Orthopnea', $review_system))echo 'checked';} ?> value="Orthopnea" > Orthopnea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="chest_pain" > Chest Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Chest Pain', $review_system))echo 'checked';} ?> value="Chest Pain" > Chest Pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="palpitations" > Palpitations</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Palpitations', $review_system))echo 'checked';} ?> value="Palpitations" > Palpitations</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="murmur" > Murmur</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Murmur', $review_system))echo 'checked';} ?> value="Murmur" > Murmur</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="breast_pain" > Breast Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Breast Pain', $review_system))echo 'checked';} ?> value="Breast Pain" > Breast Pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="nausea" > Nausea and/or vomiting</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Nausea and/or vomiting', $review_system))echo 'checked';} ?> value="Nausea and/or vomiting" > Nausea and/or vomiting</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="severe" > Severe/Recurrent abdominal pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent abdominal pain', $review_system))echo 'checked';} ?> value="Severe/Recurrent abdominal pain" > Severe/Recurrent abdominal pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="recurrent" > Recurrent Constipation</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Recurrent Constipation', $review_system))echo 'checked';} ?> value="Recurrent Constipation" > Recurrent Constipation</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="diarrhea" > Diarrhea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Diarrhea', $review_system))echo 'checked';} ?> value="Diarrhea" > Diarrhea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polyphagia" > Polyphagia</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polyphagia', $review_system))echo 'checked';} ?> value="Polyphagia" > Polyphagia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polydypsia" > Polydypsia</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polydypsia', $review_system))echo 'checked';} ?> value="Polydypsia" > Polydypsia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polyuria" > Polyuria</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polyuria', $review_system))echo 'checked';} ?> value="Polyuria" > Polyuria</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="vaginal_bleeding" > Vaginal bleeding</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Vaginal bleeding', $review_system))echo 'checked';} ?> value="Vaginal bleeding" > Vaginal bleeding</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="smelling_vaginal" > Foul Smelling Vaginal</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Foul Smelling Vaginal', $review_system))echo 'checked';} ?> value="Foul Smelling Vaginal" > Foul Smelling Vaginal</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="Urethral discharge" > Urethral discharge</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Urethral discharge', $review_system))echo 'checked';} ?> value="Urethral discharge" > Urethral discharge</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="dysuria" > Dysuria</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Dysuria', $review_system))echo 'checked';} ?> value="Dysuria" > Dysuria</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="leg_pain" > Leg pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Leg pain', $review_system))echo 'checked';} ?> value="Leg pain" > Leg pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="joint_pain" > Joint Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Joint Pain', $review_system))echo 'checked';} ?> value="Joint Pain" > Joint Pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="muscle_wasting" > Muscle Wasting</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Muscle Wasting', $review_system))echo 'checked';} ?> value="Muscle Wasting" > Muscle Wasting</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="muscle_weakness" > Muscle Weakness</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Muscle Weakness', $review_system))echo 'checked';} ?> value="Muscle Weakness" > Muscle Weakness</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="weight_loss" > Weight Loss</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Weight Loss', $review_system))echo 'checked';} ?> value="Weight Loss" > Weight Loss</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Others,specify: </label> <input type="text" name="rev_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" {{ $GLOBALS['reviewOtherChecked'] }} value="Others" ></label>
+                                <label style="cursor: pointer;">Others,specify: </label> <input type="text" value="{{ $GLOBALS['reviewOtherResult'] }}" name="review_system_others" >
                             </td>
                         </tr>
                     </table>
