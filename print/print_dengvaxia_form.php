@@ -92,6 +92,15 @@ class PDF_MC_Table extends FPDF
                         $GLOBALS['IgM'] = 'checked';
                 }
             });
+            $GLOBALS['review_others'] = '';
+            $GLOBALS['review_others_result'] = '';
+            $pattern_review_system = 'Others*';
+            array_filter($review_system, function($entry) use ($pattern_review_system) {
+                if(fnmatch($pattern_review_system, $entry)){
+                    $GLOBALS['review_others'] = 'checked';
+                    $GLOBALS['review_others_result'] = explode(' - ',$entry)[1];
+                }
+            });
             if($data[$i] == "box"){
                 //Print the text
                 if($personal_history->tried_drugs != " - "){
@@ -103,13 +112,6 @@ class PDF_MC_Table extends FPDF
                 if(isset($gyne_history->selected_options) && ($GLOBALS['row'] == 13 || $GLOBALS['row'] == 14) ){
                     foreach($gyne_history->selected_options as $row){
                         if(strpos($data[$i+1], $row) !== false || strpos($data[$i+1], explode('_',$row)[0]) !== false ){
-                            $this->display_check($w,$a);
-                        }
-                    }
-                }
-                elseif(isset($review_system) && ($GLOBALS['row'] == 28 || $GLOBALS['row'] == 29) ){
-                    foreach($review_system as $row){
-                        if(strpos($data[$i+1], $row) !== false ){
                             $this->display_check($w,$a);
                         }
                     }
@@ -240,6 +242,113 @@ class PDF_MC_Table extends FPDF
                     $this->display_check($w,$y);
                 }
                 elseif($GLOBALS['row'] == 27 && $data[$i+1] == "PCR" && in_array('PCR',$other_procedures) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 28 && $data[$i+1] == "Jaundice" && in_array('Jaundice',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 28 && $data[$i+1] == "Seizures" && in_array('Seizures',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 28 && $data[$i+1] == "Murmur" && in_array('Murmur',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 28 && $data[$i+1] == "Polydypsia" && in_array('Polydypsia',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 28 && $data[$i+1] == "Joint pain" && in_array('Joint pain',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 29 && $data[$i+1] == "Pallor" && in_array('Pallor',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 29 && $data[$i+1] == "Easy Fatigability" && in_array('Easy Fatigability',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 29 && $data[$i+1] == "Breast pain" && in_array('Breast pain',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 29 && $data[$i+1] == "Polyuria" && in_array('Polyuria',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 29 && $data[$i+1] == "Muscle wasting" && in_array('Muscle wasting',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 30 && $data[$i+1] == "Rashes" && in_array('Rashes',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 30 && $data[$i+1] == "Cough/Colds" && in_array('Cough/Colds',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 30 && $data[$i+1] == "Nausea and/or vomiting" && in_array('Nausea and/or vomiting',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 30 && $data[$i+1] == "Vaginal bleeding" && in_array('Vaginal bleeding',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 30 && $data[$i+1] == "Muscle weakness" && in_array('Muscle weakness',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 31 && $data[$i+1] == "Severe/Recurrent Headache" && in_array('Severe/Recurrent Headache',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 31 && $data[$i+1] == "Dyspnea" && in_array('Dyspnea',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 31 && $data[$i+1] == "Severe/Recurrent abdominal pain" && in_array('Severe/Recurrent abdominal pain',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 31 && $data[$i+1] == "Foul Smelling Vaginal" && in_array('Foul Smelling Vaginal',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 31 && $data[$i+1] == "Weight Loss" && in_array('Weight Loss',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 32 && $data[$i+1] == "Severe/Recurrent Dizziness" && in_array('Severe/Recurrent Dizziness',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 32 && $data[$i+1] == "Orthopnea" && in_array('Orthopnea',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 32 && $data[$i+1] == "Recurrent Constipation" && in_array('Recurrent Constipation',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 32 && $data[$i+1] == "Urethral discharge" && in_array('Urethral discharge',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 32 && $data[$i+1] == "Others, specify:" && $GLOBALS['review_others'] == 'checked' ){
+                    $this->display_check($w,$y);
+                    $this->display_text($x,$y+5,$GLOBALS['review_others_result']);
+                }
+                //
+                elseif($GLOBALS['row'] == 33 && $data[$i+1] == "Blurring of vision" && in_array('Blurring of vision',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 33 && $data[$i+1] == "Chest pain" && in_array('Chest pain',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 33 && $data[$i+1] == "Diarrhea" && in_array('Diarrhea',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 33 && $data[$i+1] == "Dysuria" && in_array('Dysuria',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                //
+                elseif($GLOBALS['row'] == 34 && $data[$i+1] == "Hearing loss" && in_array('Hearing loss',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 34 && $data[$i+1] == "Palpitations" && in_array('Palpitations',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 34 && $data[$i+1] == "Polyphagia" && in_array('Polyphagia',$review_system) ){
+                    $this->display_check($w,$y);
+                }
+                elseif($GLOBALS['row'] == 34 && $data[$i+1] == "Leg pain" && in_array('Leg pain',$review_system) ){
                     $this->display_check($w,$y);
                 }
                 else {
@@ -408,9 +517,9 @@ class PDF_MC_Table extends FPDF
 
 $pdf=new PDF_MC_Table('L','mm','A4');
 include 'dengvaxia_pages/utility_function.php';
-/*$pdf->AddPage();*/
+$pdf->AddPage();
 include 'dengvaxia_pages/page1.php';
-/*$pdf->AddPage();*/
+$pdf->AddPage();
 include 'dengvaxia_pages/page2.php';
 $pdf->AddPage();
 include 'dengvaxia_pages/page3.php';

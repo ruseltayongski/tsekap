@@ -68,7 +68,7 @@
             "box",
             "Dyspnea",
             "box",
-            "Severe/Recurrent abdominal pain ",
+            "Severe/Recurrent abdominal pain",
             "box",
             "Foul Smelling Vaginal",
             "box",

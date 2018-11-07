@@ -1,5 +1,5 @@
 <?php
-    /*$x = 15;
+    $x = 15;
     $GLOBALS['y'] = 3;
     $con_font_size = 7.5;
     $box_content_w = 5;
@@ -343,7 +343,7 @@
             rowCell($pdf,$description,false,array(20,250),$x,$GLOBALS['y'],
                 ["Operations",""],
                 1,'',$con_font_size,$position);
-    }*/
+    }
 
 
 ?>
