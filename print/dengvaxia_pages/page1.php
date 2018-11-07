@@ -6,7 +6,7 @@ $con_font_size = 7.5;
 $box_content_w = 5;
 $box_content_h = 5;
 // Logo
-/*$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
+$pdf->Image(__DIR__.'/../image/doh.png',30,$y,30);
 $pdf->Image(__DIR__.'/../image/logo.png',240,$y,30);
 
 $pdf->SetFont('Arial','B',15);
@@ -416,6 +416,6 @@ if($med_his = json_decode($GLOBALS['api']->medical_history)){
     foreach( $med_his as $row ){
         cellXY($row,$pdf);
     }
-}*/
+}
 
 ?>

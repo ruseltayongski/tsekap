@@ -1,5 +1,5 @@
 <?php
-    $x = 15;
+    /*$x = 15;
     $GLOBALS['y'] = 3;
     $position = "L";
     $pdf->SetLeftMargin($x);
@@ -388,18 +388,21 @@
             "CBC",
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 23;
     rowCell($pdf,$description,false,array(5,265),$x,$GLOBALS['y'],
         [
             "box",
             "Urinalysis",
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 24;
     rowCell($pdf,$description,false,array(5,265),$x,$GLOBALS['y'],
         [
             "box",
             "Chest X-ray, Specify Findings (result):",
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 25;
     rowCell($pdf,$description,false,array(5,110,5,30,5,55),$x,$GLOBALS['y'],
         [
             "box",
@@ -407,15 +410,17 @@
             "box",
             "IgG Positive",
             "box",
-            "IgG Positive"
+            "IgM Positive"
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 26;
     rowCell($pdf,$description,false,array(5,265),$x,$GLOBALS['y'],
         [
             "box",
             "NS1 Test",
         ],
         0,'',$con_font_size,$position);
+    $GLOBALS['row'] = 27;
     rowCell($pdf,$description,false,array(5,265),$x,$GLOBALS['y'],
         [
             "box",
@@ -426,8 +431,7 @@
     $temp = $GLOBALS['y'];
     rowCell($pdf,$description,true,array(270),$x,$GLOBALS[$description.'_y'],
         [""],
-        0,'',$con_font_size,$position);
+        0,'',$con_font_size,$position);*/
 
-    //ANSWER
 
 ?>

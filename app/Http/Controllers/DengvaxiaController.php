@@ -118,7 +118,6 @@ class DengvaxiaController extends Controller
             $medical_history = "";
         }
 
-
         $request->with_medication == "Yes" ? $with_medication = $request->with_medication.' - '.$request->with_medication_spe : $with_medication = $request->with_medication;
         $bronchial_asthma = json_encode([
             "diagnosed" => $request->diagnosed,
@@ -251,6 +250,22 @@ class DengvaxiaController extends Controller
             "dewormed_date" => $request->dewormed_date,
         ]);
 
+        $other_procedures = $request->other_procedures;
+        if(isset($request->xray_result)){
+            $key = array_search('Chest X-ray',$request->other_procedures);
+            $other_procedures[$key] = $other_procedures[$key].' - '.$request->xray_result;
+        }
+        if(isset($request->enzymes_result)){
+            $key = array_search('Enzymes',$request->other_procedures);
+            $other_procedures[$key] = $other_procedures[$key].' - '.$request->enzymes_result;
+        }
+
+        $review_system = $request->review_system;
+        if(!empty($request->review_system_others)){
+            $key = array_search('Others',$request->review_system);
+            $review_system[$key] = $review_system[$key].' - '.$request->review_system_others;
+        }
+
         Dengvaxia::updateOrCreate(
             ['id' => $dengvaxiaID], [
                 "unique_id" => $unique_id,
@@ -283,6 +298,8 @@ class DengvaxiaController extends Controller
                 "personal_history" => $personal_history,
                 "mens_gyne_history" => $gyne_history,
                 "vaccine_history" => $vaccine_history,
+                "other_procedures" => json_encode($other_procedures),
+                "review_systems" => json_encode($review_system),
                 "platform" => "web",
                 "tsekap_id" => $tsekap_id
             ]

@@ -239,8 +239,8 @@
                 <a class="btn btn-info" id="btn_collapse" data-toggle="collapse" href="#phic" aria-expanded="false" aria-controls="collapseExample">
                     PHIC MEMBERSHIP OF PRINCIPAL <small class="text-warning" style="color: white"><em>(PARENTS)</em></small>
                 </a>
-                <div class="collapse" id="phic">
-                    <table class="table table-bordered table-hover"  border="1">
+                <div class="collapse" id="phic" style="padding: 0;">
+                    <table class="table table-bordered table-hover" border="1">
                         <?php $phic = json_decode($dengvaxia->phic_membership) ?>
                         <tr class="has-group">
                             <td>Status :</td>
@@ -340,9 +340,9 @@
                         <tr class="has-group">
                             <td>Medical History :</td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Allergy_med)) echo 'checked'; ?> value="Allergy_med"> Allergy, specify:</label> <input type="text" value="<?php if(isset($med_his->Allergy_med)){if($Allergy_med=explode(' - ',$med_his->Allergy_med)[1])echo $Allergy_med;} ?>" name="Allergy_med">
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Allergy_med)) echo 'checked'; ?> value="Allergy"> Allergy, specify:</label> <input type="text" value="<?php if(isset($med_his->Allergy_med)){if($Allergy_med=explode(' - ',$med_his->Allergy_med)[1])echo $Allergy_med;} ?>" name="Allergy_med">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Asthma_med)) echo 'checked'; ?> value="Asthma_med" > Asthma (Fill-up Bronchial Astma Section)</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Asthma_med)) echo 'checked'; ?> value="Asthma" > Asthma (Fill-up Bronchial Astma Section)</label>
                                 &nbsp;&nbsp;&nbsp;<br />
                                 <label style="cursor: pointer;"><input type="checkbox" name="med_his[]" <?php if(isset($med_his->Tuberculosis_med)) echo 'checked'; ?> value="Tuberculosis_med" > Tuberculosis (If yes, fill-up Tuberculosis Section):</label>
                                 &nbsp;&nbsp;&nbsp;<br />
@@ -798,21 +798,48 @@
                     OTHER PROCEDURE DONE
                 </a>
                 <div class="collapse" id="other_procedure">
+                    <?php
+                    $other_procedures = json_decode($dengvaxia->other_procedures);
+                    $GLOBALS['chestChecked'] = '';
+                    $GLOBALS['chestResult'] = '';
+                    $GLOBALS['EnzymesChecked'] = '';
+                    $GLOBALS['IgG'] = '';
+                    $GLOBALS['IgM'] = '';
+                    if(isset($other_procedures)){
+                        $pattern = 'Chest X-ray*';
+                        $array = array_filter($other_procedures, function($entry) use ($pattern) {
+                            if(fnmatch($pattern, $entry)){
+                                $GLOBALS['chestChecked'] = 'checked';
+                                $GLOBALS['chestResult'] = explode(' - ',$entry)[1];
+                            }
+                        });
+                        $pattern = 'Enzymes*';
+                        $array = array_filter($other_procedures, function($entry) use ($pattern) {
+                            if(fnmatch($pattern, $entry)){
+                                $GLOBALS['EnzymesChecked'] = 'checked';
+                                if(explode(' - ',$entry)[1] == "IgG Positive")
+                                    $GLOBALS['IgG'] = 'checked';
+                                elseif(explode(' - ',$entry)[1] == "IgM Positive")
+                                    $GLOBALS['IgM'] = 'checked';
+                            }
+                        });
+                    }
+                    ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td></td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="cbc" > CBC</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('CBC', $other_procedures))echo 'checked';} ?> value="CBC" > CBC</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="urinalysis" > urinalysis</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('Urinalysis', $other_procedures))echo 'checked';} ?> value="Urinalysis" > Urinalysis</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="chest" > Chest X-ray, Specify Finding (Result)</label> <input type="text" name="oth_che_spe" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" {{ $GLOBALS['chestChecked'] }} value="Chest X-ray" > Chest X-ray, Specify Finding (Result)</label> <input type="text" value="{{ $GLOBALS['chestResult'] }}" name="xray_result" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="oth_che_igg" value="igg_positive"> IgG Positive <input type="radio" name="enzymes_result" value="oth_che_igm"> IgM Positive
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" {{ $GLOBALS['EnzymesChecked'] }} value="Enzymes" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="enzymes_result" {{ $GLOBALS['IgG'] }} value="IgG Positive"> IgG Positive <input type="radio" name="enzymes_result" {{ $GLOBALS['IgM'] }} value="IgM Positive"> IgM Positive
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="ns1_test" > NS1 Test</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('NS1 Test', $other_procedures))echo 'checked';} ?> value="NS1 Test" > NS1 Test</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="oth_pro_don[]" value="pcr" > PCR</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="other_procedures[]" <?php if(isset($other_procedures)){if(in_array('PCR', $other_procedures))echo 'checked';} ?> value="PCR" > PCR</label>
                             </td>
                         </tr>
                     </table>
@@ -822,75 +849,92 @@
                     REVIEW OF SYSTEMS<small style="color: white"><em>(Tick all that apply)</em></small>
                 </a>
                 <div class="collapse" id="review_system">
+                    <?php
+                        $review_system = json_decode($dengvaxia->review_systems);
+                        if(isset($review_system)){
+                            $pattern = 'Others*';
+                            $GLOBALS['reviewOtherChecked'] = '';
+                            $GLOBALS['reviewOtherResult'] = '';
+                            $array = array_filter($review_system, function($entry) use ($pattern) {
+                                if(fnmatch($pattern, $entry)){
+                                    $GLOBALS['reviewOtherChecked'] = 'checked';
+                                    $GLOBALS['reviewOtherResult'] = explode(' - ',$entry)[1];
+                                }
+                            });
+                        }
+                    ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>
                                 REVIEW OF SYSTEMS:
                             </td>
                             <td class="has-group">
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="jaundice" > Jaundice</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Jaundice', $review_system))echo 'checked';} ?> value="Jaundice" > Jaundice</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="pailor" > Pailor</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Pallor', $review_system))echo 'checked';} ?> value="Pallor" > Pallor</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="rashes" > Rashes</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Rashes', $review_system))echo 'checked';} ?> value="Rashes" > Rashes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="severe_headache" > Severe/Recurrent Headache</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent Headache', $review_system))echo 'checked';} ?> value="Severe/Recurrent Headache" > Severe/Recurrent Headache</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="sever_dizziness" > Severe/Recurrent Dizziness</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent Dizziness', $review_system))echo 'checked';} ?> value="Severe/Recurrent Dizziness" > Severe/Recurrent Dizziness</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="blurring" > Blurring og vision</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Blurring of vision', $review_system))echo 'checked';} ?> value="Blurring of vision" > Blurring of vision</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="seizures" > Seizures</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Hearing loss', $review_system))echo 'checked';} ?> value="Hearing loss" > Hearing loss</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="fatigability" > Easy Fatigability</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Seizures', $review_system))echo 'checked';} ?> value="Seizures" > Seizures</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="cough" > Cough/Colds</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Easy Fatigability', $review_system))echo 'checked';} ?> value="Easy Fatigability" > Easy Fatigability</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="dyspnea" > Dyspnea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Cough/Colds', $review_system))echo 'checked';} ?> value="Cough/Colds" > Cough/Colds</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="orthopnea" > Orthopnea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Dyspnea', $review_system))echo 'checked';} ?> value="Dyspnea" > Dyspnea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="chest_pain" > Chest Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Orthopnea', $review_system))echo 'checked';} ?> value="Orthopnea" > Orthopnea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="palpitations" > Palpitations</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Chest pain', $review_system))echo 'checked';} ?> value="Chest pain" > Chest pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="murmur" > Murmur</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Palpitations', $review_system))echo 'checked';} ?> value="Palpitations" > Palpitations</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="breast_pain" > Breast Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Murmur', $review_system))echo 'checked';} ?> value="Murmur" > Murmur</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="nausea" > Nausea and/or vomiting</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Breast pain', $review_system))echo 'checked';} ?> value="Breast pain" > Breast pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="severe" > Severe/Recurrent abdominal pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Nausea and/or vomiting', $review_system))echo 'checked';} ?> value="Nausea and/or vomiting" > Nausea and/or vomiting</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="recurrent" > Recurrent Constipation</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Severe/Recurrent abdominal pain', $review_system))echo 'checked';} ?> value="Severe/Recurrent abdominal pain" > Severe/Recurrent abdominal pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="diarrhea" > Diarrhea</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Recurrent Constipation', $review_system))echo 'checked';} ?> value="Recurrent Constipation" > Recurrent Constipation</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polyphagia" > Polyphagia</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Diarrhea', $review_system))echo 'checked';} ?> value="Diarrhea" > Diarrhea</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polydypsia" > Polydypsia</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polyphagia', $review_system))echo 'checked';} ?> value="Polyphagia" > Polyphagia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="polyuria" > Polyuria</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polydypsia', $review_system))echo 'checked';} ?> value="Polydypsia" > Polydypsia</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="vaginal_bleeding" > Vaginal bleeding</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Polyuria', $review_system))echo 'checked';} ?> value="Polyuria" > Polyuria</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="smelling_vaginal" > Foul Smelling Vaginal</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Vaginal bleeding', $review_system))echo 'checked';} ?> value="Vaginal bleeding" > Vaginal bleeding</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="Urethral discharge" > Urethral discharge</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Foul Smelling Vaginal', $review_system))echo 'checked';} ?> value="Foul Smelling Vaginal" > Foul Smelling Vaginal</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="dysuria" > Dysuria</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Urethral discharge', $review_system))echo 'checked';} ?> value="Urethral discharge" > Urethral discharge</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="leg_pain" > Leg pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Dysuria', $review_system))echo 'checked';} ?> value="Dysuria" > Dysuria</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="joint_pain" > Joint Pain</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Leg pain', $review_system))echo 'checked';} ?> value="Leg pain" > Leg pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="muscle_wasting" > Muscle Wasting</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Joint pain', $review_system))echo 'checked';} ?> value="Joint pain" > Joint pain</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="muscle_weakness" > Muscle Weakness</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Muscle wasting', $review_system))echo 'checked';} ?> value="Muscle wasting" > Muscle wasting</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="rev_sys[]" value="weight_loss" > Weight Loss</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Muscle weakness', $review_system))echo 'checked';} ?> value="Muscle weakness" > Muscle weakness</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Others,specify: </label> <input type="text" name="rev_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" <?php if(isset($review_system)){if(in_array('Weight Loss', $review_system))echo 'checked';} ?> value="Weight Loss" > Weight Loss</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="review_system[]" {{ $GLOBALS['reviewOtherChecked'] }} value="Others" ></label>
+                                <label style="cursor: pointer;">Others,specify: </label> <input type="text" value="{{ $GLOBALS['reviewOtherResult'] }}" name="review_system_others" >
                             </td>
                         </tr>
                     </table>
@@ -900,141 +944,199 @@
                     PERTINENT PHYSICAL EXAMINATION
                 </a>
                 <div class="collapse" id="pertinent_physical">
+                    <?php
+                        $physical_examination = json_decode($dengvaxia->physical_examination);
+                    ?>
                     <table class="table table-bordered table-hover"  border="1">
                         <tr class="has-group">
                             <td>General Status:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="radio" name="per_gen" value="oriented_time" > Oriented to Time, Place, and Date</label>
+                                <label style="cursor: pointer;"><input type="radio" name="general_status" <?php if(isset($physical_examination->general_status)){if($physical_examination->general_status == 'Oriented to Time, Place, and Date')echo 'checked';} ?> value="Oriented to Time, Place, and Date" > Oriented to Time, Place, and Date</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="per_gen" value="conscious" > Conscious</label>
+                                <label style="cursor: pointer;"><input type="radio" name="general_status" <?php if(isset($physical_examination->general_status)){if($physical_examination->general_status == 'Conscious')echo 'checked';} ?> value="Conscious" > Conscious</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="per_gen" value="ambulatory" > Ambulatory</label>
+                                <label style="cursor: pointer;"><input type="radio" name="general_status" <?php if(isset($physical_examination->general_status)){if($physical_examination->general_status == 'Ambulatory')echo 'checked';} ?> value="Ambulatory" > Ambulatory</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="radio" name="per_gen" value="others" > Others, specify:</label> <input type="text" name="pertinent_general_others" >
+                                <label style="cursor: pointer;"><input type="radio" name="general_status" <?php if(isset($physical_examination->general_status)){if(strpos($physical_examination->general_status,'Others') !== false)echo 'checked';} ?> value="Others" > Others, specify:</label> <input type="text" value="<?php if(isset($physical_examination->general_status)){if(strpos($physical_examination->general_status,'Others') !== false)echo explode(' - ',$physical_examination->general_status)[1];} ?> " name="general_status_others" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>Vital Signs:</td>
                             <td>
-                                <label style="cursor: pointer;">BP:</label> <input type="text" name="per_vit_bp" >
+                                <label style="cursor: pointer;">BP:</label> <input type="text" name="bp" value="<?php if(isset($physical_examination->bp)){echo $physical_examination->bp;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">HR:</label> <input type="text" name="per_vit_hr" > <label style="cursor: pointer;">/min</label>
+                                <label style="cursor: pointer;">HR:</label> <input type="text" name="hr" value="<?php if(isset($physical_examination->hr)){echo $physical_examination->hr;} ?>"> <label style="cursor: pointer;">/min</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">RR:</label> <input type="text" name="per_vit_rr" > <label style="cursor: pointer;">/min</label>
+                                <label style="cursor: pointer;">RR:</label> <input type="text" name="rr" value="<?php if(isset($physical_examination->rr)){echo $physical_examination->rr;} ?>"> <label style="cursor: pointer;">/min</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Temp:</label> <input type="text" name="per_vit_tem" > <label style="cursor: pointer;">Degree Celcius</label>
+                                <label style="cursor: pointer;">Temp:</label> <input type="text" name="temp" value="<?php if(isset($physical_examination->temp)){echo $physical_examination->temp;} ?>"> <label style="cursor: pointer;">Degree Celcius</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Blood Type:</label> <input type="text" name="per_vit_blo" >
+                                <label style="cursor: pointer;">Blood Type:</label> <input type="text" name="blood_type" value="<?php if(isset($physical_examination->blood_type)){echo $physical_examination->blood_type;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Weight(kg):</label> <input type="text" name="per_vit_wei" >
+                                <label style="cursor: pointer;">Weight(kg):</label> <input type="text" name="weight" value="<?php if(isset($physical_examination->weight)){echo $physical_examination->weight;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Height(m):</label> <input type="text" name="per_vit_hei" >
+                                <label style="cursor: pointer;">Height(m):</label> <input type="text" name="height" value="<?php if(isset($physical_examination->height)){echo $physical_examination->height;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">BMI:</label> <input type="text" name="per_vit_bmi" >
+                                <label style="cursor: pointer;">BMI:</label> <input type="text" name="bmi" value="<?php if(isset($physical_examination->bmi)){echo $physical_examination->bmi;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Waist(cm):</label> <input type="text" name="per_vit_wai" >
+                                <label style="cursor: pointer;">Waist(cm):</label> <input type="text" name="waist" value="<?php if(isset($physical_examination->waist)){echo $physical_examination->waist;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">Hip(cm):</label> <input type="text" name="per_vit_hip" >
+                                <label style="cursor: pointer;">Hip(cm):</label> <input type="text" name="hip" value="<?php if(isset($physical_examination->hip)){echo $physical_examination->hip;} ?>">
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;">W/H Ratio:</label> <input type="text" name="per_vit_rat" >
+                                <label style="cursor: pointer;">W/H Ratio:</label> <input type="text" name="ratio" value="<?php if(isset($physical_examination->ratio)){echo $physical_examination->ratio;} ?>">
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>SKIN:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ski" value="good_skin" > Good Skin Turgor</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="skin" <?php if(isset($physical_examination->skin)){if($physical_examination->skin == 'Good Skin Turgor')echo 'checked';} ?> value="Good Skin Turgor" > Good Skin Turgor</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ski" value="pailor" > Pallor</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="skin" <?php if(isset($physical_examination->skin)){if($physical_examination->skin == 'Pallor')echo 'checked';} ?> value="Pallor" > Pallor</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ski" value="jaundice" > Jaundice</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="skin" <?php if(isset($physical_examination->skin)){if($physical_examination->skin == 'Jaundice')echo 'checked';} ?> value="Jaundice" > Jaundice</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ski" value="rashes" > Rashes</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="skin" <?php if(isset($physical_examination->skin)){if($physical_examination->skin == 'Rashes')echo 'checked';} ?> value="Rashes" > Rashes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ski" value="lesions" > Lesions,specify others:</label> <input type="text" name="per_ski_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="skin" <?php if(isset($physical_examination->skin)){if(strpos($physical_examination->general_status,'Lesions') !== false)echo 'checked';} ?> value="Lesions" > Lesions,specify others:</label> <input type="text" value="<?php if(isset($physical_examination->skin)){if(strpos($physical_examination->skin,'Lesions') !== false)echo explode(' - ',$physical_examination->skin)[1];} ?> " name="lesions_others" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>HEENT:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="no_significant" > No significant findings</label>
+                                <?php
+                                if(isset($physical_examination->selected_options->heent)){
+                                    $pattern = 'Visual Acuity*';
+                                    $GLOBALS['hentVisualChecked'] = '';
+                                    $GLOBALS['hentVisualOtherResult'] = '';
+                                    $array = array_filter($physical_examination->selected_options->heent, function($entry) use ($pattern) {
+                                        if(fnmatch($pattern, $entry)){
+                                            $GLOBALS['heentVisualChecked'] = 'checked';
+                                            $GLOBALS['hentVisualOtherResult'] = explode(' - ',$entry)[1];
+                                        }
+                                    });
+
+                                    $pattern = 'Palpable mass*';
+                                    $GLOBALS['heentPalpableChecked'] = '';
+                                    $GLOBALS['heentPalpableOtherResult'] = '';
+                                    $array = array_filter($physical_examination->selected_options->heent, function($entry) use ($pattern) {
+                                        if(fnmatch($pattern, $entry)){
+                                            $GLOBALS['heentPalpableChecked'] = 'checked';
+                                            $GLOBALS['heentPalpableOtherResult'] = explode(' - ',$entry)[1];
+                                        }
+                                    });
+
+                                    $pattern = 'Palpable mass*';
+                                    $GLOBALS['heentVisualChecked'] = '';
+                                    $GLOBALS['heentVisualOtherResult'] = '';
+                                    $array = array_filter($physical_examination->selected_options->heent, function($entry) use ($pattern) {
+                                        if(fnmatch($pattern, $entry)){
+                                            $GLOBALS['heentVisualChecked'] = 'checked';
+                                            $GLOBALS['heentVisualOtherResult'] = explode(' - ',$entry)[1];
+                                        }
+                                    });
+
+                                    $pattern = 'Others*';
+                                    $GLOBALS['heentOthersChecked'] = '';
+                                    $GLOBALS['heentOthersOtherResult'] = '';
+                                    $array = array_filter($physical_examination->selected_options->heent, function($entry) use ($pattern) {
+                                        if(fnmatch($pattern, $entry)){
+                                            $GLOBALS['heentOthersChecked'] = 'checked';
+                                            $GLOBALS['heentOtherResult'] = explode(' - ',$entry)[1];
+                                        }
+                                    });
+                                }
+                                ?>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('No significant findings', $physical_examination->selected_options->heent))echo 'checked';} ?>  value="No significant findings" > No significant findings</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="yellowish_sclerae" > Yellowish Sclerae</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Yellowish sclerae', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Yellowish sclerae" > Yellowish sclerae</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="pale_conjunctive" > Pale Conjunctive</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Pale conjunctiva', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Pale conjunctiva" > Pale conjunctiva</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="visual_acuity" > Visual Acuity:</label> <input type="text" name="pertinent_visual_others" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" {{ $GLOBALS['heentVisualChecked'] }} value="Visual Acuity" > Visual Acuity:</label> <input type="text" value="{{ $GLOBALS['heentVisualOtherResult'] }}" name="visual_acuity_others" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="alar_flaring" > Alar flaring:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Alar flaring', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Alar flaring" > Alar flaring:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="nasal_discharge" > Nasal discharge:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Nasal discharge', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Nasal discharge" > Nasal discharge:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="cleft_lip" > Cleft lip:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Cleft lip', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Cleft lip" > Cleft lip:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="cleft_palate" > Cleft palate:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Cleft palate', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Cleft palate" > Cleft palate:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="ear_discharge" > Ear discharge:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Ear discharge', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Ear discharge" > Ear discharge:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="enlarged_tonsils" > Enlarged Tonsils:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Enlarged tonsils', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Enlarged tonsils" > Enlarged tonsils:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="enlarged_thyroid" > Enlarged Thyroid:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" <?php if(isset($physical_examination->selected_options->heent)){if(in_array('Enlarged thyroid', $physical_examination->selected_options->heent))echo 'checked';} ?> value="Enlarged thyroid" > Enlarged thyroid:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="palpable_mass" > Palpable mass, specify site:</label> <input type="text" name="per_pal_spe" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" {{ $GLOBALS['heentPalpableChecked'] }} value="Palpable mass" > Palpable mass, specify site:</label> <input type="text" value="{{ $GLOBALS['heentVisualOtherResult'] }}" name="palpable_mass_specify" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hee[]" value="others" > Others,specify:</label> <input type="text" name="per_oth_spe" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="heent[]" {{ $GLOBALS['heentOthersChecked'] }} value="Others" > Others,specify:</label> <input type="text" value="{{ $GLOBALS['heentOtherResult'] }}" name="others_specify" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>CHEST AND LUNGS:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="no_significant" > No significant findings</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" <?php if(isset($physical_examination->selected_options->lungs)){if(in_array('Enlarged thyroid', $physical_examination->selected_options->lungs))echo 'checked';} ?> value="No Significant findings" > No Significant findings</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="chest_retractions" > Chest retractions</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" <?php if(isset($physical_examination->selected_options->lungs)){if(in_array('Chest retractions', $physical_examination->selected_options->lungs))echo 'checked';} ?> value="Chest retractions" > Chest retractions </label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="crackles" > Crackles/Rales/Harsh breath sounds</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" <?php if(isset($physical_examination->selected_options->lungs)){if(in_array('Crackles/Rales/Harsh breath sounds', $physical_examination->selected_options->lungs))echo 'checked';} ?> value="Crackles/Rales/Harsh breath sounds" > Crackles/Rales/Harsh breath sounds</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="wheezes" > Wheezes</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" <?php if(isset($physical_examination->selected_options->lungs)){if(in_array('Wheezes', $physical_examination->selected_options->lungs))echo 'checked';} ?> value="Wheezes" > Wheezes</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="breast_mass" > Breast mass/discharge</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" <?php if(isset($physical_examination->selected_options->lungs)){if(in_array('Breast mass/discharge', $physical_examination->selected_options->lungs))echo 'checked';} ?> value="breast_mass" > Breast mass/discharge</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_che[]" value="others" > Others,specify:</label> <input type="text" name="per_che_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="lungs[]" value="others" > Others,specify:</label> <input type="text" name="per_che_oth" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>HEART:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hea[]" value="no_significant" > No significant findings</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heart[]" value="No Significant findings" > No Significant findings</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hea[]" value="irregular_pulse" > Irregular pulse</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heart[]" value="Irregular pulse" > Irregular pulse</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hea[]" value="cyanosis" > Cyanosis(lips,nails)</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="heart[]" value="Cyanosis (lips, nails)" > Cyanosis (lips, nails)</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_hea[]" value="others" > Others,specify:</label> <input type="text" name="per_hea_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="heart[]" value="murmur" > murmur, specify:</label> <input type="text" name="murmur_others" >
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="heart[]" value="Others" > Others,specify:</label> <input type="text" name="heart_others" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>ABDOMEN:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_abd[]" value="no_significant" > No significant findings</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="abdomen[]" value="No Significant findings" > No Significant findings</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_abd[]" value="ternerness" > Ternerness</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="abdomen[]" value="Tenderness" > Tenderness</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_abd[]" value="palpable_mass" > Palpable mass, specify site:</label> <input type="text" name="pertinent_abdomen_site" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="abdomen[]" value="Palpable mass" > Palpable mass, specify site:</label> <input type="text" name="palpable_others" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_abd[]" value="others" > Others,specify:</label> <input type="text" name="per_abd_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="abdomen[]" value="Others" > Others,specify:</label> <input type="text" name="abdomen_others" >
                             </td>
                         </tr>
                         <tr class="has-group">
                             <td>EXTREMITIES:</td>
                             <td>
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="abnormal_gait" > Abnormal gait</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities[]" value="Abnormal gait" > Abnormal gait</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="ederma" > ederma</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities[]" value="Edema" > Edema</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="joint_swelling" > Joint swelling:</label>
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities[]" value="Joint swelling" > Joint swelling:</label>
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="gross_deformity,describe:" > Joint swelling:</label> <input type="text" name="per_ext_des" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities[]" value="Gross deformity" > Gross deformity, describe:</label> <input type="text" name="deformity_describe" >
                                 &nbsp;&nbsp;&nbsp;<br />
-                                <label style="cursor: pointer;"><input type="checkbox" name="per_ext[]" value="others" > Others,specify:</label> <input type="text" name="per_ext_oth" >
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities[]" value="Others" > Others,specify:</label> <input type="text" name="extremities_others" >
+                            </td>
+                        </tr>
+                        <tr class="has-group">
+                            <td>EXTREMITIES OTHERS:</td>
+                            <td>
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities_others[]" value="Abnormal gait" > Enzymes Based Rapid Diagnostic Test for Dengue, Specify result:</label> <input type="radio" name="abnormal_gait_others" value="IgG Positive"> IgG Positive <input type="radio" name="IgM Positive" value="IgM Positive"> IgM Positive
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities_others[]" value="NS1 Test" > NS1 Test</label>
+                                &nbsp;&nbsp;&nbsp;<br />
+                                <label style="cursor: pointer;"><input type="checkbox" name="extremities_others[]" value="PCR" > PCR</label>
                             </td>
                         </tr>
                     </table>

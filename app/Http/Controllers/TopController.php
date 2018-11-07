@@ -69,6 +69,49 @@ class TopController extends Controller
 
             });
         })->download('xls');
+
+    }
+
+    public function crossMatchingResult($provinceId,$muncityId){
+        $GLOBALS['provinceId'] = $provinceId;
+        $GLOBALS['muncityId'] = $muncityId;
+        \Excel::create('CrossMatchingResult', function($excel) {
+            $excel->sheet('ALL', function($sheet)
+            {
+                $headerColumn = array("Unique Id","Head","Relation","First Name","Middle Name","Last Name","Suffix","Date of Birth","Sex","Province","Municipality","Barangay");
+
+                $sheet->appendRow($headerColumn);
+                $sheet->row($sheet->getHighestRow(), function ($row) {
+                    $row->setFontFamily('Comic Sans MS');
+                    $row->setFontSize(10);
+                    $row->setFontWeight('bold');
+                    $row->setBackground('#FFFF00');
+                });
+
+                $profile = Profile::where("dengvaxia","=","yes")->where("province_id","=",$GLOBALS['provinceId'])->where("muncity_id","=",$GLOBALS['muncityId'])->get();
+                foreach($profile as $row){
+
+                    $data = [
+                        $row->unique_id,
+                        $row->head,
+                        $row->relation,
+                        $row->fname,
+                        $row->mname,
+                        $row->lname,
+                        $row->suffix,
+                        $row->dob,
+                        $row->sex,
+                        Province::find($row->province_id)->description,
+                        Muncity::find($row->muncity_id)->description,
+                        Barangay::find($row->barangay_id)->description
+                    ];
+
+                    $sheet->appendRow($data);
+                }
+
+            });
+        })->download('xls');
+
     }
 
 }
