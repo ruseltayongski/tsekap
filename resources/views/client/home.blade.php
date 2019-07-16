@@ -13,29 +13,29 @@
 
                         <h3 style="font-weight: bold" class="text-success">WHAT'S NEW?</h3>
                         <?php
-                            $dateNow = date('Y-m-d');
+                        $dateNow = date('Y-m-d');
                         ?>
-                        @if($dateNow==='2017-11-10')
-                        <div class="alert alert-info">
-                            <p class="text-info" style="font-size:1.3em;text-align: center;">
-                                <strong>There will be a server maintenance tomorrow (October 12, 2017), 9:00AM. Don't forget to backup your data. Thank you!</strong>
-                            </p>
-                        </div>
+                        @if($dateNow==='2019-07-16')
+                            <div class="alert alert-info">
+                                <p class="text-info" style="font-size:1.3em;text-align: center;">
+                                    <strong>There will be a server maintenance TODAY (July 16, 2019) at 4:00PM to 04:30PM. Server optimization!</strong>
+                                </p>
+                            </div>
                         @endif
 
                         @if($dateNow<='2018-03-16')
-                        <div class="alert alert-info">
-                            <p class="text-info" style="font-size:1.1em;text-align: center;">
-                                <strong>Target population per Barangay has been updated!</strong>
-                            </p>
-                        </div>
+                            <div class="alert alert-info">
+                                <p class="text-info" style="font-size:1.1em;text-align: center;">
+                                    <strong>Target population per Barangay has been updated!</strong>
+                                </p>
+                            </div>
                         @endif
                         <div class="alert alert-success text-center">
                             <p class="text-success">
-                            For further assistance, please contact <i class="fa fa-phone-square"></i> 418-7633 or 418-4822.<br /> or chat with us <i class="fa fa-facebook-square"></i>
-                            <a href="https://facebook.com/jimmy0923" target="_blank">@Jimmy0923</a> and <a href="https://facebook.com/ronadit.capala" target="_blank">@ronadit.capala</a>
-                            <br />
-                            Thank you!
+                                For further assistance, please contact <i class="fa fa-phone-square"></i> 418-7633 or 418-4822.<br /> or message with us <i class="fa fa-phone"></i>
+                                <a href="#" >Rusel T. Tayong(09238309990),Garizaldy Epistola(09338161374)</a> and <a href="https://facebook.com/ronadit.capala" target="_blank">@ronadit.capala</a>
+                                <br />
+                                Thank you!
                             </p>
                         </div>
                     </div>

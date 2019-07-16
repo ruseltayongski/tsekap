@@ -252,9 +252,11 @@ $brgy = $brgy->orderBy('description','asc')
                             <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                 <i class="fa fa-trash"></i> Delete
                             </button>
-                            <a href="#dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
-                                <i class="fa fa-user-md"></i> Dengvaxia
-                            </a>
+                            <!--
+                                <a href="#dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
+                                    <i class="fa fa-user-md"></i> Dengvaxia
+                                </a>
+                                -->
                         </td>
                     </tr>
                 </table>

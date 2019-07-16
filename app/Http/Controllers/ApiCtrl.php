@@ -180,6 +180,118 @@ class ApiCtrl extends Controller
 
     public function syncProfile(Request $req)
     {
+        try{
+            $con=mysqli_connect("localhost","root","","tsekap_main");
+            $user_id = $req->user_id;
+            if($user_id){
+                $check = User::find($user_id);
+                if(!$check){
+                    return false;
+                }
+
+            }
+            $data = $req->data;
+            $dateNow = date('Y-m-d H:i:s');
+
+            $brgy = Barangay::find($data['barangay_id']);
+            $muncity_id = $brgy->muncity_id;
+            $province_id = $brgy->province_id;
+            $q = "INSERT INTO profile(
+                  unique_id,
+                  familyID,
+                  head,
+                  relation,
+                  fname,
+                  mname,
+                  lname,
+                  suffix,
+                  dob,
+                  sex,
+                  barangay_id,
+                  muncity_id,
+                  province_id,
+                  created_at,
+                  updated_at,
+                  phicID,
+                  nhtsID,
+                  income,
+                  unmet,
+                  water,
+                  toilet,
+                  education
+                  )
+                VALUES(
+                  '".mysqli_real_escape_string($con,$data['unique_id'])."',
+                  '".mysqli_real_escape_string($con,$data['familyID'])."',
+                  '".mysqli_real_escape_string($con,$data['head'])."',
+                  '".mysqli_real_escape_string($con,$data['relation'])."',
+                  '".mysqli_real_escape_string($con,$data['fname'])."',
+                  '".mysqli_real_escape_string($con,$data['mname'])."',
+                  '".mysqli_real_escape_string($con,$data['lname'])."',
+                  '".mysqli_real_escape_string($con,$data['suffix'])."',
+                  '".date('Y-m-d',strtotime($data['dob']))."',
+                  '".$data['sex']."',
+                  '".$data['barangay_id']."',
+                  '$muncity_id',
+                  '$province_id',
+                  '$dateNow',
+                  '$dateNow',
+                  '".mysqli_real_escape_string($con,$data['phicID'])."',
+                  '".mysqli_real_escape_string($con,$data['nhtsID'])."',
+                  '".mysqli_real_escape_string($con,$data['income'])."',
+                  '".mysqli_real_escape_string($con,$data['unmet'])."',
+                  '".mysqli_real_escape_string($con,$data['water'])."',
+                  '".mysqli_real_escape_string($con,$data['toilet'])."',
+                  '".mysqli_real_escape_string($con,$data['education'])."'
+                  )
+            ON DUPLICATE KEY UPDATE
+                familyID = '".mysqli_real_escape_string($con,$data['familyID'])."',
+                head = '".$data['head']."',
+                fname = '".mysqli_real_escape_string($con,$data['fname'])."',
+                mname = '".mysqli_real_escape_string($con,$data['mname'])."',
+                lname = '".mysqli_real_escape_string($con,$data['lname'])."',
+                suffix = '".$data['suffix']."',
+                dob = '".date('Y-m-d',strtotime($data['dob']))."',
+                sex = '".$data['sex']."',
+                relation = '".$data['relation']."',
+                education = '".$data['education']."',
+                phicID = '".$data['phicID']."',
+                nhtsID = '".$data['nhtsID']."',
+                income = '".$data['income']."',
+                unmet = '".$data['unmet']."',
+                water = '".$data['water']."',
+                toilet = '".$data['toilet']."'
+            ";
+
+            DB::select($q);
+
+            $q = "INSERT IGNORE profile_device(profile_id,device) values(
+                '".mysqli_real_escape_string($con,$data['unique_id'])."',
+                'mobile'
+            )";
+            DB::select($q);
+
+            $q = "INSERT IGNORE servicegroup(profile_id,sex,barangay_id,muncity_id) VALUES(
+                '".mysqli_real_escape_string($con,$data['unique_id'])."',
+                '".$data['sex']."',
+                '".$data['barangay_id']."',
+                '$muncity_id'
+            )";
+            $year = date('Y');
+            $db = 'db_'.$year;
+            DB::connection($db)->select($q);
+            return array(
+                'status' => 'success'
+            );
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
+
+    }
+
+    /*public function syncProfile(Request $req)
+    {
         $user_id = $req->user_id;
         if($user_id){
             $check = User::find($user_id);
@@ -281,7 +393,7 @@ class ApiCtrl extends Controller
         return array(
             'status' => 'success'
         );
-    }
+    }*/
 
     public function syncServices(Request $req)
     {

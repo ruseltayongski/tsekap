@@ -107,9 +107,9 @@ class ParameterCtrl extends Controller
         DB::table($table)->where('id',$id)->delete();
         if($table=='profile')
         {
-            DB::table('profileservices')->where('profile_id',$profile_id)->delete();
+            /*DB::table('profileservices')->where('profile_id',$profile_id)->delete();
             DB::table('profilecases')->where('profile_id',$profile_id)->delete();
-            DB::table('servicegroup')->where('profile_id',$profile_id)->delete();
+            DB::table('servicegroup')->where('profile_id',$profile_id)->delete();*/
             return redirect('user/population')->with('status','deleted');
         }
 

@@ -1052,6 +1052,8 @@ class ClientCtrl extends Controller
             ->where('id','!=', Auth::user()->id)
             ->where('user_priv','!=','1')
             ->where('user_priv','!=','3')
+            ->orderBy('lname','asc')
+            ->orderBy('fname','desc')
             ->paginate(10);
         return view('client.add',['users'=>$users]);
     }
