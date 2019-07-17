@@ -241,6 +241,34 @@ $brgy = $brgy->orderBy('description','asc')
                         </td>
                     </tr>
                     <tr>
+                        <td>Hypertension :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='Medical Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='No Avail Medication') echo 'checked'; ?> name="hypertension" class="hypertension" value="No Avail Medication" > No Avail Medication</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Diabetic :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='Medical Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='No Avail Medication') echo 'checked'; ?> name="diabetic" class="diabetic" value="No Avail Medication" > No Avail Medication</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PWD :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=='yes') echo 'checked'; ?> name="pwd" class="pwd" value="yes" style="display:inline;"> Yes</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=='no') echo 'checked'; ?> name="pwd" class="pwd" value="no" > No</label>
+                        </td>
+                    </tr>
+                    <tr class="has-group">
+                        <td>Pregnant Date:</td>
+                        <td><input type="date" value="{{ $info->pregnant }}" name="pregnant" class="form-control" /> </td>
+                    </tr>
+                    <tr>
                         <td></td>
                         <td>
                             <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">

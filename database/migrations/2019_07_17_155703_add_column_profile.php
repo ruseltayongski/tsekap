@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProfileDevice extends Migration
+class AddColumnProfile extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,11 @@ class AddProfileDevice extends Migration
      */
     public function up()
     {
-
-        Schema::create('profile_device', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('profile_id',100)->unique();
-            $table->string('device',100);
-            $table->timestamps();
+        Schema::table('profile', function (Blueprint $table) {
+            $table->string('hypertension')->after('education');
+            $table->string('diabetic')->after('hypertension');
+            $table->string('pwd')->after('diabetic');
+            $table->date('pregnant')->after('pwd');
         });
     }
 

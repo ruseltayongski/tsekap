@@ -218,7 +218,11 @@ class ApiCtrl extends Controller
                   unmet,
                   water,
                   toilet,
-                  education
+                  education,
+                  hypertension,
+                  diabetic,
+                  pwd,
+                  pregnant
                   )
                 VALUES(
                   '".mysqli_real_escape_string($con,$data['unique_id'])."',
@@ -242,7 +246,11 @@ class ApiCtrl extends Controller
                   '".mysqli_real_escape_string($con,$data['unmet'])."',
                   '".mysqli_real_escape_string($con,$data['water'])."',
                   '".mysqli_real_escape_string($con,$data['toilet'])."',
-                  '".mysqli_real_escape_string($con,$data['education'])."'
+                  '".mysqli_real_escape_string($con,$data['education'])."',
+                  '".$data['hypertension']."',
+                  '".$data['diabetic']."',
+                  '".$data['pwd']."',
+                  '".$data['pregnant']."'
                   )
             ON DUPLICATE KEY UPDATE
                 familyID = '".mysqli_real_escape_string($con,$data['familyID'])."',

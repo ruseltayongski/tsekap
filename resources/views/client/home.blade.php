@@ -23,19 +23,52 @@
                             </div>
                         @endif
 
-                        @if($dateNow<='2018-03-16')
+                        @if($dateNow<='2019-07-17')
                             <div class="alert alert-info">
-                                <p class="text-info" style="font-size:1.1em;text-align: center;">
-                                    <strong>Target population per Barangay has been updated!</strong>
+                                <p class="text-info" style="font-size:1.1em;">
+                                    <strong><i class="fa fa-info"></i> The version 2.1 will be released soon</strong>
+                                <ol type="A" style="color: #31708f">
+                                    <li>Adittional field include</li>
+                                    <ul >
+                                        <li>Hypertension</li>
+                                        <li>Diabetic</li>
+                                        <li>PWD</li>
+                                        <li>Pregnant</li>
+                                    </ul>
+                                </ol>
                                 </p>
                             </div>
                         @endif
-                        <div class="alert alert-success text-center">
+                        <div class="alert alert-success ">
                             <p class="text-success">
-                                For further assistance, please contact <i class="fa fa-phone-square"></i> 418-7633 or 418-4822.<br /> or message with us <i class="fa fa-phone"></i>
-                                <a href="#" >Rusel T. Tayong(09238309990),Garizaldy Epistola(09338161374)</a> and <a href="https://facebook.com/ronadit.capala" target="_blank">@ronadit.capala</a>
-                                <br />
-                                Thank you!
+                                <i class="fa fa-phone-square"></i> For further assistance, please message these following:
+                            <ol type="I" style="color: #2f8030">
+                                <li>Technical</li>
+                                <ol type="A">
+                                    <li >Web</li>
+                                    <ul>
+                                        <li>Rusel T. Tayong - 09238309990</li>
+                                    </ul>
+                                    <li >Mobile App</li>
+                                    <ul>
+                                        <li>Christian Dave L. Tipactipac - 09286039028</li>
+                                    </ul>
+                                    <li >Server - Can't access in web http://203.177.67.124/tsekap/vii/login</li>
+                                    <ul>
+                                        <li>Garizaldy B. Epistola - 09338161374</li>
+                                        <li>Reyan M. Sugabo - 09359504269</li>
+                                    </ul>
+                                </ol>
+                                <li>Non - Technical</li>
+                                <ol type="A">
+                                    <li >Update barangay assign, Create new user, update target population etc.</li>
+                                    <ul>
+                                        <li class="text-danger">Ronadith Capala Arriesgado - 09952100815 Please reach via message only</li>
+                                        <li class="text-danger">Grace R. Flores - 09328596338 Please reach via message only</li>
+                                    </ul>
+                                </ol>
+                            </ol>
+                            <h3 class="text-center" style="color: #2f8030">Thank you and enjoy profiling! &#128512;&#128526;</h3>
                             </p>
                         </div>
                     </div>
@@ -46,6 +79,26 @@
     <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
+
+            <div class="col-md-12">
+
+                @if(Auth::user()->user_priv == 2)
+                    <p class="text-center">
+                        <strong>Barangay Completion </strong>
+                    </p>
+                    <?php $profile_percent = 0; ?>
+                    @foreach($barangay as $bar)
+                    <div class="progress-group">
+                        <span class="progress-text">{{ $bar->description }}</span>
+                        <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
+                        <div class="progress sm">
+                            <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
+                        </div>
+                    </div>
+                    @endforeach
+                @endif
+                <!-- /.progress-group -->
+            </div>
             <div class="page-divider"></div>
 
             <div class="col-sm-6 col-xs-12">
@@ -89,7 +142,7 @@
                         <div class="progress">
                             <div class="progress-bar profilePercentageBar"></div>
                         </div>
-                  <span class="progress-description">
+                        <span class="progress-description">
                     <span class="profilePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
                   </span>
                     </div><!-- /.info-box-content -->
@@ -105,7 +158,7 @@
                         <div class="progress">
                             <div class="progress-bar servicePercentageBar"></div>
                         </div>
-                  <span class="progress-description">
+                        <span class="progress-description">
                     <span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
                   </span>
                     </div><!-- /.info-box-content -->
@@ -122,11 +175,11 @@
 @endsection
 
 @section('js')
-<script src="{{ asset('resources/plugin/Chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('resources/plugin/Chart.js/Chart.min.js') }}"></script>
 
-<script>
-    <?php echo 'var url = "'.asset('user/home/count').'";';?>
-       $.ajax({
+    <script>
+        <?php echo 'var url = "'.asset('user/home/count').'";';?>
+        $.ajax({
             url: url,
             type: 'GET',
             success: function(jim) {
@@ -141,54 +194,54 @@
                 $('.servicePercentageBar').css({ width: jim.servicePercentage+'%' })
             }
         });
-    <?php echo 'var url = "'.asset('user/home/chart').'";';?>
-    var jim = [];
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function(jim) {
-            //jim = jQuery.parseJSON(data);
-            //chart created docs
-            var ctx = document.getElementById("montlyProgress");
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: jim.months,
-                    datasets: [{
-                        label: '',
-                        data: jim.count,
-                        backgroundColor: [
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(255,99,132,1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
+            <?php echo 'var url = "'.asset('user/home/chart').'";';?>
+        var jim = [];
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(jim) {
+                //jim = jQuery.parseJSON(data);
+                //chart created docs
+                var ctx = document.getElementById("montlyProgress");
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: jim.months,
+                        datasets: [{
+                            label: '',
+                            data: jim.count,
+                            backgroundColor: [
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
                         }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }]
+                        }
                     }
-                }
-            });
-            //end chart created docs
-        }
-    });
-    $('#notificationModal').modal('show');
-</script>
+                });
+                //end chart created docs
+            }
+        });
+        $('#notificationModal').modal('show');
+    </script>
 @endsection

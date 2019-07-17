@@ -33,7 +33,11 @@ class ClientCtrl extends Controller
     }
 
     public function index(){
-        return view('client.home');
+        $barangay = UserBrgy::select("barangay.*")->leftJoin("barangay","barangay.id","=","userbrgy.barangay_id")->where('userbrgy.user_id',Auth::user()->id)->get();
+
+        return view('client.home',[
+            "barangay" => $barangay
+        ]);
     }
 
     public function count()
@@ -207,16 +211,18 @@ class ClientCtrl extends Controller
 
     public function savePopulation(Request $req)
     {
+        $con=mysqli_connect("localhost","root","","tsekap_main");
         $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
-        $fname = ($req->fname);
-        $mname = ($req->mname);
-        $lname = ($req->lname);
+        $fname = mysqli_real_escape_string($con,($req->fname));
+        $mname = mysqli_real_escape_string($con,($req->mname));
+        $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education)
+        $unique_id = mysqli_real_escape_string($con,$unique_id);
+        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pregnant)
                 VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pregnant')
             ON DUPLICATE KEY UPDATE
                 familyID = '$req->familyID',
                 sex = '$req->sex',
@@ -251,16 +257,18 @@ class ClientCtrl extends Controller
 
     public function saveHeadProfile(Request $req)
     {
+        $con=mysqli_connect("localhost","root","","tsekap_main");
         $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
-        $fname = ($req->fname);
-        $mname = ($req->mname);
-        $lname = ($req->lname);
+        $fname = mysqli_real_escape_string($con,($req->fname));
+        $mname = mysqli_real_escape_string($con,($req->mname));
+        $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education)
+        $unique_id = mysqli_real_escape_string($con,$unique_id);
+        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pregnant)
                 VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pregnant')
             ";
         //echo $q;
         DB::select($q);
@@ -290,9 +298,10 @@ class ClientCtrl extends Controller
             'id' => $id
         );
         Session::put('toDelete',$delete);
-        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','relation','phicID','nhtsID','income','unmet','water','toilet','education')
+        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pregnant')
             ->where('id',$id)
             ->first();
+
         return view('client.updateProfile',['info' => $info ]);
     }
 
@@ -323,7 +332,11 @@ class ClientCtrl extends Controller
                 'sex' => $req->sex,
                 'unmet' => $req->unmet,
                 'barangay_id' => $req->barangay,
-                'education' => $req->education
+                'education' => $req->education,
+                'hypertension' => $req->hypertension,
+                'diabetic' => $req->diabetic,
+                'pwd' => $req->pwd,
+                'pregnant' => $req->pregnant
             );
             if($relation=='Head')
             {
