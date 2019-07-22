@@ -184,17 +184,17 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                     <tr>
                         <td>Hypertension :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label>
                             &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="No Avail Medication" > No Avail Medication</label>
+                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label>
                         </td>
                     </tr>
                     <tr>
                         <td>Diabetic :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label>
                             &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="No Avail Medication" > No Avail Medication</label>
+                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label>
                         </td>
                     </tr>
                     <tr>
@@ -206,7 +206,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Pregnant Date:</td>
+                        <td>Pregnant Date LMP:</td>
                         <td><input type="date" name="pregnant" class="form-control" /> </td>
                     </tr>
                     <tr>

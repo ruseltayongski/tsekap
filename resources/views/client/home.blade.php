@@ -23,7 +23,7 @@
                             </div>
                         @endif
 
-                        @if($dateNow<='2019-07-17')
+                        @if($dateNow >= '2019-07-19' && $dateNow <= '2019-07-22')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.1em;">
                                     <strong><i class="fa fa-info"></i> The version 2.1 will be released soon</strong>
@@ -57,6 +57,7 @@
                                     <ul>
                                         <li>Garizaldy B. Epistola - 09338161374</li>
                                         <li>Reyan M. Sugabo - 09359504269</li>
+                                        <li>Gerwin D. Gorosin - 09436467174 or 09154512989</li>
                                     </ul>
                                 </ol>
                                 <li>Non - Technical</li>
@@ -79,26 +80,6 @@
     <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
-
-            <div class="col-md-12">
-
-                @if(Auth::user()->user_priv == 2)
-                    <p class="text-center">
-                        <strong>Barangay Completion </strong>
-                    </p>
-                    <?php $profile_percent = 0; ?>
-                    @foreach($barangay as $bar)
-                    <div class="progress-group">
-                        <span class="progress-text">{{ $bar->description }}</span>
-                        <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
-                        <div class="progress sm">
-                            <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
-                        </div>
-                    </div>
-                    @endforeach
-                @endif
-                <!-- /.progress-group -->
-            </div>
             <div class="page-divider"></div>
 
             <div class="col-sm-6 col-xs-12">

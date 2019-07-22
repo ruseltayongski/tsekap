@@ -243,9 +243,9 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr>
                         <td>Hypertension :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='Medical Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label>
                             &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='No Avail Medication') echo 'checked'; ?> name="hypertension" class="hypertension" value="No Avail Medication" > No Avail Medication</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='No Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label>
                         </td>
                     </tr>
                     <tr>
@@ -265,7 +265,7 @@ $brgy = $brgy->orderBy('description','asc')
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Pregnant Date:</td>
+                        <td>Pregnant Date LMP:</td>
                         <td><input type="date" value="{{ $info->pregnant }}" name="pregnant" class="form-control" /> </td>
                     </tr>
                     <tr>
