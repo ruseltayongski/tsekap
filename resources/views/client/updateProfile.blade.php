@@ -251,9 +251,9 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr>
                         <td>Diabetic :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='Medical Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="Medical Avail" style="display:inline;"> Medical Avail</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label>
                             &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='No Avail Medication') echo 'checked'; ?> name="diabetic" class="diabetic" value="No Avail Medication" > No Avail Medication</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='No Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label>
                         </td>
                     </tr>
                     <tr>
