@@ -178,7 +178,7 @@
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            version 2.0
+            version 2.1
         </p>
         <p>Copyright &copy; 2017 DOH-RO7 All rights reserved</p>
 
