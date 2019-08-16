@@ -80,7 +80,16 @@
     @endif
     <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
+            <h2 class="page-header">
+                <form action="{{ asset('ExportExcelBarangay') }}" method="POST">
+                    {{ csrf_field() }}
+                    <i class="fa fa-home"></i>
+                    Home
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-download"></i> Download Excel
+                    </button>
+                </form>
+            </h2>
             <div class="col-md-12">
 
                 @if(Auth::user()->user_priv == 2)

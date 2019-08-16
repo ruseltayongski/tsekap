@@ -36,37 +36,37 @@
                     </font>
                 </div>
             @endif
-            <form class="form-inline" method="POST" action="{{ asset('user/population') }}">
-                {{ csrf_field() }}
-                <div class="form-group">
-                    <?php $tmp = Session::get('profileKeyword');?>
-                    <input type="text" class="form-control" placeholder="Quick Search" name="keyword" value="{{ $tmp['keyword'] }}" autofocus>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <form class="form-inline" method="POST" action="{{ asset('user/population') }}">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <?php $tmp = Session::get('profileKeyword');?>
+                            <input type="text" class="form-control" placeholder="Quick Search" name="keyword" value="{{ $tmp['keyword'] }}" autofocus>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        @if(Session::get('profileKeyword'))
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true"><i class="fa fa-search"></i> View All</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <a class="btn btn-info col-xs-12" href="{{ asset('user/population/head') }}"><i class="fa fa-user-plus"></i> Add Family Head Profile</a>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
-                    <div class="clearfix"></div>
-                </div>
-                @if(Session::get('profileKeyword'))
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true"><i class="fa fa-search"></i> View All</button>
-                        <div class="clearfix"></div>
-                    </div>
-                @endif
-                <div class="form-group">
-                    <a class="btn btn-info col-xs-12" href="{{ asset('user/population/head') }}"><i class="fa fa-user-plus"></i> Add Family Head Profile</a>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="form-group">
-                    <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
-                    <div class="clearfix"></div>
-                </div>
-                <!--
-                <div class="form-group">
-                    <a class="btn btn-warning col-xs-12" href="{{ asset('crossMatching').'/'.Auth::user()->province.'/'.Auth::user()->muncity }}"><i class="fa fa-cloud-download"></i> Cross Matching</a>
-                    <div class="clearfix"></div>
-                </div>
-                -->
-            </form>
+            </div>
+
             <div class="clearfix"></div>
             <div class="page-divider"></div>
             <div class="table-responsive">

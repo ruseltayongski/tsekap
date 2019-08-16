@@ -258,3 +258,8 @@ Route::get('sessionProcessPrint/{id}', 'DengvaxiaController@sessionProcessPrint'
 Route::get('topNdp', 'TopController@index');
 Route::get('crossMatching/{provinceId}/{muncityId}', 'DengvaxiaController@crossMatching');
 Route::get('crossMatchingResult/{provinceId}/{muncityId}', 'TopController@crossMatchingResult');
+
+//excel
+Route::get('importView', 'ExcelCtrl@importView');
+Route::post('importExcel', 'ExcelCtrl@importExcel');
+Route::post('ExportExcelBarangay', 'ExcelCtrl@ExportExcelBarangay');
