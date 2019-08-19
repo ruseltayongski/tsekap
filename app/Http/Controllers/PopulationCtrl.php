@@ -16,7 +16,6 @@ class PopulationCtrl extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('user_priv');
     }
 
     public function index(){
@@ -32,7 +31,8 @@ class PopulationCtrl extends Controller
                 $q->where('profile.fname','like',"%$keyword%")
                     ->orwhere('profile.mname','like',"%$keyword%")
                     ->orwhere('profile.lname','like',"%$keyword%")
-                    ->orwhere('profile.familyID','like',"%$keyword%");
+                    ->orwhere('profile.familyID','like',"%$keyword%")
+                    ->orWhereRaw("concat(profile.fname,' ',profile.lname) like '%$keyword%'");
             });
         }
 
