@@ -65,6 +65,7 @@
                                         <form action="{{ asset('ExportExcelBarangay') }}" method="POST" target="_blank">
                                             <input type="hidden" value="{{ $row->id }}" name="muncity_id">
                                             <input type="hidden" value="{{ $row->province_id }}" name="province_id">
+                                            <input type="hidden" value="{{ $s->description }}" name="province">
                                             {{ csrf_field() }}
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fa fa-download"></i> {{ $row->description }}

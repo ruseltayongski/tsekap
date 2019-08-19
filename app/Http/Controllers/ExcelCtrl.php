@@ -40,12 +40,13 @@ class ExcelCtrl extends Controller
     public function ExportExcelBarangay(Request $request)
     {
         $province_id = $request->province_id;
+        $province = $request->province;
         $muncity_id = $request->muncity_id;
         $municipality = Muncity::find($muncity_id)->description;
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
         $type = 'xlsx';
-        $data = \DB::connection('mysql')->select("call GetProfileMunicipality('$province_id','$muncity_id','$municipality')");
+        $data = \DB::connection('mysql')->select("call GetProfileMunicipality('$province_id','$province','$muncity_id','$municipality')");
         $data = json_decode( json_encode($data), true);
 
         return Excel::create($municipality, function($excel) use ($data,$municipality) {
