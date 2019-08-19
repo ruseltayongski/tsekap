@@ -21,6 +21,7 @@
                             <th class="bg-primary">Target</th>
                             <th class="bg-primary">Population<br/>Profiled</th>
                             <th class="bg-primary">(%)</th>
+                            <th>Municipality</th>
                         </tr>
                             @foreach($sub as $s)
                             <?php
@@ -59,6 +60,18 @@
                                 <td>{{ number_format($target) }}</td>
                                 <td>{{ number_format($profile) }}</td>
                                 <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
+                                <td>
+                                    @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
+                                        <form action="{{ asset('ExportExcelBarangay') }}" method="POST" target="_blank">
+                                            <input type="hidden" value="{{ $row->id }}" name="muncity_id">
+                                            <input type="hidden" value="{{ $row->province_id }}" name="province_id">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-download"></i> {{ $row->description }}
+                                            </button>
+                                        </form>
+                                    @endforeach
+                                </td>
                             </tr>
                             @endforeach
                     </table>

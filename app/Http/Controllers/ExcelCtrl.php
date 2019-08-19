@@ -37,10 +37,10 @@ class ExcelCtrl extends Controller
         return back()->with('success', 'Insert Record successfully.');
     }
 
-    public function ExportExcelBarangay()
+    public function ExportExcelBarangay(Request $request)
     {
-        $province_id = Auth::user()->province;
-        $muncity_id = Auth::user()->muncity;
+        $province_id = $request->province_id;
+        $muncity_id = $request->muncity_id;
         $municipality = Muncity::find($muncity_id)->description;
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
@@ -54,8 +54,6 @@ class ExcelCtrl extends Controller
                 $sheet->fromArray($data);
             });
         })->download($type);
-
-
 
 
     }
