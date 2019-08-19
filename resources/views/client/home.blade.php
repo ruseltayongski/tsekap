@@ -85,9 +85,11 @@
                     {{ csrf_field() }}
                     <i class="fa fa-home"></i>
                     Home
+                    <!--
                     <button type="submit" class="btn btn-primary">
                         <i class="fa fa-download"></i> Download Excel
                     </button>
+                    -->
                 </form>
             </h2>
             <div class="col-md-12">
