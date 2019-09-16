@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ServiceGroup extends Model
 {
-    protected $connection = 'mysql';
+    protected $connection = "db_2019";
     protected $table = 'servicegroup';
 }

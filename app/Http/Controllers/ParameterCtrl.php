@@ -220,8 +220,8 @@ class ParameterCtrl extends Controller
         $province_id = $user->province;
         $muncity_id = $user->muncity;
         $count = ProfileServices::select('profileservices.profile_id')
-            ->leftJoin('services','profileservices.service_id','=','services.id')
-            ->leftJoin('muncity','profileservices.muncity_id','=','muncity.id')
+            ->leftJoin('tsekap_main.services','profileservices.service_id','=','services.id')
+            ->leftJoin('tsekap_main.muncity','profileservices.muncity_id','=','muncity.id')
             ->leftJoin('serviceoption','profileservices.profile_id','=','serviceoption.profile_id');
         if($sex && $sex!='all'){
             $count = $count->where('profileservices.sex',"$sex");
@@ -231,8 +231,6 @@ class ParameterCtrl extends Controller
                 $q->where('profileservices.sex','Male')
                     ->orwhere('profileservices.sex','Female');
             });
-
-
         }
 
         if($code!='DRUG' && $code!='ALL' && $code!='SUB' && $code!='others'){
@@ -312,7 +310,7 @@ class ParameterCtrl extends Controller
         }
         $province_id = $user->province;
         $muncity_id = $user->muncity;
-        $count = ProfileCases::leftJoin('muncity','profilecases.muncity_id','=','muncity.id')
+        $count = ProfileCases::leftJoin('tsekap_main.muncity','profilecases.muncity_id','=','muncity.id')
             ->where('profilecases.dateProfile','>=',$start)
             ->where('profilecases.dateProfile','<',$end);
         if($sex){
@@ -332,7 +330,7 @@ class ParameterCtrl extends Controller
         }
 
         if($user->user_priv == 3){
-            $count = $count->where('muncity.province_id',$province_id);
+            $count = $count->where('tsekap_main.province_id',$province_id);
         }else if($user->user_priv == 0){
             $count = $count->where('profilecases.muncity_id',$muncity_id);
         }else if($user->user_priv == 2){
@@ -394,7 +392,7 @@ class ParameterCtrl extends Controller
         $user = Auth::user();
         $start = date('Y').'-01-01';
         $end = (date('Y')+1).'-01-01';
-        $count = ServiceGroup::leftJoin('muncity','servicegroup.muncity_id','=','muncity.id')
+        $count = ServiceGroup::leftJoin('tsekap_main.muncity','servicegroup.muncity_id','=','muncity.id')
             ->where('servicegroup.group1',1)
             ->where('servicegroup.group2',1)
             ->where('servicegroup.group3',1);
@@ -443,7 +441,7 @@ class ParameterCtrl extends Controller
         $muncity_id = $user->muncity;
 
         $count = ServiceGroup::select('servicegroup.profile_id')
-            ->leftJoin('muncity','servicegroup.muncity_id','=','muncity.id');
+            ->leftJoin('tsekap_main.muncity','servicegroup.muncity_id','=','muncity.id');
 
         if($status){
             $count = $count->leftJoin('profileservices','servicegroup.profile_id','=','profileservices.profile_id');
