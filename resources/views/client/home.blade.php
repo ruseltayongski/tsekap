@@ -23,20 +23,22 @@
                             </div>
                         @endif
 
-                        @if($dateNow >= '2019-07-19' && $dateNow <= '2019-07-29')
+                        @if($dateNow >= '2019-10-10' && $dateNow <= '2019-10-10')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.1em;">
-                                    <strong><i class="fa fa-info"></i> Version 2.1 was successfully launch</strong>
-                                <ol type="I" style="color: #31708f">
-                                    <li>Adittional field include</li>
-                                    <ul >
-                                        <li>Hypertension</li>
-                                        <li>Diabetic</li>
-                                        <li>PWD</li>
-                                        <li>Pregnant</li>
-                                    </ul>
-                                    <li>Profile accomplishment per barangay</li>
-                                </ol>
+                                    <strong><i class="fa fa-info"></i> Uploading in mobile application will end today</strong>
+                                    <!--
+                                    <ol type="I" style="color: #31708f">
+                                        <li>Adittional field include</li>
+                                        <ul >
+                                            <li>Hypertension</li>
+                                            <li>Diabetic</li>
+                                            <li>PWD</li>
+                                            <li>Pregnant</li>
+                                        </ul>
+                                        <li>Profile accomplishment per barangay</li>
+                                    </ol>
+                                    -->
                                 </p>
                             </div>
                         @endif
