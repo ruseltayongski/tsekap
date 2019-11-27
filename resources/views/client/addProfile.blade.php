@@ -127,7 +127,7 @@ $brgy = $brgy->orderBy('description','asc')
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" required /> </td>
+                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" id="dob" class="form-control" required /> </td>
                     </tr>
                     <tr>
                         <td>Sex :</td>
