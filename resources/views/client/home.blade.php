@@ -25,7 +25,7 @@
                         @if($dateNow>='2019-11-27' && $dateNow <= '2019-11-29')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.3em;text-align: center;">
-                                    <strong>There will be a maintenance due for upgrading the network in November 29,2019 @2:00 PM to @3:00 PM, the mobile application will be end, after that we will provide a link where you can download the latest version of the app</strong>
+                                    <strong>There will be a server maintenance in November 29,2019 @2:00 PM to @3:00 PM, due for upgrading the network and the mobile application will be end, after that we will provide a link where you can download the latest version of the app</strong>
                                 </p>
                             </div>
                         @endif
