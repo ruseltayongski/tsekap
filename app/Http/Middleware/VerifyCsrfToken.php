@@ -12,7 +12,7 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'api/*','post_dengvaxia/{id}'
+        'api/*','apiv21/*','post_dengvaxia/{id}'
     ];
 
     protected function tokensMatch($request)

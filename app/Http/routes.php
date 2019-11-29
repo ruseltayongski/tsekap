@@ -241,7 +241,12 @@ Route::get('negros',function(){
 });
 
 Route::get('api','ApiCtrl@api');
+Route::get('apiv21','ApiCtrlv21@api');
+
 Route::post('api/syncprofile','ApiCtrl@syncProfile');
+Route::post('apiv21/syncprofilev21','ApiCtrlv21@syncProfile');
+
+
 Route::post('api/syncservices','ApiCtrl@syncServices');
 
 //RUSEL

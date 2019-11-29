@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Input;
 use App\Dengvaxia;
 
 
-class ApiCtrlv1 extends Controller
+class ApiCtrlv21 extends Controller
 {
 
     public function api()
@@ -192,7 +192,6 @@ class ApiCtrlv1 extends Controller
             }
             $data = $req->data;
             $dateNow = date('Y-m-d H:i:s');
-
             $brgy = Barangay::find($data['barangay_id']);
             $muncity_id = $brgy->muncity_id;
             $province_id = $brgy->province_id;
@@ -268,7 +267,11 @@ class ApiCtrlv1 extends Controller
                 income = '".$data['income']."',
                 unmet = '".$data['unmet']."',
                 water = '".$data['water']."',
-                toilet = '".$data['toilet']."'
+                toilet = '".$data['toilet']."',
+                '".$data['hypertension']."',
+                '".$data['diabetic']."',
+                '".$data['pwd']."',
+                '".$data['pregnant']."'
             ";
 
             DB::select($q);
@@ -297,111 +300,6 @@ class ApiCtrlv1 extends Controller
         }
 
     }
-
-    /*public function syncProfile(Request $req)
-    {
-        $user_id = $req->user_id;
-        if($user_id){
-            $check = User::find($user_id);
-            if(!$check){
-                return false;
-            }
-
-        }
-        $data = $req->data;
-        $dateNow = date('Y-m-d H:i:s');
-
-        $brgy = Barangay::find($data['barangay_id']);
-        $muncity_id = $brgy->muncity_id;
-        $province_id = $brgy->province_id;
-        $q = "INSERT INTO profile(
-                  unique_id,
-                  familyID,
-                  head,
-                  relation,
-                  fname,
-                  mname,
-                  lname,
-                  suffix,
-                  dob,
-                  sex,
-                  barangay_id,
-                  muncity_id,
-                  province_id,
-                  created_at,
-                  updated_at,
-                  phicID,
-                  nhtsID,
-                  income,
-                  unmet,
-                  water,
-                  toilet,
-                  education
-                  )
-                VALUES(
-                  '".$data['unique_id']."',
-                  '".$data['familyID']."',
-                  '".$data['head']."',
-                  '".$data['relation']."',
-                  '".$data['fname']."',
-                  '".$data['mname']."',
-                  '".$data['lname']."',
-                  '".$data['suffix']."',
-                  '".date('Y-m-d',strtotime($data['dob']))."',
-                  '".$data['sex']."',
-                  '".$data['barangay_id']."',
-                  '$muncity_id',
-                  '$province_id',
-                  '$dateNow',
-                  '$dateNow',
-                  '".$data['phicID']."',
-                  '".$data['nhtsID']."',
-                  '".$data['income']."',
-                  '".$data['unmet']."',
-                  '".$data['water']."',
-                  '".$data['toilet']."',
-                  '".$data['education']."'
-                  )
-            ON DUPLICATE KEY UPDATE
-                familyID = '".$data['familyID']."',
-                head = '".$data['head']."',
-                fname = '".$data['fname']."',
-                mname = '".$data['mname']."',
-                lname = '".$data['lname']."',
-                suffix = '".$data['suffix']."',
-                dob = '".date('Y-m-d',strtotime($data['dob']))."',
-                sex = '".$data['sex']."',
-                relation = '".$data['relation']."',
-                education = '".$data['education']."',
-                phicID = '".$data['phicID']."',
-                nhtsID = '".$data['nhtsID']."',
-                income = '".$data['income']."',
-                unmet = '".$data['unmet']."',
-                water = '".$data['water']."',
-                toilet = '".$data['toilet']."'
-            ";
-
-        DB::select($q);
-
-        $q = "INSERT IGNORE profile_device(profile_id,device) values(
-                '".$data['unique_id']."',
-                'mobile'
-            )";
-        DB::select($q);
-
-        $q = "INSERT IGNORE servicegroup(profile_id,sex,barangay_id,muncity_id) VALUES(
-                '".$data['unique_id']."',
-                '".$data['sex']."',
-                '".$data['barangay_id']."',
-                '$muncity_id'
-            )";
-        $year = date('Y');
-        $db = 'db_'.$year;
-        DB::connection($db)->select($q);
-        return array(
-            'status' => 'success'
-        );
-    }*/
 
     public function syncServices(Request $req)
     {
