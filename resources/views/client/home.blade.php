@@ -22,11 +22,19 @@
                                 </p>
                             </div>
                         @endif
-                        @if($dateNow>='2019-11-27' && $dateNow <= '2019-11-29')
-                            <div class="alert alert-info">
-                                <p class="text-info" style="font-size:1.3em;text-align: center;">
-                                    <strong>There will be a server maintenance in November 29,2019 @2:00 PM to @3:00 PM, due for upgrading the network.The mobile application will be end that day, after that we will provide a link where you can download the latest version of the app</strong>
-                                </p>
+                        @if($dateNow>='2019-11-27' && $dateNow <= '2019-11-30')
+                            <div class="alert alert-warning">
+                                <span class="text-warning" style="font-size:1.1em;">
+                                    <strong><i class="fa fa-warning"></i> Network server was successfully upgraded</strong><br>
+                                    <ol type="I" style="color: #f34a0f !important;font-size: 10pt;margin-top: 10px;">
+                                        <li>
+                                            Mobile Applicatin link:
+                                            <a href="{{ url('/resources/apk/PHA Check-App.apk') }}" class="btn-sm btn-warning">
+                                                <i class="fa fa-android"></i> PHA Check-App v2.0
+                                            </a>
+                                        </li>
+                                    </ol>
+                                </span>
                             </div>
                         @endif
 
