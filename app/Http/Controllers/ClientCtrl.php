@@ -206,7 +206,7 @@ class ClientCtrl extends Controller
 
     public function addPopulation($id)
     {
-        return view('client.addProfile',['id' => $id]);
+        return view('client.addProfile', ['id' => $id]);
     }
 
     public function savePopulation(Request $req)

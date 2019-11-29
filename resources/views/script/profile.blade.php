@@ -115,7 +115,6 @@
     $('#dob').on('keyup','keydown',function(){
         calculateAge();
     });
-    $('.sex')
     function calculateAge(){
         var dob = $('#dob').val();
         var sex = $('input[name="sex"]:checked').val();
