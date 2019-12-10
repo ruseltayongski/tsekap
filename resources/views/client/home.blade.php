@@ -37,7 +37,30 @@
                                 </span>
                             </div>
                         @endif
-
+                        @if($dateNow>='2019-12-10' && $dateNow <= '2019-12-12')
+                            <div class="alert alert-warning">
+                                <span class="text-warning" style="font-size:1.1em;">
+                                    <strong><i class="fa fa-warning"></i>
+                                        There will be a server maintenance on (December 12, 2019) at 3:00PM to 03:30PM
+                                    </strong><br>
+                                    <ol type="I" style="color: #f34a0f !important;font-size: 10pt;margin-top: 10px;">
+                                        <li>Server Optimization</li>
+                                        <li>Changing the url of PHA-CHECK-UP</li>
+                                        <li>After the configuration, the new url <span class="badge bg-red">203.177.67.125/tsekap/vii/login</span></li>
+                                        <li>After the configuration we will released the <span class="badge bg-red">mobile app version 2.1</span></li>
+                                        <li>The mobile app <span class="badge bg-red">version 2.0 below will not longer to use</span> thank you.</li>
+                                        <!--
+                                        <li>
+                                            Mobile Application new link to download:
+                                            <a href="{{ url('/resources/apk/PHA Check-App.apk') }}" class="btn-sm btn-warning">
+                                                <i class="fa fa-android"></i> PHA Check-App v2.1
+                                            </a>
+                                        </li>
+                                        -->
+                                    </ol>
+                                </span>
+                            </div>
+                        @endif
                         @if($dateNow >= '2019-10-10' && $dateNow <= '2019-10-10')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.1em;">
