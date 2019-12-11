@@ -61,6 +61,19 @@
                                 </span>
                             </div>
                         @endif
+                        @if($dateNow>='2019-12-12')
+                            <div class="alert alert-warning">
+                                <span class="text-warning" style="font-size:1.1em;">
+                                    <strong><i class="fa fa-warning"></i>
+                                        The server maintenance schedule has been postponed today
+                                    </strong>
+                                    <ol type="I" style="color: #f34a0f !important;font-size: 10pt;margin-top: 10px;">
+                                        <li>The url of web still retained</li>
+                                        <li>The mobile app v2.0 still be used</li>
+                                    </ol>
+                                </span>
+                            </div>
+                        @endif
                         @if($dateNow >= '2019-10-10' && $dateNow <= '2019-10-10')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.1em;">
