@@ -37,7 +37,7 @@
                                 </span>
                             </div>
                         @endif
-                        @if($dateNow>='2019-12-10' && $dateNow <= '2019-12-12')
+                        @if($dateNow>='2019-12-10' && $dateNow <= '2019-12-10')
                             <div class="alert alert-warning">
                                 <span class="text-warning" style="font-size:1.1em;">
                                     <strong><i class="fa fa-warning"></i>
