@@ -111,6 +111,20 @@ return [
             'engine' => null,
         ],
 
+        'db_2020' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'port' => '3306',
+            'database' => 'tsekap_2020',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'dengvaxia' => [
             'driver' => 'mysql',
             'host' => $host,
