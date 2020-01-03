@@ -126,7 +126,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/report/status')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        <!--
                         <li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
+                        -->
                         <li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>
                     </ul>
                 </li>
