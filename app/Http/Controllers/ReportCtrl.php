@@ -119,6 +119,13 @@ class ReportCtrl extends Controller
         return $profile;
     }
 
+    static function getLackProfile($id,$condition)
+    {
+        $profile = Profile::select(DB::raw("COUNT(id) as count"))->where('barangay_id',$id)->where($condition,"!=","");
+        $profile = $profile->first()->count;
+        return $profile;
+    }
+
     static function countValidService2($level,$id)
     {
         $start = date('Y').'-01-01';

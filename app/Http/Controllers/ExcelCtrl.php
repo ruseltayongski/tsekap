@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
+use App\dengvaxia\Profile;
 use App\Muncity;
 use App\Province;
 use App\User;
@@ -144,8 +145,135 @@ class ExcelCtrl extends Controller
 
 
         })->download('xlsx');
-
-
     }
+
+    public function NumberColumnProfiled(){
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
+        Excel::create('NDP PROFILED', function($excel) {
+
+            $province = Province::orderBy("description","asc")->get();
+            foreach($province as $prov){
+                $barangay = Barangay::select(
+                    "barangay.id",
+                    "muncity.description as muncity",
+                    "barangay.description as barangay",
+                    "barangay.target"
+                )
+                    ->Join("Muncity","muncity.id","=","barangay.muncity_id")
+                    ->where("barangay.province_id","=",$prov->id)
+                    ->orderBy("muncity.description","asc")
+                    ->orderBy("barangay.description","asc")
+                    ->get();
+
+                $excel->sheet($prov->description, function($sheet) use ($prov,$barangay) {
+
+                    $headerColumn = [
+                        "Province",
+                        "Municipality",
+                        "Barangay",
+                        "NDP Assigned",
+                        "Target",
+                        "Profiled",
+                        "Accomplishment Rate",
+                        "First Name",
+                        "Middle Name",
+                        "Last Name",
+                        "Birthdate",
+                        "Sex",
+                        "Income",
+                        "Unmet Need",
+                        "Safe Water",
+                        "Toilet",
+                        "Education",
+                        "Hypertension",
+                        "Diabetic",
+                        "PWD",
+                        "Pregnant"
+                    ];
+
+                    $sheet->appendRow($headerColumn);
+                    $sheet->row($sheet->getHighestRow(), function ($row) {
+                        $row->setFontFamily('Comic Sans MS');
+                        $row->setFontSize(10);
+                        $row->setFontWeight('bold');
+                        $row->setBackground('#FFFF00');
+                    });
+
+                    foreach($barangay as $bar){
+                        $ndp_assigned = '';
+                        $userBrgy = UserBrgy::where('barangay_id',$bar->id)->get();
+                        $user_count = 0;
+                        foreach($userBrgy as $user_brgy){
+                            $ndp_user = User::where("id","=",$user_brgy->user_id)->first();
+                            if(isset($ndp_user)){
+                                $user_count++;
+                                $ndp_name = $user_count.'.) '.$ndp_user->fname." ".$ndp_user->mname." ".$ndp_user->lname;
+                                $ndp_name = strtoupper($ndp_name);
+                                $ndp_assigned .= $ndp_name."\n";
+                            }
+                        }
+
+                        $profile = Report::getProfile('brgy',$bar->id);
+                        $target = $bar->target;
+
+                        if($target==0){
+                            $target=$profile;
+                        }
+
+                        if($profile==0){
+                            $profilePercentage = 0;
+                        }else{
+                            $profilePercentage = ($profile / $target) * 100;
+                        }
+
+                        $fname = Report::getLackProfile($bar->id,"fname");
+                        $mname = Report::getLackProfile($bar->id,"mname");
+                        $lname = Report::getLackProfile($bar->id,"lname");
+                        $dob = Report::getLackProfile($bar->id,"dob");
+                        $sex = Report::getLackProfile($bar->id,"sex");
+                        $income = Report::getLackProfile($bar->id,"income");
+                        $unmet = Report::getLackProfile($bar->id,"unmet");
+                        $water = Report::getLackProfile($bar->id,"water");
+                        $toilet = Report::getLackProfile($bar->id,"toilet");
+                        $education = Report::getLackProfile($bar->id,"education");
+                        $hypertension = Report::getLackProfile($bar->id,"hypertension");
+                        $diabetic = Report::getLackProfile($bar->id,"diabetic");
+                        $pwd = Report::getLackProfile($bar->id,"pwd");
+                        $pregnant = Report::getLackProfile($bar->id,"pregnant");
+
+                        $data = [
+                            $prov->description,
+                            $bar->muncity,
+                            $bar->barangay,
+                            $ndp_assigned,
+                            $target,
+                            $profile,
+                            number_format((float)$profilePercentage, 0, '.', '')."%",
+                            $fname,
+                            $mname,
+                            $lname,
+                            $dob,
+                            $sex,
+                            $income,
+                            $unmet,
+                            $water,
+                            $toilet,
+                            $education,
+                            $hypertension,
+                            $diabetic,
+                            $pwd,
+                            $pregnant
+                        ];
+                        $sheet->appendRow($data);
+                    }
+                });
+            }
+
+
+        })->download('xlsx');
+    }
+
 
 }
