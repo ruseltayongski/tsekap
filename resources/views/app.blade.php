@@ -130,7 +130,7 @@
                         <li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
                         -->
                         <li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>
-                        <li><a href="{{ asset('NdpLackProfile') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>
+                        <li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>
                     </ul>
                 </li>
                 @if(Auth::user()->user_priv==1)
