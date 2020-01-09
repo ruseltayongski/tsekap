@@ -269,3 +269,4 @@ Route::get('importView', 'ExcelCtrl@importView');
 Route::post('importExcel', 'ExcelCtrl@importExcel');
 Route::post('ExportExcelBarangay', 'ExcelCtrl@ExportExcelBarangay');
 Route::get('NdpProfileExcel', 'ExcelCtrl@NdpProfileExcel');
+Route::get('NumberColumnProfiled', 'ExcelCtrl@NumberColumnProfiled');
