@@ -150,6 +150,7 @@ class ExcelCtrl extends Controller
     public function NumberColumnProfiled(){
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
+        ini_set('MAX_EXECUTION_TIME', '-1');
 
         Excel::create('NDP PROFILED', function($excel) {
 
