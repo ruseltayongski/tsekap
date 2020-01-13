@@ -276,5 +276,77 @@ class ExcelCtrl extends Controller
         })->download('xlsx');
     }
 
+    public function ProfiledByFamilyId(){
+        ini_set('MAX_EXECUTION_TIME', '-1');
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
+        Excel::create('ProfiledByFamilyId', function($excel) {
+
+            $province = Province::orderBy("description","asc")->get();
+            foreach($province as $prov){
+                $barangay = Barangay::select(
+                    "barangay.id",
+                    "muncity.description as muncity",
+                    "barangay.description as barangay",
+                    "barangay.target"
+                )
+                    ->Join("Muncity","muncity.id","=","barangay.muncity_id")
+                    ->where("barangay.province_id","=",$prov->id)
+                    ->orderBy("muncity.description","asc")
+                    ->orderBy("barangay.description","asc")
+                    ->get();
+
+                $excel->sheet($prov->description, function($sheet) use ($prov,$barangay) {
+
+                    $headerColumn = [
+                        "Province",
+                        "Municipality",
+                        "Barangay",
+                        "NDP Assigned",
+                        "Family Profiled",
+                    ];
+
+                    $sheet->appendRow($headerColumn);
+                    $sheet->row($sheet->getHighestRow(), function ($row) {
+                        $row->setFontFamily('Comic Sans MS');
+                        $row->setFontSize(10);
+                        $row->setFontWeight('bold');
+                        $row->setBackground('#FFFF00');
+                    });
+
+                    foreach($barangay as $bar){
+                        $ndp_assigned = '';
+                        $userBrgy = UserBrgy::where('barangay_id',$bar->id)->get();
+                        $user_count = 0;
+                        foreach($userBrgy as $user_brgy){
+                            $ndp_user = User::where("id","=",$user_brgy->user_id)->first();
+                            if(isset($ndp_user)){
+                                $user_count++;
+                                $ndp_name = $user_count.'.) '.$ndp_user->fname." ".$ndp_user->mname." ".$ndp_user->lname;
+                                $ndp_name = strtoupper($ndp_name);
+                                $ndp_assigned .= $ndp_name."\n";
+                            }
+                        }
+
+                        $family_profiled = Report::getProfiledByFamilyId($bar->id);
+
+                        $data = [
+                            $prov->description,
+                            $bar->muncity,
+                            $bar->barangay,
+                            $ndp_assigned,
+                            $family_profiled
+                        ];
+                        $sheet->appendRow($data);
+                    }
+                });
+            }
+
+
+        })->download('xlsx');
+    }
+
+
 
 }

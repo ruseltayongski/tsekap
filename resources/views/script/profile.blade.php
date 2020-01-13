@@ -121,15 +121,19 @@
         if(!dob){
             dob = "{{ date('Y-m-d') }}";
         }
+        console.log(dob);
         $.ajax({
             url : "{{ url('user/profile/age/') }}/"+dob,
             type : 'GET',
             success: function(age){
+
                if(age>14 && age<50){
                     if(sex==='Female'){
                         $('.unmetClass').removeClass('hide');
+                        $('.pregnant_lmp').removeClass('hide');
                     }else{
                         $('.unmetClass').addClass('hide');
+                        $('.pregnant_lmp').addClass('hide');
                         $('#unmet').val('0');
                         $('#unmet2').val('Not set');
                     }
