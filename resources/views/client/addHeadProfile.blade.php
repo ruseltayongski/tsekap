@@ -205,7 +205,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                             <label style="cursor: pointer;"><input type="radio" name="pwd" class="pwd" value="no" > No</label>
                         </td>
                     </tr>
-                    <tr class="has-group">
+                    <tr class="has-group hide pregnant_lmp">
                         <td>Pregnant Date LMP:</td>
                         <td><input type="date" name="pregnant" class="form-control" /> </td>
                     </tr>
@@ -251,8 +251,10 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
             if(sex==='Female')
             {
                 $('.unmet').removeClass('hide');
+                $('.pregnant_lmp').removeClass('hide');
             }else{
                 $('.unmet').addClass('hide');
+                $('.pregnant_lmp').addClass('hide');
                 $('#unmet').val('0');
                 $('#unmet2').val('Not set');
             }

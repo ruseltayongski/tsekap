@@ -126,6 +126,17 @@ class ReportCtrl extends Controller
         return $profile;
     }
 
+    static function getProfiledByFamilyId($id)
+    {
+        $sub = \App\Profile::where("barangay_id",$id)->groupBy("familyId"); // Eloquent Builder instance
+
+        $count = DB::table( DB::raw("({$sub->toSql()}) as sub") )
+            ->mergeBindings($sub->getQuery())
+            ->count();
+
+        return $count;
+    }
+
     static function countValidService2($level,$id)
     {
         $start = date('Y').'-01-01';

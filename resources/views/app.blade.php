@@ -131,6 +131,7 @@
                         -->
                         <li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>
                         <li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>
+                        <li><a href="{{ asset('ProfiledByFamilyId') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Profiled By FamilyId</a></li>
                     </ul>
                 </li>
                 @if(Auth::user()->user_priv==1)

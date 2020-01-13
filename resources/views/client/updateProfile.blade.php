@@ -264,7 +264,7 @@ $brgy = $brgy->orderBy('description','asc')
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=='no') echo 'checked'; ?> name="pwd" class="pwd" value="no" > No</label>
                         </td>
                     </tr>
-                    <tr class="has-group">
+                    <tr class="has-group hide pregnant_lmp">
                         <td>Pregnant Date LMP:</td>
                         <td><input type="date" value="{{ $info->pregnant }}" name="pregnant" class="form-control" /> </td>
                     </tr>
