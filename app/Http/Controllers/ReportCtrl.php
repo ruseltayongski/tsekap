@@ -59,7 +59,7 @@ class ReportCtrl extends Controller
 
         if($muncity_id){
             $title = Muncity::find($muncity_id)->description;
-            $sub = Barangay::orderBy('description','asc')->where('muncity_id',$muncity_id)->get();
+            $sub = \DB::connection('mysql')->select("call getBarangay('$muncity_id')");;
             $level = 'brgy';
         }else if($province_id){
             $title = Province::find($province_id)->description;
