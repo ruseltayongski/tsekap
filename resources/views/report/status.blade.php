@@ -14,94 +14,99 @@
         <div class="alert alert-jim">
             <h3 class="page-header">Status Report</h3>
             <div class="clearfix"></div>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
+                    <tr>
+                        <th class="bg-primary">{{ $title }}</th>
+                        <th class="bg-primary">Target</th>
+                        <th class="bg-primary">Population<br/>Profiled</th>
+                        <th class="bg-primary">(%)</th>
+                        @if($level == 'province')
+                            <th class="bg-primary text-center">
+                                Municipality
+                            </th>
+                        @endif
+                        @if($level == 'brgy')
+                            <th class="bg-primary">
+                                No. of children <br><small>(0-59 mos)</small>
+                            </th>
+                        @endif
+                    </tr>
+                    <?php
+                    $child_count = 0;
+                    ?>
+                        @foreach($sub as $s)
+                        <?php
+                            $c++;
+                            $target = $s->target;
+                            $profile = Report::getProfile($level,$s->id);
+
+                            if($target==0){
+                                $target=$profile;
+                            }
+
+                            if($profile==0){
+                                $profilePercentage = 0;
+                            }else{
+                                $profilePercentage = ($profile / $target) * 100;
+                            }
+
+                            $a = $profilePercentage;
+                            $class = 'danger';
+                            if($a>=0 && $a<=20){
+                                $class = 'danger';
+                            }else if($a>20 && $a<=40){
+                                $class = 'warning';
+                            }else if($a>40 && $a<=60){
+                                $class = 'info';
+                            }else if($a>60 && $a<=80){
+                                $class = 'success';
+                            }else if($a>80){
+                                $class = 'aqua';
+                            }
+
+                        ?>
                         <tr>
-                            <th class="bg-primary">{{ $title }}</th>
-                            <th class="bg-primary">Target</th>
-                            <th class="bg-primary">Population<br/>Profiled</th>
-                            <th class="bg-primary">(%)</th>
+                            <td>{{ $s->description }} {{ $level }}</td>
+                            <td>{{ number_format($target) }}</td>
+                            <td>{{ number_format($profile) }}</td>
+                            <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
                             @if($level == 'province')
-                                <th class="bg-primary text-center">
-                                    Municipality
-                                </th>
+                            <td>
+                                @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
+                                    <div class="btn-group">
+                                        <form action="{{ asset('ExportExcelBarangay') }}" method="POST" target="_blank">
+                                            <input type="hidden" value="{{ $row->id }}" name="muncity_id">
+                                            <input type="hidden" value="{{ $row->province_id }}" name="province_id">
+                                            <input type="hidden" value="{{ $s->description }}" name="province">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn-sm btn-primary">
+                                                <i class="fa fa-download"></i> {{ $row->description }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                @endforeach
+                            </td>
                             @endif
                             @if($level == 'brgy')
-                                <th class="bg-primary">
-                                    No. of children <br><small>(0-59 mos)</small>
-                                </th>
+                                <td>
+                                    {{ $s->child }}
+                                    <?php
+                                        $child_count += $s->child;
+                                    ?>
+                                </td>
                             @endif
                         </tr>
-                        <?php
-                        $child_count = 0;
-                        ?>
-                            @foreach($sub as $s)
-                            <?php
-                                $c++;
-                                $target = $s->target;
-                                $profile = Report::getProfile($level,$s->id);
-
-                                if($target==0){
-                                    $target=$profile;
-                                }
-
-                                if($profile==0){
-                                    $profilePercentage = 0;
-                                }else{
-                                    $profilePercentage = ($profile / $target) * 100;
-                                }
-
-                                $a = $profilePercentage;
-                                $class = 'danger';
-                                if($a>=0 && $a<=20){
-                                    $class = 'danger';
-                                }else if($a>20 && $a<=40){
-                                    $class = 'warning';
-                                }else if($a>40 && $a<=60){
-                                    $class = 'info';
-                                }else if($a>60 && $a<=80){
-                                    $class = 'success';
-                                }else if($a>80){
-                                    $class = 'aqua';
-                                }
-
-                            ?>
+                        @endforeach
+                        @if($level == 'brgy')
                             <tr>
-                                <td>{{ $s->description }} {{ $level }}</td>
-                                <td>{{ number_format($target) }}</td>
-                                <td>{{ number_format($profile) }}</td>
-                                <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
-                                @if($level == 'province')
-                                <td>
-                                    @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
-                                        <div class="btn-group">
-                                            <form action="{{ asset('ExportExcelBarangay') }}" method="POST" target="_blank">
-                                                <input type="hidden" value="{{ $row->id }}" name="muncity_id">
-                                                <input type="hidden" value="{{ $row->province_id }}" name="province_id">
-                                                <input type="hidden" value="{{ $s->description }}" name="province">
-                                                {{ csrf_field() }}
-                                                <button type="submit" class="btn-sm btn-primary">
-                                                    <i class="fa fa-download"></i> {{ $row->description }}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @endforeach
+                                <td colspan="4" class="text-right">
+                                    0-59 mos Total:
                                 </td>
-                                @endif
-                                @if($level == 'brgy')
-                                    <td>
-                                        {{ $s->child }}
-                                        <?php
-                                            $child_count += $s->child;
-                                        ?>
-                                    </td>
-                                @endif
+                                <td >{{ $child_count }}</td>
                             </tr>
-                            @endforeach
-                    </table>
-                </div>
-            <div >
-                {{ $child_count }}
+                        @endif
+                </table>
             </div>
         </div>
     </div>
