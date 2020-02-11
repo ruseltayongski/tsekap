@@ -26,7 +26,15 @@
                                     Municipality
                                 </th>
                             @endif
+                            @if($level == 'brgy')
+                                <th class="bg-primary">
+                                    No. of children <br><small>(0-59 mos)</small>
+                                </th>
+                            @endif
                         </tr>
+                        <?php
+                        $child_count = 0;
+                        ?>
                             @foreach($sub as $s)
                             <?php
                                 $c++;
@@ -42,7 +50,6 @@
                                 }else{
                                     $profilePercentage = ($profile / $target) * 100;
                                 }
-
 
                                 $a = $profilePercentage;
                                 $class = 'danger';
@@ -81,11 +88,21 @@
                                     @endforeach
                                 </td>
                                 @endif
+                                @if($level == 'brgy')
+                                    <td>
+                                        {{ $s->child }}
+                                        <?php
+                                            $child_count += $s->child;
+                                        ?>
+                                    </td>
+                                @endif
                             </tr>
                             @endforeach
                     </table>
                 </div>
-
+            <div >
+                {{ $child_count }}
+            </div>
         </div>
     </div>
 @endsection
