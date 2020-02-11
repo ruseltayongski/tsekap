@@ -90,7 +90,7 @@
                             @endif
                             @if($level == 'brgy')
                                 <td>
-                                    {{ $s->child }}
+                                    {{ number_format($s->child) }}
                                     <?php
                                         $child_count += $s->child;
                                     ?>
@@ -103,7 +103,7 @@
                                 <td colspan="4" class="text-right">
                                     0-59 mos Total:
                                 </td>
-                                <td >{{ $child_count }}</td>
+                                <td >{{ number_format($child_count) }}</td>
                             </tr>
                         @endif
                 </table>
