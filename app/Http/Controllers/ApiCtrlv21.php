@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use App\Dengvaxia;
+use App\Http\Controllers\AphroditeConnCtrl as aphrodite_conn;
 
 
 class ApiCtrlv21 extends Controller
@@ -181,7 +182,7 @@ class ApiCtrlv21 extends Controller
     public function syncProfile(Request $req)
     {
         try{
-            $con=mysqli_connect("localhost","root","","tsekap_main");
+            $con=aphrodite_conn::AphroditeConn();
             $user_id = $req->user_id;
             if($user_id){
                 $check = User::find($user_id);

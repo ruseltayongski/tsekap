@@ -22,6 +22,7 @@ use App\ServiceOption;
 use App\ProfileCases;
 use App\FemaleStatus;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AphroditeConnCtrl as aphrodite_conn;
 
 
 class ClientCtrl extends Controller
@@ -211,7 +212,7 @@ class ClientCtrl extends Controller
 
     public function savePopulation(Request $req)
     {
-        $con=mysqli_connect("localhost","root","","tsekap_main");
+        $con=aphrodite_conn::AphroditeConn();
         $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
         $fname = mysqli_real_escape_string($con,($req->fname));
@@ -257,7 +258,7 @@ class ClientCtrl extends Controller
 
     public function saveHeadProfile(Request $req)
     {
-        $con=mysqli_connect("localhost","root","","tsekap_main");
+        $con=aphrodite_conn::AphroditeConn();
         $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
         $fname = mysqli_real_escape_string($con,($req->fname));
