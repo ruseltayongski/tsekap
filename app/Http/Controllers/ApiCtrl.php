@@ -561,5 +561,9 @@ class ApiCtrl extends Controller
         return $data;
     }
 
+    public function getUsers(){
+        return User::get();
+    }
+
 
 }
