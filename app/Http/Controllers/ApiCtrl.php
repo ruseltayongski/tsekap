@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
+use App\Bracket;
+use App\Cases;
+use App\Device;
+use App\Feedback;
 use App\Muncity;
 use App\Profile;
+use App\Province;
+use App\Service;
 use App\ServiceGroup;
 use App\User;
 use App\UserBrgy;
@@ -561,7 +567,86 @@ class ApiCtrl extends Controller
     }
 
     public function getUsers(){
+        if(Input::get('count'))
+            return User::count();
+
         return User::get();
+    }
+
+    public function getBarangay(){
+        if(Input::get('count'))
+            return Barangay::count();
+
+        return Barangay::get();
+    }
+
+    public function getBrackets(){
+        if(Input::get('count'))
+            return Bracket::count();
+
+        return Bracket::get();
+    }
+
+    public function getCases(){
+        if(Input::get('count'))
+            return Cases::count();
+
+        return Cases::get();
+    }
+
+    public function getFeedback(){
+        if(Input::get('count'))
+            return Feedback::count();
+
+        return Feedback::get();
+    }
+
+    public function getMuncity(){
+        if(Input::get('count'))
+            return Muncity::count();
+
+        return Muncity::get();
+    }
+
+    public function getProfile($offset,$limit){
+        if(Input::get('count'))
+            return Profile::count();
+
+        return Profile::offset($offset)
+            ->limit($limit)
+            ->get();
+    }
+
+    public function getProfileDevice($offset,$limit){
+        if(Input::get('count'))
+            return Device::count();
+
+        return Device::offset($offset)
+            ->limit($limit)
+            ->get();
+    }
+
+    public function getProvince(){
+        if(Input::get('count'))
+            return Province::count();
+
+        return Province::get();
+    }
+
+    public function getServices(){
+        if(Input::get('count'))
+            return Service::count();
+
+        return Service::get();
+    }
+
+    public function getUserBrgy($offset,$limit){
+        if(Input::get('count'))
+            return UserBrgy::count();
+
+        return UserBrgy::offset($offset)
+            ->limit($limit)
+            ->get();
     }
 
 
