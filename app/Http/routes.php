@@ -246,7 +246,17 @@ Route::post('api/syncprofile','ApiCtrl@syncProfile');
 Route::post('apiv21/syncprofilev21','ApiCtrlv21@syncProfile');
 Route::post('api/syncservices','ApiCtrl@syncServices');
 
-Route::get('api/users','ApiCtrl@getUsers');
+Route::get('api/users/xQQQt5FVpy2bH2WJk0cY4nkDJVe3pOyU','ApiCtrl@getUsers');
+Route::get('api/barangay/jryarUWnsKDrPJoRGDRUcD4Bofbakif7','ApiCtrl@getBarangay');
+Route::get('api/brackets/bpiQj6XvkM5uceikTflASTz4ndesvKso','ApiCtrl@getBrackets');
+Route::get('api/cases/fqZvUqILCTEhujhnWOHAFW9ylNJa8giY','ApiCtrl@getCases');
+Route::get('api/feedback/rUiXXyGlxIPFOxaP152fkX2NWgC1lUZX','ApiCtrl@getFeedback');
+Route::get('api/muncity/KhhkVQmAuykkG2K4WgAaZM6jO0nWz6Yd','ApiCtrl@getMuncity');
+Route::get('api/profile/koFi2jImlFLSqs7ObyNExBePYsk6iKth/{offset}/{limit}','ApiCtrl@getProfile');
+Route::get('api/profile_device/x6ubxP0lotYU1TpCdK0W0icVgcKDlZnq/{offset}/{limit}','ApiCtrl@getProfileDevice');
+Route::get('api/province/hPSKFkWhBtNtYiU70Ud4nvwIKV8fmXqp','ApiCtrl@getProvince');
+Route::get('api/services/58eqDKCL4HRO1oUxnCXzG0g1GS14fIWa','ApiCtrl@getServices');
+Route::get('api/userbrgy/4D7PzqmsPHkHLhQU84bcVO5d9Pp0B2Fp/{offset}/{limit}','ApiCtrl@getUserBrgy');
 
 //RUSEL
 Route::get('verify_dengvaxia/{id}/{unique_id}','DengvaxiaController@verify_dengvaxia');
