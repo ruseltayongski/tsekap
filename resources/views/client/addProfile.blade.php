@@ -175,6 +175,7 @@ $brgy = $brgy->orderBy('description','asc')
                                 <option value="college_grad">College Graduate</option>
                                 <option value="vocational">Vocational Course</option>
                                 <option value="master">Masteral Degree</option>
+                                <option value="unable_provide">Unable to provide</option>
                             </select>
                         </td>
                     </tr>

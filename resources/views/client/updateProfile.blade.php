@@ -175,6 +175,7 @@ $brgy = $brgy->orderBy('description','asc')
                                 <option value="5" {{ ($info->income==5) ? 'selected':null }}>Between 78,900 to 118,350</option>
                                 <option value="6" {{ ($info->income==6) ? 'selected':null }}>Between 118,350 to 157,800</option>
                                 <option value="7" {{ ($info->income==7) ? 'selected':null }}>At least 157,800</option>
+                                <option value="8" {{ ($info->income==8) ? 'selected':null }}>Unable to provide</option>
                             </select>
                         </td>
                     </tr>
@@ -237,6 +238,7 @@ $brgy = $brgy->orderBy('description','asc')
                                 <option value="college_grad" {{ ($info->education=='college_grad') ? 'selected':null }}>College Graduate</option>
                                 <option value="vocational" {{ ($info->education=='vocational') ? 'selected':null }}>Vocational Course</option>
                                 <option value="master" {{ ($info->education=='master') ? 'selected':null }}>Masteral Degree</option>
+                                <option value="unable_provide" {{ ($info->education=='unable_provide') ? 'selected':null }}>Unable to provide</option>
                             </select>
                         </td>
                     </tr>

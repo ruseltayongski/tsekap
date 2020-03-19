@@ -126,6 +126,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="5">Between 78,900 to 118,350</option>
                                 <option value="6">Between 118,350 to 157,800</option>
                                 <option value="7">At least 157,800</option>
+                                <option value="8">Unable to provide</option>
                             </select>
                         </td>
                     </tr>
@@ -178,6 +179,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="college_grad">College Graduate</option>
                                 <option value="vocational">Vocational Course</option>
                                 <option value="master">Masteral Degree</option>
+                                <option value="unable_provide">Unable to provide</option>
                             </select>
                         </td>
                     </tr>
