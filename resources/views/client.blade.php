@@ -182,7 +182,7 @@ use App\Province;
     </div>
 </nav>
 
-<div class="container">
+<div class="container container_body">
     <div class="loading"></div>
     @yield('content')
     <div class="clearfix"></div>
