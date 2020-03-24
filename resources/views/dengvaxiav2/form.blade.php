@@ -128,9 +128,9 @@
                                     <select name="" id="" class="form-control">
                                         <option value="rc">RC</option>
                                         <option value="christian">Christian</option>
-                                        <option value="inc">Female</option>
-                                        <option value="islam">Female</option>
-                                        <option value="jehovah">Female</option>
+                                        <option value="inc">Inc</option>
+                                        <option value="islam">Muslim</option>
+                                        <option value="jehovah">Jehovah</option>
                                     </select>
                                 </td>
                             </tr>
@@ -140,9 +140,21 @@
                                 <td>
                                     <small class="text-green">Level of Education</small>
                                     <select name="" id="" class="form-control">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
+                                        <option value="male">Elementary</option>
+                                        <option value="female">High School</option>
+                                        <option value="female">Vocational</option>
+                                        <option value="female">No Completed Schooling</option>
                                     </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="table table-hover table-striped" style="margin-top: -25px">
+                            <tr>
+                                <td>
+                                    <small class="text-green">Family History</small>
+                                </td>
+                                <td>
+
                                 </td>
                             </tr>
                         </table>

@@ -2,9 +2,6 @@
 @section('content')
     @if(!Session::get('featuress'))
         <?php Session::put('features',true); ?>
-        <style>
-
-        </style>
         <div class="modal fade" tabindex="-1" role="dialog" id="notificationModal" style="margin-top: 30px;z-index: 99999 ">
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
@@ -74,26 +71,17 @@
                                 </span>
                             </div>
                         @endif
-                        @if($dateNow >= '2019-10-10' && $dateNow <= '2019-10-10')
+                        @if($dateNow >= '2020-03-24' && $dateNow <= '2020-04-13')
                             <div class="alert alert-info">
                                 <p class="text-info" style="font-size:1.1em;">
-                                    <strong><i class="fa fa-info"></i> Uploading in mobile application will end today</strong>
-                                    <!--
+                                    <strong><i class="fa fa-info"></i> Check-Up version 3.0 will be released soon</strong>
                                     <ol type="I" style="color: #31708f">
-                                        <li>Adittional field include</li>
-                                        <ul >
-                                            <li>Hypertension</li>
-                                            <li>Diabetic</li>
-                                            <li>PWD</li>
-                                            <li>Pregnant</li>
-                                        </ul>
-                                        <li>Profile accomplishment per barangay</li>
+                                        <li>Dengvaxia profiling will be included on this system</li>
                                     </ol>
-                                    -->
                                 </p>
                             </div>
                         @endif
-                        <div class="alert alert-success ">
+                        <div class="alert alert-success " id="announcement_body">
                             <p class="text-success">
                                 <i class="fa fa-phone-square"></i> For further assistance, please message these following:
                             <ol type="I" style="color: #2f8030">
@@ -123,7 +111,7 @@
                                     </ul>
                                 </ol>
                             </ol>
-                            <h3 class="text-center" style="color: #2f8030">Thank you and enjoy profiling! &#128512;&#128526;</h3>
+                            <h3 class="text-center" style="color: #2f8030">Thank you and enjoy profiling!</h3>
                             </p>
                         </div>
                     </div>
