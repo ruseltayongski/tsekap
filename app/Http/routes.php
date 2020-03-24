@@ -277,6 +277,7 @@ Route::get('crossMatchingResult/{provinceId}/{muncityId}', 'TopController@crossM
 Route::get('importView', 'ExcelCtrl@importView');
 Route::post('importExcel', 'ExcelCtrl@importExcel');
 Route::post('ExportExcelBarangay', 'ExcelCtrl@ExportExcelBarangay');
+Route::post('ExportExcelMunicipality', 'ExcelCtrl@ExportExcelMunicipality');
 Route::get('NdpProfileExcel', 'ExcelCtrl@NdpProfileExcel');
 Route::get('NumberColumnProfiled', 'ExcelCtrl@NumberColumnProfiled');
 Route::get('ProfiledByFamilyId', 'ExcelCtrl@ProfiledByFamilyId');

@@ -42,7 +42,7 @@ class ExcelCtrl extends Controller
         return back()->with('success', 'Insert Record successfully.');
     }
 
-    public function ExportExcelBarangay(Request $request)
+    public function ExportExcelMunicipality(Request $request)
     {
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
@@ -56,6 +56,26 @@ class ExcelCtrl extends Controller
 
         return Excel::create($municipality, function($excel) use ($data,$municipality) {
             $excel->sheet($municipality, function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
+    }
+
+    public function ExportExcelBarangay(Request $request)
+    {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        $barangay_id = $request->barangay_id;
+        $province = Province::find($request->province_id)->description;
+        $municipality = Muncity::find($request->muncity_id)->description;
+        $barangay = $request->barangay;
+        $type = 'xlsx';
+        $data = \DB::connection('mysql')->select("call GetProfileBarangay('$barangay_id','$province','$municipality','$barangay')");
+
+        $data = json_decode( json_encode($data), true);
+        return Excel::create($barangay, function($excel) use ($data,$barangay) {
+            $excel->sheet($barangay, function($sheet) use ($data)
             {
                 $sheet->fromArray($data);
             });
