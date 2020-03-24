@@ -1,0 +1,58 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProfileBarangay`(in barangay_id int,in province varchar(100),in municipality varchar(100),in barangay varchar(100))
+BEGIN
+
+	SELECT
+		pro.familyID,
+        pro.head,
+        pro.relation,
+        province as province,
+        municipality as municipality,
+        barangay as barangay,
+        concat(pro.fname," ",pro.mname," ",pro.lname,' ',pro.suffix) as name,
+        pro.dob,
+        TIMESTAMPDIFF(YEAR, dob, CURDATE()) AS age,
+        pro.sex,
+		CASE
+			WHEN pro.income = 1 THEN "Less than 7,890"
+			WHEN pro.income = 2 THEN "Between 7,890 to 15,780"
+            WHEN pro.income = 3 THEN "Between 15,780 to 31,560"
+            WHEN pro.income = 4 THEN "Between 31,560 to 78,900"
+            WHEN pro.income = 5 THEN "Between 78,900 to 118,350"
+            WHEN pro.income = 6 THEN "Between 118,350 to 157,800"
+            WHEN pro.income = 7 THEN "At least 157,800"
+		END as income,
+        CASE
+			WHEN pro.unmet = 1 THEN "Women of Reproductive Age who wants to limit/space but no access to Family Planning Method."
+			WHEN pro.unmet = 2 THEN "Couples and individuals who are fecund and sexually active and report not wanting any more children or wanting to delay the next pregnancy but are not using any Family Planning Method."
+            WHEN pro.unmet = 3 THEN "Currently using Family Planning Method but in inappropriate way thus leading to pregnancy."
+		END as unmet,
+        CASE
+			WHEN pro.water = 1 THEN "Farthest user is not more than 250m from point source"
+			WHEN pro.water = 2 THEN "Farthest user is not more than 25m from communal faucet"
+            WHEN pro.water = 3 THEN "It has service connection from system."
+		END as water,
+        CASE
+			WHEN pro.toilet = "non" THEN "Farthest user is not more than 250m from point source"
+			WHEN pro.toilet = "comm" THEN "Farthest user is not more than 25m from communal faucet"
+            WHEN pro.toilet = "indi" THEN "It has service connection from system."
+		END as toilet,
+        CASE
+			WHEN pro.education = "non" THEN "No Education"
+			WHEN pro.education = "elem" THEN "Elementary Level"
+            WHEN pro.education = "elem_grad" THEN "Elementary Graduate"
+            WHEN pro.education = "high" THEN "High School Level"
+            WHEN pro.education = "high_grad" THEN "High School Graduate"
+            WHEN pro.education = "college" THEN "College Level"
+            WHEN pro.education = "college_grad" THEN "College Graduate"
+            WHEN pro.education = "vocational" THEN "Vocational Course"
+            WHEN pro.education = "master" THEN "Masteral Degree"
+		END as education,
+        pro.hypertension,
+        pro.diabetic,
+        pro.pwd,
+        pro.pregnant
+    from tsekap_main.profile pro
+    where pro.barangay_id = barangay_id
+    order by pro.familyID asc,pro.head desc;
+
+END

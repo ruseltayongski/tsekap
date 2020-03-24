@@ -273,11 +273,15 @@ Route::get('topNdp', 'TopController@index');
 Route::get('crossMatching/{provinceId}/{muncityId}', 'DengvaxiaController@crossMatching');
 Route::get('crossMatchingResult/{provinceId}/{muncityId}', 'TopController@crossMatchingResult');
 
-    //excel
+//excel
 Route::get('importView', 'ExcelCtrl@importView');
 Route::post('importExcel', 'ExcelCtrl@importExcel');
 Route::post('ExportExcelBarangay', 'ExcelCtrl@ExportExcelBarangay');
+Route::post('ExportExcelMunicipality', 'ExcelCtrl@ExportExcelMunicipality');
 Route::get('NdpProfileExcel', 'ExcelCtrl@NdpProfileExcel');
 Route::get('NumberColumnProfiled', 'ExcelCtrl@NumberColumnProfiled');
 Route::get('ProfiledByFamilyId', 'ExcelCtrl@ProfiledByFamilyId');
+
+//DENGVAXIA version 2
+Route::get("deng/form","DengController@form");
 

@@ -67,7 +67,24 @@
 
                         ?>
                         <tr>
-                            <td>{{ $s->description }} {{ $level }}</td>
+                            <td>
+                                @if($level == 'brgy')
+                                    <div class="btn-group">
+                                        <form action="{{ asset('ExportExcelBarangay') }}" method="POST">
+                                            <input type="hidden" value="{{ $s->id }}" name="barangay_id">
+                                            <input type="hidden" value="{{ $s->province_id }}" name="province_id">
+                                            <input type="hidden" value="{{ $s->muncity_id }}" name="muncity_id">
+                                            <input type="hidden" value="{{ $s->description }}" name="barangay">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn-sm btn-primary">
+                                                <i class="fa fa-download"></i> {{ $s->description }}
+                                            </button>
+                                        </form>
+                                    </div>
+                                @else
+                                {{ $s->description }} {{ $level }}
+                                @endif
+                            </td>
                             <td>{{ number_format($target) }}</td>
                             <td>{{ number_format($profile) }}</td>
                             <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
@@ -75,7 +92,7 @@
                             <td>
                                 @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
                                     <div class="btn-group">
-                                        <form action="{{ asset('ExportExcelBarangay') }}" method="POST" target="_blank">
+                                        <form action="{{ asset('ExportExcelMunicipality') }}" method="POST">
                                             <input type="hidden" value="{{ $row->id }}" name="muncity_id">
                                             <input type="hidden" value="{{ $row->province_id }}" name="province_id">
                                             <input type="hidden" value="{{ $s->description }}" name="province">

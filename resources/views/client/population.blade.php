@@ -95,11 +95,9 @@
                                 <a href="{{ asset('user/population/add/' . $p->familyID) }}" class="btn btn-xs btn-info">
                                     <i class="fa fa-user-plus"></i> Add Member
                                 </a>
-                                @if($p->dengvaxia == "yes")
                                 <a href="#dengvaxia" data-backdrop="static" data-id="{{ $p->id }}" data-unique="{{ $p->unique_id }}" class="btn btn-xs btn-danger"  data-toggle="modal">
                                     <i class="fa fa-user-md"></i> Dengvaxia
                                 </a>
-                                @endif
                             </td>
                             <td>
                                 <a href="#familyProfile" data-backdrop="static" data-id="{{ $p->familyID }}" data-toggle="modal" class="title-info">
