@@ -284,11 +284,9 @@ $brgy = $brgy->orderBy('description','asc')
                                 <i class="fa fa-trash"></i> Delete
                             </button>
                             @endif
-                            <!--
-                                <a href="#dengvaxia" data-backdrop="static" data-id="{{ $info->profile_id }}" data-unique="{{ $info->unique_id }}" class="btn btn-primary btn-sm"  data-toggle="modal">
-                                    <i class="fa fa-user-md"></i> Dengvaxia
-                                </a>
-                                -->
+                            <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
+                                <i class="fa fa-user-md"></i> Proceed to dengvaxia
+                            </a>
                         </td>
                     </tr>
                 </table>

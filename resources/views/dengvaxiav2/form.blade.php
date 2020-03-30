@@ -15,7 +15,7 @@
             color: #a94442;
         }
     </style>
-    <div class="row text-green">
+    <div class="row " style="color:rgba(0,0,0,0.75);">
         <div class="col-md-12">
             <div class="alert alert-jim">
                 <h3 class="text-green">Dengvaxia Vaccinee Health Profile</h3>
