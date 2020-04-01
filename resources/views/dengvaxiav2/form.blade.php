@@ -1375,6 +1375,19 @@
                             <textarea name="" class="form-control" id="" cols="30" rows="10"></textarea>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="pull-right">
+                                <a href="{{ asset('user/population') }}" class="btn btn-default">
+                                    <i class="fa fa-arrow-left"></i> Back
+                                </a>
+                                <button class="btn btn-success" type="button"><i class="fa fa-save"></i> Save</button>
+                                <a href="{{ asset('deng/pdf') }}" type="button" class="btn btn-primary btn">
+                                    <i class="fa fa-file-pdf-o"></i> Generate PDF
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>

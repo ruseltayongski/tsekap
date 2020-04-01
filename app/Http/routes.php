@@ -284,4 +284,5 @@ Route::get('ProfiledByFamilyId', 'ExcelCtrl@ProfiledByFamilyId');
 
 //DENGVAXIA version 2
 Route::get("deng/form","DengController@form");
+Route::get("deng/pdf","DengController@pdf");
 
