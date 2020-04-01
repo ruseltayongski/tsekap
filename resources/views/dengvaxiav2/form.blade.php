@@ -36,36 +36,36 @@
                             <b>Individual Vaccination Card</b><br>
                             <small><b>Name of Vacinee</b></small><br>
                             <small class=" ">Last Name</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="lname">
                         </td>
                         <td>
                             <br><br>
                             <small class=" ">First Name</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="fname">
                         </td>
                         <td style="width: 10%">
                             <br><br>
                             <small class=" ">MI</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="mi">
                         </td>
                         <td style="width: 10%" colspan="2">
                             <br><br>
                             <small class=" ">Ext</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="ext">
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <small class=" ">Relation to household head</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="relation">
                         </td>
                         <td>
                             <small class=" ">Respondent</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="respondent">
                         </td>
                         <td colspan="3">
                             <small class=" ">Contact No</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="contact_no">
                         </td>
                     </tr>
                 </table>
@@ -74,27 +74,39 @@
                         <td>
                             <small><b>Address</b></small><br>
                             <small class=" ">House No. & Street Name</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="house_and_street">
                         </td>
                         <td>
                             <br>
                             <small class=" ">Sitio/Purok</small>
-                            <input type="text" class="form-control" >
+                            <input type="text" class="form-control" name="purok">
                         </td>
                         <td >
                             <br>
                             <small class=" ">Barangay</small>
-                            <input type="text" class="form-control" >
+                            <select name="barangay" class="form-control">
+                                @foreach(\App\Barangay::get() as $row)
+                                    <option value="{{ $row->id }}">{{ $row->description }}</option>
+                                @endforeach
+                            </select>
                         </td>
                         <td >
                             <br>
                             <small class=" ">Municipality</small>
-                            <input type="text" class="form-control" >
+                            <select name="municipality" class="form-control">
+                                @foreach(\App\Muncity::get() as $row)
+                                    <option value="{{ $row->id }}">{{ $row->description }}</option>
+                                @endforeach
+                            </select>
                         </td>
                         <td >
                             <br>
                             <small class=" ">Province</small>
-                            <input type="text" class="form-control" >
+                            <select name="province" class="form-control">
+                                @foreach(\App\Province::get() as $row)
+                                    <option value="{{ $row->id }}">{{ $row->description }}</option>
+                                @endforeach
+                            </select>
                         </td>
                     </tr>
                 </table>
@@ -102,14 +114,14 @@
                     <tr>
                         <td>
                             <small class=" ">Sex</small>
-                            <select name="" id="" class="form-control">
+                            <select name="sex" class="form-control">
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </select>
                         </td>
                         <td style="width: 10%">
                             <small class=" ">Age</small>
-                            <input type="text" class="form-control">
+                            <input type="text" name="age" class="form-control">
                         </td>
                         <td >
                             <small class=" ">Religion</small><br>
@@ -142,15 +154,15 @@
                     <tr>
                         <td>
                             <small class=" ">Birthdate</small>
-                            <input type="text" class="form-control">
+                            <input type="text" name="dob" class="form-control">
                         </td>
                         <td>
                             <small class=" ">Birthplace(Mun/City/Prov)</small>
-                            <input type="text" class="form-control">
+                            <input type="text" name="birthplace" class="form-control">
                         </td>
                         <td >
                             <small class=" ">Yrs. at Current Address</small>
-                            <input type="text" class="form-control">
+                            <input type="text" name="yrs_current_address" class="form-control">
                         </td>
                     </tr>
                 </table>
@@ -176,15 +188,15 @@
                     <tr>
                         <td>
                             <small><b>Status</b></small><br>
-                            <input type="checkbox"> Member
+                            <input type="checkbox" name="phic_status"> Member
                         </td>
                         <td>
                             <br>
-                            <input type="checkbox"> Dependent
+                            <input type="checkbox" name="phic_status"> Dependent
                         </td>
                         <td>
                             <br>
-                            <input type="checkbox"> Non-Member
+                            <input type="checkbox" name="phic_status"> Non-Member
                         </td>
                     </tr>
                 </table>
@@ -612,9 +624,12 @@
                         <td><input type="text" class="form-control"></td>
                         <td><input type="text" class="form-control"></td>
                     </tr>
+                    <tbody id="hospital_history_row">
+
+                    </tbody>
                     <tr>
                         <td colspan="7">
-                            <a href="#" class="pull-right"><i class="fa fa-plus"></i> Add row</a>
+                            <a href="#" class="pull-right" onclick="addHospitalHistory()"><i class="fa fa-plus"></i> Add row</a>
                         </td>
                     </tr>
                 </table>
@@ -630,9 +645,12 @@
                             <input type="text" class="form-control" >
                         </td>
                     </tr>
+                    <tbody id="past_surgical_row">
+
+                    </tbody>
                     <tr>
                         <td colspan="2">
-                            <a href="#" class="pull-right"><i class="fa fa-plus"></i> Add row</a>
+                            <a href="#" class="pull-right" onclick="addPastSurgicalHistory()"><i class="fa fa-plus"></i> Add row</a>
                         </td>
                     </tr>
                 </table>
@@ -1366,6 +1384,39 @@
 
 @section('js')
     <script>
-        //$(".container_body").removeClass("container");
+        var hospital_history_count = 2;
+        function addHospitalHistory(){
+            event.preventDefault();
+            var html_append = "<tr id='hospital_history_tr"+hospital_history_count+"'>\n" +
+                "                            <td><b>"+hospital_history_count+"</b></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                            <td><input type=\"text\" class=\"form-control\"></td>\n" +
+                "                        </tr>";
+            $("#hospital_history_row").append(html_append);
+            $("#hospital_history_tr"+hospital_history_count).hide().fadeIn();
+            hospital_history_count++;
+        }
+
+        var past_surgical_history_count = 0;
+        function addPastSurgicalHistory(){
+            event.preventDefault();
+            var html_append = "<tr id='past_surgical_history"+past_surgical_history_count+"'>\n" +
+                "                        <td>\n" +
+                "                            <small class=\" \">Operation</small>\n" +
+                "                            <input type=\"text\" class=\"form-control\" >\n" +
+                "                        </td>\n" +
+                "                        <td>\n" +
+                "                            <small class=\" \">Date</small>\n" +
+                "                            <input type=\"text\" class=\"form-control\" >\n" +
+                "                        </td>\n" +
+                "                    </tr>";
+            $("#past_surgical_row").append(html_append);
+            $("#past_surgical_history"+past_surgical_history_count).hide().fadeIn();
+            past_surgical_history_count++;
+        }
     </script>
 @endsection
