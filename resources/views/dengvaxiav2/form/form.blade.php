@@ -21,10 +21,10 @@
             <div class="col-md-12">
                 <div class="alert alert-jim">
                     <h3 class="text-green">Dengvaxia Vaccinee Health Profile</h3>
-                    @include('dengvaxiav2.page1')
-                    @include('dengvaxiav2.page2')
-                    @include('dengvaxiav2.page3')
-                    @include('dengvaxiav2.page4')
+                    @include('dengvaxiav2.form.page1')
+                    @include('dengvaxiav2.form.page2')
+                    @include('dengvaxiav2.form.page3')
+                    @include('dengvaxiav2.form.page4')
 
                 </div>
             </div>
