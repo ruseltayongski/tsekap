@@ -82,7 +82,7 @@
                             <th>Suffix</th>
                             <th>Age</th>
                             <th>Sex</th>
-                            <th>Barangay</th>
+                            <th>Dengvaxia</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -135,7 +135,9 @@
                                 @endif
                             </td>
                             <td>{{ $p->sex }}</td>
-                            <td>{{ \App\Barangay::find($p->barangay_id)->description }}</td>
+                            <td>
+                                <button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-user-md"></i> Yes</button>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

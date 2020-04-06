@@ -72,7 +72,7 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr class="has-group">
                         <td>Family Head? :</td>
                         <td>
-                            <select name="head" id="head" class="form-control chosen-select required" style="width: 100%" required>
+                            <select name="head" id="head" class="form-control required" style="width: 100%" required>
                                 <option value="">Select...</option>
                                 <option <?php if($info->head=='YES') echo 'selected'; ?> value="YES">YES</option>
                                 <option <?php if($info->head=='NO') echo 'selected'; ?> value="NO">NO</option>
@@ -271,22 +271,23 @@ $brgy = $brgy->orderBy('description','asc')
                         <td><input type="date" value="{{ $info->pregnant }}" name="pregnant" class="form-control" /> </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>
-                            <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
-                                <i class="fa fa-arrow-left"></i> Back
-                            </a>
-                            @if(in_array(Date("F"), array("April","August","December"), true))
-                            <button type="submit" class="btn btn-success btn-sm" name="update" value="1">
-                                <i class="fa fa-pencil"></i> Update {{ Date("F") }}
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                            @endif
-                            <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-user-md"></i> Proceed to dengvaxia
-                            </a>
+                        <td colspan="2">
+                            <div class="pull-right">
+                                <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
+                                    <i class="fa fa-arrow-left"></i> Back
+                                </a>
+                                @if(in_array(Date("F"), array("April","August","December"), true))
+                                <button type="submit" class="btn btn-success btn-sm" name="update" value="1">
+                                    <i class="fa fa-pencil"></i> Update
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                                @endif
+                                <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-user-md"></i> Proceed to dengvaxia
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 </table>
