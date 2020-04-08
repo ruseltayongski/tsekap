@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-6">
-        <small class="label bg-green" style="font-size: 12pt">GENERAL INFORMATION</small>
+        <label class="text-green">GENERAL INFORMATION</label>
     </div>
     <div class="col-md-6">
         <div class="pull-right">
@@ -185,7 +185,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt">LEVEL OF EDUCATION</small>
+<small class="label bg-green">LEVEL OF EDUCATION</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -202,7 +202,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt;">PHIC MEMBERSHIP OF PRINCIPAL(PARENTS)</small>
+<small class="label bg-green" >PHIC MEMBERSHIP OF PRINCIPAL(PARENTS)</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -280,7 +280,7 @@
     </tr>
 </table>
 
-<small class="label bg-green" style="font-size: 12pt;">FAMILY HISTORY(Among mother, father, and siblings. Tick all that apply)</small>
+<label class="text-green">FAMILY HISTORY(Among mother, father, and siblings. Tick all that apply)</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -329,7 +329,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt;">MEDICAL HISTORY OF VACCINEE(Tick all past and present health conditions of the vaccinee.)</small>
+<small class="label bg-green" >MEDICAL HISTORY OF VACCINEE(Tick all past and present health conditions of the vaccinee.)</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>

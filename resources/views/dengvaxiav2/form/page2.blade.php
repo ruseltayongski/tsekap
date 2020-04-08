@@ -1,4 +1,4 @@
-<small class="label bg-green" style="font-size: 12pt;">BRONCHIAL ASTHMA</small>
+<small class="label bg-green"   >BRONCHIAL ASTHMA</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -17,7 +17,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt;">TUBERCULOSIS</small>
+<small class="label bg-green"   >TUBERCULOSIS</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -128,7 +128,7 @@
     </tr>
 </table>
 
-<small class="label bg-green" style="font-size: 12pt;">DISABILITY</small>
+<small class="label bg-green"   >DISABILITY</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -177,7 +177,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt;">INJURY</small>
+<small class="label bg-green"   >INJURY</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -198,7 +198,7 @@
     </tr>
 </table>
 
-<small class="label bg-green" style="font-size: 12pt;">HOSPITALIZATION HISTORY</small>
+<small class="label bg-green"   >HOSPITALIZATION HISTORY</small>
 <table class="table table-hover table-striped">
     <tr>
         <td style="width: 20%;">
@@ -233,7 +233,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" style="font-size: 12pt;">PAST SURGICAL HISTORY</small>
+<small class="label bg-green"   >PAST SURGICAL HISTORY</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>

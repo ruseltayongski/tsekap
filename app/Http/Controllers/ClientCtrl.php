@@ -133,6 +133,7 @@ class ClientCtrl extends Controller
         $head = $temp['familyHead'];
         $sex = $temp['sex'];
         $barangay = $temp['barangay'];
+        $dengvaxia = $temp['dengvaxia'];
 
         $user = Auth::user();
         $data['profiles'] = Profile::select('id','unique_id','familyID','head','lname','mname','fname','suffix','sex','dob','barangay_id','dengvaxia')
@@ -166,6 +167,10 @@ class ClientCtrl extends Controller
             $data['profiles'] = $data['profiles']->where('profile.barangay_id',$barangay);
         }
 
+        if($dengvaxia || $dengvaxia!='' || $dengvaxia!=null){
+            $data['profiles'] = $data['profiles']->where('profile.dengvaxia',$dengvaxia);
+        }
+
         if($user->user_priv == 0 || $user->user_priv == 4){
             $data['profiles'] = $data['profiles']->where('muncity_id',$user->muncity);
         }
@@ -197,7 +202,8 @@ class ClientCtrl extends Controller
             'keyword' => $req->keyword,
             'familyHead' => $req->familyHead,
             'sex' => $req->sex,
-            'barangay' => $req->barangay
+            'barangay' => $req->barangay,
+            'dengvaxia' => $req->dengvaxia
         );
         Session::put('profileKeyword',$data);
         //Session::put('profileKeyword',$req->keyword);

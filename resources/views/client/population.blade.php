@@ -136,7 +136,11 @@
                             </td>
                             <td>{{ $p->sex }}</td>
                             <td>
-                                <button type="submit" class="btn btn-xs btn-danger"><i class="fa fa-user-md"></i> Yes</button>
+                                @if($p->dengvaxia == 'yes')
+                                <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Had record</button>
+                                @else
+                                <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -186,6 +190,28 @@
     @endif
 
 <script>
+    function proceedDengvaxia(profile_id){
+        var url = "<?php echo asset('deng/profile_id'); ?>";
+        var json = {
+            "profile_id" : profile_id,
+        };
+        $.ajaxSetup(
+            {
+                headers:
+                    {
+                        'X-CSRF-Token': "<?php echo csrf_token(); ?>"
+                    }
+            });
+        $.ajax({
+            url:url,
+            data: json,
+            type: 'POST',
+            success: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
     <?php echo 'var link="'.asset('user/profiles').'";';?>
 
     $(".select-profile").select2({
@@ -362,6 +388,8 @@
             });
         },300);
     });
+
+
 
 </script>
 @endsection
