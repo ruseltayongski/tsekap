@@ -1,4 +1,4 @@
-<small class="label bg-green" style="font-size: 12pt;">REVIEW OF SYSTEMS: (tick all that apply)</small>
+<small class="label bg-green">REVIEW OF SYSTEMS: (tick all that apply)</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -116,7 +116,7 @@
     </tr>
 </table>
 
-<small class="label bg-green" style="font-size: 12pt;">PERTINENT PHYSICAL EXAMINATION</small>
+<small class="label bg-green">PERTINENT PHYSICAL EXAMINATION</small>
 <table class="table table-hover table-striped">
     <tr>
         <td>
