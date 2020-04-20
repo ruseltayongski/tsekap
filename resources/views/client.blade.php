@@ -293,5 +293,24 @@ $status = session('status');
         });
     </script>
 @endif
+
+@if($status=='updated')
+    <script>
+        Lobibox.notify('success', {
+            size: 'mini',
+            title: '',
+            msg: 'Successfully updated!'
+        });
+    </script>
+@endif
+
+@if($status=='duplicate')
+    <script>
+        Lobibox.notify('error', {
+            msg: 'Ooops! Name was already added.'
+        });
+    </script>
+@endif
+
 </body>
 </html>

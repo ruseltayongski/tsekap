@@ -1,4 +1,4 @@
-<small class="label bg-green"  >PERSONAL/SOCIAL HISTORY</small>
+<label class="text-green">PERSONAL/SOCIAL HISTORY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -118,7 +118,7 @@
     </tr>
 </table>
 
-<small class="label bg-green"  >MENSTRUAL AND GYNECOLOGICAL HISTORY (for female vaccinee only)</small>
+<label class="text-green">MENSTRUAL AND GYNECOLOGICAL HISTORY (for female vaccinee only)</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -175,7 +175,7 @@
     </tr>
 </table>
 
-<small class="label bg-green"  >VACCINATION HISTORY</small>
+<label class="text-green">VACCINATION HISTORY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td style="width: 15%">
@@ -266,7 +266,7 @@
     </tr>
 </table>
 
-<small class="label bg-green"  >OTHER PROCEDURES DONE</small>
+<label class="text-green">OTHER PROCEDURES DONE</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>

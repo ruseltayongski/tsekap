@@ -1,23 +1,23 @@
-<small class="label bg-green"   >BRONCHIAL ASTHMA</small>
+<label class="text-green">BRONCHIAL ASTHMA</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="radio" value="diagnosed" name="bronchial_diagnosed"> Diagnosed &nbsp;&nbsp;&nbsp;
-            <input type="radio" value="not_diagnosed" name="bronchial_diagnosed"> Not Diagnosed
+            <input type="radio" value="diagnosed" name="bro_consultation" <?php if($profile->bro_consultation == 'diagnosed') echo 'checked'; ?>> Diagnosed &nbsp;&nbsp;&nbsp;
+            <input type="radio" value="not_diagnosed" name="bro_consultation" <?php if($profile->bro_consultation == 'not_diagnosed') echo 'checked'; ?>> Not Diagnosed
         </td>
         <td>
             <small>No. of attacks per week</small>
-            <input type="number" name="bronchial_no_attacks">
+            <input type="number" name="bro_no_attack_week" value="{{ $profile->bro_no_attack_week }}">
         </td>
         <td>
             <small>With Medications?</small>
-            <input type="radio" name="bronchial_medication" value="yes"> Yes, specify:
-            <input type="text" name="bronchial_medication_yes">
-            <input type="radio" name="bronchial_medication" value="no"> No
+            <input type="radio" name="bro_medication" value="yes" <?php if($profile->bro_medication == 'yes') echo 'checked'; ?>> Yes, specify:
+            <input type="text" name="bro_medication_yes" value="{{ $profile->bro_medication_yes }}">
+            <input type="radio" name="bro_medication" value="no" <?php if($profile->bro_consultation == 'no') echo 'checked'; ?>> No
         </td>
     </tr>
 </table>
-<small class="label bg-green"   >TUBERCULOSIS</small>
+<label class="text-green">TUBERCULOSIS</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -128,7 +128,7 @@
     </tr>
 </table>
 
-<small class="label bg-green"   >DISABILITY</small>
+<label class="text-green">DISABILITY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -177,7 +177,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green"   >INJURY</small>
+<label class="text-green">INJURY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -198,7 +198,7 @@
     </tr>
 </table>
 
-<small class="label bg-green"   >HOSPITALIZATION HISTORY</small>
+<label class="text-green">HOSPITALIZATION HISTORY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td style="width: 20%;">
@@ -233,7 +233,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green"   >PAST SURGICAL HISTORY</small>
+<label class="text-green">PAST SURGICAL HISTORY</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>

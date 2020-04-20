@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-6">
         <div class="pull-right">
-            <b>DENGVAXIA RECIPIENT NUMBER:</b> <input type="text" name="recipent_number">
+            <b>DENGVAXIA RECIPIENT NUMBER:</b> <input type="text" value="{{ $profile->dengvaxia_recipient_no }}" name="dengvaxia_recipient_no">
         </div>
     </div>
 </div>
@@ -25,7 +25,7 @@
         <td style="width: 10%">
             <br><br>
             <small>MI</small>
-            <input type="text" value="{{ $profile->mname }}" class="form-control" name="mi">
+            <input type="text" value="{{ $profile->mname }}" class="form-control" name="mname">
         </td>
         <td>
             <br><br>
@@ -81,11 +81,11 @@
         </td>
         <td>
             <small>Respondent</small>
-            <input type="text" class="form-control" name="respondent">
+            <input type="text" class="form-control" name="respondent" value="{{ $profile->respondent }}">
         </td>
         <td colspan="3">
             <small>Contact No</small>
-            <input type="text" class="form-control" name="contact_no">
+            <input type="text" class="form-control" value="{{ $profile->contact_no }}" name="contact_no">
         </td>
     </tr>
 </table>
@@ -94,37 +94,40 @@
         <td>
             <small><b>Address</b></small><br>
             <small>House No. & Street Name</small>
-            <input type="text" class="form-control" name="house_and_street">
+            <input type="text" class="form-control" name="street_name" value="{{ $profile->street_name }}">
         </td>
         <td>
             <br>
             <small>Sitio/Purok</small>
-            <input type="text" class="form-control" name="purok">
+            <input type="text" class="form-control" name="sitio" value="{{ $profile->sitio }}">
         </td>
         <td >
             <br>
             <small>Barangay</small>
-            <select name="barangay" class="form-control">
-                @foreach(\App\Barangay::get() as $row)
-                    <option value="{{ $row->id }}" <?php if($row->id == $profile->barangay_id)echo 'selected'; ?> >{{ $row->description }}</option>
+            <select name="barangay_id" class="form-control">
+                <option value="">Select option</option>
+                @foreach($brgy as $row)
+                    <option <?php if($profile->barangay_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                 @endforeach
             </select>
         </td>
         <td >
             <br>
             <small>Municipality</small>
-            <select name="municipality" class="form-control">
-                @foreach(\App\Muncity::get() as $row)
-                    <option value="{{ $row->id }}" <?php if($row->id == $profile->muncity_id)echo 'selected'; ?> >{{ $row->description }}</option>
+            <select name="muncity_id" class="form-control">
+                <option value="">Select option</option>
+                @foreach($muncity as $row)
+                    <option <?php if($profile->muncity_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                 @endforeach
             </select>
         </td>
         <td >
             <br>
             <small>Province</small>
-            <select name="province" class="form-control">
-                @foreach(\App\Province::get() as $row)
-                    <option value="{{ $row->id }}" <?php if($row->id == $profile->province_id)echo 'selected'; ?> >{{ $row->description }}</option>
+            <select name="province_id" class="form-control">
+                <option value="">Select option</option>
+                @foreach($province as $row)
+                    <option <?php if($profile->province_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                 @endforeach
             </select>
         </td>
@@ -144,28 +147,28 @@
         </td>
         <td >
             <small>Religion</small><br>
-            <input type="radio" name="religion" value="rc"> RC
+            <input type="radio" name="religion" value="rc" <?php if($profile->religion=='rc') echo 'checked'; ?>> RC
         </td>
         <td>
             <br>
-            <input type="radio" name="religion" value="christian"> Christian
+            <input type="radio" name="religion" value="christian" <?php if($profile->religion=='christian') echo 'checked'; ?>> Christian
         </td>
         <td>
             <br>
-            <input type="radio" name="religion" value="inc"> INC
+            <input type="radio" name="religion" value="inc" <?php if($profile->religion=='inc') echo 'checked'; ?>> INC
         </td>
         <td>
             <br>
-            <input type="radio" name="religion" value="islam"> Islam
+            <input type="radio" name="religion" value="islam" <?php if($profile->religion=='islam') echo 'checked'; ?>> Islam
         </td>
         <td>
             <br>
-            <input type="radio" name="religion" value="jehovah"> Jehovah
+            <input type="radio" name="religion" value="jehovah" <?php if($profile->religion=='jehovah') echo 'checked'; ?>> Jehovah
         </td>
         <td>
             <br>
             <small>Others, specify</small>
-            <input type="text">
+            <input type="text" name="religion_others" value="{{ $profile->religion_others }}">
         </td>
     </tr>
 </table>
@@ -177,15 +180,15 @@
         </td>
         <td>
             <small>Birthplace(Mun/City/Prov)</small>
-            <input type="text" name="birthplace" class="form-control">
+            <input type="text" name="birth_place" class="form-control" value="{{ $profile->birth_place }}">
         </td>
         <td >
             <small>Yrs. at Current Address</small>
-            <input type="text" name="yrs_current_address" class="form-control">
+            <input type="text" name="yrs_current_address" class="form-control" value="{{ $profile->yrs_current_address }}">
         </td>
     </tr>
 </table>
-<small class="label bg-green">LEVEL OF EDUCATION</small>
+<label class="text-green">LEVEL OF EDUCATION</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
@@ -202,20 +205,20 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" >PHIC MEMBERSHIP OF PRINCIPAL(PARENTS)</small>
+<label class="text-green">PHIC MEMBERSHIP OF PRINCIPAL(PARENTS)</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>
             <small><b>Status</b></small><br>
-            <input type="radio" value="member" name="phic_status"> Member
+            <input type="radio" value="member" name="phic_status" <?php if($profile->phic_status == 'member') echo 'checked'; ?>> Member
         </td>
         <td>
             <br>
-            <input type="radio" value="dependent" name="phic_status"> Dependent
+            <input type="radio" value="dependent" name="phic_status" <?php if($profile->phic_status == 'dependent') echo 'checked'; ?>> Dependent
         </td>
         <td>
             <br>
-            <input type="radio" value="non_member" name="phic_status"> Non-Member
+            <input type="radio" value="non_member" name="phic_status" <?php if($profile->phic_status == 'non_member') echo 'checked'; ?>> Non-Member
         </td>
     </tr>
 </table>
@@ -223,31 +226,31 @@
     <tr>
         <td>
             <small><b>Type</b></small><br>
-            <input type="radio" value="lifetime" name="phic_type"> Lifetime<br>
+            <input type="radio" value="lifetime" name="phic_type" <?php if($profile->phic_type == 'lifetime') echo 'checked'; ?>> Lifetime<br>
         </td>
         <td>
             <br>
-            <input type="radio" value="sponsored" name="phic_type"> Sponsored Specify:
+            <input type="radio" value="sponsored" name="phic_type" <?php if($profile->phic_type == 'sponsored') echo 'checked'; ?>> Sponsored Specify:
         </td>
         <td>
             <br>
-            <input type="checkbox" value="doh" name="phic_sponsored[]"> DOH
+            <input type="radio" value="doh" name="phic_sponsored" <?php if($profile->phic_sponsored == 'doh') echo 'checked'; ?>> DOH
         </td>
         <td>
             <br>
-            <input type="checkbox" value="plgu" name="phic_sponsored[]"> PLGU
+            <input type="radio" value="plgu" name="phic_sponsored" <?php if($profile->phic_sponsored == 'plgu') echo 'checked'; ?>> PLGU
         </td>
         <td>
             <br>
-            <input type="checkbox" value="mlgu" name="phic_sponsored[]"> MLGU
+            <input type="radio" value="mlgu" name="phic_sponsored" <?php if($profile->phic_sponsored == 'mlgu') echo 'checked'; ?>> MLGU
         </td>
         <td>
             <br>
-            <input type="checkbox" value="private" name="phic_sponsored[]"> Private
+            <input type="radio" value="private" name="phic_sponsored" <?php if($profile->phic_sponsored == 'private') echo 'checked'; ?>> Private
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="phic_sponsored[]"> Others, specify: <input type="text" name="phic_sponsored_others">
+            <input type="checkbox" value="others" name="phic_sponsored[]" <?php if($profile->phic_sponsored == 'others') echo 'checked'; ?>> Others, specify: <input type="text" name="phic_sponsored_others" value="{{ $profile->phic_sponsored_others }}">
         </td>
     </tr>
 </table>
@@ -255,27 +258,27 @@
     <tr>
         <td>
             <small><b>Employed</b></small><br>
-            <input type="radio" value="government" name="phic_employed"> Government
+            <input type="radio" value="government" name="phic_employed" <?php if($profile->phic_employed == 'government') echo 'checked'; ?>> Government
         </td>
         <td>
             <br>
-            <input type="radio" value="private" name="phic_employed"> Private
+            <input type="radio" value="private" name="phic_employed" <?php if($profile->phic_employed == 'private') echo 'checked'; ?>> Private
         </td>
         <td>
             <br>
-            <input type="radio" value="self_employed" name="phic_employed"> Self-Employed
+            <input type="radio" value="self_employed" name="phic_employed" <?php if($profile->phic_employed == 'self_employed') echo 'checked'; ?>> Self-Employed
         </td>
         <td >
             <small><b>Are you aware of your PHIC benefits?</b></small><br>
             <select name="phic_benefits" class="form-control">
                 <option value="">Select option</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
+                <option value="yes" <?php if($profile->phic_benefits == 'yes') echo 'selected'; ?>>Yes</option>
+                <option value="no" <?php if($profile->phic_benefits == 'no') echo 'selected'; ?>>No</option>
             </select>
         </td>
         <td>
             <br>
-            If yes, specify: <input name="phic_benefits_yes" type="text">
+            If yes, specify: <input name="phic_benefits_yes" type="text" value="{{ $profile->phic_benefits_yes }}">
         </td>
     </tr>
 </table>
@@ -329,7 +332,7 @@
         </td>
     </tr>
 </table>
-<small class="label bg-green" >MEDICAL HISTORY OF VACCINEE(Tick all past and present health conditions of the vaccinee.)</small>
+<label class="text-green">MEDICAL HISTORY OF VACCINEE(Tick all past and present health conditions of the vaccinee.)</label>
 <table class="table table-hover table-striped">
     <tr>
         <td>

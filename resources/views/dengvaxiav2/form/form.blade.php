@@ -21,6 +21,7 @@
             <div class="col-md-12">
                 <div class="alert alert-jim">
                     <h3 class="text-info">Dengvaxia Vaccinee Health Profile</h3>
+                    <input type="hidden" name="profile_id" value="{{ $profile->main_id }}">
                     @include('dengvaxiav2.form.page1')
                     @include('dengvaxiav2.form.page2')
                     @include('dengvaxiav2.form.page3')

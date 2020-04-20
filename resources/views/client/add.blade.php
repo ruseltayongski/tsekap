@@ -93,14 +93,6 @@ $status = session('status');
     </script>
 @endif
 
-@if($status=='updated')
-    <script>
-        Lobibox.notify('success', {
-            msg: 'Updated successfully!'
-        });
-    </script>
-@endif
-
 @if($status=='deleted')
     <script>
         Lobibox.notify('success', {

@@ -4,7 +4,6 @@ use App\FamilyProfile;
 use App\Profile;
 use App\UserBrgy;
 
-$status = session('status');
 $brgy = Barangay::where('muncity_id',Auth::user()->muncity);
 
 if(Auth::user()->user_priv==2){
@@ -301,24 +300,7 @@ $brgy = $brgy->orderBy('description','asc')
 
 @section('js')
     @include('script.profile')
-    <?php
-    $status = session('status');
-    ?>
-    @if($status=='updated')
-        <script>
-            Lobibox.notify('success', {
-                msg: 'Successfully updated!'
-            });
-        </script>
-    @endif
 
-    @if($status=='duplicate')
-        <script>
-            Lobibox.notify('error', {
-                msg: 'Duplicate Entry!'
-            });
-        </script>
-    @endif
     <script>
         var head = $('#head').val();
         removeRequired(head);

@@ -307,7 +307,7 @@ class ClientCtrl extends Controller
         $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pregnant')
             ->where('id',$id)
             ->first();
-        Session::put('profile',$info);
+        Session::put('profile_id',$id);
 
         return view('client.updateProfile',['info' => $info ]);
     }
