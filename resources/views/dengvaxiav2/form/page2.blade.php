@@ -22,9 +22,9 @@
     <tr>
         <td>
             <small><b>Diagnosed with TB this year?</b></small><br>
-            <input type="radio" name="tuberculosis_diagnosed" value="yes"> Yes, form of TB specify:
-            <input type="text" name="tuberculosis_diagnosed_yes">
-            <input type="radio" name="tuberculosis_diagnosed" value="no"> No
+            <input type="radio" name="tb_diagnosed" value="yes" <?php if($profile->tb_diagnosed == 'yes') echo 'checked'; ?>> Yes, form of TB specify:
+            <input type="text" name="tb_diagnosed_yes" value="{{ $profile->tb_diagnosed_yes }}">
+            <input type="radio" name="tb_diagnosed" value="no" <?php if($profile->tb_diagnosed == 'no') echo 'checked'; ?>> No
         </td>
     </tr>
 </table>
@@ -111,19 +111,19 @@
     <tr>
         <td>
             <small><b>Medications:</b></small><br>
-            <input type="checkbox" value="cat1" name="tuberculosis_medication[]"> Cat I
+            <input type="checkbox" value="1" name="tb_cat1" <?php if($profile->tb_cat1) echo 'checked'; ?>> Cat I
         </td>
         <td>
             <br>
-            <input type="checkbox" value="cat2" name="tuberculosis_medication[]"> Cat II
+            <input type="checkbox" value="1" name="tb_cat2" <?php if($profile->tb_cat2) echo 'checked'; ?>> Cat II
         </td>
         <td>
             <br>
-            <input type="checkbox" value="cat3" name="tuberculosis_medication[]"> Cat III
+            <input type="checkbox" value="1" name="tb_cat3" <?php if($profile->tb_cat3) echo 'checked'; ?>> Cat III
         </td>
         <td>
             <br>
-            <input type="checkbox" value="tb_children" name="tuberculosis_medication[]"> TB in children
+            <input type="checkbox" value="1" name="tb_cat4" <?php if($profile->tb_cat4) echo 'checked'; ?>> TB in children
         </td>
     </tr>
 </table>
@@ -161,19 +161,19 @@
     <tr>
         <td colspan="2">
             <small>Give description of disability:</small>
-            <textarea name="disability_description" cols="30" rows="5" class="form-control"></textarea>
+            <textarea name="dis_give_description" cols="30" rows="5" class="form-control">{{ $profile->dis_give_description }}</textarea>
         </td>
     </tr>
     <tr>
         <td>
             <small>With assistive device/s?</small>
-            <input type="radio" name="disability_with_assistive" value="yes"> Yes <input type="radio" name="disability_with_assistive" value="no"> Yes, specify:
-            <input type="text" name="disability_with_assistive_yes">
+            <input type="radio" name="dis_with_assistive" value="yes" <?php if($profile->dis_with_assistive == 'yes') echo 'checked'; ?>> Yes <input type="radio" name="dis_with_assistive" value="no" <?php if($profile->dis_with_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="text" name="dis_with_assistive_yes" value="{{ $profile->dis_with_assistive_yes }}">
         </td>
         <td>
             <small>Need for assistive device/s?</small>
-            <input type="radio" name="disability_need_assistive" value="yes"> Yes <input type="radio" name="disability_need_assistive" value="no"> Yes, specify:
-            <input type="text" name="disability_need_assistive_yes">
+            <input type="radio" name="dis_need_assistive" value="yes" <?php if($profile->dis_need_assistive == 'yes') echo 'checked'; ?>> Yes <input type="radio" name="dis_need_assistive" value="no" <?php if($profile->dis_need_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="text" name="dis_need_assistive_yes" value="{{ $profile->dis_need_assistive_yes }}">
         </td>
     </tr>
 </table>
@@ -181,19 +181,19 @@
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="checkbox" value="vehicular" name="injury[]"> Vehicular Accident/Traffic-Related Injuries
+            <input type="checkbox" value="1" name="inj_vehicular" <?php if($profile->inj_vehicular) echo 'checked'; ?>> Vehicular Accident/Traffic-Related Injuries
             &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" value="burns" name="injury[]"> Burns
+            <input type="checkbox" value="1" name="inj_burns" <?php if($profile->inj_burns) echo 'checked'; ?>> Burns
             &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" value="drowning" name="injury[]">  Drowning
+            <input type="checkbox" value="1" name="inj_drowning" <?php if($profile->inj_drowning) echo 'checked'; ?>>  Drowning
             &nbsp;&nbsp;&nbsp;
-            <input type="checkbox" value="fall" name="injury[]"> Fall
+            <input type="checkbox" value="1" name="inj_fall" <?php if($profile->inj_fall) echo 'checked'; ?>> Fall
         </td>
     </tr>
     <tr>
         <td>
             <small>Medications(List all current medicines and food supplement being taken):</small>
-            <textarea name="injury_medication" cols="30" rows="5" class="form-control"></textarea>
+            <textarea name="injury_medication" cols="30" rows="5" class="form-control">{{ $profile->inj_medications }}</textarea>
         </td>
     </tr>
 </table>
@@ -203,7 +203,7 @@
     <tr>
         <td style="width: 20%;">
             <small>Were you previously hospitalized?</small> &nbsp;&nbsp;
-            <input type="radio" value="yes" name="hospitalization_prev"> Yes&nbsp;&nbsp; <input type="radio" value="no" name="hospitalization_prev"> No
+            <input type="radio" value="yes" name="hos_hospitalized" <?php if($profile->hos_hospitalized == 'yes') echo 'checked'; ?>> Yes&nbsp;&nbsp; <input type="radio" value="no" name="hospitalization_prev" <?php if($profile->hos_hospitalized == 'no') echo 'checked'; ?>> No
         </td>
     </tr>
 </table>

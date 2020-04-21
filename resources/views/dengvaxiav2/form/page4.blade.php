@@ -121,20 +121,20 @@
     <tr>
         <td>
             <small><b>General Status:</b></small><br>
-            <input type="checkbox" value="ortiented_time" name="pertinent[]"> Oriented to Time, Place, and Date
+            <input type="checkbox" value="1" name="per_orriented_time" <?php if($profile->per_orriented_time) echo 'checked'; ?>> Oriented to Time, Place, and Date
         </td>
         <td>
             <br>
-            <input type="checkbox" value="conscious" name="pertinent[]"> Conscious
+            <input type="checkbox" value="1" name="per_conscious" <?php if($profile->per_conscious) echo 'checked'; ?>> Conscious
         </td>
         <td>
             <br>
-            <input type="checkbox" value="ambulatory" name="pertinent[]"> Ambulatory
+            <input type="checkbox" value="1" name="per_ambulatory" <?php if($profile->per_ambulatory) echo 'checked'; ?>> Ambulatory
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="pertinent[]"> Others, Specify:
-            <input type="text" name="pertinent_others">
+            <input type="checkbox" value="1" name="per_others" <?php if($profile->per_others) echo 'checked'; ?>> Others, Specify:
+            <input type="text" name="per_others_specify" value="{{ $profile->per_others_specify }}">
         </td>
     </tr>
 </table>
@@ -143,27 +143,27 @@
         <td>
             <small><b>Vital Signs:</b></small><br>
             <small>BP</small>
-            <input type="text" name="pertinent_bp" class="form-control">
+            <input type="text" name="per_bp" value="{{ $profile->per_bp }}" class="form-control">
         </td>
         <td>
             <br>
             <small>HR / min</small>
-            <input type="text" name="pertinent_hr" class="form-control">
+            <input type="text" name="per_hr" value="{{ $profile->per_hr }}" class="form-control">
         </td>
         <td>
             <br>
             <small>RR / min</small>
-            <input type="text" name="pertinent_rr" class="form-control">
+            <input type="text" name="per_rr" value="{{ $profile->per_rr }}" class="form-control">
         </td>
         <td>
             <br>
             <small>Temp (Degree Celsius)</small>
-            <input type="text" name="pertinent_temp" class="form-control">
+            <input type="text" name="per_temp" value="{{ $profile->per_temp }}" class="form-control">
         </td>
         <td>
             <br>
             <small>Blood type</small>
-            <input type="text" name="pertinent_blood" class="form-control">
+            <input type="text" name="per_blood_type" value="{{ $profile->per_blood_type }}" class="form-control">
         </td>
     </tr>
 </table>
@@ -171,27 +171,27 @@
     <tr>
         <td>
             <small>Weight(kg)</small>
-            <input type="text" name="pertinent_weight" class="form-control">
+            <input type="text" name="per_weight" value="{{ $profile->per_weight }}" class="form-control">
         </td>
         <td>
             <small>Height(m)</small>
-            <input type="text" name="pertinent_height" class="form-control">
+            <input type="text" name="per_height" value="{{ $profile->per_height }}" class="form-control">
         </td>
         <td>
             <small>BMI</small>
-            <input type="text" name="pertinent_bmi" class="form-control">
+            <input type="text" name="per_waist" value="{{ $profile->per_waist }}" class="form-control">
         </td>
         <td>
             <small>Waist(cm)</small>
-            <input type="text" name="pertinent_waist" class="form-control">
+            <input type="text" name="per_waist" value="{{ $profile->per_waist }}" class="form-control">
         </td>
         <td>
             <small>Hip(cm)</small>
-            <input type="text" name="pertinent_hip" class="form-control">
+            <input type="text" name="per_hip" value="{{ $profile->per_hip }}" class="form-control">
         </td>
         <td>
             <small>W/H Ratio</small>
-            <input type="text" name="pertinent_ratio" class="form-control">
+            <input type="text" name="per_ratio" value="{{ $profile->per_ratio }}" class="form-control">
         </td>
     </tr>
 </table>
@@ -199,29 +199,29 @@
     <tr>
         <td>
             <small><b>SKIN:</b></small><br>
-            <input type="checkbox" value="good_skin" name="skin[]"> Good Skin Turgor
+            <input type="checkbox" value="1" name="per_skin_good" <?php if($profile->per_good_skin) echo 'checked'; ?> > Good Skin Turgor
         </td>
         <td>
             <br>
-            <input type="checkbox" value="pailor" name="skin[]"> Pailor
+            <input type="checkbox" value="1" name="per_skin_pailor" <?php if($profile->per_skin_pailor) echo 'checked'; ?> > Pailor
         </td>
         <td>
             <br>
-            <input type="checkbox" value="jaundice" name="skin[]"> Jaundice
+            <input type="checkbox" value="1" name="per_skin_jaundice" <?php if($profile->per_skin_jaundice) echo 'checked'; ?>> Jaundice
         </td>
         <td>
             <br>
-            <input type="checkbox" value="rashes" name="skin[]"> Rashes
+            <input type="checkbox" value="1" name="per_skin_rashes" <?php if($profile->per_skin_rashes) echo 'checked'; ?>> Rashes
         </td>
         <td>
             <br>
-            <input type="checkbox" value="lesions" name="skin[]"> Lesions, Specify:
-            <input type="text" name="skin_lessions">
+            <input type="checkbox" value="1" name="per_skin_lession" <?php if($profile->per_skin_lession) echo 'checked'; ?>> Lesions, Specify:
+            <input type="text" name="per_skin_lession_specify" value="{{ $profile->per_lession_specify }}">
         </td>
         <td>
             <br>
             Others
-            <input type="text" name="skin_others">
+            <input type="text" name="per_others" value="{{ $profile->per_others }}">
         </td>
     </tr>
 </table>
@@ -286,27 +286,27 @@
     <tr>
         <td>
             <small><b>CHEST AND LUNGS:</b></small><br>
-            <input type="checkbox" value="no_significant_findings" name="chest[]"> No significant findings
+            <input type="checkbox" value="1" name="chest_no_findings" <?php if($profile->chest_no_findings) echo 'checked'; ?>> No significant findings
         </td>
         <td>
             <br>
-            <input type="checkbox" value="breath_sounds" name="chest[]"> Crackles/Rales/Harsh breath sounds
+            <input type="checkbox" value="1" name="chest_crackles" <?php if($profile->chest_crackles) echo 'checked'; ?>> Crackles/Rales/Harsh breath sounds
         </td>
         <td>
             <br>
-            <input type="checkbox" value="breast_mass" name="chest[]"> Breast mass/discharge
+            <input type="checkbox" value="1" name="chest_breast" <?php if($profile->chest_breast) echo 'checked'; ?>> Breast mass/discharge
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="chest_retractions" name="chest[]"> Chest retractions
+            <input type="checkbox" value="1" name="chest_retraction" <?php if($profile->chest_retraction) echo 'checked'; ?>> Chest retractions
         </td>
         <td>
-            <input type="checkbox" value="wheezes" name="chest[]"> Wheezes
+            <input type="checkbox" value="1" name="chest_wheezes" <?php if($profile->chest_wheezes) echo 'checked'; ?>> Wheezes
         </td>
         <td>
-            <input type="checkbox" value="others" name="chest[]"> Others, specify:
-            <input type="text" name="chest_others">
+            <input type="checkbox" value="1" name="chest_others" <?php if($profile->chest_others) echo 'checked'; ?>> Others, specify:
+            <input type="text" name="chest_others" value="{{ $profile->chest_others }}">
         </td>
     </tr>
 </table>
@@ -314,25 +314,25 @@
     <tr>
         <td>
             <small><b>HEART:</b></small><br>
-            <input type="checkbox" value="no_significant_findings" name="heart[]"> No Significant findings
+            <input type="checkbox" value="1" name="heart_no_findigs" <?php if($profile->heart_no_findigs) echo 'checked'; ?>> No Significant findings
         </td>
         <td>
             <br>
-            <input type="checkbox" value="irregular_pulse" name="heart[]"> Irregular pulse
+            <input type="checkbox" value="1" name="heart_pulse" <?php if($profile->heart_pulse) echo 'checked'; ?>> Irregular pulse
         </td>
         <td>
             <br>
-            <input type="checkbox" value="cyanosis" name="heart[]"> Cyanosis (lips,nails)
+            <input type="checkbox" value="1" name="heart_cyanosis" <?php if($profile->heart_cyanosis) echo 'checked'; ?>> Cyanosis (lips,nails)
         </td>
         <td>
             <br>
-            <input type="checkbox" value="murmur" name="heart[]"> Murmur, Specify:
-            <input type="text" name="heart_murmur">
+            <input type="checkbox" value="1" name="heart_murmur" <?php if($profile->heart_murmur) echo 'checked'; ?>> Murmur, Specify:
+            <input type="text" name="heart_murmur" value="{{ $profile->heart_murmur }}">
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="heart[]"> Others, Specify:
-            <input type="text" name="heart_others">
+            <input type="checkbox" value="1" name="heart_others" <?php if($profile->heart_others) echo 'checked'; ?>> Others, Specify:
+            <input type="text" name="heart_others" value="{{ $profile->heart_others }}">
         </td>
     </tr>
 </table>
@@ -340,21 +340,21 @@
     <tr>
         <td>
             <small><b>ABDOMEN:</b></small><br>
-            <input type="checkbox" value="no_significant_findings" name="abdomen[]"> No Significant findings
+            <input type="checkbox" value="1" name="abd_no_findings" <?php if($profile->abd_no_findings) echo 'checked'; ?>> No Significant findings
         </td>
         <td>
             <br>
-            <input type="checkbox" value="tenderness" name="abdomen[]"> Tenderness
+            <input type="checkbox" value="1" name="abd_tenderness" <?php if($profile->abd_tenderness) echo 'checked'; ?>> Tenderness
         </td>
         <td>
             <br>
-            <input type="checkbox" value="palpable_mass" name="abdomen[]"> Palpable mass, specify site:
-            <input type="text" name="abdomen_palpable">
+            <input type="checkbox" value="1" name="abd_palpable" <?php if($profile->abd_palpable) echo 'checked'; ?>> Palpable mass, specify site:
+            <input type="text" name="abd_palpable" value="{{ $profile->abd_palpable }}">
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="abdomen[]"> Others, Specify:
-            <input type="text" name="abdomen_others">
+            <input type="checkbox" value="1" name="abd_others" <?php if($profile->abd_others) echo 'checked'; ?>> Others, Specify:
+            <input type="text" name="abd_others" value="{{ $profile->abd_others }}">
         </td>
     </tr>
 </table>
@@ -362,25 +362,25 @@
     <tr>
         <td>
             <small><b>EXTREMITIES:</b></small><br>
-            <input type="checkbox" value="abnormal_gailt" name="extremities[]"> Abnormal gailt
+            <input type="checkbox" value="1" name="extre_abnormal" <?php if($profile->extre_abnormal) echo 'checked'; ?>> Abnormal gailt
         </td>
         <td>
             <br>
-            <input type="checkbox" value="edema" name="extremities[]"> Edema
+            <input type="checkbox" value="1" name="extre_edema" <?php if($profile->extre_edema) echo 'checked'; ?>> Edema
         </td>
         <td>
             <br>
-            <input type="checkbox" value="joint_swelling" name="extremities[]">Joint swelling
+            <input type="checkbox" value="1" name="extre_joint" <?php if($profile->extre_joint) echo 'checked'; ?>>Joint swelling
         </td>
         <td>
             <br>
-            <input type="checkbox" value="gross_deformity" name="extremities[]"> Gross deformity, describe
-            <input type="text" name="extremities_gross">
+            <input type="checkbox" value="1" name="extre_deformity" <?php if($profile->extre_deformity) echo 'checked'; ?>> Gross deformity, describe
+            <input type="text" name="extre_deformity_describe" value="{{ $profile->extre_deformity_describe }}">
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="extremities[]"> Others, specify
-            <input type="text" name="extremities_others">
+            <input type="checkbox" value="1" name="extre_others" <?php if($profile->extre_others) echo 'checked'; ?>> Others, specify
+            <input type="text" name="extre_others_specify" value="{{ $profile->extre_others_specify }}">
         </td>
     </tr>
 </table>

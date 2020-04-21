@@ -14,6 +14,7 @@ class CreateGeneralInfomation extends Migration
     {
         Schema::create('general_information', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('profile_id')->nullable();
             $table->string('dengvaxia_recipient_no',100)->nullable();
             $table->integer('respondent')->nullable();
             $table->string('contact_no',50)->nullable();
