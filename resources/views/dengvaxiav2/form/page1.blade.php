@@ -228,29 +228,29 @@
             <small><b>Type</b></small><br>
             <input type="radio" value="lifetime" name="phic_type" <?php if($profile->phic_type == 'lifetime') echo 'checked'; ?>> Lifetime<br>
         </td>
-        <td>
+        <td width="14%">
             <br>
             <input type="radio" value="sponsored" name="phic_type" <?php if($profile->phic_type == 'sponsored') echo 'checked'; ?>> Sponsored Specify:
         </td>
-        <td>
+        <td width="7%">
             <br>
             <input type="radio" value="doh" name="phic_sponsored" <?php if($profile->phic_sponsored == 'doh') echo 'checked'; ?>> DOH
         </td>
-        <td>
+        <td width="7%">
             <br>
             <input type="radio" value="plgu" name="phic_sponsored" <?php if($profile->phic_sponsored == 'plgu') echo 'checked'; ?>> PLGU
         </td>
-        <td>
+        <td width="7%">
             <br>
             <input type="radio" value="mlgu" name="phic_sponsored" <?php if($profile->phic_sponsored == 'mlgu') echo 'checked'; ?>> MLGU
         </td>
-        <td>
+        <td width="7%">
             <br>
             <input type="radio" value="private" name="phic_sponsored" <?php if($profile->phic_sponsored == 'private') echo 'checked'; ?>> Private
         </td>
         <td>
             <br>
-            <input type="checkbox" value="others" name="phic_sponsored[]" <?php if($profile->phic_sponsored == 'others') echo 'checked'; ?>> Others, specify: <input type="text" name="phic_sponsored_others" value="{{ $profile->phic_sponsored_others }}">
+            <input type="radio" value="others" name="phic_sponsored" <?php if($profile->phic_sponsored == 'others') echo 'checked'; ?>> Others, specify: <input type="text" name="phic_sponsored_others" value="{{ $profile->phic_sponsored_others }}">
         </td>
     </tr>
 </table>
@@ -287,48 +287,48 @@
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="checkbox" value="allergy" name="family_history[]"> Allergy, specify:
-            <input type="text" name="family_history_allergy">
+            <input type="checkbox" value="allergy" name="fh_tick[]" <?php if(isset($family_history['fh_tick_allergy'])) echo 'checked'; ?>> Allergy, specify:
+            <input type="text" name="fh_specify_allergy" value="<?php if(isset($family_history['fh_specify_allergy'])) echo $family_history['fh_specify_allergy']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="epilepsy" name="family_history[]"> Epilepsy/Seizure Disorder, specify:
-            <input type="text" name="family_history_epilepsy">
+            <input type="checkbox" value="epilepsy" name="fh_tick[]" <?php if(isset($family_history['fh_tick_epilepsy'])) echo 'checked'; ?>> Epilepsy/Seizure Disorder, specify:
+            <input type="text" name="fh_specify_epilepsy" value="<?php if(isset($family_history['fh_specify_epilepsy'])) echo $family_history['fh_specify_epilepsy']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="heart_disease" name="family_history[]"> Heart Disease &/ or Hearth Attack, specify:
-            <input type="text" name="family_history_heart">
+            <input type="checkbox" value="heart" name="fh_tick[]" <?php if(isset($family_history['fh_tick_heart'])) echo 'checked'; ?>> Heart Disease &/ or Hearth Attack, specify:
+            <input type="text" name="fh_specify_heart" value="<?php if(isset($family_history['fh_specify_heart'])) echo $family_history['fh_specify_heart']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="cancer" name="family_history[]"> Cancer, specify organ:
-            <input type="text" name="family_history_cancer">
+            <input type="checkbox" value="cancer" name="fh_tick[]" <?php if(isset($family_history['fh_tick_cancer'])) echo 'checked'; ?>> Cancer, specify organ:
+            <input type="text" name="fh_specify_cancer" value="<?php if(isset($family_history['fh_specify_cancer'])) echo $family_history['fh_specify_cancer']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="immune_deficiency" name="family_history[]"> Immune Deficiency Disease, specify:
-            <input type="text" name="family_history_immune">
+            <input type="checkbox" value="immune" name="fh_tick[]" <?php if(isset($family_history['fh_tick_immune'])) echo 'checked'; ?>> Immune Deficiency Disease, specify:
+            <input type="text" name="fh_specify_immune" value="<?php if(isset($family_history['fh_specify_immune'])) echo $family_history['fh_specify_immune']; ?>">
         </td>
-        <td colspan="3">
-            <input type="checkbox" value="kidney_disease" name="family_history[]"> Kidney Disease, specify:
-            <input type="text" name="family_history_kidney">
+        <td >
+            <input type="checkbox" value="kidney" name="fh_tick[]" <?php if(isset($family_history['fh_tick_kidney'])) echo 'checked'; ?>> Kidney Disease, specify:
+            <input type="text" name="fh_specify_kidney" value="<?php if(isset($family_history['fh_specify_kidney'])) echo $family_history['fh_specify_kidney']; ?>">
         </td>
     </tr>
-</table>
-<table class="table table-hover table-striped" style="margin-top: -25px;">
     <tr>
         <td>
-            <input type="checkbox" value="mental_health_condition" name="family_history[]"> Mental Health Condition
+            <input type="checkbox" value="mental" name="fh_tick[]" <?php if(isset($family_history['fh_tick_mental'])) echo 'checked'; ?>> Mental Health Condition
         </td>
         <td>
-            <input type="checkbox" value="asthma" name="family_history[]"> Asthma
+            <input type="checkbox" value="asthma" name="fh_tick[]" <?php if(isset($family_history['fh_tick_asthma'])) echo 'checked'; ?>> Asthma
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="thyroid" name="fh_tick[]" <?php if(isset($family_history['fh_tick_thyroid'])) echo 'checked'; ?>> Thyroid Disease
         </td>
         <td>
-            <input type="checkbox" value="thyroid_disease" name="family_history[]"> Thyroid Disease
-        </td>
-        <td>
-            <input type="checkbox" value="tuberculosis" name="family_history[]"> Tuberculosis
+            <input type="checkbox" value="tuberculosis" name="fh_tick[]" <?php if(isset($family_history['fh_tick_tuberculosis'])) echo 'checked'; ?>> Tuberculosis
         </td>
     </tr>
 </table>
@@ -336,85 +336,85 @@
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="checkbox" value="allergy" name="medical_history[]"> Allergy, specify:
-            <input type="text" name="medical_history_allergy">
+            <input type="checkbox" value="allergy" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_allergy'])) echo 'checked'; ?>> Allergy, specify:
+            <input type="text" name="mh_specify_allergy" value="<?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="epilepsy" name="medical_history[]"> Epilepsy/Seizure Disorder, specify:
-            <input type="text" name="medical_history_epilepsy">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="checkbox" value="kidney_disease" name="medical_history[]"> Kidney Disease, specify:
-            <input type="text" name="medical_history_kidney">
-        </td>
-        <td>
-            <input type="checkbox" value="immune_deficiency" name="medical_history[]"> Immune Deficiency Disease, specify:
-            <input type="text" name="medical_history_immune">
+            <input type="checkbox" value="epilepsy" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_epilepsy'])) echo 'checked'; ?>> Epilepsy/Seizure Disorder, specify:
+            <input type="text" name="mh_specify_epilepsy" value="<?php if(isset($medical_history['mh_specify_epilepsy'])) echo $medical_history['mh_specify_epilepsy']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="hepatitis" name="medical_history[]"> Hepatitis, specify
-            <input type="text" name="medical_history_hepatitis">
+            <input type="checkbox" value="kidney" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_kidney'])) echo 'checked'; ?>> Kidney Disease, specify:
+            <input type="text" name="mh_specify_kidney" value="<?php if(isset($medical_history['mh_specify_kidney'])) echo $medical_history['mh_specify_kidney']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="heart_disease" name="medical_history[]"> Heart Disease, specify:
-            <input type="text" name="medical_history_heart">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="checkbox" value="poisoning" name="medical_history[]"> Poisoning, specify:
-            <input type="text" name="medical_history_poisoning">
-        </td>
-        <td>
-            <input type="checkbox" value="sti" name="medical_history[]"> STIs, specify:
-            <input type="text" name="medical_history_sti">
+            <input type="checkbox" value="immune" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_immune'])) echo 'checked'; ?>> Immune Deficiency Disease, specify:
+            <input type="text" name="mh_specify_immune" value="<?php if(isset($medical_history['mh_specify_immune'])) echo $medical_history['mh_specify_immune']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="thyroid_disease" name="medical_history[]"> Thyroid Disease, specify:
-            <input type="text" name="medical_history_thyroid">
+            <input type="checkbox" value="hepatitis" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_hepatitis'])) echo 'checked'; ?>> Hepatitis, specify
+            <input type="text" name="mh_specify_hepatitis" value="<?php if(isset($medical_history['mh_specify_hepatitis'])) echo $medical_history['mh_specify_hepatitis']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="cancer" name="medical_history[]"> Cancer, specify organ:
-            <input type="text" name="medical_history_cancer">
-        </td>
-    </tr>
-</table>
-<table class="table table-hover table-striped" style="margin-top: -25px">
-    <tr>
-        <td>
-            <input type="checkbox" value="asthma" name="medical_history[]"> Asthma (Fill-up Brochial Asthma Section)
-        </td>
-        <td>
-            <input type="checkbox" value="tuberculosis" name="medical_history[]"> Tuberculosis(If yes, fill-up Tuberculosis Section)
-        </td>
-        <td>
-            <input type="checkbox" value="peptic_ulcer" name="medical_history[]"> Peptic Ulcer Disease
+            <input type="checkbox" value="heart" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_heart'])) echo 'checked'; ?>> Heart Disease, specify:
+            <input type="text" name="mh_specify_heart" value="<?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="diabetes" name="medical_history[]"> Diabetes mellitus (Fill-up Diabetes Mellitus Section)
+            <input type="checkbox" value="poisoning" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_poisoning'])) echo 'checked'; ?>> Poisoning, specify:
+            <input type="text" name="mh_specify_poisoning" value="<?php if(isset($medical_history['mh_specify_poisoning'])) echo $medical_history['mh_specify_poisoning']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="urinary" name="medical_history[]"> Urinary Tract Infections
-        </td>
-        <td>
-            <input type="checkbox" value="malaria" name="medical_history[]"> Malaria
+            <input type="checkbox" value="sti" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_sti'])) echo 'checked'; ?>> STIs, specify:
+            <input type="text" name="mh_specify_sti" value="<?php if(isset($medical_history['mh_specify_sti'])) echo $medical_history['mh_specify_sti']; ?>">
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="pneumonia" name="medical_history[]"> Pneumonia
+            <input type="checkbox" value="thyroid" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_thyroid'])) echo 'checked'; ?>> Thyroid Disease, specify:
+            <input type="text" name="mh_specify_thyroid" value="<?php if(isset($medical_history['mh_specify_thyroid'])) echo $medical_history['mh_specify_thyroid']; ?>">
+        </td>
+        <td>
+            <input type="checkbox" value="cancer" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_cancer'])) echo 'checked'; ?>> Cancer, specify organ:
+            <input type="text" name="mh_specify_cancer" value="<?php if(isset($medical_history['mh_specify_cancer'])) echo $medical_history['mh_specify_cancer']; ?>">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="asthma" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_asthma'])) echo 'checked'; ?>> Asthma (Fill-up Brochial Asthma Section)
+        </td>
+        <td>
+            <input type="checkbox" value="tuberculosis" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_tuberculosis'])) echo 'checked'; ?>> Tuberculosis(If yes, fill-up Tuberculosis Section)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="peptic" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_peptic'])) echo 'checked'; ?>> Peptic Ulcer Disease
+        </td>
+        <td>
+            <input type="checkbox" value="diabetes" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_diabetes'])) echo 'checked'; ?>> Diabetes mellitus (Fill-up Diabetes Mellitus Section)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="urinary" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_urinary'])) echo 'checked'; ?>> Urinary Tract Infections
+        </td>
+        <td>
+            <input type="checkbox" value="malaria" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_malaria'])) echo 'checked'; ?>> Malaria
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="pneumonia" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_pneumonia'])) echo 'checked'; ?>> Pneumonia
         </td>
         <td colspan="2">
-            <input type="checkbox" value="others" name="medical_history_check"> Others, specify:
-            <input type="text" name="medical_history_others">
+            <input type="checkbox" value="others" name="mh_tick[]" <?php if(isset($medical_history['mh_tick_others'])) echo 'checked'; ?>> Others, specify:
+            <input type="text" name="mh_specify_others" value="<?php if(isset($medical_history['mh_specify_others'])) echo $medical_history['mh_specify_others']; ?>">
         </td>
     </tr>
 </table>

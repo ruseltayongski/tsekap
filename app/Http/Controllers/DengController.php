@@ -6,11 +6,15 @@ use App\Adolescent;
 use App\BronchialAsthma;
 use App\ChestAndLungs;
 use App\Dewormed;
+use App\Disability;
 use App\DisabilityOne;
+use App\FamilyHistory;
 use App\GeneralInformation;
 use App\Heart;
+use App\HospitalizationHistory;
 use App\HospitalizationHistoryOne;
 use App\Injury;
+use App\MedicalHistory;
 use App\MenstrualHistory;
 use App\Muncity;
 use App\PersonalHistory;
@@ -18,6 +22,7 @@ use App\PertinentExamination;
 use App\PhicMembership;
 use App\Province;
 use App\Tuberculosis;
+use App\TuberculosisTick;
 use App\VaccinationReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -74,55 +79,43 @@ class DengController extends Controller
             ->get();
         //end province
 
+
+        $family_history = [];
+        foreach(FamilyHistory::where('profile_id','=',$profile->main_id)->get() as $row){
+            $family_history['fh_tick_'.$row->fh_tick] = $row->fh_tick;
+            $family_history['fh_specify_'.$row->fh_tick] = $row->fh_specify;
+        }
+
+        $medical_history = [];
+        foreach(MedicalHistory::where('profile_id','=',$profile->main_id)->get() as $row){
+            $medical_history['mh_tick_'.$row->mh_tick] = $row->mh_tick;
+            $medical_history['mh_specify_'.$row->mh_tick] = $row->mh_specify;
+        }
+
+        $tuberculosis_tick = [];
+        foreach(TuberculosisTick::where('profile_id','=',$profile->main_id)->get() as $row){
+            $tuberculosis_tick['tb_tick_'.$row->tb_tick] = $row->tb_tick;
+            $tuberculosis_tick['tb_tick_specify_'.$row->tb_tick] = $row->tb_tick_specify;
+        }
+
+        $disability = [];
+        foreach(Disability::where('profile_id','=',$profile->main_id)->get() as $row){
+            $disability['dis_tick_'.$row->dis_tick] = $row->dis_tick;
+        }
+        $hospitalization_history = HospitalizationHistory::where('profile_id','=',$profile->main_id)->get();
+        Session::put('host_count',1);
+
         return view('dengvaxiav2.form.form',[
             'profile' => $profile,
             'brgy' => $brgy,
             'muncity' => $muncity,
-            'province' => $province
+            'province' => $province,
+            'family_history' => $family_history,
+            'medical_history' => $medical_history,
+            'tuberculosis_tick' => $tuberculosis_tick,
+            'disability' => $disability,
+            'hospitalization_history' => $hospitalization_history
         ]);
-    }
-
-    public function profileInfo($profile_id){
-        $profile = Profile::select(
-                'profile.id as main_id',
-                'profile.*',
-                'general_information.*',
-                'phic_membership.*',
-                'bronchial_asthma.*',
-                'tuberculosis.*',
-                'disability_one.*',
-                'injury.*',
-                'hospitalization_history_one.*',
-                'personal_history.*',
-                'menstrual_history.*',
-                'vaccination_received.*',
-                'adolescent.*',
-                'dewormed.*',
-                'pertinent_examination.*',
-                'chest_and_lungs.*',
-                'heart.*',
-                'abdomen.*'
-            )
-            ->leftJoin('general_information','general_information.profile_id','=','profile.id')
-            ->leftJoin('phic_membership','phic_membership.profile_id','=','profile.id')
-            ->leftJoin('bronchial_asthma','bronchial_asthma.profile_id','=','profile.id')
-            ->leftJoin('tuberculosis','tuberculosis.profile_id','=','profile.id')
-            ->leftJoin('disability_one','disability_one.profile_id','=','profile.id')
-            ->leftJoin('injury','injury.profile_id','=','profile.id')
-            ->leftJoin('hospitalization_history_one','hospitalization_history_one.profile_id','=','profile.id')
-            ->leftJoin('personal_history','personal_history.profile_id','=','profile.id')
-            ->leftJoin('menstrual_history','menstrual_history.profile_id','=','profile.id')
-            ->leftJoin('vaccination_received','vaccination_received.profile_id','=','profile.id')
-            ->leftJoin('adolescent','vaccination_received.profile_id','=','profile.id')
-            ->leftJoin('dewormed','dewormed.profile_id','=','profile.id')
-            ->leftJoin('pertinent_examination','pertinent_examination.profile_id','=','profile.id')
-            ->leftJoin('chest_and_lungs','chest_and_lungs.profile_id','=','profile.id')
-            ->leftJoin('heart','heart.profile_id','=','profile.id')
-            ->leftJoin('abdomen','abdomen.profile_id','=','profile.id')
-            ->where('profile.id',$profile_id)
-            ->first();
-
-        return $profile;
     }
 
     public function save(Request $request){
@@ -151,7 +144,8 @@ class DengController extends Controller
                 "contact_no"=> $request->contact_no,
                 "street_name"=> $request->street_name,
                 "sitio"=> $request->sitio,
-                "religion"=> $request->religion_others,
+                "religion"=> $request->religion,
+                "religion_others"=> $request->religion_others,
                 "birth_place"=> $request->birth_place,
                 "yrs_current_address"=> $request->yrs_current_address,
                 "status"=> 1,
@@ -177,10 +171,10 @@ class DengController extends Controller
             ['profile_id'=>$request->profile_id],
             [
                 "profile_id" => $request->profile_id,
-                "bro_consultation" => $request->phic_type,
-                "bro_no_attack_week"=> $request->phic_sponsored,
-                "bro_medication"=> $request->phic_sponsored_others,
-                "bro_medication_yes"=> $request->phic_employed,
+                "bro_consultation" => $request->bro_consultation,
+                "bro_no_attack_week"=> $request->bro_no_attack_week,
+                "bro_medication"=> $request->bro_medication,
+                "bro_medication_yes"=> $request->bro_medication_yes,
                 "bro_status" => 1
             ]
         );
@@ -195,6 +189,14 @@ class DengController extends Controller
                 "tb_cat2"=> $request->tb_cat2,
                 "tb_cat3"=> $request->tb_cat3,
                 "tb_cat4"=> $request->tb_cat4,
+                "tb_ppd"=> $request->tb_ppd,
+                "tb_result_ppd"=> $request->tb_result_ppd,
+                "tb_sputum_exam"=> $request->tb_sputum_exam,
+                "tb_result_eputum_exam"=> $request->tb_result_eputum_exam,
+                "tb_cxr"=> $request->tb_cxr,
+                "tb_result_cxr"=> $request->tb_result_cxr,
+                "tb_genxpert"=> $request->tb_genxpert,
+                "tb_result_genxpert"=> $request->tb_result_genxpert,
                 "tb_status" => 1
             ]
         );
@@ -374,7 +376,122 @@ class DengController extends Controller
             ]
         );
 
+        $family_history = FamilyHistory::where('profile_id','=',$request->profile_id);
+        if(count($family_history) >= 1){
+            $family_history->delete();
+        }
+        foreach($request->fh_tick as $value){
+            $family_history = new FamilyHistory();
+            $family_history->profile_id = $request->profile_id;
+            $family_history->fh_tick = $value;
+            $fh_specify = 'fh_specify_'.$value;
+            $family_history->fh_specify = $request->$fh_specify;
+            $family_history->fh_status = 1;
+            $family_history->save();
+        }
+
+        $medical_history = MedicalHistory::where('profile_id','=',$request->profile_id);
+        if(count($medical_history) >= 1){
+            $medical_history->delete();
+        }
+        foreach($request->mh_tick as $value){
+            $medical_history = new MedicalHistory();
+            $medical_history->profile_id = $request->profile_id;
+            $medical_history->mh_tick = $value;
+            $mh_specify = 'mh_specify_'.$value;
+            $medical_history->mh_specify = $request->$mh_specify;
+            $medical_history->mh_status = 1;
+            $medical_history->save();
+        }
+
+        $tuberculosis_tick = TuberculosisTick::where('profile_id','=',$request->profile_id);
+        if(count($tuberculosis_tick) >= 1){
+            $tuberculosis_tick->delete();
+        }
+        foreach($request->tb_tick as $value){
+            $tuberculosis_tick = new TuberculosisTick();
+            $tuberculosis_tick->profile_id = $request->profile_id;
+            $tuberculosis_tick->tb_tick = $value;
+            $tb_tick_specify = 'tb_tick_specify_'.$value;
+            $tuberculosis_tick->tb_tick_specify = $request->$tb_tick_specify;
+            $tuberculosis_tick->tb_tick_status = 1;
+            $tuberculosis_tick->save();
+        }
+
+        $disability = Disability::where('profile_id','=',$request->profile_id);
+        if(count($disability) >= 1){
+            $disability->delete();
+        }
+        foreach($request->dis_tick as $value){
+            $disability = new Disability();
+            $disability->profile_id = $request->profile_id;
+            $disability->dis_tick = $value;
+            $disability->dis_status = 1;
+            $disability->save();
+        }
+
+        $hospitalization_history = HospitalizationHistory::where('profile_id','=',$request->profile_id);
+        if(count($hospitalization_history) >= 1){
+            $hospitalization_history->delete();
+        }
+        $hos_count = 0;
+        foreach($request->hos_reason as $hos_reason){
+            $hospitalization_history = new HospitalizationHistory();
+            $hospitalization_history->profile_id = $request->profile_id;
+            $hospitalization_history->hos_reason = $hos_reason;
+            $hospitalization_history->hos_date = $request->hos_date[$hos_count];
+            $hospitalization_history->hos_place = $request->hos_place[$hos_count];
+            $hospitalization_history->hos_phic = $request->hos_phic[$hos_count];
+            $hospitalization_history->hos_cost = $request->hos_cost[$hos_count];
+            $hospitalization_history->save();
+            $hos_count++;
+        }
+
+
         return redirect()->back()->with('status','updated');
+    }
+
+    public function profileInfo($profile_id){
+        $profile = Profile::select(
+            'profile.id as main_id',
+            'profile.*',
+            'general_information.*',
+            'phic_membership.*',
+            'bronchial_asthma.*',
+            'tuberculosis.*',
+            'disability_one.*',
+            'injury.*',
+            'hospitalization_history_one.*',
+            'personal_history.*',
+            'menstrual_history.*',
+            'vaccination_received.*',
+            'adolescent.*',
+            'dewormed.*',
+            'pertinent_examination.*',
+            'chest_and_lungs.*',
+            'heart.*',
+            'abdomen.*'
+        )
+            ->leftJoin('general_information','general_information.profile_id','=','profile.id')
+            ->leftJoin('phic_membership','phic_membership.profile_id','=','profile.id')
+            ->leftJoin('bronchial_asthma','bronchial_asthma.profile_id','=','profile.id')
+            ->leftJoin('tuberculosis','tuberculosis.profile_id','=','profile.id')
+            ->leftJoin('disability_one','disability_one.profile_id','=','profile.id')
+            ->leftJoin('injury','injury.profile_id','=','profile.id')
+            ->leftJoin('hospitalization_history_one','hospitalization_history_one.profile_id','=','profile.id')
+            ->leftJoin('personal_history','personal_history.profile_id','=','profile.id')
+            ->leftJoin('menstrual_history','menstrual_history.profile_id','=','profile.id')
+            ->leftJoin('vaccination_received','vaccination_received.profile_id','=','profile.id')
+            ->leftJoin('adolescent','vaccination_received.profile_id','=','profile.id')
+            ->leftJoin('dewormed','dewormed.profile_id','=','profile.id')
+            ->leftJoin('pertinent_examination','pertinent_examination.profile_id','=','profile.id')
+            ->leftJoin('chest_and_lungs','chest_and_lungs.profile_id','=','profile.id')
+            ->leftJoin('heart','heart.profile_id','=','profile.id')
+            ->leftJoin('abdomen','abdomen.profile_id','=','profile.id')
+            ->where('profile.id',$profile_id)
+            ->first();
+
+        return $profile;
     }
 
     public function pdf(){

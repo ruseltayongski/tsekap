@@ -199,7 +199,7 @@
     <tr>
         <td>
             <small><b>SKIN:</b></small><br>
-            <input type="checkbox" value="1" name="per_skin_good" <?php if($profile->per_good_skin) echo 'checked'; ?> > Good Skin Turgor
+            <input type="checkbox" value="1" name="per_skin_good" <?php if($profile->per_skin_good) echo 'checked'; ?> > Good Skin Turgor
         </td>
         <td>
             <br>
@@ -221,7 +221,7 @@
         <td>
             <br>
             Others
-            <input type="text" name="per_others" value="{{ $profile->per_others }}">
+            <input type="text" name="per_skin_others" value="{{ $profile->per_skin_others }}">
         </td>
     </tr>
 </table>
@@ -306,7 +306,7 @@
         </td>
         <td>
             <input type="checkbox" value="1" name="chest_others" <?php if($profile->chest_others) echo 'checked'; ?>> Others, specify:
-            <input type="text" name="chest_others" value="{{ $profile->chest_others }}">
+            <input type="text" name="chest_others_specify" value="{{ $profile->chest_others_specify }}">
         </td>
     </tr>
 </table>
@@ -314,7 +314,7 @@
     <tr>
         <td>
             <small><b>HEART:</b></small><br>
-            <input type="checkbox" value="1" name="heart_no_findigs" <?php if($profile->heart_no_findigs) echo 'checked'; ?>> No Significant findings
+            <input type="checkbox" value="1" name="heart_no_findings" <?php if($profile->heart_no_findings) echo 'checked'; ?>> No Significant findings
         </td>
         <td>
             <br>
@@ -327,12 +327,12 @@
         <td>
             <br>
             <input type="checkbox" value="1" name="heart_murmur" <?php if($profile->heart_murmur) echo 'checked'; ?>> Murmur, Specify:
-            <input type="text" name="heart_murmur" value="{{ $profile->heart_murmur }}">
+            <input type="text" name="heart_murmur_specify" value="{{ $profile->heart_murmur_specify }}">
         </td>
         <td>
             <br>
             <input type="checkbox" value="1" name="heart_others" <?php if($profile->heart_others) echo 'checked'; ?>> Others, Specify:
-            <input type="text" name="heart_others" value="{{ $profile->heart_others }}">
+            <input type="text" name="heart_others_specify" value="{{ $profile->heart_others_specify }}">
         </td>
     </tr>
 </table>
@@ -349,12 +349,12 @@
         <td>
             <br>
             <input type="checkbox" value="1" name="abd_palpable" <?php if($profile->abd_palpable) echo 'checked'; ?>> Palpable mass, specify site:
-            <input type="text" name="abd_palpable" value="{{ $profile->abd_palpable }}">
+            <input type="text" name="abd_palpable_specify" value="{{ $profile->abd_palpable_specify }}">
         </td>
         <td>
             <br>
             <input type="checkbox" value="1" name="abd_others" <?php if($profile->abd_others) echo 'checked'; ?>> Others, Specify:
-            <input type="text" name="abd_others" value="{{ $profile->abd_others }}">
+            <input type="text" name="abd_others_specify" value="{{ $profile->abd_others_specify }}">
         </td>
     </tr>
 </table>

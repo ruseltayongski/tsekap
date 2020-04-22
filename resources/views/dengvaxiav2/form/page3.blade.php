@@ -7,6 +7,7 @@
                 Have you tried smoking?
             </small>
             <select name="per_smoking" class="form-control">
+                <option value="">Select option..</option>
                 <option value="never_smoked" <?php if($profile->per_smoking=='never_smoked') echo 'selected'; ?>>Never Smoked</option>
                 <option value="current_smoker" <?php if($profile->per_smoking=='current_smoker') echo 'selected'; ?>>Current Smoker</option>
                 <option value="former_smoker" <?php if($profile->per_smoking=='former_smoker') echo 'selected'; ?>>Former Smoker</option>
@@ -255,7 +256,7 @@
                 <b>Dewormed?</b><br>
             </small>
             <input type="radio" name="dewormed" value="yes" <?php if($profile->dewormed == 'yes') echo 'checked'; ?>> Yes, Date last dewormed?
-            <input type="date" name="dewormed_yes" value="{{ $profile->dewormed_yes }}">
+            <input type="date" name="dewormed_yes" value="{{ $profile->dewormed_date }}">
             <input type="radio" name="dewormed" value="no" <?php if($profile->dewormed == 'no') echo 'checked'; ?>> No
         </td>
     </tr>

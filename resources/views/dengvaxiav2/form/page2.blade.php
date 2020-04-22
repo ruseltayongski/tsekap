@@ -36,50 +36,50 @@
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="weight_loss" name="tuberculosis[]"> Weight loss
+            <input type="checkbox" value="weight" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_weight'])) echo 'checked'; ?>> Weight loss
         </td>
         <td>
-            <input type="checkbox" value="fever" name="tuberculosis[]"> Fever
+            <input type="checkbox" value="fever" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_fever'])) echo 'checked'; ?>> Fever
         </td>
         <td>
-            <input type="checkbox" value="lost_appetite" name="tuberculosis[]"> Lost of appetite
+            <input type="checkbox" value="lost" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_lost'])) echo 'checked'; ?>> Lost of appetite
         </td>
         <td>
-            <input type="checkbox" value="cough" name="tuberculosis[]"> Cough > 2 weeks
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="checkbox" value="chest_pain" name="tuberculosis[]"> Chest pain
-        </td>
-        <td>
-            <input type="checkbox" value="back_pain" name="tuberculosis[]"> Back pain
-        </td>
-        <td>
-            <input type="checkbox" value="neck_nodes" name="tuberculosis[]"> Neck nodes
-        </td>
-        <td>
-            <input type="checkbox" value="smear_positive" name="tuberculosis[]"> New, smear positive
+            <input type="checkbox" value="cough" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_cough'])) echo 'checked'; ?>> Cough > 2 weeks
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="smear_negative" name="tuberculosis[]"> New, smear negative
+            <input type="checkbox" value="chest" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_chest'])) echo 'checked'; ?>> Chest pain
         </td>
         <td>
-            <input type="checkbox" value="relapase" name="tuberculosis[]"> Relapse
+            <input type="checkbox" value="back" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_back'])) echo 'checked'; ?>> Back pain
         </td>
         <td>
-            <input type="checkbox" value="clinically_diagnosed" name="tuberculosis[]"> Clinically diagnosed
+            <input type="checkbox" value="neck" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_neck'])) echo 'checked'; ?>> Neck nodes
         </td>
         <td>
-            <input type="checkbox" value="tb_children" name="tuberculosis[]"> TB in children
+            <input type="checkbox" value="smearpositive" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_smearpositive'])) echo 'checked'; ?>> New, smear positive
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="checkbox" value="smearengative" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_smearengative'])) echo 'checked'; ?>> New, smear negative
+        </td>
+        <td>
+            <input type="checkbox" value="relapase" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_relapase'])) echo 'checked'; ?>> Relapse
+        </td>
+        <td>
+            <input type="checkbox" value="clinically" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_clinically'])) echo 'checked'; ?>> Clinically diagnosed
+        </td>
+        <td>
+            <input type="checkbox" value="children" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_children'])) echo 'checked'; ?>> TB in children
         </td>
     </tr>
     <tr>
         <td colspan="4">
-            <input type="checkbox" value="extrapulmonary" name="tuberculosis[]"> Extrapulmonary, specify:
-            <input type="text" name="tuberculosis_extrapulmonary">
+            <input type="checkbox" value="extrapulmonary" name="tb_tick[]" <?php if(isset($tuberculosis_tick['tb_tick_extrapulmonary'])) echo 'checked'; ?>> Extrapulmonary, specify:
+            <input type="text" name="tb_tick_specify_extrapulmonary" value="<?php if(isset($tuberculosis_tick['tb_tick_specify_extrapulmonary'])) echo $tuberculosis_tick['tb_tick_specify_extrapulmonary']; ?>">
         </td>
     </tr>
 </table>
@@ -87,23 +87,27 @@
     <tr>
         <td>
             <small><b>Labs done:</b></small><br>
+            <input type="checkbox" value="1" name="tb_ppd" <?php if($profile->tb_ppd) echo 'checked'; ?>>
             <small>PPD Result</small>
-            <input type="text" name="tuberculosis_ppd" class="form-control">
+            <input type="text" name="tb_result_ppd" class="form-control" value="{{ $profile->tb_result_ppd }}">
         </td>
         <td>
             <br>
+            <input type="checkbox" value="1" name="tb_sputum_exam" <?php if($profile->tb_ppd) echo 'checked'; ?>>
             <small>Sputum Exam Result</small>
-            <input type="text" name="tuberculosis_sputum" class="form-control">
+            <input type="text" name="tb_result_eputum_exam" class="form-control" value="{{ $profile->tb_result_eputum_exam }}">
         </td>
         <td>
             <br>
+            <input type="checkbox" value="1" name="tb_cxr" <?php if($profile->tb_ppd) echo 'checked'; ?>>
             <small>CXR Result</small>
-            <input type="text" name="tuberculosis_cxr" class="form-control">
+            <input type="text" name="tb_result_cxr" class="form-control" value="{{ $profile->tb_result_cxr }}">
         </td>
         <td>
             <br>
+            <input type="checkbox" value="1" name="tb_genxpert" <?php if($profile->tb_ppd) echo 'checked'; ?>>
             <small>GenXpert Result</small>
-            <input type="text" name="tuberculosis_genxpert" class="form-control">
+            <input type="text" name="tb_result_genxpert" class="form-control" value="{{ $profile->tb_result_genxpert }}">
         </td>
     </tr>
 </table>
@@ -132,27 +136,27 @@
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="checkbox" value="psychological" name="disability[]"> Psychosocial and Behavioral Conditions
+            <input type="checkbox" value="psychological" name="dis_tick[]" <?php if(isset($disability['dis_tick_psychological'])) echo 'checked'; ?>> Psychosocial and Behavioral Conditions
         </td>
         <td>
-            <input type="checkbox" value="learning" name="disability[]"> Learning or Intellectual Disability
+            <input type="checkbox" value="learning" name="dis_tick[]" <?php if(isset($disability['dis_tick_learning'])) echo 'checked'; ?>> Learning or Intellectual Disability
         </td>
         <td>
-            <input type="checkbox" value="mental_condition" name="disability[]"> Mental Conditions
+            <input type="checkbox" value="mental" name="dis_tick[]" <?php if(isset($disability['dis_tick_mental'])) echo 'checked'; ?>> Mental Conditions
         </td>
         <td>
-            <input type="checkbox" value="visual" name="disability[]"> Visual or Seeing Impairment
+            <input type="checkbox" value="visual" name="dis_tick[]" <?php if(isset($disability['dis_tick_visual'])) echo 'checked'; ?>> Visual or Seeing Impairment
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="hearing" name="disability[]"> Hearing Impairment
+            <input type="checkbox" value="hearing" name="dis_tick[]" <?php if(isset($disability['dis_tick_hearing'])) echo 'checked'; ?>> Hearing Impairment
         </td>
         <td>
-            <input type="checkbox" value="speech_impairment" name="disability[]"> Speech Impairment
+            <input type="checkbox" value="speech" name="dis_tick[]" <?php if(isset($disability['dis_tick_speech'])) echo 'checked'; ?>> Speech Impairment
         </td>
         <td>
-            <input type="checkbox" value="musculo" name="disability[]"> Musculo-Skeletal or Injury Impairments
+            <input type="checkbox" value="musculo" name="dis_tick[]" <?php if(isset($disability['dis_tick_musculo'])) echo 'checked'; ?>> Musculo-Skeletal or Injury Impairments
         </td>
         <td></td>
     </tr>
@@ -167,12 +171,12 @@
     <tr>
         <td>
             <small>With assistive device/s?</small>
-            <input type="radio" name="dis_with_assistive" value="yes" <?php if($profile->dis_with_assistive == 'yes') echo 'checked'; ?>> Yes <input type="radio" name="dis_with_assistive" value="no" <?php if($profile->dis_with_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="radio" name="dis_with_assistive" value="yes" <?php if($profile->dis_with_assistive == 'yes') echo 'checked'; ?>> No <input type="radio" name="dis_with_assistive" value="no" <?php if($profile->dis_with_assistive == 'no') echo 'checked'; ?>> Yes, specify:
             <input type="text" name="dis_with_assistive_yes" value="{{ $profile->dis_with_assistive_yes }}">
         </td>
         <td>
             <small>Need for assistive device/s?</small>
-            <input type="radio" name="dis_need_assistive" value="yes" <?php if($profile->dis_need_assistive == 'yes') echo 'checked'; ?>> Yes <input type="radio" name="dis_need_assistive" value="no" <?php if($profile->dis_need_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="radio" name="dis_need_assistive" value="yes" <?php if($profile->dis_need_assistive == 'yes') echo 'checked'; ?>> No <input type="radio" name="dis_need_assistive" value="no" <?php if($profile->dis_need_assistive == 'no') echo 'checked'; ?>> Yes, specify:
             <input type="text" name="dis_need_assistive_yes" value="{{ $profile->dis_need_assistive_yes }}">
         </td>
     </tr>
@@ -193,7 +197,7 @@
     <tr>
         <td>
             <small>Medications(List all current medicines and food supplement being taken):</small>
-            <textarea name="injury_medication" cols="30" rows="5" class="form-control">{{ $profile->inj_medications }}</textarea>
+            <textarea name="inj_medications" cols="30" rows="5" class="form-control">{{ $profile->inj_medications }}</textarea>
         </td>
     </tr>
 </table>
@@ -215,15 +219,34 @@
         <td>Place Hospitalized</td>
         <td>PhilHealth used? Y/N</td>
         <td>Cost/s not covered by PhilHealth?</td>
+        <td></td>
     </tr>
-    <tr>
-        <td><b>1</b></td>
-        <td><input type="text" name="hospitalization_reason[]" class="form-control"></td>
-        <td><input type="date" name="hospitalization_date[]" class="form-control"></td>
-        <td><input type="text" name="hospitalization_place[]" class="form-control"></td>
-        <td><input type="text" name="hospitalization_phic[]" class="form-control"></td>
-        <td><input type="text" name="hospitalization_cost[]" class="form-control"></td>
-    </tr>
+    @if(count($hospitalization_history) >= 1)
+        <?php $host_count = Session::get('host_count'); ?>
+        @foreach($hospitalization_history as $row)
+            <tr>
+                <td><b>{{ $host_count }}</b></td>
+                <td><input type="text" name="hos_reason[]" class="form-control" value="{{ $row->hos_reason }}"></td>
+                <td><input type="date" name="hos_date[]" class="form-control" value="{{ $row->hos_date }}"></td>
+                <td><input type="text" name="hos_place[]" class="form-control" value="{{ $row->hos_place }}"></td>
+                <td><input type="text" name="hos_phic[]" class="form-control" value="{{ $row->hos_phic }}"></td>
+                <td><input type="text" name="hos_cost[]" class="form-control" value="{{ $row->hos_cost }}"></td>
+                <td><i class='fa fa-trash-o text-red hos_row' style='cursor: pointer;' onclick='removeHospitalHistory($(this))'></i></td>
+            </tr>
+            <?php $host_count++; ?>
+        @endforeach
+        <?php Session::put('host_count',$host_count); ?>
+    @else
+        <tr>
+            <td><b>{{ $host_count }}</b></td>
+            <td><input type="text" name="hos_reason[]" class="form-control"></td>
+            <td><input type="date" name="hos_date[]" class="form-control"></td>
+            <td><input type="text" name="hos_place[]" class="form-control"></td>
+            <td><input type="text" name="hos_phic[]" class="form-control"></td>
+            <td><input type="text" name="hos_cost[]" class="form-control"></td>
+            <td><i class='fa fa-trash-o text-red hos_row' style='cursor: pointer;' onclick='removeHospitalHistory($(this))'></i></td>
+        </tr>
+    @endif
     <tbody id="hospital_history_row">
 
     </tbody>
@@ -238,18 +261,22 @@
     <tr>
         <td>
             <small>Operation</small>
-            <input type="text" name="past_surgical_operation[]" class="form-control" >
+            <input type="text" name="sur_operation[]" class="form-control" >
         </td>
         <td>
             <small>Date</small>
-            <input type="date" name="past_surgical_date[]" class="form-control" >
+            <input type="date" name="sur_date[]" class="form-control" >
+        </td>
+        <td width="2%">
+            <br>
+            <i class='fa fa-trash-o text-red' style='cursor: pointer;' onclick='removePastSurgicalHistory($(this))'></i>
         </td>
     </tr>
     <tbody id="past_surgical_row">
 
     </tbody>
     <tr>
-        <td colspan="2">
+        <td colspan="3">
             <a href="#" class="pull-right" onclick="addPastSurgicalHistory()"><i class="fa fa-plus"></i> Add row</a>
         </td>
     </tr>

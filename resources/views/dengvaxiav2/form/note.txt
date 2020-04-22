@@ -2,3 +2,8 @@
 change table:
     -disability(one to many)
     -disability_one
+
+04/21/2020
+*merge table tuberculosis_lab to tuberculosis(one to many)
+*adding a migration to add column in tuberculosis and the field are from tuberculosis_lab
+*general information - changing the respondent datatype to string
