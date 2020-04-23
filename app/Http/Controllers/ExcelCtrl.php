@@ -44,8 +44,10 @@ class ExcelCtrl extends Controller
 
     public function ExportExcelMunicipality(Request $request)
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+        //set_time_limit(0);
+        ini_set('memory_limit', '-1');
+        /*error_reporting(E_ALL);
+        ini_set('display_errors', 1);*/
         $province_id = $request->province_id;
         $province = $request->province;
         $muncity_id = $request->muncity_id;
