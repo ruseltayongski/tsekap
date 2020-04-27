@@ -66,11 +66,11 @@
             var html_append = "<tr id='past_surgical_history"+past_surgical_history_count+"'>\n" +
                 "                        <td>\n" +
                 "                            <small class=\" \">Operation</small>\n" +
-                "                            <input type=\"text\" name='past_surgical_operation[]' class=\"form-control\" >\n" +
+                "                            <input type=\"text\" name='sur_operation[]' class=\"form-control\" >\n" +
                 "                        </td>\n" +
                 "                        <td>\n" +
                 "                            <small class=\" \">Date</small>\n" +
-                "                            <input type=\"date\" name='past_surgical_date[]' class=\"form-control\" >\n" +
+                "                            <input type=\"date\" name='sur_date[]' class=\"form-control\" >\n" +
                 "                        </td>\n" +
                 "                         <td>" +
                 "                            <br>\n" +

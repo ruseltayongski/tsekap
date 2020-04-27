@@ -151,25 +151,25 @@
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="abnormal" name="gyne[]"> Abnormal Vaginal/Utering Bleeding
+            <input type="checkbox" value="abnormal" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_abnormal'])) echo 'checked'; ?>> Abnormal Vaginal/Utering Bleeding
         </td>
         <td>
-            <input type="checkbox" value="dyssmenorrhea" name="gyne[]"> Dysmenorrhea
+            <input type="checkbox" value="dyssmenorrhea" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_dyssmenorrhea'])) echo 'checked'; ?>> Dysmenorrhea
         </td>
         <td>
-            <input type="checkbox" value="dyspareunia" name="gyne[]"> Dyspareunia
+            <input type="checkbox" value="dyspareunia" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_dyspareunia'])) echo 'checked'; ?>> Dyspareunia
         </td>
     </tr>
     <tr>
         <td>
-            <input type="checkbox" value="foul_smelling" name="gyne[]"> Foul-smelling vaginal discharge
+            <input type="checkbox" value="foul" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_foul'])) echo 'checked'; ?>> Foul-smelling vaginal discharge
         </td>
         <td>
-            <input type="checkbox" value="vaginal_pruritus" name="gyne[]"> Vaginal Pruritus
+            <input type="checkbox" value="vaginal" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_vaginal'])) echo 'checked'; ?>> Vaginal Pruritus
         </td>
         <td>
-            <input type="checkbox" value="others" name="gyne[]">Others, specify
-            <input type="text" name="gyne_others" >
+            <input type="checkbox" value="others" name="gyne_description[]" <?php if(isset($gyne_history['gyne_description_others'])) echo 'checked'; ?>> Others, specify
+            <input type="text" name="gyne_specify_others" value="<?php if(isset($gyne_history['gyne_specify_others'])) echo $gyne_history['gyne_specify_others']; ?>">
         </td>
     </tr>
 </table>

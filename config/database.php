@@ -1,7 +1,4 @@
 <?php
-$host = "192.168.81.5";
-$username = "rtayong_2020";
-$password = "rtayong_2020";
 
 return [
 
@@ -57,11 +54,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'tsekap_main', //doh_tsekap_vii sdn_v2 doh_tsekap_nir doh_tsekap_training
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -71,11 +68,11 @@ return [
 
         'db_2017' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'tsekap_2017', //doh_tsekap_vii sdn_v2 doh_tsekap_nir doh_tsekap_training
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -85,11 +82,11 @@ return [
 
         'db_2018' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'tsekap_2018', //doh_tsekap_vii sdn_v2 doh_tsekap_nir doh_tsekap_training
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -99,11 +96,11 @@ return [
 
         'db_2019' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'tsekap_2019', //doh_tsekap_vii sdn_v2 doh_tsekap_nir doh_tsekap_training
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -113,11 +110,11 @@ return [
 
         'db_2020' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'tsekap_2020',
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -127,11 +124,11 @@ return [
 
         'dengvaxia' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'doh_dengvaxia',
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -141,11 +138,11 @@ return [
 
         'dengvaxia_dummy' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'doh_dengvaxia_dummy',
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
@@ -155,11 +152,11 @@ return [
 
         'db_dengvaxia' => [
             'driver' => 'mysql',
-            'host' => $host,
+            'host' => 'localhost',
             'port' => '3306',
             'database' => 'doh_dengvaxia',
-            'username' => $username,
-            'password' => $password,
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

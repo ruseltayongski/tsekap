@@ -258,6 +258,24 @@
 </table>
 <label class="text-green">PAST SURGICAL HISTORY</label>
 <table class="table table-hover table-striped">
+    @if(count($past_surgical_history) >= 1)
+        @foreach($past_surgical_history as $row)
+            <tr>
+                <td>
+                    <small>Operation</small>
+                    <input type="text" name="sur_operation[]" value="{{ $row->sur_operation }}" class="form-control" >
+                </td>
+                <td>
+                    <small>Date</small>
+                    <input type="date" name="sur_date[]" value="{{ $row->sur_date }}" class="form-control" >
+                </td>
+                <td width="2%">
+                    <br>
+                    <i class='fa fa-trash-o text-red' style='cursor: pointer;' onclick='removePastSurgicalHistory($(this))'></i>
+                </td>
+            </tr>
+        @endforeach
+    @else
     <tr>
         <td>
             <small>Operation</small>
@@ -272,6 +290,7 @@
             <i class='fa fa-trash-o text-red' style='cursor: pointer;' onclick='removePastSurgicalHistory($(this))'></i>
         </td>
     </tr>
+    @endif
     <tbody id="past_surgical_row">
 
     </tbody>

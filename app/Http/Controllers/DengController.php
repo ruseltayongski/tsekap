@@ -10,6 +10,7 @@ use App\Disability;
 use App\DisabilityOne;
 use App\FamilyHistory;
 use App\GeneralInformation;
+use App\GyneHistory;
 use App\Heart;
 use App\HospitalizationHistory;
 use App\HospitalizationHistoryOne;
@@ -17,6 +18,7 @@ use App\Injury;
 use App\MedicalHistory;
 use App\MenstrualHistory;
 use App\Muncity;
+use App\PastSurgicalHistory;
 use App\PersonalHistory;
 use App\PertinentExamination;
 use App\PhicMembership;
@@ -102,8 +104,17 @@ class DengController extends Controller
         foreach(Disability::where('profile_id','=',$profile->main_id)->get() as $row){
             $disability['dis_tick_'.$row->dis_tick] = $row->dis_tick;
         }
+
         $hospitalization_history = HospitalizationHistory::where('profile_id','=',$profile->main_id)->get();
         Session::put('host_count',1);
+
+        $past_surgical_history = PastSurgicalHistory::where('profile_id','=',$profile->main_id)->get();
+
+        $gyne_history = [];
+        foreach(GyneHistory::where('profile_id','=',$profile->main_id)->get() as $row){
+            $gyne_history['gyne_description_'.$row->gyne_description] = $row->gyne_description;
+            $gyne_history['gyne_specify_'.$row->gyne_description] = $row->gyne_specify;
+        }
 
         return view('dengvaxiav2.form.form',[
             'profile' => $profile,
@@ -114,7 +125,9 @@ class DengController extends Controller
             'medical_history' => $medical_history,
             'tuberculosis_tick' => $tuberculosis_tick,
             'disability' => $disability,
-            'hospitalization_history' => $hospitalization_history
+            'hospitalization_history' => $hospitalization_history,
+            'past_surgical_history' => $past_surgical_history,
+            'gyne_history' => $gyne_history
         ]);
     }
 
@@ -443,10 +456,39 @@ class DengController extends Controller
             $hospitalization_history->hos_place = $request->hos_place[$hos_count];
             $hospitalization_history->hos_phic = $request->hos_phic[$hos_count];
             $hospitalization_history->hos_cost = $request->hos_cost[$hos_count];
+            $hospitalization_history->hos_status = 1;
             $hospitalization_history->save();
             $hos_count++;
         }
 
+        $past_surgical_history = PastSurgicalHistory::where('profile_id','=',$request->profile_id);
+        if(count($past_surgical_history) >= 1){
+            $past_surgical_history->delete();
+        }
+        $sur_count = 0;
+        foreach($request->sur_operation as $sur_operation){
+            $past_surgical_history = new PastSurgicalHistory();
+            $past_surgical_history->profile_id = $request->profile_id;
+            $past_surgical_history->sur_operation = $sur_operation;
+            $past_surgical_history->sur_date = $request->sur_date[$sur_count];
+            $past_surgical_history->sur_status = 1;
+            $past_surgical_history->save();
+            $sur_count++;
+        }
+
+        $gyne_history = GyneHistory::where('profile_id','=',$request->profile_id);
+        if(count($gyne_history) >= 1){
+            $gyne_history->delete();
+        }
+        foreach($request->gyne_description as $value){
+            $gyne_history = new GyneHistory();
+            $gyne_history->profile_id = $request->profile_id;
+            $gyne_history->gyne_description = $value;
+            $gyne_specify = 'gyne_specify_'.$value;
+            $gyne_history->gyne_specify = $request->$gyne_specify;
+            $gyne_history->gyne_status = 1;
+            $gyne_history->save();
+        }
 
         return redirect()->back()->with('status','updated');
     }
