@@ -7,3 +7,21 @@ change table:
 *adding a migration to add column in tuberculosis and the field are from tuberculosis_lab
 *tuberculosis_lab are no longer to use
 *general information - changing the respondent datatype to string
+
+04/27/2020
+add column in other procedure table
+    *other_tick_specify
+change column in other procedure tabel
+    *profile_id(FK)
+    *other_tick
+    *other_tick_specify
+    *other_tick_igg (1 or 0)
+    *other_tick_igm (1 or 0 )
+    *other_tick_status
+    *created_at & updated_at
+add column in extremities
+    *extre_enzymes
+    *extre_enzymes_specify
+    *extre_ns
+    *extre_pcr
+

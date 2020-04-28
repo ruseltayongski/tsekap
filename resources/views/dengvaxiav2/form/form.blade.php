@@ -122,5 +122,10 @@
                 }
             });
         }
+
+        function loadLoadingModal(){
+            $('#loading_page').modal('show');
+        }
+
     </script>
 @endsection

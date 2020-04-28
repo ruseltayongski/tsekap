@@ -204,34 +204,47 @@
     </tr>
 </table>
 <table class="table table-hover table-striped" style="margin-top: -25px">
-    @for($i=1;$i<=3;$i++)
-        <tr>
-            <td>
-                <br>
-                Dengvaxia {{ $i }}
-            </td>
-            <td>
-                <small>Date received</small>
-                <input type="date" name="dengvaxia_date[]" class="form-control" >
-            </td>
-            <td>
-                <small>Place Received</small>
-                <input type="text" name="dengvaxia_received[]" class="form-control" >
-            </td>
-            <td>
-                <br>
-                <input type="checkbox" name="dengvaxia_school[]"> School
-            </td>
-            <td>
-                <br>
-                <input type="checkbox" name="dengvaxia_health[]"> Health Center/Community
-            </td>
-            <td>
-                <br>
-                <input type="checkbox" name="dengvaxia_md[]"> Priv. MD
-            </td>
-        </tr>
-    @endfor
+    @if(count($vacc_history) >= 1)
+        @foreach($vacc_history as $row)
+            <tr>
+                <td width="10%">
+                    <br>
+                    <input type="hidden" name="vacc_deng_count[]" value="{{ $row->vacc_deng_count }}">
+                    Dengvaxia {{ $row->vacc_deng_count }}
+                </td>
+                <td width="50%">
+                    <small>Date received</small>
+                    <input type="date" name="vacc_date[]" value="{{ $row->vacc_date }}" class="form-control" >
+                </td>
+                <td>
+                    <small>Place Received</small><br>
+                    <input type="radio" name="vacc_place{{ $row->vacc_deng_count }}" value="school" <?php if($row->vacc_place == 'school') echo 'checked'; ?> > School &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vacc_place{{ $row->vacc_deng_count }}" value="health" <?php if($row->vacc_place == 'health') echo 'checked'; ?>> Health Center/Community &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vacc_place{{ $row->vacc_deng_count }}" value="privmd" <?php if($row->vacc_place == 'privmd') echo 'checked'; ?>> Priv. MD
+                </td>
+            </tr>
+        @endforeach
+    @else
+        @for($i=1;$i<=3;$i++)
+            <tr>
+                <td width="10%">
+                    <br>
+                    <input type="hidden" name="vacc_deng_count[]" value="{{ $i }}">
+                    Dengvaxia {{ $i }}
+                </td>
+                <td width="50%">
+                    <small>Date received</small>
+                    <input type="date" name="vacc_date[]" class="form-control" >
+                </td>
+                <td>
+                    <small>Place Received</small><br>
+                    <input type="radio" name="vacc_place{{ $i }}" value="school"> School &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vacc_place{{ $i }}" value="health"> Health Center/Community &nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="vacc_place{{ $i }}" value="privmd"> Priv. MD
+                </td>
+            </tr>
+        @endfor
+    @endif
 </table>
 <table class="table table-hover table-striped" style="margin-top: -25px">
     <tr>
@@ -266,27 +279,27 @@
 <table class="table table-hover table-striped">
     <tr>
         <td>
-            <input type="checkbox" value="cbc" name="other_procedure[]"> CBC
+            <input type="checkbox" value="cbc" name="other_tick[]" <?php if(isset($other_procedure['other_tick_cbc'])) echo 'checked'; ?> > CBC
         </td>
         <td>
-            <input type="checkbox" value="urinalysis" name="other_procedure[]"> Urinalysis
+            <input type="checkbox" value="urinalysis" name="other_tick[]" <?php if(isset($other_procedure['other_tick_urinalysis'])) echo 'checked'; ?> > Urinalysis
         </td>
         <td>
-            <input type="checkbox" value="chest_xray" name="other_procedure[]"> Chest X-ray<br>
+            <input type="checkbox" value="chest" name="other_tick[]" <?php if(isset($other_procedure['other_tick_chest'])) echo 'checked'; ?> > Chest X-ray<br>
             <small>Specify result:</small>
-            <input type="text" name="other_procedure_chest">
+            <input type="text" name="other_tick_specify_chest" value="<?php if(isset($other_procedure['other_tick_chest'])) echo $other_procedure['other_tick_chest']; ?>">
         </td>
         <td>
-            <input type="checkbox" value="enzymes"> Enzymes Based Rapis Diagnosis Test for Dengue,<br>
+            <input type="checkbox" name="other_tick[]" value="enzymes" <?php if(isset($other_procedure['other_tick_enzymes'])) echo 'checked'; ?> > Enzymes Based Rapis Diagnosis Test for Dengue,<br>
             <small>Specify result:</small> &nbsp;&nbsp;&nbsp;
-            <input type="radio" value="irg_positive" name="other_procedure_enzymes"> IrG Positive &nbsp;&nbsp;&nbsp;
-            <input type="radio" value="irm_positive" name="other_procedure_enzymes"> IrM Positive
+            <input type="checkbox" value="1" name="other_tick_enzymes_igg" <?php if(isset($other_procedure['other_tick_enzymes_igg'])) echo 'checked'; ?> > IgG Positive &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" value="1" name="other_tick_enzymes_igm" <?php if(isset($other_procedure['other_tick_enzymes_igm'])) echo 'checked'; ?>> IgM Positive
         </td>
         <td>
-            <input type="checkbox" value="ns_test" name="other_procedure[]"> NS1 Test
+            <input type="checkbox" value="ns" name="other_tick[]" <?php if(isset($other_procedure['other_tick_ns'])) echo 'checked'; ?> > NS1 Test
         </td>
         <td>
-            <input type="checkbox" value="pcr" name="other_procedure[]"> PCR
+            <input type="checkbox" value="pcr" name="other_tick[]" <?php if(isset($other_procedure['other_tick_pcr'])) echo 'checked'; ?> > PCR
         </td>
     </tr>
 </table>

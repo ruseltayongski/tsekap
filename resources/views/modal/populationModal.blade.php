@@ -19,6 +19,14 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal" role="dialog" id="loading_page">
+    <div class="modal-dialog modal-sm" role="document">
+        <center>
+            <img src="{{ asset('resources/img/loading.gif') }}" style="margin-top: 50%"/>
+        </center>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" role="dialog" id="proceed_dengvaxia">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">

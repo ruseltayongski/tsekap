@@ -1,4 +1,4 @@
-<div class="page_break"></div>
+{{--<div class="page_break"></div>--}}
 <table class="table1" border="0">
     <tr>
         <td>
@@ -11,6 +11,14 @@
         <td height="32px"></td>
     </tr>
 </table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- BRONCHIAL ASTHMA row 1 -->
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td>
+    </tr>
+</table>
 <table class="table1" border="0" cellspacing="0">
     <tr>
         <td width="2%"><div class="box"></div></td>
@@ -19,6 +27,17 @@
         <td width="15%">With medications?</td>
         <td width="2%"><div class="box"></div></td>
         <td>Yes, specify: _______________________________________</td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -39,6 +58,94 @@
 <table class="table1" border="1" cellspacing="0" style="position:absolute;;">
     <tr>
         <td height="130px"></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 33px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 53px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 73px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 93px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 113px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -135,6 +242,83 @@
         <td>&nbsp;&nbsp;<b>Disability</b></td>
     </tr>
 </table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 33px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 53px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 73px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 93px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 113px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
 <table class="table1" border="0" cellpadding="0" >
     <tr>
         <td width="2%"><div class="box"></div></td>
@@ -197,6 +381,50 @@
     <tr>
         <td width="50%">&nbsp;&nbsp;<b>Injury</b></td>
         <td width="50%">&nbsp;&nbsp;MEDICATIONS (List all current medicines and food supplement being taken):</td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 33px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 53px">
+    <tr>
+        <td width="0.2%"></td>
+        <td width="10%"><?php if(isset($medical_history['mh_tick_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh allergy -->
+        <td width="23%"><?php if(isset($medical_history['mh_specify_allergy'])) echo $medical_history['mh_specify_allergy']; ?></td> <!-- mh allergy specify -->
+        <td width="20%"><?php if(isset($medical_history['mh_tick_malaria'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh malaria -->
+        <td width="13%"></td>
+        <td width="14%"><?php if(isset($medical_history['mh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- mh heart -->
+        <td ><?php if(isset($medical_history['mh_specify_heart'])) echo $medical_history['mh_specify_heart']; ?></td> <!-- mh heart specify -->
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">

@@ -29,9 +29,18 @@
         position: fixed;
         bottom: 10px;
     }
+    span{
+        font-family : DejaVu Sans;
+        font-size: 12pt;
+    }
+    #fetch_data {
+        font-size: 8pt;
+        text-transform: capitalize;
+        font-weight: bold;
+    }
 </style>
 <div class="body">
-    <table class="table1" border="0">
+    {{--<table class="table1" border="0">
         <tr>
             <td class="align" id="no-border-right no-border-top"><img src="{{ realpath(__DIR__ . '/../../..').'/resources/img/doh.png' }}" width="70"></td>
             <td width="100%" id="no-border-left no-border-right no-border-top">
@@ -43,10 +52,10 @@
             </td>
             <td class="align" id="no-border-left no-border-top"><img src="{{ realpath(__DIR__ . '/../../..').'/resources/img/f1.jpg' }}" width="70"></td>
         </tr>
-    </table><br>
-    @include("dengvaxiav2.pdf.pdf_page1")
+    </table><br>--}}
+    {{--@include("dengvaxiav2.pdf.pdf_page1")--}}
     @include("dengvaxiav2.pdf.pdf_page2")
-    @include("dengvaxiav2.pdf.pdf_page3")
-    @include("dengvaxiav2.pdf.pdf_page4")
+    {{--@include("dengvaxiav2.pdf.pdf_page3")
+    @include("dengvaxiav2.pdf.pdf_page4")--}}
 
 </div>

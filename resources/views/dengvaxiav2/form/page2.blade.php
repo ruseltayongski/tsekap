@@ -221,8 +221,8 @@
         <td>Cost/s not covered by PhilHealth?</td>
         <td></td>
     </tr>
+    <?php $host_count = Session::get('host_count'); ?>
     @if(count($hospitalization_history) >= 1)
-        <?php $host_count = Session::get('host_count'); ?>
         @foreach($hospitalization_history as $row)
             <tr>
                 <td><b>{{ $host_count }}</b></td>
@@ -235,7 +235,6 @@
             </tr>
             <?php $host_count++; ?>
         @endforeach
-        <?php Session::put('host_count',$host_count); ?>
     @else
         <tr>
             <td><b>{{ $host_count }}</b></td>
@@ -246,7 +245,9 @@
             <td><input type="text" name="hos_cost[]" class="form-control"></td>
             <td><i class='fa fa-trash-o text-red hos_row' style='cursor: pointer;' onclick='removeHospitalHistory($(this))'></i></td>
         </tr>
+        <?php $host_count++; ?>
     @endif
+    <?php Session::put('host_count',$host_count); ?>
     <tbody id="hospital_history_row">
 
     </tbody>

@@ -8,23 +8,28 @@ use App\ChestAndLungs;
 use App\Dewormed;
 use App\Disability;
 use App\DisabilityOne;
+use App\Extremities;
 use App\FamilyHistory;
 use App\GeneralInformation;
 use App\GyneHistory;
 use App\Heart;
+use App\Heent;
 use App\HospitalizationHistory;
 use App\HospitalizationHistoryOne;
 use App\Injury;
 use App\MedicalHistory;
 use App\MenstrualHistory;
 use App\Muncity;
+use App\OtherProcedure;
 use App\PastSurgicalHistory;
 use App\PersonalHistory;
 use App\PertinentExamination;
 use App\PhicMembership;
 use App\Province;
+use App\ReviewSystem;
 use App\Tuberculosis;
 use App\TuberculosisTick;
+use App\VaccinationHistory;
 use App\VaccinationReceived;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -43,6 +48,7 @@ class DengController extends Controller
 
     public function form(Request $request){
         $profile = $this->profileInfo(Session::get('profile_id'));
+        Session::put('pdf_profile',$profile);
 
         $brgy = Barangay::where('muncity_id',Auth::user()->muncity);
         $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
@@ -87,12 +93,14 @@ class DengController extends Controller
             $family_history['fh_tick_'.$row->fh_tick] = $row->fh_tick;
             $family_history['fh_specify_'.$row->fh_tick] = $row->fh_specify;
         }
+        Session::put('pdf_family_history',$family_history);
 
         $medical_history = [];
         foreach(MedicalHistory::where('profile_id','=',$profile->main_id)->get() as $row){
             $medical_history['mh_tick_'.$row->mh_tick] = $row->mh_tick;
             $medical_history['mh_specify_'.$row->mh_tick] = $row->mh_specify;
         }
+        Session::put('pdf_medical_history',$medical_history);
 
         $tuberculosis_tick = [];
         foreach(TuberculosisTick::where('profile_id','=',$profile->main_id)->get() as $row){
@@ -116,6 +124,30 @@ class DengController extends Controller
             $gyne_history['gyne_specify_'.$row->gyne_description] = $row->gyne_specify;
         }
 
+        $vacc_history = VaccinationHistory::where('profile_id','=',$profile->main_id)->get();
+
+        $other_procedure = [];
+        foreach(OtherProcedure::where('profile_id','=',$profile->main_id)->get() as $row){
+            $other_procedure['other_tick_'.$row->other_tick] = $row->other_tick;
+            $other_procedure['other_tick_specify_'.$row->other_tick] = $row->other_tick_specify;
+            if($row->other_tick == 'enzymes'){
+                $other_procedure['other_tick_'.$row->other_tick.'_igg'] = $row->other_tick_igg;
+                $other_procedure['other_tick_'.$row->other_tick.'_igm'] = $row->other_tick_igm;
+            }
+        }
+
+        $review_system = [];
+        foreach(ReviewSystem::where('profile_id','=',$profile->main_id)->get() as $row){
+            $review_system['rev_tick_'.$row->rev_tick] = $row->rev_tick;
+            $review_system['rev_'.$row->rev_tick] = $row->rev_others;
+        }
+
+        $heent = [];
+        foreach(Heent::where('profile_id','=',$profile->main_id)->get() as $row){
+            $heent['heent_tick_'.$row->heent_tick] = $row->heent_tick;
+            $heent['heent_'.$row->heent_tick] = $row->heent_tick;
+        }
+
         return view('dengvaxiav2.form.form',[
             'profile' => $profile,
             'brgy' => $brgy,
@@ -127,7 +159,11 @@ class DengController extends Controller
             'disability' => $disability,
             'hospitalization_history' => $hospitalization_history,
             'past_surgical_history' => $past_surgical_history,
-            'gyne_history' => $gyne_history
+            'gyne_history' => $gyne_history,
+            'vacc_history' => $vacc_history,
+            'other_procedure' => $other_procedure,
+            'review_system' => $review_system,
+            'heent' => $heent
         ]);
     }
 
@@ -144,7 +180,8 @@ class DengController extends Controller
                 "province_id"=> $request->province_id,
                 "sex"=> $request->sex,
                 "dob"=> $request->dob,
-                "education"=> $request->education
+                "education"=> $request->education,
+                "dengvaxia"=>'yes'
             ]
         );
 
@@ -375,6 +412,25 @@ class DengController extends Controller
             ]
         );
 
+        Extremities::updateOrCreate(
+            ['profile_id'=>$request->profile_id],
+            [
+                "profile_id" => $request->profile_id,
+                "extre_abnormal" => $request->extre_abnormal,
+                "extre_edema"=> $request->extre_edema,
+                "extre_join"=> $request->extre_join,
+                "extre_deformity"=> $request->extre_deformity,
+                "extre_deformity_describe"=> $request->extre_deformity_describe,
+                "extre_others"=> $request->extre_others,
+                "extre_others_specify"=> $request->extre_others_specify,
+                "extre_enzymes"=> $request->extre_enzymes,
+                "extre_enzymes_specify"=> $request->extre_enzymes_specify,
+                "extre_ns"=> $request->extre_ns,
+                "extre_pcr"=> $request->extre_pcr,
+                "extre_status" => 1
+            ]
+        );
+
         Abdomen::updateOrCreate(
             ['profile_id'=>$request->profile_id],
             [
@@ -389,58 +445,68 @@ class DengController extends Controller
             ]
         );
 
+
         $family_history = FamilyHistory::where('profile_id','=',$request->profile_id);
         if(count($family_history) >= 1){
             $family_history->delete();
         }
-        foreach($request->fh_tick as $value){
-            $family_history = new FamilyHistory();
-            $family_history->profile_id = $request->profile_id;
-            $family_history->fh_tick = $value;
-            $fh_specify = 'fh_specify_'.$value;
-            $family_history->fh_specify = $request->$fh_specify;
-            $family_history->fh_status = 1;
-            $family_history->save();
+        if(count($request->fh_tick) >= 1){
+            foreach($request->fh_tick as $value){
+                $family_history = new FamilyHistory();
+                $family_history->profile_id = $request->profile_id;
+                $family_history->fh_tick = $value;
+                $fh_specify = 'fh_specify_'.$value;
+                $family_history->fh_specify = $request->$fh_specify;
+                $family_history->fh_status = 1;
+                $family_history->save();
+            }
         }
+
 
         $medical_history = MedicalHistory::where('profile_id','=',$request->profile_id);
         if(count($medical_history) >= 1){
             $medical_history->delete();
         }
-        foreach($request->mh_tick as $value){
-            $medical_history = new MedicalHistory();
-            $medical_history->profile_id = $request->profile_id;
-            $medical_history->mh_tick = $value;
-            $mh_specify = 'mh_specify_'.$value;
-            $medical_history->mh_specify = $request->$mh_specify;
-            $medical_history->mh_status = 1;
-            $medical_history->save();
+        if(count($request->mh_tick) >= 1){
+            foreach($request->mh_tick as $value){
+                $medical_history = new MedicalHistory();
+                $medical_history->profile_id = $request->profile_id;
+                $medical_history->mh_tick = $value;
+                $mh_specify = 'mh_specify_'.$value;
+                $medical_history->mh_specify = $request->$mh_specify;
+                $medical_history->mh_status = 1;
+                $medical_history->save();
+            }
         }
 
         $tuberculosis_tick = TuberculosisTick::where('profile_id','=',$request->profile_id);
         if(count($tuberculosis_tick) >= 1){
             $tuberculosis_tick->delete();
         }
-        foreach($request->tb_tick as $value){
-            $tuberculosis_tick = new TuberculosisTick();
-            $tuberculosis_tick->profile_id = $request->profile_id;
-            $tuberculosis_tick->tb_tick = $value;
-            $tb_tick_specify = 'tb_tick_specify_'.$value;
-            $tuberculosis_tick->tb_tick_specify = $request->$tb_tick_specify;
-            $tuberculosis_tick->tb_tick_status = 1;
-            $tuberculosis_tick->save();
+        if(count($request->tb_tick) >= 1){
+            foreach($request->tb_tick as $value){
+                $tuberculosis_tick = new TuberculosisTick();
+                $tuberculosis_tick->profile_id = $request->profile_id;
+                $tuberculosis_tick->tb_tick = $value;
+                $tb_tick_specify = 'tb_tick_specify_'.$value;
+                $tuberculosis_tick->tb_tick_specify = $request->$tb_tick_specify;
+                $tuberculosis_tick->tb_tick_status = 1;
+                $tuberculosis_tick->save();
+            }
         }
 
         $disability = Disability::where('profile_id','=',$request->profile_id);
         if(count($disability) >= 1){
             $disability->delete();
         }
-        foreach($request->dis_tick as $value){
-            $disability = new Disability();
-            $disability->profile_id = $request->profile_id;
-            $disability->dis_tick = $value;
-            $disability->dis_status = 1;
-            $disability->save();
+        if(count($request->dis_tick) >= 1){
+            foreach($request->dis_tick as $value){
+                $disability = new Disability();
+                $disability->profile_id = $request->profile_id;
+                $disability->dis_tick = $value;
+                $disability->dis_status = 1;
+                $disability->save();
+            }
         }
 
         $hospitalization_history = HospitalizationHistory::where('profile_id','=',$request->profile_id);
@@ -448,17 +514,19 @@ class DengController extends Controller
             $hospitalization_history->delete();
         }
         $hos_count = 0;
-        foreach($request->hos_reason as $hos_reason){
-            $hospitalization_history = new HospitalizationHistory();
-            $hospitalization_history->profile_id = $request->profile_id;
-            $hospitalization_history->hos_reason = $hos_reason;
-            $hospitalization_history->hos_date = $request->hos_date[$hos_count];
-            $hospitalization_history->hos_place = $request->hos_place[$hos_count];
-            $hospitalization_history->hos_phic = $request->hos_phic[$hos_count];
-            $hospitalization_history->hos_cost = $request->hos_cost[$hos_count];
-            $hospitalization_history->hos_status = 1;
-            $hospitalization_history->save();
-            $hos_count++;
+        if(count($request->hos_reason) >= 1){
+            foreach($request->hos_reason as $hos_reason){
+                $hospitalization_history = new HospitalizationHistory();
+                $hospitalization_history->profile_id = $request->profile_id;
+                $hospitalization_history->hos_reason = $hos_reason;
+                $hospitalization_history->hos_date = $request->hos_date[$hos_count];
+                $hospitalization_history->hos_place = $request->hos_place[$hos_count];
+                $hospitalization_history->hos_phic = $request->hos_phic[$hos_count];
+                $hospitalization_history->hos_cost = $request->hos_cost[$hos_count];
+                $hospitalization_history->hos_status = 1;
+                $hospitalization_history->save();
+                $hos_count++;
+            }
         }
 
         $past_surgical_history = PastSurgicalHistory::where('profile_id','=',$request->profile_id);
@@ -466,28 +534,103 @@ class DengController extends Controller
             $past_surgical_history->delete();
         }
         $sur_count = 0;
-        foreach($request->sur_operation as $sur_operation){
-            $past_surgical_history = new PastSurgicalHistory();
-            $past_surgical_history->profile_id = $request->profile_id;
-            $past_surgical_history->sur_operation = $sur_operation;
-            $past_surgical_history->sur_date = $request->sur_date[$sur_count];
-            $past_surgical_history->sur_status = 1;
-            $past_surgical_history->save();
-            $sur_count++;
+        if(count($request->sur_operation) >= 1){
+            foreach($request->sur_operation as $sur_operation){
+                $past_surgical_history = new PastSurgicalHistory();
+                $past_surgical_history->profile_id = $request->profile_id;
+                $past_surgical_history->sur_operation = $sur_operation;
+                $past_surgical_history->sur_date = $request->sur_date[$sur_count];
+                $past_surgical_history->sur_status = 1;
+                $past_surgical_history->save();
+                $sur_count++;
+            }
         }
 
         $gyne_history = GyneHistory::where('profile_id','=',$request->profile_id);
         if(count($gyne_history) >= 1){
             $gyne_history->delete();
         }
-        foreach($request->gyne_description as $value){
-            $gyne_history = new GyneHistory();
-            $gyne_history->profile_id = $request->profile_id;
-            $gyne_history->gyne_description = $value;
-            $gyne_specify = 'gyne_specify_'.$value;
-            $gyne_history->gyne_specify = $request->$gyne_specify;
-            $gyne_history->gyne_status = 1;
-            $gyne_history->save();
+        if(count($request->gyne_description) >= 1){
+            foreach($request->gyne_description as $value){
+                $gyne_history = new GyneHistory();
+                $gyne_history->profile_id = $request->profile_id;
+                $gyne_history->gyne_description = $value;
+                $gyne_specify = 'gyne_specify_'.$value;
+                $gyne_history->gyne_specify = $request->$gyne_specify;
+                $gyne_history->gyne_status = 1;
+                $gyne_history->save();
+            }
+        }
+
+        $vacc_history = VaccinationHistory::where('profile_id','=',$request->profile_id);
+        if(count($vacc_history) >= 1){
+            $vacc_history->delete();
+        }
+        $vacc_history_count = 0;
+        if(count($request->vacc_deng_count) >= 1){
+            foreach($request->vacc_deng_count as $value){
+                $vacc_history = new VaccinationHistory();
+                $vacc_history->profile_id = $request->profile_id;
+                $vacc_history->vacc_deng_count = $value;
+                $vacc_history->vacc_date = $request->vacc_date[$vacc_history_count];
+                $vacc_history_count++;
+                $vacc_place = 'vacc_place'.$vacc_history_count;
+                $vacc_history->vacc_place = $request->$vacc_place;
+                $vacc_history->vacc_status = 1;
+                $vacc_history->save();
+            }
+        }
+
+        $other_procedure = OtherProcedure::where('profile_id','=',$request->profile_id);
+        if(count($other_procedure) >= 1){
+            $other_procedure->delete();
+        }
+        if(count($request->other_tick) >= 1){
+            foreach($request->other_tick as $value){
+                $other_procedure = new OtherProcedure();
+                $other_procedure->profile_id = $request->profile_id;
+                $other_procedure->other_tick = $value;
+                $other_tick_specify = 'other_tick_'.$value;
+                $other_procedure->other_tick_specify = $request->$other_tick_specify;
+                $other_tick_enzymes_igg = 'other_tick_'.$value.'_igg';
+                $other_procedure->other_tick_igg = $request->$other_tick_enzymes_igg;
+                $other_tick_enzymes_igm = 'other_tick_'.$value.'_igm';
+                $other_procedure->other_tick_igm = $request->$other_tick_enzymes_igm;
+                $other_procedure->other_tick_status = 1;
+                $other_procedure->save();
+            }
+        }
+
+        $review_system = ReviewSystem::where('profile_id','=',$request->profile_id);
+        if(count($review_system) >= 1){
+            $review_system->delete();
+        }
+        if(count($request->rev_tick) >= 1){
+            foreach($request->rev_tick as $value){
+                $review_system = new ReviewSystem();
+                $review_system->profile_id = $request->profile_id;
+                $review_system->rev_tick = $value;
+                $rev_others = 'rev_'.$value;
+                $review_system->rev_others = $request->$rev_others;
+                $review_system->rev_status = 1;
+                $review_system->save();
+            }
+        }
+
+        $heent = Heent::where('profile_id','=',$request->profile_id);
+        if(count($heent) >= 1){
+            $heent->delete();
+        }
+        if(count($request->heent_tick) >= 1){
+            foreach($request->heent_tick as $value){
+                $heent = new Heent();
+                $heent->profile_id = $request->profile_id;
+                $heent->heent_tick = $value;
+                $heent_others = 'heent_'.$value;
+                $heent->heent_others = $request->$heent_others;
+                $heent->heent_status = 1;
+                $heent->save();
+            }
         }
 
         return redirect()->back()->with('status','updated');
@@ -512,7 +655,8 @@ class DengController extends Controller
             'pertinent_examination.*',
             'chest_and_lungs.*',
             'heart.*',
-            'abdomen.*'
+            'abdomen.*',
+            'extremities.*'
         )
             ->leftJoin('general_information','general_information.profile_id','=','profile.id')
             ->leftJoin('phic_membership','phic_membership.profile_id','=','profile.id')
@@ -530,6 +674,7 @@ class DengController extends Controller
             ->leftJoin('chest_and_lungs','chest_and_lungs.profile_id','=','profile.id')
             ->leftJoin('heart','heart.profile_id','=','profile.id')
             ->leftJoin('abdomen','abdomen.profile_id','=','profile.id')
+            ->leftJoin('extremities','extremities.profile_id','=','profile.id')
             ->where('profile.id',$profile_id)
             ->first();
 
@@ -539,7 +684,35 @@ class DengController extends Controller
     public function pdf(){
         $size = 'a4';
         $orientation = 'landscape';
-        $display = view('dengvaxiav2.pdf.pdf');
+
+        $profile = Session::get('pdf_profile');
+        $family_history = Session::get('pdf_family_history');
+        $medical_history = Session::get('pdf_medical_history');
+        $tuberculosis_tick = '';
+        $disability = '';
+        $hospitalization_history = '';
+        $past_surgical_history = '';
+        $gyne_history = '';
+        $vacc_history = '';
+        $other_procedure = '';
+        $review_system = '';
+        $heent = '';
+
+        $display = view('dengvaxiav2.pdf.pdf',[
+            'profile' => $profile,
+            'family_history' => $family_history,
+            'medical_history' => $medical_history,
+            'tuberculosis_tick' => $tuberculosis_tick,
+            'disability' => $disability,
+            'hospitalization_history' => $hospitalization_history,
+            'past_surgical_history' => $past_surgical_history,
+            'gyne_history' => $gyne_history,
+            'vacc_history' => $vacc_history,
+            'other_procedure' => $other_procedure,
+            'review_system' => $review_system,
+            'heent' => $heent
+        ]);
+
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML($display);
         return $pdf->setPaper($size, $orientation)->stream();
