@@ -99,10 +99,10 @@
             <small>
                 <br>In the past 5 months, have you drunk alcohol?
             </small>
-            <select name="per_drugs" class="form-control">
+            <select name="per_drunk" class="form-control">
                 <option value="">Select option</option>
-                <option value="yes" <?php if($profile->per_drugs=='yes') echo 'selected'; ?>>Yes</option>
-                <option value="no" <?php if($profile->per_drugs=='no') echo 'selected'; ?>>No</option>
+                <option value="yes" <?php if($profile->per_drunk=='yes') echo 'selected'; ?>>Yes</option>
+                <option value="no" <?php if($profile->per_drunk=='no') echo 'selected'; ?>>No</option>
             </select>
         </td>
         <td >

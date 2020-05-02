@@ -107,24 +107,30 @@ class DengController extends Controller
             $tuberculosis_tick['tb_tick_'.$row->tb_tick] = $row->tb_tick;
             $tuberculosis_tick['tb_tick_specify_'.$row->tb_tick] = $row->tb_tick_specify;
         }
+        Session::put('pdf_tuberculosis_tick',$tuberculosis_tick);
 
         $disability = [];
         foreach(Disability::where('profile_id','=',$profile->main_id)->get() as $row){
             $disability['dis_tick_'.$row->dis_tick] = $row->dis_tick;
         }
+        Session::put('pdf_disability',$disability);
 
         $hospitalization_history = HospitalizationHistory::where('profile_id','=',$profile->main_id)->get();
+        Session::put('pdf_hospitalization_history',$hospitalization_history);
         Session::put('host_count',1);
 
         $past_surgical_history = PastSurgicalHistory::where('profile_id','=',$profile->main_id)->get();
+        Session::put('pdf_past_surgical_history',$past_surgical_history);
 
         $gyne_history = [];
         foreach(GyneHistory::where('profile_id','=',$profile->main_id)->get() as $row){
             $gyne_history['gyne_description_'.$row->gyne_description] = $row->gyne_description;
             $gyne_history['gyne_specify_'.$row->gyne_description] = $row->gyne_specify;
         }
+        Session::put('pdf_gyne_history',$gyne_history);
 
         $vacc_history = VaccinationHistory::where('profile_id','=',$profile->main_id)->get();
+        Session::put('pdf_vacc_history',$vacc_history);
 
         $other_procedure = [];
         foreach(OtherProcedure::where('profile_id','=',$profile->main_id)->get() as $row){
@@ -135,6 +141,7 @@ class DengController extends Controller
                 $other_procedure['other_tick_'.$row->other_tick.'_igm'] = $row->other_tick_igm;
             }
         }
+        Session::put('pdf_other_procedure',$other_procedure);
 
         $review_system = [];
         foreach(ReviewSystem::where('profile_id','=',$profile->main_id)->get() as $row){
@@ -300,6 +307,7 @@ class DengController extends Controller
                 "per_fiber_fruits"=> $request->per_fiber_fruits,
                 "per_physical_activity"=> $request->per_physical_activity,
                 "per_alcohol"=> $request->per_alcohol,
+                "per_drunk" => $request->per_drunk,
                 "per_drugs"=> $request->per_drugs,
                 "per_drugs_yes"=> $request->per_drugs_yes,
                 "per_status" => 1
@@ -688,13 +696,13 @@ class DengController extends Controller
         $profile = Session::get('pdf_profile');
         $family_history = Session::get('pdf_family_history');
         $medical_history = Session::get('pdf_medical_history');
-        $tuberculosis_tick = '';
-        $disability = '';
-        $hospitalization_history = '';
-        $past_surgical_history = '';
-        $gyne_history = '';
-        $vacc_history = '';
-        $other_procedure = '';
+        $tuberculosis_tick = Session::get('pdf_tuberculosis_tick');
+        $disability = Session::get('pdf_disability');
+        $hospitalization_history = Session::get('pdf_hospitalization_history');
+        $past_surgical_history = Session::get('pdf_past_surgical_history');
+        $gyne_history = Session::get('pdf_gyne_history');
+        $vacc_history = Session::get('pdf_vacc_history');
+        $other_procedure = Session::get('pdf_other_procedure');
         $review_system = '';
         $heent = '';
 

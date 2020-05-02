@@ -25,3 +25,7 @@ add column in extremities
     *extre_ns
     *extre_pcr
 
+05/01/2020
+add column in personal_history
+    *per_drunk - varchar(10) yes or no
+

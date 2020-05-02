@@ -1,3 +1,4 @@
+<title>Dengvaxia Form</title>
 <style>
     .body{
         font-size:x-small;
@@ -52,10 +53,10 @@
             </td>
             <td class="align" id="no-border-left no-border-top"><img src="{{ realpath(__DIR__ . '/../../..').'/resources/img/f1.jpg' }}" width="70"></td>
         </tr>
-    </table><br>--}}
-    {{--@include("dengvaxiav2.pdf.pdf_page1")--}}
+    </table><br>
+    @include("dengvaxiav2.pdf.pdf_page1")
     @include("dengvaxiav2.pdf.pdf_page2")
-    {{--@include("dengvaxiav2.pdf.pdf_page3")
-    @include("dengvaxiav2.pdf.pdf_page4")--}}
+    @include("dengvaxiav2.pdf.pdf_page3")--}}
+    @include("dengvaxiav2.pdf.pdf_page4")
 
 </div>

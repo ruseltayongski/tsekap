@@ -1,4 +1,4 @@
-<div class="page_break"></div>
+{{--<div class="page_break"></div>--}}
 <table class="table1" border="0" style="margin-top: 5px;">
     <tr>
         <td>
@@ -8,10 +8,78 @@
 </table>
 <table class="table1" border="1" cellspacing="0" style="position:absolute;;">
     <tr>
-        <td height="148px"></td>
+        <td height="132px"></td>
     </tr>
 </table>
-<table class="table1" border="0">
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px;"> <!-- REVIEW SYSTEM row 1 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px;"> <!-- REVIEW SYSTEM row 2 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 33px;"> <!-- REVIEW SYSTEM row 3 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 53px;"> <!-- REVIEW SYSTEM row 4 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 71px;"> <!-- REVIEW SYSTEM row 5 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 90px;"> <!-- REVIEW SYSTEM row 6 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="19.7%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo 'other specify'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 110px;"> <!-- REVIEW SYSTEM row 7 -->
+    <tr>
+        <td width="0.3%"></td>
+        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" cellspacing="0">
     <tr>
         <td width="2%"><div class="box"></div></td>
         <td>Jaundice</td>
@@ -81,7 +149,8 @@
         <td>Diarrhea</td>
         <td><div class="box"></div></td>
         <td>Dysuria</td>
-        <td colspan="2">______________________</td>
+        <td></td>
+        <td>&nbsp;&nbsp;____________________</td>
     </tr>
     <tr>
         <td><div class="box"></div></td>
@@ -106,6 +175,16 @@
         <td height="90px"></td>
     </tr>
 </table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px;"> <!-- PERTINENT row 1 -->
+    <tr>
+        <td width="16.5%"></td>
+        <td width="26.8%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="19.4%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="19.7%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="9.7%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo 'other specify'; ?></td>
+    </tr>
+</table>
 <table class="table1" border="1" cellspacing="0">
     <tr>
         <td>&nbsp;&nbsp;General Status:</td>
@@ -116,12 +195,44 @@
         <td width="2%"></td>
         <td>&nbsp;&nbsp;Ambulatory</td>
         <td width="2%"></td>
-        <td>&nbsp;&nbsp;Other, specify;</td>
+        <td>&nbsp;&nbsp;Other, specify:</td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
     <tr>
         <td>&nbsp;&nbsp;Vital Signs:</td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -3px;"> <!-- PERTINENT row 2 -->
+    <tr>
+        <td width="6%"></td>
+        <td width="13%"><?php echo 'BP'; ?></td>
+        <td width="19.5%"><?php echo 'HR'; ?></td>
+        <td width="21%"><?php echo 'RR'; ?></td>
+        <td width="27%"><?php echo 'Temp'; ?></td>
+        <td ><?php echo 'Blood Type'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 15px;"> <!-- PERTINENT row 3 -->
+    <tr>
+        <td width="10.5%"></td>
+        <td width="13.2%"><?php echo 'Weight'; ?></td>
+        <td width="14%"><?php echo 'Height'; ?></td>
+        <td width="18%"><?php echo 'BMI'; ?></td>
+        <td width="16%"><?php echo 'Waist'; ?></td>
+        <td width="17.5%"><?php echo 'Hip'; ?></td>
+        <td ><?php echo 'Ratio'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 29px;"> <!-- PERTINENT row 4 -->
+    <tr>
+        <td width="10.2%"></td>
+        <td width="14%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="13.6%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="15.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="24.7%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="12%"><?php echo 'other specify'; ?></td>
+        <td ><?php echo 'other specify'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -162,6 +273,17 @@
 <table class="table1" border="1" cellspacing="0" style="position:absolute;margin-top: 0.5%;">
     <tr>
         <td height="60px"></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 1px;"> <!-- HEENT row 1 -->
+    <tr>
+        <td width="10.2%"></td>
+        <td width="14%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="13.6%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="15.1%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="24.7%"><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="12%"><?php echo 'other specify'; ?></td>
+        <td ><?php echo 'other specify'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0" style="margin-top: 1%">

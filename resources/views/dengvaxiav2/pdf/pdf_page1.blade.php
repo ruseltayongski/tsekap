@@ -102,15 +102,15 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px;">
     <tr>
         <td width="8.3%"></td>
-        <td width="5%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="15%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18%">{{ \App\Http\Controllers\ParameterCtrl::getAge($profile->dob) }}</td>
-        <td width="5%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="5%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="6%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td >{{ $profile->religion_others }}</td>
+        <td width="5%"><?php if($profile->sex=='Male') echo '<span>&#10004;</span>'; ?></td> <!-- MALE -->
+        <td width="15%"><?php if($profile->sex=='Female') echo '<span>&#10004;</span>'; ?></td> <!-- FEMALE -->
+        <td width="18%"><?php if(isset($profile->dob)) echo \App\Http\Controllers\ParameterCtrl::getAge($profile->dob) ?></td> <!-- AGE -->
+        <td width="5%"><?php if($profile->religion=='rc') echo '<span>&#10004;</span>'; ?></td> <!-- RC -->
+        <td width="7%"><?php if($profile->religion=='christian') echo '<span>&#10004;</span>'; ?></td> <!-- CHRISTIAN -->
+        <td width="5%"><?php if($profile->religion=='inc') echo '<span>&#10004;</span>'; ?></td> <!-- INC -->
+        <td width="6%"><?php if($profile->religion=='islam') echo '<span>&#10004;</span>'; ?></td> <!-- ISLAM -->
+        <td width="20%"><?php if($profile->religion=='jehovah') echo '<span>&#10004;</span>'; ?></td> <!-- JEHOVAH -->
+        <td >{{ $profile->religion_others }}</td> <!-- OTHER RELIGION -->
     </tr>
 </table>
 <table class="table1" border="0">
@@ -202,8 +202,8 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
     <tr>
         <td width="19.3%"></td>
-        <td width="30.5%"><?php echo '<span>&#10004;</span>'; ?></td> <!-- lifetime -->
-        <td><?php echo '<span>&#10004;</span>'; ?></td> <!-- employed -->
+        <td width="30.5%"><?php if($profile->phic_type == 'lifetime') echo '<span>&#10004;</span>'; ?></td> <!-- lifetime -->
+        <td><?php if(isset($profile->phic_employed)) echo '<span>&#10004;</span>'; ?></td> <!-- employed -->
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -308,7 +308,7 @@
         <td width="25.5%"><?php if(isset($family_history['fh_specify_allergy'])) echo $family_history['fh_specify_allergy']; ?></td> <!-- fh allergy specify -->
         <td width="20%"><?php if(isset($family_history['fh_specify_allergy'])) echo '<span>&#10004;</span>'; ?></td> <!-- epilepsy -->
         <td width="20.7%"><?php if(isset($family_history['fh_specify_epilepsy'])) echo $family_history['fh_specify_epilepsy']; ?></td> <!-- fh epilepsy specify -->
-        <td ><?php echo '<span>&#10004;</span>'; ?></td> <!-- mental health -->
+        <td ><?php if(isset($family_history['fh_tick_mental'])) echo '<span>&#10004;</span>'; ?></td> <!-- mental health -->
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px">

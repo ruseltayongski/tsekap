@@ -216,11 +216,11 @@
         <td>
             <br>
             <input type="checkbox" value="1" name="per_skin_lession" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Lesions, Specify:
-            <input type="text" name="per_skin_lession_specify" value="{{ $profile->per_lession_specify }}">
+            <input type="text" name="per_skin_lession_specify" value="{{ $profile->per_skin_lession_specify }}">
         </td>
         <td>
             <br>
-            Others
+            Others:
             <input type="text" name="per_skin_others" value="{{ $profile->per_skin_others }}">
         </td>
     </tr>
@@ -436,7 +436,7 @@
                     <i class="fa fa-arrow-left"></i> Back
                 </a>
                 <button class="btn btn-success" type="submit" onclick="loadLoadingModal();" ><i class="fa fa-save"></i> Save</button>
-                <a href="{{ asset('deng/pdf') }}" target="_" type="button" class="btn btn-primary btn">
+                <a href="{{ asset('deng/pdf') }}" target="_blank" type="button" class="btn btn-primary btn">
                     <i class="fa fa-file-pdf-o"></i> Generate PDF
                 </a>
             </div>

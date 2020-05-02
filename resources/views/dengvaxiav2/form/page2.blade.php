@@ -13,7 +13,7 @@
             <small>With Medications?</small>
             <input type="radio" name="bro_medication" value="yes" <?php if($profile->bro_medication == 'yes') echo 'checked'; ?>> Yes, specify:
             <input type="text" name="bro_medication_yes" value="{{ $profile->bro_medication_yes }}">
-            <input type="radio" name="bro_medication" value="no" <?php if($profile->bro_consultation == 'no') echo 'checked'; ?>> No
+            <input type="radio" name="bro_medication" value="no" <?php if($profile->bro_medication == 'no') echo 'checked'; ?>> No
         </td>
     </tr>
 </table>
@@ -93,19 +93,19 @@
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="tb_sputum_exam" <?php if($profile->tb_ppd) echo 'checked'; ?>>
+            <input type="checkbox" value="1" name="tb_sputum_exam" <?php if($profile->tb_sputum_exam) echo 'checked'; ?>>
             <small>Sputum Exam Result</small>
             <input type="text" name="tb_result_eputum_exam" class="form-control" value="{{ $profile->tb_result_eputum_exam }}">
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="tb_cxr" <?php if($profile->tb_ppd) echo 'checked'; ?>>
+            <input type="checkbox" value="1" name="tb_cxr" <?php if($profile->tb_cxr) echo 'checked'; ?>>
             <small>CXR Result</small>
             <input type="text" name="tb_result_cxr" class="form-control" value="{{ $profile->tb_result_cxr }}">
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="tb_genxpert" <?php if($profile->tb_ppd) echo 'checked'; ?>>
+            <input type="checkbox" value="1" name="tb_genxpert" <?php if($profile->tb_genxpert) echo 'checked'; ?>>
             <small>GenXpert Result</small>
             <input type="text" name="tb_result_genxpert" class="form-control" value="{{ $profile->tb_result_genxpert }}">
         </td>
@@ -171,12 +171,12 @@
     <tr>
         <td>
             <small>With assistive device/s?</small>
-            <input type="radio" name="dis_with_assistive" value="yes" <?php if($profile->dis_with_assistive == 'yes') echo 'checked'; ?>> No <input type="radio" name="dis_with_assistive" value="no" <?php if($profile->dis_with_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="radio" name="dis_with_assistive" value="no" <?php if($profile->dis_with_assistive == 'no') echo 'checked'; ?>> No <input type="radio" name="dis_with_assistive" value="yes" <?php if($profile->dis_with_assistive == 'yes') echo 'checked'; ?>> Yes, specify:
             <input type="text" name="dis_with_assistive_yes" value="{{ $profile->dis_with_assistive_yes }}">
         </td>
         <td>
             <small>Need for assistive device/s?</small>
-            <input type="radio" name="dis_need_assistive" value="yes" <?php if($profile->dis_need_assistive == 'yes') echo 'checked'; ?>> No <input type="radio" name="dis_need_assistive" value="no" <?php if($profile->dis_need_assistive == 'no') echo 'checked'; ?>> Yes, specify:
+            <input type="radio" name="dis_need_assistive" value="no" <?php if($profile->dis_need_assistive == 'no') echo 'checked'; ?>> No <input type="radio" name="dis_need_assistive" value="yes" <?php if($profile->dis_need_assistive == 'yes') echo 'checked'; ?>> Yes, specify:
             <input type="text" name="dis_need_assistive_yes" value="{{ $profile->dis_need_assistive_yes }}">
         </td>
     </tr>
