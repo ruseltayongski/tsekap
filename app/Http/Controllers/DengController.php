@@ -148,12 +148,14 @@ class DengController extends Controller
             $review_system['rev_tick_'.$row->rev_tick] = $row->rev_tick;
             $review_system['rev_'.$row->rev_tick] = $row->rev_others;
         }
+        Session::put('pdf_review_system',$review_system);
 
         $heent = [];
         foreach(Heent::where('profile_id','=',$profile->main_id)->get() as $row){
             $heent['heent_tick_'.$row->heent_tick] = $row->heent_tick;
             $heent['heent_'.$row->heent_tick] = $row->heent_tick;
         }
+        Session::put('pdf_heent',$heent);
 
         return view('dengvaxiav2.form.form',[
             'profile' => $profile,
@@ -703,8 +705,8 @@ class DengController extends Controller
         $gyne_history = Session::get('pdf_gyne_history');
         $vacc_history = Session::get('pdf_vacc_history');
         $other_procedure = Session::get('pdf_other_procedure');
-        $review_system = '';
-        $heent = '';
+        $review_system = Session::get('pdf_review_system');
+        $heent = Session::get('pdf_heent');
 
         $display = view('dengvaxiav2.pdf.pdf',[
             'profile' => $profile,

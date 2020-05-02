@@ -1,3 +1,4 @@
+<div class="page_break"></div>
 <label class="text-green">REVIEW OF SYSTEMS: (tick all that apply)</label>
 <table class="table table-hover table-striped">
     <tr>
@@ -199,23 +200,23 @@
     <tr>
         <td>
             <small><b>SKIN:</b></small><br>
-            <input type="checkbox" value="1" name="per_skin_good" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Good Skin Turgor
+                <input type="checkbox" value="1" name="per_skin_good" <?php if(isset($profile->per_skin_good)) echo 'checked'; ?> > Good Skin Turgor
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="per_skin_pailor" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Pailor
+            <input type="checkbox" value="1" name="per_skin_pailor" <?php if(isset($profile->per_skin_pailor)) echo 'checked'; ?> > Pailor
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="per_skin_jaundice" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Jaundice
+            <input type="checkbox" value="1" name="per_skin_jaundice" <?php if(isset($profile->per_skin_jaundice)) echo 'checked'; ?> > Jaundice
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="per_skin_rashes" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Rashes
+            <input type="checkbox" value="1" name="per_skin_rashes" <?php if(isset($profile->per_skin_rashes)) echo 'checked'; ?> > Rashes
         </td>
         <td>
             <br>
-            <input type="checkbox" value="1" name="per_skin_lession" <?php if(isset($review_system['rev_tick_palpitation'])) echo 'checked'; ?> > Lesions, Specify:
+            <input type="checkbox" value="1" name="per_skin_lession" <?php if(isset($profile->per_skin_lession)) echo 'checked'; ?> > Lesions, Specify:
             <input type="text" name="per_skin_lession_specify" value="{{ $profile->per_skin_lession_specify }}">
         </td>
         <td>

@@ -41,7 +41,7 @@
     }
 </style>
 <div class="body">
-    {{--<table class="table1" border="0">
+    <table class="table1" border="0">
         <tr>
             <td class="align" id="no-border-right no-border-top"><img src="{{ realpath(__DIR__ . '/../../..').'/resources/img/doh.png' }}" width="70"></td>
             <td width="100%" id="no-border-left no-border-right no-border-top">
@@ -56,7 +56,7 @@
     </table><br>
     @include("dengvaxiav2.pdf.pdf_page1")
     @include("dengvaxiav2.pdf.pdf_page2")
-    @include("dengvaxiav2.pdf.pdf_page3")--}}
+    @include("dengvaxiav2.pdf.pdf_page3")
     @include("dengvaxiav2.pdf.pdf_page4")
 
 </div>

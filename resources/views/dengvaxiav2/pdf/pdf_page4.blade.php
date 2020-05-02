@@ -1,4 +1,4 @@
-{{--<div class="page_break"></div>--}}
+<div class="page_break"></div>
 <table class="table1" border="0" style="margin-top: 5px;">
     <tr>
         <td>
@@ -14,69 +14,70 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px;"> <!-- REVIEW SYSTEM row 1 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_jaundice'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_seizures'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_murmur'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php if(isset($review_system['rev_tick_polydypsia'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_joint'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 13px;"> <!-- REVIEW SYSTEM row 2 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_pallor'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_fatigability'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_breast'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php if(isset($review_system['rev_tick_polyuria'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_muscle'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 33px;"> <!-- REVIEW SYSTEM row 3 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_rashes'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_cough'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_nausea'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php if(isset($review_system['rev_tick_vaginal'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_mmuscle'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 53px;"> <!-- REVIEW SYSTEM row 4 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_headache'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_dyspnea'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_abdominal'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php if(isset($review_system['rev_tick_foul'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_weight'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 71px;"> <!-- REVIEW SYSTEM row 5 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="17.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_dizziness'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_orthnopnea'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_recurrent'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17.1%"><?php if(isset($review_system['rev_tick_urethral'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_others'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 90px;"> <!-- REVIEW SYSTEM row 6 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="20.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="19.7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo 'other specify'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_blurring'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_chest'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_diarrhea'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="19.7%"><?php if(isset($review_system['rev_tick_dysuria'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_others'])) echo $review_system['rev_others']; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 110px;"> <!-- REVIEW SYSTEM row 7 -->
     <tr>
         <td width="0.3%"></td>
-        <td width="20.3%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="18.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.3%"><?php if(isset($review_system['rev_tick_hearing'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="18.1%"><?php if(isset($review_system['rev_tick_palpitation'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="20.4%"><?php if(isset($review_system['rev_tick_polyphagia'])) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if(isset($review_system['rev_tick_leg'])) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -177,23 +178,23 @@
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px;"> <!-- PERTINENT row 1 -->
     <tr>
-        <td width="16.5%"></td>
-        <td width="26.8%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="19.4%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="19.7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="9.7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td ><?php echo 'other specify'; ?></td>
+        <td width="12.3%"></td>
+        <td width="25%"><?php if($profile->per_orriented_time) echo '<span>&#10004;</span>'; ?></td>
+        <td width="14%"><?php if($profile->per_conscious) echo '<span>&#10004;</span>'; ?></td>
+        <td width="14%"><?php if($profile->per_ambulatory) echo '<span>&#10004;</span>'; ?></td>
+        <td width="11%"><?php if($profile->per_others) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo $profile->per_others_specify; ?></td>
     </tr>
 </table>
 <table class="table1" border="1" cellspacing="0">
     <tr>
-        <td>&nbsp;&nbsp;General Status:</td>
+        <td width="12%">&nbsp;&nbsp;General Status:</td>
         <td width="2%"></td>
-        <td width="25%">&nbsp;&nbsp;Oriented to Time, Place, and Date</td>
+        <td width="23%">&nbsp;&nbsp;Oriented to Time, Place, and Date</td>
         <td width="2%"></td>
-        <td>&nbsp;&nbsp;Conscious</td>
+        <td width="12%">&nbsp;&nbsp;Conscious</td>
         <td width="2%"></td>
-        <td>&nbsp;&nbsp;Ambulatory</td>
+        <td width="12%">&nbsp;&nbsp;Ambulatory</td>
         <td width="2%"></td>
         <td>&nbsp;&nbsp;Other, specify:</td>
     </tr>
@@ -206,33 +207,34 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -3px;"> <!-- PERTINENT row 2 -->
     <tr>
         <td width="6%"></td>
-        <td width="13%"><?php echo 'BP'; ?></td>
-        <td width="19.5%"><?php echo 'HR'; ?></td>
-        <td width="21%"><?php echo 'RR'; ?></td>
-        <td width="27%"><?php echo 'Temp'; ?></td>
-        <td ><?php echo 'Blood Type'; ?></td>
+        <td width="13%"><?php echo $profile->per_bp ; ?></td>
+        <td width="19.5%"><?php echo $profile->per_hr; ?></td>
+        <td width="21%"><?php echo $profile->per_rr; ?></td>
+        <td width="27%"><?php echo $profile->per_temp; ?></td>
+        <td ><?php echo $profile->per_blood_type; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 15px;"> <!-- PERTINENT row 3 -->
     <tr>
         <td width="10.5%"></td>
-        <td width="13.2%"><?php echo 'Weight'; ?></td>
-        <td width="14%"><?php echo 'Height'; ?></td>
-        <td width="18%"><?php echo 'BMI'; ?></td>
-        <td width="16%"><?php echo 'Waist'; ?></td>
-        <td width="17.5%"><?php echo 'Hip'; ?></td>
-        <td ><?php echo 'Ratio'; ?></td>
+        <td width="13.2%"><?php echo $profile->per_weight; ?></td>
+        <td width="14%"><?php echo $profile->per_height; ?></td>
+        <td width="18%"><?php echo $profile->per_waist; ?></td>
+        <td width="16%"><?php echo $profile->per_waist; ?></td>
+        <td width="17.5%"><?php echo $profile->per_hip; ?></td>
+        <td ><?php echo $profile->per_ratio; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 29px;"> <!-- PERTINENT row 4 -->
     <tr>
         <td width="10.2%"></td>
-        <td width="14%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="13.6%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="15.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="24.7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="12%"><?php echo 'other specify'; ?></td>
-        <td ><?php echo 'other specify'; ?></td>
+        <td width="14%"><?php if(isset($profile->per_skin_good)) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10%"><?php if(isset($profile->per_skin_pailor)) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10%"><?php if(isset($profile->per_skin_jaundice)) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10%"><?php if(isset($profile->per_skin_rashes)) echo '<span>&#10004;</span>'; ?></td>
+        <td width="11%"><?php if(isset($profile->per_skin_lession)) echo '<span>&#10004;</span>'; ?></td>
+        <td width="16%"><?php echo $profile->per_skin_lession_specify; ?></td>
+        <td ><?php echo $profile->per_skin_others; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -258,16 +260,16 @@
     <tr>
         <td width="10%">&nbsp;&nbsp;SKIN:</td>
         <td width="2%"><div class="box"></div></td>
-        <td>Good Skin Turgor</td>
+        <td width="12%">Good Skin Turgor</td>
         <td width="2%"><div class="box"></div></td>
-        <td>Pailor</td>
+        <td width="8%">Pailor</td>
         <td width="2%"><div class="box"></div></td>
-        <td>Jaundice</td>
+        <td width="8%">Jaundice</td>
         <td width="2%"><div class="box"></div></td>
-        <td>Rashes</td>
+        <td width="8%">Rashes</td>
         <td width="2%"><div class="box"></div></td>
-        <td>Lesions,specify: _________</td>
-        <td>Others: _________</td>
+        <td width="20%">Lesions,specify: __________________</td>
+        <td>Others: __________________</td>
     </tr>
 </table>
 <table class="table1" border="1" cellspacing="0" style="position:absolute;margin-top: 0.5%;">
@@ -278,12 +280,32 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 1px;"> <!-- HEENT row 1 -->
     <tr>
         <td width="10.2%"></td>
-        <td width="14%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="13.6%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="15.1%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="24.7%"><?php echo '<span>&#10004;</span>'; ?></td>
-        <td width="12%"><?php echo 'other specify'; ?></td>
-        <td ><?php echo 'other specify'; ?></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_findings'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="9.5%"><?php if(isset($heent['heent_tick_visual'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="12.5%"><?php if(isset($heent['heent_visual'])) echo $heent['heent_visual'];; ?></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_cleft'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="19%"><?php if(isset($heent['heent_tick_enlarged'])) echo '<span>&#10004;</span>'; ?></td>
+        <td><?php if(isset($heent['heent_tick_others'])) echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 20px;"> <!-- HEENT row 2 -->
+    <tr>
+        <td width="10.2%"></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_yellowish'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="22%"><?php if(isset($heent['heent_tick_flaring'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_cleft'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="19%"><?php if(isset($heent['heent_tick_enlarged'])) echo '<span>&#10004;</span>'; ?></td>
+        <td><?php if(isset($heent['heent_others'])) echo $heent['heent_others']; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 40px;"> <!-- HEENT row 3 -->
+    <tr>
+        <td width="10.2%"></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_pale'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="22%"><?php if(isset($heent['heent_tick_nasal'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="17%"><?php if(isset($heent['heent_tick_ear'])) echo '<span>&#10004;</span>'; ?></td>
+        <td width="19%"><?php if(isset($heent['heent_tick_palpable'])) echo '<span>&#10004;</span>'; ?></td>
+        <td><?php if(isset($heent['heent_palpable'])) echo $heent['heent_palpable']; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0" style="margin-top: 1%">
@@ -330,6 +352,23 @@
         <td height="42px"></td>
     </tr>
 </table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 1px;"> <!-- Chest and Lungs row 1 -->
+    <tr>
+        <td width="20.2%"></td>
+        <td width="29%"><?php if($profile->chest_no_findings) echo '<span>&#10004;</span>'; ?></td>
+        <td width="27%"><?php if($profile->chest_crackles) echo '<span>&#10004;</span>'; ?></td>
+        <td><?php if($profile->chest_breast) echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 22px;"> <!-- Chest and Lungs row 2 -->
+    <tr>
+        <td width="20.2%"></td>
+        <td width="29%"><?php if($profile->chest_retractions) echo '<span>&#10004;</span>'; ?></td>
+        <td width="27%"><?php if($profile->chest_wheezes) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10%"><?php if($profile->chest_others) echo '<span>&#10004;</span>'; ?></td>
+        <td><?php echo $profile->chest_others_specify; ?></td>
+    </tr>
+</table>
 <table class="table1" border="0" cellspacing="0" style="margin-top: 1%;">
     <tr>
         <td width="20%">&nbsp;&nbsp;CHEST AND LUNGS:</td>
@@ -337,7 +376,8 @@
         <td width="27%">No Significant Findings</td>
         <td width="2%"><div class="box"></div></td>
         <td width="25%">Crackles/Rales/Harsh Breath Sounds</td>
-        <td> - Breast mass/discharge</td>
+        <td width="2%"><div class="box"></div></td>
+        <td> Breast mass/discharge</td>
     </tr>
     <tr>
         <td></td>
@@ -345,12 +385,48 @@
         <td >Chest Retractions</td>
         <td ><div class="box"></div></td>
         <td >Wheezes</td>
-        <td> - Others, specify:</td>
+        <td><div class="box"></div></td>
+        <td> Others, specify:</td>
     </tr>
 </table>
 <table class="table1" border="1" cellspacing="0" style="position:absolute;margin-top: 0.5%;">
     <tr>
         <td height="20px"></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 1px;"> <!-- HEART  -->
+    <tr>
+        <td width="10.2%"></td>
+        <td width="17%"><?php if($profile->heart_no_findings) echo '<span>&#10004;</span>'; ?></td>
+        <td width="12%"><?php if($profile->heart_pulse) echo '<span>&#10004;</span>'; ?></td>
+        <td width="15%"><?php if($profile->heart_cyanosis) echo '<span>&#10004;</span>'; ?></td>
+        <td width="11%"><?php if($profile->heart_murmur) echo '<span>&#10004;</span>'; ?></td>
+        <td width="12%"><?php echo $profile->heart_murmur_specify; ?></td>
+        <td width="10%"><?php if($profile->heart_others) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo $profile->heart_others_specify; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 24px;"> <!-- ABDOMEN -->
+    <tr>
+        <td width="13.8%"></td>
+        <td width="24.3%"><?php if($profile->abd_no_findings) echo '<span>&#10004;</span>'; ?></td>
+        <td width="14.6%"><?php if($profile->abd_tenderness) echo '<span>&#10004;</span>'; ?></td>
+        <td width="16%"><?php if($profile->abd_palpable) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10.2%"><?php echo $profile->abd_palpable_specify; ?></td>
+        <td width="10%"><?php if($profile->abd_others) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo $profile->abd_others_specify; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 48px;"> <!-- EXTREMITIES -->
+    <tr>
+        <td width="13.8%"></td>
+        <td width="15%"><?php if($profile->extre_abnormal) echo '<span>&#10004;</span>'; ?></td>
+        <td width="9.3%"><?php if($profile->extre_edema) echo '<span>&#10004;</span>'; ?></td>
+        <td width="14.6%"><?php if($profile->extre_join) echo '<span>&#10004;</span>'; ?></td>
+        <td width="16%"><?php if($profile->extre_deformity) echo '<span>&#10004;</span>'; ?></td>
+        <td width="10.2%"><?php echo $profile->extre_deformity_describe; ?></td>
+        <td width="10%"><?php if($profile->extre_others) echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php echo $profile->extre_others_specify; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0" style="margin-top: 1%;">
@@ -409,6 +485,26 @@
 <table class="table1" border="1" cellspacing="0" style="position:absolute;">
     <tr>
         <td height="65px"></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 0px;"> <!-- extremities others row 1 -->
+    <tr>
+        <td width="0.4%"></td>
+        <td width="43.9%"><?php if($profile->extre_enzymes) echo '<span>&#10004;</span>'; ?></td>
+        <td width="12%"><?php if($profile->extre_enzymes_specify == 'igg_positive') echo '<span>&#10004;</span>'; ?></td>
+        <td ><?php if($profile->extre_enzymes_specify == 'igm_positive') echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 21px;"> <!-- extremities others row 2 -->
+    <tr>
+        <td width="0.4%"></td>
+        <td ><?php if($profile->extre_ns) echo '<span>&#10004;</span>'; ?></td>
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 43px;"> <!-- extremities others row 3 -->
+    <tr>
+        <td width="0.4%"></td>
+        <td ><?php if($profile->extre_pcr) echo '<span>&#10004;</span>'; ?></td>
     </tr>
 </table>
 <table class="table1" border="0" style="margin-top: 0.5%;">

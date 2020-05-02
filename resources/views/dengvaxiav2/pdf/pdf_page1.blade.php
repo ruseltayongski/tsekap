@@ -1,9 +1,24 @@
-<!-- <span>&#10004;</span> -->
-<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;;">
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;">
     <tr>
-        <td width="30%"></td>
-        <td width="35%"></td>
-        <td>{{ $profile->dengvaxia_recipient_no }}</td>
+        <td width="63%"></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[0])) echo $profile->dengvaxia_recipient_no[0] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[1])) echo $profile->dengvaxia_recipient_no[1] ?></div></td>
+        <td width="2%"><div class="box"><b>----</b></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[2])) echo $profile->dengvaxia_recipient_no[2] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[3])) echo $profile->dengvaxia_recipient_no[3] ?></div></td>
+        <td width="2%"><div class="box"><b>----</b></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[4])) echo $profile->dengvaxia_recipient_no[4] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[5])) echo $profile->dengvaxia_recipient_no[5] ?></div></td>
+        <td width="2%"><div class="box"><b>----</b></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[6])) echo $profile->dengvaxia_recipient_no[6] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[6])) echo $profile->dengvaxia_recipient_no[6] ?></div></td>
+        <td width="2%"><div class="box"><b>----</b></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[7])) echo $profile->dengvaxia_recipient_no[7] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[8])) echo $profile->dengvaxia_recipient_no[8] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[9])) echo $profile->dengvaxia_recipient_no[9] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[10])) echo $profile->dengvaxia_recipient_no[10] ?></div></td>
+        <td width="2%"><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[11])) echo $profile->dengvaxia_recipient_no[11] ?></div></td>
+        <td ><div class="box">&nbsp;&nbsp;<?php if(isset($profile->dengvaxia_recipient_no[12])) echo $profile->dengvaxia_recipient_no[12] ?></div></td>
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -11,7 +26,7 @@
         <td>
             <b>GENERAL INFORMATION</b>
         </td>
-        <td class="border">
+        <td >
             <b>DENGVAXIA RECIPENT NUMBER:</b>
         </td>
     </tr>
