@@ -24,10 +24,10 @@
 <table class="table1" border="0" cellspacing="0">
     <tr>
         <td>
-            <b>GENERAL INFORMATION</b>
+            <i>GENERAL INFORMATION</i>
         </td>
         <td >
-            <b>DENGVAXIA RECIPENT NUMBER:</b>
+            <i>DENGVAXIA RECIPENT NUMBER:</i>
         </td>
     </tr>
 </table>
@@ -172,7 +172,7 @@
 <table class="table1" border="0" cellspacing="0" style="margin-top: 5px;">
     <tr>
         <td colspan="6">
-            <b>LEVEL OF EDUCATION:</b>
+            <i>LEVEL OF EDUCATION:</i>
         </td>
     </tr>
 </table>
@@ -202,10 +202,10 @@
         <td  > No Completed Schooling</td>
     </tr>
 </table>
-<table class="table1" border="0" style="margin-top: 5px;">
+<table class="table1" border="0" style="margin-top: 0px;">
     <tr>
         <td colspan="4">
-            <b>PHIC MEMBERSHIP OF PRINCIPAL (PARENTS):</b>
+            <i>PHIC MEMBERSHIP OF PRINCIPAL (PARENTS):</i>
         </td>
     </tr>
 </table>
@@ -264,7 +264,12 @@
         <td width="7.5%"><?php if($profile->phic_sponsored == 'plgu') echo '<span>&#10004;</span>'; ?></td> <!-- plgu -->
         <td width="7.5%"><?php if($profile->phic_sponsored == 'mlgu') echo '<span>&#10004;</span>'; ?></td> <!-- mlgu -->
         <td width="8%"><?php if($profile->phic_sponsored == 'private') echo '<span>&#10004;</span>'; ?></td> <!-- private -->
-        <td width="33%"><?php if($profile->phic_employed == 'private') echo '<span>&#10004;</span>'; ?></td> <!-- private -->
+        <td ><?php if($profile->phic_employed == 'private') echo '<span>&#10004;</span>'; ?></td> <!-- private -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 0px">
+    <tr>
+        <td width="85%"></td>
         <td>{{ $profile->phic_benefits_yes }}</td> <!-- yes specify -->
     </tr>
 </table>
@@ -289,9 +294,14 @@
     <tr>
         <td width="0.2%"></td>
         <td width="20.5%"><?php if($profile->phic_status == 'non_member') echo '<span>&#10004;</span>'; ?></td> <!-- non member -->
-        <td width="10%"><?php if($profile->phic_sponsored == 'others') echo '<span>&#10004;</span>'; ?></td> <!-- others -->
-        <td width="20.5%">{{ $profile->phic_sponsored_others }}</td> <!-- others specify -->
-        <td ><?php if($profile->phic_employed == 'self_employed') echo '<span>&#10004;</span>'; ?></td> <!-- self employed -->
+        <td width="30.5%"><?php if($profile->phic_sponsored == 'others') echo '<span>&#10004;</span>'; ?></td> <!-- others -->
+        <td ><?php /*if($profile->phic_employed == 'self_employed')*/ echo '<span>&#10004;</span>'; ?></td> <!-- self employed -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 0px">
+    <tr>
+        <td width="31%"></td>
+        <td >{{ $profile->phic_sponsored_others }}</td> <!-- others specify -->
     </tr>
 </table>
 <table class="table1" border="0" cellspacing="0">
@@ -307,13 +317,13 @@
 <table class="table1" border="0" style="margin-top: 5px;">
     <tr>
         <td>
-            <b>FAMILY HISTORY (Among mother, father, and siblings, Tick all that apply:)</b>
+            <i>FAMILY HISTORY (Among mother, father, and siblings, Tick all that apply:)</i>
         </td>
     </tr>
 </table>
 <table class="table1" border="1" cellspacing="0" style="position:absolute;;">
     <tr>
-        <td height="73px"></td>
+        <td height="82px"></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
@@ -331,9 +341,14 @@
         <td width="0.2%"></td>
         <td width="11%"><?php if(isset($family_history['fh_tick_asthma'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh Asthma -->
         <td width="25.5%"></td>
-        <td width="22.5%"><?php if(isset($family_history['fh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh Heart -->
-        <td width="18.2%"><?php if(isset($family_history['fh_specify_heart'])) echo $family_history['fh_specify_heart']; ?>"</td> <!-- fh specify -->
+        <td width="40.7%"><?php if(isset($family_history['fh_tick_heart'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh Heart -->
         <td ><?php if(isset($family_history['fh_tick_thyroid'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh Thyroid -->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 19px;width: 77%">
+    <tr>
+        <td width="66%"></td>
+        <td width="20%"><?php if(isset($family_history['fh_specify_heart'])) echo '<u>'.$family_history['fh_specify_heart'].'</u>'; ?>"</td> <!-- fh heart disease specify -->
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 32px">
@@ -349,13 +364,23 @@
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 52px">
     <tr>
         <td width="0.2%"></td>
-        <td width="20%"><?php if(isset($family_history['fh_tick_immune'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh immune -->
-        <td width="16.5%"><?php if(isset($family_history['fh_specify_immune'])) echo $family_history['fh_specify_immune']; ?></td> <!-- fh immune specify-->
-        <td width="15%"><?php if(isset($family_history['fh_tick_kidney'])) echo '<span>&#10004;</span>'; ?></td>  <!-- fh kidney -->
-        <td width="20.7%"><?php if(isset($family_history['fh_specify_kidney'])) echo $family_history['fh_specify_kidney']; ?></td> <!-- fh kidney specify-->
-        <td ></td>
+        <td width="36.5%"><?php if(isset($family_history['fh_tick_immune'])) echo '<span>&#10004;</span>'; ?></td> <!-- fh immune -->
+        <td ><?php if(isset($family_history['fh_tick_kidney'])) echo '<span>&#10004;</span>'; ?></td>  <!-- fh kidney -->
     </tr>
 </table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 56px;width: 36%">
+    <tr>
+        <td width="13.5%"></td>
+        <td width="10%"><?php if(isset($family_history['fh_specify_immune'])) echo '<u>'.$family_history['fh_specify_immune'].'</u>'; ?></td> <!-- fh immune specify-->
+    </tr>
+</table>
+<table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: 56px">
+    <tr>
+        <td width="52%"></td>
+        <td ><?php if(isset($family_history['fh_specify_kidney'])) echo $family_history['fh_specify_kidney']; ?></td> <!-- fh kidney specify-->
+    </tr>
+</table>
+
 <table class="table1" border="0" cellspacing="0">
     <tr>
         <td width="1.5%"><div class="box"></div></td>
@@ -369,7 +394,7 @@
         <td><div class="box"></div></td>
         <td>Asthma</td>
         <td ><div class="box"></div></td>
-        <td>Heart Disease &/or Heart Attack, specify: __________________________</td>
+        <td>Heart Disease &/or Heart Attack, specify: @if(!isset($family_history['fh_specify_heart'])){{ '__________________________' }}@endif</td>
         <td><div class="box"></div></td>
         <td>Thyroid Disease</td>
     </tr>
@@ -383,23 +408,23 @@
     </tr>
     <tr>
         <td ><div class="box"></div></td>
-        <td>Immune Deficiency Disease, specify: _____________________</td>
+        <td>Immune Deficiency Disease, specify: @if(!isset($family_history['fh_specify_immune'])){{ '_____________________' }}@endif</td>
         <td ><div class="box"></div></td>
         <td>Kidney Disease, specify: _______________________________________</td>
         <td ></td>
         <td></td>
     </tr>
 </table>
-<table class="table1" border="0" style="margin-top: 5px;">
+<table class="table1" border="0" style="margin-top: 10px;">
     <tr>
         <td>
-            <b>MEDICAL HISTORY OF VACCINEE (Tick all past and present health condition of the vaccinee.)</b>
+            <i>MEDICAL HISTORY OF VACCINEE (Tick all past and present health condition of the vaccinee.)</i>
         </td>
     </tr>
 </table>
-<table class="table1" border="1" cellspacing="0" style="position:absolute;;">
+<table class="table1" border="1" cellspacing="0" style="position:absolute;">
     <tr>
-        <td height="110px"></td>
+        <td height="145px"></td>
     </tr>
 </table>
 <table class="table1" border="0" id="fetch_data" cellspacing="0" style="position:absolute;margin-top: -4px">
@@ -491,12 +516,18 @@
         <td>STIs, specify: ___________________________________</td>
     </tr>
     <tr>
+        <td colspan="6">.</td>
+    </tr>
+    <tr>
         <td><div class="box"></div></td>
         <td>Peptic Ulcer Disease</td>
         <td><div class="box"></div></td>
         <td>Kidney Disease, specify: ___________________________</td>
         <td><div class="box"></div></td>
         <td>Thyroid Fisease: _________________________________</td>
+    </tr>
+    <tr>
+        <td colspan="6">.</td>
     </tr>
     <tr>
         <td><div class="box"></div></td>
