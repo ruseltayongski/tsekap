@@ -55,8 +55,7 @@
         </tr>
     </table><br>
     @include("dengvaxiav2.pdf.pdf_page1")
-    {{--@include("dengvaxiav2.pdf.pdf_page2")
+    @include("dengvaxiav2.pdf.pdf_page2")
     @include("dengvaxiav2.pdf.pdf_page3")
     @include("dengvaxiav2.pdf.pdf_page4")
---}}
 </div>
