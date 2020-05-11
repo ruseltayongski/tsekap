@@ -208,7 +208,7 @@
                 <div class="info-box bg-purple">
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">BHERDS PROFILED</span>
+                        <span class="info-box-text">BHERT PROFILED</span>
                         <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
                         <div class="progress">
                             <div class="progress-bar"></div>

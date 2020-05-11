@@ -18,7 +18,7 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                         <select name="user_priv" id="" class="form-control" required>
                             <option value="">Select user type...</option>
                             <option value="2">NDP</option>
-                            <option value="4">BHERDS</option>
+                            <option value="4">BHERT</option>
                         </select>
                     </div>
                     <div class="form-group">

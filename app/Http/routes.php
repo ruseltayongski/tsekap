@@ -288,3 +288,7 @@ Route::get("deng/pdf","DengController@pdf");
 Route::post("deng/save","DengController@save");
 Route::post("deng/profile_id","DengController@sessionProfileId");
 
+//BHERDS API
+Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BherdsApiCtrl@login');
+Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BherdsApiCtrl@getProfiles');
+
