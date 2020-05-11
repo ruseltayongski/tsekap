@@ -101,14 +101,6 @@ $status = session('status');
     </script>
 @endif
 
-@if($status=='duplicate')
-    <script>
-        Lobibox.notify('error', {
-            msg: 'Ooops! Name was already added.'
-        });
-    </script>
-@endif
-
 @if($status=='duplicate2')
     <script>
         Lobibox.notify('error', {
