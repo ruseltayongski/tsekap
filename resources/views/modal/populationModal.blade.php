@@ -19,6 +19,30 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal" role="dialog" id="loading_page">
+    <div class="modal-dialog modal-sm" role="document">
+        <center>
+            <img src="{{ asset('resources/img/loading.gif') }}" style="margin-top: 50%"/>
+        </center>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" role="dialog" id="proceed_dengvaxia">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-info text-blue">
+                    <i class="fa fa-question-circle"></i> <strong>Do you want to proceed dengvaxia form?</strong>
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> No</button>
+                        <a href="{{ asset('deng/form') }}" type="button" class="btn btn-danger btn-sm"><i class="fa fa-check"></i> Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" role="dialog" id="familyProfile">
     <div class="modal-dialog modal-sm" role="document">
         <input type="hidden" name="currentID" id="currentID">
@@ -117,6 +141,13 @@ $brgy = $brgy->orderBy('description','asc')
                             @foreach($brgy as $row)
                                 <option value="{{ $row->id }}"  {{ ($tmp['barangay']==$row->id) ? 'selected': '' }}>{{ $row->description }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Dengvaxia:</label>
+                        <select name="dengvaxia" class="form-control chosen-select">
+                            <option value="">Select...</option>
+                            <option value="yes" {{ ($tmp['dengvaxia']=='yes') ? 'selected': '' }}>Dengvaxia List</option>
                         </select>
                     </div>
                 </fieldset>

@@ -82,7 +82,7 @@
                             <th>Suffix</th>
                             <th>Age</th>
                             <th>Sex</th>
-                            <th>Barangay</th>
+                            <th>Harmonized</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,9 +95,11 @@
                                 <a href="{{ asset('user/population/add/' . $p->familyID) }}" class="btn btn-xs btn-info">
                                     <i class="fa fa-user-plus"></i> Add Member
                                 </a>
+                                <!--
                                 <a href="#dengvaxia" data-backdrop="static" data-id="{{ $p->id }}" data-unique="{{ $p->unique_id }}" class="btn btn-xs btn-danger"  data-toggle="modal">
                                     <i class="fa fa-user-md"></i> Dengvaxia
                                 </a>
+                                -->
                             </td>
                             <td>
                                 <a href="#familyProfile" data-backdrop="static" data-id="{{ $p->familyID }}" data-toggle="modal" class="title-info">
@@ -133,7 +135,13 @@
                                 @endif
                             </td>
                             <td>{{ $p->sex }}</td>
-                            <td>{{ \App\Barangay::find($p->barangay_id)->description }}</td>
+                            <td>
+                                @if($p->dengvaxia == 'yes')
+                                <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Dengvaxia</button>
+                                @else
+                                <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -182,6 +190,28 @@
     @endif
 
 <script>
+    function proceedDengvaxia(profile_id){
+        var url = "<?php echo asset('deng/profile_id'); ?>";
+        var json = {
+            "profile_id" : profile_id,
+        };
+        $.ajaxSetup(
+            {
+                headers:
+                    {
+                        'X-CSRF-Token': "<?php echo csrf_token(); ?>"
+                    }
+            });
+        $.ajax({
+            url:url,
+            data: json,
+            type: 'POST',
+            success: function(result) {
+                console.log(result);
+            }
+        });
+    }
+
     <?php echo 'var link="'.asset('user/profiles').'";';?>
 
     $(".select-profile").select2({
@@ -358,6 +388,8 @@
             });
         },300);
     });
+
+
 
 </script>
 @endsection

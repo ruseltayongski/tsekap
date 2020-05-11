@@ -55,6 +55,26 @@ use App\Province;
             position:absolute !important;
         }
 
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: rgba(38, 125, 61, 0.92);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        #myBtn:hover {
+            background-color: #555;
+        }
+
+
     </style>
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -99,7 +119,7 @@ use App\Province;
     </div>
     <div class="header" style="background-color:#028482;padding:15px;">
         <div class="container">
-            <img src="{{ asset('resources/img/banner.png') }}" class="img-responsive" />
+            <img src="{{ asset('resources/img/banner_2020.png') }}" class="img-responsive" />
         </div>
     </div>
     <div class="container">
@@ -167,7 +187,7 @@ use App\Province;
                 <li><a href="{{ url('/user/add') }}"><i class="fa fa-users"></i> Users</a></li>
                 @endif
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Account<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/user/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li>
                         <li class="divider"></li>
@@ -187,6 +207,8 @@ use App\Province;
     @yield('content')
     <div class="clearfix"></div>
 </div> <!-- /container -->
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-arrow-up"></i> Go Top</button>
+
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
@@ -223,6 +245,34 @@ use App\Province;
     $('.form-submit').on('submit',function(){
         $('.btn-submit').attr('disabled',true);
     });
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var query_string = urlParams.get('search') ? urlParams.get('search') : '';
+    $(".pagination").children().each(function(index){
+        var _href = $($(this).children().get(0)).attr('href');
+        $($(this).children().get(0)).attr('href',_href+'&search='+query_string);
+    });
+
+    //Get the button
+    var mybutton = document.getElementById("myBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        $('body,html').animate({
+            scrollTop : 0 // Scroll to top of body
+        }, 500);
+    }
 </script>
 @yield('js')
 <?php
@@ -243,5 +293,24 @@ $status = session('status');
         });
     </script>
 @endif
+
+@if($status=='updated')
+    <script>
+        Lobibox.notify('success', {
+            size: 'mini',
+            title: '',
+            msg: 'Successfully updated!'
+        });
+    </script>
+@endif
+
+@if($status=='duplicate')
+    <script>
+        Lobibox.notify('error', {
+            msg: 'Ooops! Name was already added.'
+        });
+    </script>
+@endif
+
 </body>
 </html>
