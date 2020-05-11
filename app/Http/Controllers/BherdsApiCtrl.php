@@ -57,7 +57,6 @@ class BherdsApiCtrl extends Controller{
         $data = Profile::
                 select(
                     'profile.id',
-                    'profile.unique_id',
                     'profile.familyID',
                     'profile.phicID',
                     'profile.nhtsID',
