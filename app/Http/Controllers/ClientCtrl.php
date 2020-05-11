@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
+use App\BherdsPatient;
+use App\IntegrationPatient;
 use App\Profile;
 use App\Service;
 use App\ServiceGroup;
@@ -34,7 +36,6 @@ class ClientCtrl extends Controller
 
     public function index(){
         $barangay = UserBrgy::select("barangay.*")->leftJoin("barangay","barangay.id","=","userbrgy.barangay_id")->where('userbrgy.user_id',Auth::user()->id)->get();
-
         return view('client.home',[
             "barangay" => $barangay
         ]);
@@ -45,13 +46,13 @@ class ClientCtrl extends Controller
         $muncity_id = Auth::user()->muncity;
         $user_priv = Auth::user()->user_priv;
 
-        if($user_priv==0 || $user_priv==4){
+        if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
             $countPopulation = Profile::where('muncity_id',$muncity_id)->count();
             $target = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
             $validServices = Param::countMustService('muncity');
         }
-        if($user_priv==2){
+        if($user_priv==2 || $user_priv==4){ // 2 NDP BARANGAY LEVEL AND 4 BHERDS BARANGAY LEVEL
             $countBarangay = UserBrgy::where('user_id',Auth::user()->id)->count();
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
             $countPopulation = 0;
@@ -60,7 +61,21 @@ class ClientCtrl extends Controller
                 $countPopulation += Profile::where('barangay_id',$tmp->barangay_id)->count();
                 $target += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->barangay_id)->first()->count;
             }
-            $validServices = Param::countMustService('barangay');
+            if($user_priv == 2)
+                $validServices = Param::countMustService('barangay');
+            elseif($user_priv == 4){
+                $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+                $bherds_count = BherdsPatient::
+                    leftJoin('profile','profile.id','=','bherds_patient.profile_id')
+                        ->where(function($q) use ($tmpBrgy){
+                            foreach($tmpBrgy as $tmp){
+                                $q->orwhere('profile.barangay_id',$tmp->barangay_id);
+                            }
+                        })
+                    ->where('bherds_patient.integration_id','=',1)
+                    ->count();
+            }
+
         }
         //$validServices = Param::countValidService('','','','');
 //        $validServices = Param::countMustService('barangay');
@@ -80,6 +95,7 @@ class ClientCtrl extends Controller
             $servicePercentage = ($validServices / $target) * 100;
         }
 
+
         return array(
             'countBarangay' => number_format($countBarangay),
             'countPopulation' => number_format($countPopulation),
@@ -87,6 +103,7 @@ class ClientCtrl extends Controller
             'target' => number_format($target),
             'profilePercentage' => number_format($profilePercentage,1),
             'servicePercentage' => number_format($servicePercentage,1),
+            'bherds_count' => $bherds_count,
         );
     }
 
@@ -110,7 +127,7 @@ class ClientCtrl extends Controller
                 ->where('muncity_id',$user->muncity)
                 ->groupBy('profile_id');
 
-            if($user->user_priv == 2){
+            if($user->user_priv == 2 || $user->user_priv == 4){ // USER PRIV 2 (NDP), USER PRIV 4 (BHERDS)
                 $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
                 $count = $count->where(function($q) use ($tmpBrgy){
                     foreach($tmpBrgy as $tmp){
@@ -136,29 +153,29 @@ class ClientCtrl extends Controller
         $dengvaxia = $temp['dengvaxia'];
 
         $user = Auth::user();
-        $data['profiles'] = Profile::select('id','unique_id','familyID','head','lname','mname','fname','suffix','sex','dob','barangay_id','dengvaxia')
+        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia')
             ->where('barangay_id','!=',0);
 
         if($keyword || $keyword!='' || $keyword!=null){
             $data['profiles'] =  $data['profiles']->where(function($q) use ($keyword){
-                $q->where(DB::raw('concat(fname," ",mname," ",lname," ",suffix," ",familyID)'),'like',"%$keyword%")
-                    ->orwhere(DB::raw('concat(fname," ",lname," ",suffix," ",familyID)'),'like',"%$keyword%")
-                    ->orwhere(DB::raw('concat(lname," ",fname," ",mname," ",suffix," ",familyID)'),'like',"%$keyword%");
+                $q->where(DB::raw('concat(profile.fname," ",profile.mname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.fname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.lname," ",profile.fname," ",profile.mname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%");
             });
         }
 
         if($head || $head!='' || $head!=null)
         {
-            $data['profiles'] = $data['profiles']->where('head',$head);
+            $data['profiles'] = $data['profiles']->where('profile.head',$head);
         }
 
         if($sex || $sex!='' || $sex!=null)
         {
             if($sex!=='non')
             {
-                $data['profiles'] = $data['profiles']->where('sex',$sex);
+                $data['profiles'] = $data['profiles']->where('profile.sex',$sex);
             }else{
-                $data['profiles'] = $data['profiles']->where('sex','');
+                $data['profiles'] = $data['profiles']->where('profile.sex','');
             }
         }
 
@@ -172,11 +189,11 @@ class ClientCtrl extends Controller
         }
 
         if($user->user_priv == 0 || $user->user_priv == 4){
-            $data['profiles'] = $data['profiles']->where('muncity_id',$user->muncity);
+            $data['profiles'] = $data['profiles']->where('profile.muncity_id',$user->muncity);
         }
 
-        $data['profiles'] = $data['profiles']->orderBy('lname','asc');
-        if($user->user_priv == 2){
+        $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc');
+        if($user->user_priv == 2 || $user->user_priv == 4){ //NDP = 2 and //BHERDS = 4
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
             $data['profiles'] = $data['profiles']->where(function($q) use ($tmpBrgy){
                 foreach($tmpBrgy as $tmp){
@@ -186,8 +203,14 @@ class ClientCtrl extends Controller
             if(count($tmpBrgy)==0){
                 $data['profiles'] = $data['profiles']->where('profile.barangay_id',0);
             }
+
+            /*if($user->user_priv == 4){
+                $data['profile'] = $data['profiles']->leftJoin('bherds_patient','bherds_patient.profile_id','=','profile.id');
+                $data['profiles'] = $data['profiles']->where('bherds_patient.integration_id','=',1);
+            }*/
         }
-        $data['profiles'] = $data['profiles']->orderBy('head','desc')
+
+        $data['profiles'] = $data['profiles']->orderBy('profile.head','desc')
             ->paginate(20);
 
         return view('client.population',$data);
@@ -1107,7 +1130,7 @@ class ClientCtrl extends Controller
             }else{
                 $name['username'] = $req->username;
                 $name['password'] = bcrypt($req->password);
-                $name['user_priv'] = 2;
+                $name['user_priv'] = $req->user_priv;
                 $name['contact'] = $req->contact;
                 $q = new User();
                 foreach($name as $key => $val){
@@ -1150,6 +1173,7 @@ class ClientCtrl extends Controller
             }else{
                 $name['username'] = $req->username;
                 $name['contact'] = $req->contact;
+                $name['user_priv'] = $req->user_priv;
                 if($req->password){
                     $name['password'] = bcrypt($req->password);
                 }

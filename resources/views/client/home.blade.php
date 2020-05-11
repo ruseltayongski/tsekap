@@ -121,38 +121,10 @@
     @endif
     <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header">
-                <form action="{{ asset('ExportExcelBarangay') }}" method="POST">
-                    {{ csrf_field() }}
-                    <i class="fa fa-home"></i>
-                    Home
-                    <!--
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-download"></i> Download Excel
-                    </button>
-                    -->
-                </form>
+            <h2>
+                <i class="fa fa-home"></i>
+                Home
             </h2>
-            <div class="col-md-12">
-
-                @if(Auth::user()->user_priv == 2)
-                    <p class="text-center">
-                        <strong>Barangay Completion </strong>
-                    </p>
-                    <?php $profile_percent = 0; ?>
-                    @foreach($barangay as $bar)
-                        <div class="progress-group">
-                            <span class="progress-text">{{ $bar->description }}</span>
-                            <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
-                            <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
-            <!-- /.progress-group -->
-            </div>
-            <div class="page-divider"></div>
 
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-aqua">
@@ -184,10 +156,8 @@
                 </div>
             </div>
 
-            <div class="clearfix"></div>
-            <hr />
             <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-yellow">
+                <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="fa fa-users"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Population Profiled</span>
@@ -203,7 +173,7 @@
             </div>
 
             <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-green">
+                <div class="info-box bg-red">
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Availed 3 MUST Services</span>
@@ -212,11 +182,76 @@
                             <div class="progress-bar servicePercentageBar"></div>
                         </div>
                         <span class="progress-description">
-                    <span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                  </span>
+                                <span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                            </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-yellow-gradient">
+                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">E REFERRAL</span>
+                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-description">
+                                From web application
+                            </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-purple">
+                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">BHERDS PROFILED</span>
+                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-description">
+                                From mobile application
+                            </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-aqua-gradient">
+                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">DENGVAXIA</span>
+                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-description">
+                                From web application
+                            </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">IHOMIS</span>
+                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <span class="progress-description">
+                                From desktop application
+                            </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            </div>
+
             <div class="clearfix"></div>
             <h3 class="page-header">Monthly
                 <small>Progress</small>
@@ -243,8 +278,9 @@
                 $('.validServices').html(jim.validServices);
                 $('.profilePercentage').html(jim.profilePercentage);
                 $('.servicePercentage').html(jim.servicePercentage);
-                $('.profilePercentageBar').css({ width: jim.profilePercentage+'%' })
-                $('.servicePercentageBar').css({ width: jim.servicePercentage+'%' })
+                $('.bherds_count').html(jim.bherds_count);
+                $('.profilePercentageBar').css({ width: jim.profilePercentage+'%' });
+                $('.servicePercentageBar').css({ width: jim.servicePercentage+'%' });
             }
         });
             <?php echo 'var url = "'.asset('user/home/chart').'";';?>

@@ -82,7 +82,7 @@
                             <th>Suffix</th>
                             <th>Age</th>
                             <th>Sex</th>
-                            <th>Dengvaxia</th>
+                            <th>Harmonized</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,7 +137,7 @@
                             <td>{{ $p->sex }}</td>
                             <td>
                                 @if($p->dengvaxia == 'yes')
-                                <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Had record</button>
+                                <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Dengvaxia</button>
                                 @else
                                 <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
                                 @endif

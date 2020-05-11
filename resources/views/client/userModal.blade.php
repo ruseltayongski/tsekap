@@ -14,6 +14,14 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                         <legend><i class="fa fa-user-plus"></i> Add User</legend>
                     </fieldset>
                     <div class="form-group">
+                        <label>User Privilege</label>
+                        <select name="user_priv" id="" class="form-control" required>
+                            <option value="">Select user type...</option>
+                            <option value="2">NDP</option>
+                            <option value="4">BHERDS</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>First Name</label>
                         <input type="text" class="form-control" name="fname" required>
                     </div>
@@ -77,6 +85,12 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                         <legend><i class="fa fa-user"></i> User Info</legend>
                     </fieldset>
                     <input type="hidden" name="currentID" id="currentID">
+                    <div class="form-group">
+                        <label>User Privilege</label>
+                        <select name="user_priv" class="form-control user_priv" required>
+
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label>First Name</label>
                         <input type="text" class="form-control" name="fname" id="fname" required>

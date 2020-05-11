@@ -133,6 +133,16 @@ $status = session('status');
                 success: function(dataJim) {
                     var data = dataJim.info;
                     $('#currentID').val(id);
+
+                    $(".user_priv").empty();
+                    if(data.user_priv == 2){
+                        $(".user_priv").append(new Option("NDP", 2));
+                        $(".user_priv").append(new Option("BHERDS", 4));
+                    } else {
+                        $(".user_priv").append(new Option("BHERDS", 4));
+                        $(".user_priv").append(new Option("NDP", 2));
+                    } // just order in select user priv
+
                     $('#fname').val(data.fname);
                     $('#mname').val(data.mname);
                     $('#lname').val(data.lname);
