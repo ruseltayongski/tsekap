@@ -39,7 +39,7 @@ class BherdsApiCtrl extends Controller{
 
         }else{
             return array(
-                'status' => 'error'
+                'status' => 'no_record'
             );
         }
     }
