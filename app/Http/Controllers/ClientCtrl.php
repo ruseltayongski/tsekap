@@ -45,6 +45,7 @@ class ClientCtrl extends Controller
     {
         $muncity_id = Auth::user()->muncity;
         $user_priv = Auth::user()->user_priv;
+        $bherds_count = 0;
 
         if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
