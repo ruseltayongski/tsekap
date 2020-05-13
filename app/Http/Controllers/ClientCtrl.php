@@ -105,7 +105,7 @@ class ClientCtrl extends Controller
             'target' => number_format($target),
             'profilePercentage' => number_format($profilePercentage,1),
             'servicePercentage' => number_format($servicePercentage,1),
-            'bherds_count' => $bherds_count,
+            'bhert_count' => $bherds_count,
         );
     }
 

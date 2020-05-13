@@ -193,7 +193,7 @@
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">E REFERRAL</span>
-                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
                         <div class="progress">
                             <div class="progress-bar"></div>
                         </div>
@@ -209,7 +209,7 @@
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">BHERT PROFILED</span>
-                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <span class="info-box-number bhert_count"><i class="fa fa-refresh fa-spin"></i></span>
                         <div class="progress">
                             <div class="progress-bar"></div>
                         </div>
@@ -225,7 +225,7 @@
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">DENGVAXIA</span>
-                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
                         <div class="progress">
                             <div class="progress-bar"></div>
                         </div>
@@ -241,7 +241,7 @@
                     <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">IHOMIS</span>
-                        <span class="info-box-number bherds_count"><i class="fa fa-refresh fa-spin"></i></span>
+                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
                         <div class="progress">
                             <div class="progress-bar"></div>
                         </div>
@@ -278,7 +278,7 @@
                 $('.validServices').html(jim.validServices);
                 $('.profilePercentage').html(jim.profilePercentage);
                 $('.servicePercentage').html(jim.servicePercentage);
-                $('.bherds_count').html(jim.bherds_count);
+                $('.bhert_count').html(jim.bhert_count);
                 $('.profilePercentageBar').css({ width: jim.profilePercentage+'%' });
                 $('.servicePercentageBar').css({ width: jim.servicePercentage+'%' });
             }
