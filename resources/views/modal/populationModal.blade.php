@@ -43,6 +43,26 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" role="dialog" id="select_harmonized">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label style="font-size: 15pt"><i class="fa fa-stethoscope"></i> Select System</label>
+                <table class="table table-hover table-striped">
+                    <tr>
+                        <td><label class="text-blue cursor"><i class="fa fa-user"></i> Dengvaxia</label></td>
+                        <td><label class="text-green cursor"><i class="fa fa-users"></i> Bhert</label></td>
+                    </tr>
+                    <tr>
+                        <td><label class="text-yellow cursor"><i class="fa fa-users"></i> E - Referral</label></td>
+                        <td><label class="text-red cursor"><i class="fa fa-users"></i> IHOMIS</label></td>
+                    </tr>
+                </table>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="modal fade" role="dialog" id="familyProfile">
     <div class="modal-dialog modal-sm" role="document">
         <input type="hidden" name="currentID" id="currentID">

@@ -18,6 +18,9 @@
             font-style: italic;
             color: #a94442;
         }
+        .cursor{
+            cursor: pointer;
+        }
     </style>
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
@@ -137,9 +140,20 @@
                             <td>{{ $p->sex }}</td>
                             <td>
                                 @if($p->dengvaxia == 'yes')
-                                <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Dengvaxia</button>
+                                    <!--
+                                    <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Dengvaxia</button>
+                                    -->
+                                    <small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small>
+                                    <small class="text-green"><i class="fa fa-users"></i> Bhert</small><br>
+                                    <small class="text-yellow"><i class="fa fa-users"></i> E - Referral</small>
+                                    <small class="text-purple"><i class="fa fa-users"></i> IHOMIS</small>
+                                    <br>
+                                    <small class="text-danger"><i class="fa fa-plus"></i> Add</small>
                                 @else
-                                <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
+                                    <small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>
+                                    <!--
+                                    <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
+                                    -->
                                 @endif
                             </td>
                         </tr>
@@ -190,7 +204,7 @@
     @endif
 
 <script>
-    function proceedDengvaxia(profile_id){
+    function setSession(profile_id){
         var url = "<?php echo asset('deng/profile_id'); ?>";
         var json = {
             "profile_id" : profile_id,
