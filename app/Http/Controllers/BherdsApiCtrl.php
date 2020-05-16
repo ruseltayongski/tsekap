@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers;
+use App\BherdsPatient;
 use App\UserBrgy;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Profile;
+use App\Http\Requests\Request;
 
 class BherdsApiCtrl extends Controller{
     public function login($username,$password){
@@ -129,6 +131,47 @@ class BherdsApiCtrl extends Controller{
                 ->get();
 
         return $data;
+    }
+
+    public function insertBhert(Request $request){
+        $bhert = new BherdsPatient();
+        $bhert->date_of_arrival = $request->date_of_arrival;
+        $bhert->end_of_quarantine = $request->end_of_quarantine;
+        $bhert->patient_code = $request->patient_code;
+        $bhert->nationality = $request->nationality;
+        $bhert->purok = $request->purok;
+        $bhert->sitio = $request->sitio;
+        $bhert->contact_no = $request->contact_no;
+        $bhert->travel_history = $request->travel_history;
+        $bhert->passport_number = $request->passport_number;
+        $bhert->flight_number = $request->flight_number;
+        $bhert->type_quarantine = $request->type_quarantine;
+        $bhert->sign_symptoms = $request->sign_symptoms;
+        $bhert->remarks = $request->remarks;
+        $bhert->latitude = $request->latitude;
+        $bhert->longitude = $request->longitude;
+        $bhert->longitude = $request->start_time;
+        $bhert->completion_time = $request->completion_time;
+        $bhert->email = $request->email;
+        $bhert->icd_10 = $request->icd_10;
+        $bhert->admitted = $request->admitted;
+        $bhert->date_admission = $request->date_admission;
+        $bhert->date_onset = $request->date_onset;
+        $bhert->name_coordinator = $request->name_coordinator;
+        $bhert->dsc_contact_number = $request->dsc_contact_number;
+        $bhert->cat1 = $request->cat1;
+        $bhert->cate_date = $request->cat_date;
+        $bhert->admitting_diagnosis = $request->admitting_diagnosis;
+        $bhert->with_fever = $request->with_fever;
+        $bhert->with_colds = $request->with_colds;
+        $bhert->with_cough = $request->with_cough;
+        $bhert->with_sore_throat = $request->with_sore_throat;
+        $bhert->with_diarrhea = $request->with_diarrhea;
+        $bhert->with_difficult_breathing = $request->with_difficult_breathing;
+        $bhert->parent_name = $request->parent_name;
+        $bhert->number_person_living = $request->number_person_living;
+        $bhert->outcome_date_died;
+        $bhert->save();
     }
 
 }
