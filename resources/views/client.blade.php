@@ -143,6 +143,8 @@ use App\Province;
                         <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
                     </ul>
                 </li>
+                <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
+                <li><a href="{{ url('purok') }}"><i class="fa fa-building"></i> Purok</a></li>
                 <!--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>
@@ -212,7 +214,7 @@ use App\Province;
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            version 2.1
+            version 3.0
         </p>
         <p>Copyright &copy; 2017 DOH-RO7 All rights reserved</p>
     </div>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
-use App\BherdsPatient;
+use App\BhertPatient;
 use App\IntegrationPatient;
 use App\Profile;
 use App\Service;
@@ -67,7 +67,7 @@ class ClientCtrl extends Controller
                 $validServices = Param::countMustService('barangay');
             elseif($user_priv == 4){
                 $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
-                $bherds_count = BherdsPatient::
+                $bherds_count = BhertPatient::
                     leftJoin('profile','profile.id','=','bherds_patient.profile_id')
                         ->where(function($q) use ($tmpBrgy){
                             foreach($tmpBrgy as $tmp){
@@ -281,6 +281,7 @@ class ClientCtrl extends Controller
 
         return redirect()->back()->with('status','added');
     }
+
     public function addHeadProfile()
     {
         return view('client.addHeadProfile');

@@ -288,7 +288,18 @@ Route::get("deng/pdf","DengController@pdf");
 Route::post("deng/save","DengController@save");
 Route::post("deng/profile_id","DengController@sessionProfileId");
 
-//BHERDS API
-Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BherdsApiCtrl@login');
-Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BherdsApiCtrl@getProfiles');
+//BHERT API
+Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BhertApiCtrl@login');
+Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BhertApiCtrl@getProfiles');
+Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert');
+
+
+//SITIO
+Route::get("sitio","SitioController@Sitio");
+
+//PUROK
+Route::get("purok","PurokController@Purok");
+Route::post("purok/add","PurokController@addPurok");
+Route::post("purok/remove","PurokController@removePurok");
+Route::match(['GET','POST'],"purok/add/content","PurokController@addContent");
 
