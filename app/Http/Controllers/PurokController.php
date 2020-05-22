@@ -16,21 +16,37 @@ use Illuminate\Support\Facades\Redirect;
 
 class PurokController extends Controller
 {
-    public function Purok(){
+    public function Purok(Request $request){
         $user_brgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+
+        $purok_keyword = "";
+        if($request->view_all){
+            $purok_keyword = null;
+            Session::put('purok_keyword',null);
+        }
+        elseif($request->purok_keyword){
+            $purok_keyword = $request->purok_keyword;
+            Session::put('purok_keyword',$purok_keyword);
+        }
+        elseif(Session::get('purok_keyword')){
+            $purok_keyword = Session::get('purok_keyword');
+        }
+
         $purok = Purok::
-                select("purok.*",
-                       "barangay.description as barangay",
-                        DB::raw("concat(users.fname,' ',users.mname,' ',users.lname) as created_by"
-                ))
-                ->where(function($q) use ($user_brgy){
-                    foreach($user_brgy as $bar){
-                        $q->orwhere('purok.purok_barangay_id',$bar->barangay_id);
-                    }
-                })
-                ->leftJoin('barangay','barangay.id','=','purok.purok_barangay_id')
-                ->leftJoin('users','users.id','=','purok.purok_created_by')
-                ->get();
+                    select("purok.*",
+                           "barangay.description as barangay",
+                            DB::raw("concat(users.fname,' ',users.mname,' ',users.lname) as created_by"
+                    ))
+                    ->where(function($q) use ($user_brgy){
+                        foreach($user_brgy as $bar){
+                            $q->orwhere('purok.purok_barangay_id',$bar->barangay_id);
+                        }
+                    })
+                    ->where('purok.purok_name','like',"%$purok_keyword%")
+                    ->leftJoin('barangay','barangay.id','=','purok.purok_barangay_id')
+                    ->leftJoin('users','users.id','=','purok.purok_created_by')
+                    ->orderBy('purok.purok_name','asc')
+                    ->paginate(15);
 
         return view('purok.purok',[
             "purok" => $purok

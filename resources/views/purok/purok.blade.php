@@ -1,7 +1,3 @@
-<?php
-use App\Http\Controllers\ParameterCtrl as Param;
-use App\FamilyProfile;
-?>
 @extends('client')
 @section('content')
     <style>
@@ -31,17 +27,22 @@ use App\FamilyProfile;
                     <form class="form-inline" method="POST" action="{{ asset('purok') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <?php $tmp = Session::get('profileKeyword');?>
-                            <input type="text" class="form-control" placeholder="Quick Search" name="keyword" value="{{ $tmp['keyword'] }}" autofocus>
+                            <input type="text" class="form-control" placeholder="Quick Search" name="purok_keyword" value="{{ Session::get('purok_keyword') }}" autofocus>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
-                            <a class="btn btn-info col-xs-12" onclick="addPurok()"><i class="fa fa-user-plus"></i> Add Purok</a>
+                            <a class="btn btn-primary" onclick="addPurok()"><i class="fa fa-plus"></i> Add Purok</a>
                             <div class="clearfix"></div>
                         </div>
+                        @if(Session::get('purok_keyword'))
+                        <div class="form-group">
+                            <button type="submit" name="view_all" value="true" class="btn btn-warning"><i class="fa fa-eye"></i> View All</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -70,9 +71,12 @@ use App\FamilyProfile;
                         @endforeach
                         </tbody>
                     </table>
+                    <div class="text-center">
+                        {{ $purok->links() }}
+                    </div>
                 @else
-                    <div class="alert alert-info">
-                        <p class="text-info"><i class="fa fa-info-circle fa-lg text-bold"></i> No data found!</p>
+                    <div class="alert alert-warning">
+                        <p class="text-warning"><i class="fa fa-info-circle fa-lg text-bold"></i> No data found!</p>
                     </div>
                 @endif
             </div>

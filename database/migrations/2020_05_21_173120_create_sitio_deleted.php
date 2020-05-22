@@ -14,7 +14,7 @@ class CreateSitioDeleted extends Migration
     {
         Schema::create('sitio_deleted', function (Blueprint $table) {
             $table->increments('sitio_id');
-            $table->integer('sitio_created_by')->nullable();
+            $table->integer('sitio_deleted_by')->nullable();
             $table->string('sitio_name',255)->nullable();
             $table->integer('sitio_barangay_id')->nullable();
             $table->integer('sitio_target')->nullable();

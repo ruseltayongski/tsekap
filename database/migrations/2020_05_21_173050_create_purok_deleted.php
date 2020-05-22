@@ -14,7 +14,7 @@ class CreatePurokDeleted extends Migration
     {
         Schema::create('purok_deleted', function (Blueprint $table) {
             $table->increments('purok_id');
-            $table->integer('purok_created_by')->nullable();
+            $table->integer('purok_deleted_by')->nullable();
             $table->string('purok_name',255)->nullable();
             $table->integer('purok_barangay_id')->nullable();
             $table->integer('purok_target')->nullable();

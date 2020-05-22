@@ -79,12 +79,11 @@
                         <tr>
                             <th></th>
                             <th>Family ID</th>
-                            <th>Last Name</th>
-                            <th>First Name</th>
-                            <th>Middle Name</th>
-                            <th>Suffix</th>
+                            <th>Full Name</th>
                             <th>Age</th>
                             <th>Sex</th>
+                            <th>Sitio</th>
+                            <th>Purok</th>
                             <th>Harmonized</th>
                         </tr>
                     </thead>
@@ -109,10 +108,7 @@
                                     {{ $p->familyID }}
                                 </a>
                             </td>
-                            <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->lname }}</td>
-                            <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname }}</td>
-                            <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->mname }}</td>
-                            <td>{{ $p->suffix }}</td>
+                            <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
                             <td>
                                 <?php
                                     $age = Param::getAge($p->dob);
@@ -138,22 +134,19 @@
                                 @endif
                             </td>
                             <td>{{ $p->sex }}</td>
+                            <td><small class="text-info cursor" onclick="selectSitio({{ $p->barangay_id }})"><i class="fa fa-institution"></i> Update sitio by family</small></td>
+                            <td><small class="text-info cursor"><i class="fa fa-building"></i> Update purok by family</small></td>
                             <td>
                                 @if($p->dengvaxia == 'yes')
+                                    <small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small><br>
                                     <!--
-                                    <button type="button" class="btn btn-xs btn-danger" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-user-md"></i> Dengvaxia</button>
-                                    -->
-                                    <small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small>
                                     <small class="text-green"><i class="fa fa-users"></i> Bhert</small><br>
-                                    <small class="text-yellow"><i class="fa fa-users"></i> E - Referral</small>
-                                    <small class="text-purple"><i class="fa fa-users"></i> IHOMIS</small>
-                                    <br>
-                                    <small class="text-danger"><i class="fa fa-plus"></i> Add</small>
+                                    <small class="text-yellow"><i class="fa fa-users"></i> E - Referral</small><br>
+                                    <small class="text-purple"><i class="fa fa-users"></i> IHOMIS</small><br>
+                                    -->
+                                    <small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>
                                 @else
                                     <small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>
-                                    <!--
-                                    <button type="submit" class="btn btn-xs btn-warning" href="#proceed_dengvaxia" data-toggle="modal" onclick="proceedDengvaxia({{ $p->id }})"><i class="fa fa-"></i> No record</button>
-                                    -->
                                 @endif
                             </td>
                         </tr>
@@ -402,6 +395,39 @@
             });
         },300);
     });
+
+
+    function openDengvaxia() {
+        window.location.href = "<?php echo asset('deng/form'); ?>";
+    }
+
+    function selectSitio($barangay_id){
+        $('#select_sitio').modal({backdrop: 'static', keyboard: false});
+        $(".select_sitio").html(loadingState);
+
+        setTimeout(function(){
+            var url = "<?php echo asset('sitio/select/get'); ?>";
+            var json = {
+                "barangay_id" : $barangay_id
+            };
+            $.ajaxSetup(
+                {
+                    headers:
+                        {
+                            'X-CSRF-Token': "<?php echo csrf_token(); ?>"
+                        }
+                });
+            $.ajax({
+                url:url,
+                data: json,
+                type: 'POST',
+                success: function(result) {
+                    $(".select_sitio").html(result);
+                    console.log(result);
+                }
+            });
+        },200);
+    }
 
 
 

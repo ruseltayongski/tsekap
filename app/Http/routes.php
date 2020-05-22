@@ -295,10 +295,15 @@ Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert');
 
 
 //SITIO
-Route::get("sitio","SitioController@Sitio");
+Route::match(['GET','POST'],"sitio","SitioController@Sitio");
+Route::post("sitio/add","SitioController@addSitio");
+Route::post("sitio/remove","SitioController@removeSitio");
+Route::post("sitio/select/get","SitioController@selectSitioGet");
+Route::post("sitio/select/post","SitioController@selectSitioPost");
+Route::match(['GET','POST'],"sitio/add/content","SitioController@addContent");
 
 //PUROK
-Route::get("purok","PurokController@Purok");
+Route::match(['GET','POST'],"purok","PurokController@Purok");
 Route::post("purok/add","PurokController@addPurok");
 Route::post("purok/remove","PurokController@removePurok");
 Route::match(['GET','POST'],"purok/add/content","PurokController@addContent");
