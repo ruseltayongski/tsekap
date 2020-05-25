@@ -423,7 +423,6 @@
                 type: 'POST',
                 success: function(result) {
                     $(".select_sitio").html(result);
-                    console.log(result);
                 }
             });
         },200);

@@ -68,13 +68,13 @@ class ClientCtrl extends Controller
             elseif($user_priv == 4){
                 $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
                 $bherds_count = BhertPatient::
-                    leftJoin('profile','profile.id','=','bherds_patient.profile_id')
+                    leftJoin('profile','profile.id','=','bhert_patient.profile_id')
                         ->where(function($q) use ($tmpBrgy){
                             foreach($tmpBrgy as $tmp){
                                 $q->orwhere('profile.barangay_id',$tmp->barangay_id);
                             }
                         })
-                    ->where('bherds_patient.integration_id','=',1)
+                    ->where('bhert_patient.integration_id','=',1)
                     ->count();
             }
 
@@ -207,8 +207,8 @@ class ClientCtrl extends Controller
             }
 
             /*if($user->user_priv == 4){
-                $data['profile'] = $data['profiles']->leftJoin('bherds_patient','bherds_patient.profile_id','=','profile.id');
-                $data['profiles'] = $data['profiles']->where('bherds_patient.integration_id','=',1);
+                $data['profile'] = $data['profiles']->leftJoin('bhert_patient','bhert_patient.profile_id','=','profile.id');
+                $data['profiles'] = $data['profiles']->where('bhert_patient.integration_id','=',1);
             }*/
         }
 

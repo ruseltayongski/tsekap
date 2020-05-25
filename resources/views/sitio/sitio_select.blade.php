@@ -16,7 +16,7 @@
         </table>
         @else
             <div class="alert alert-info text-blue">
-                <i class="fa fa-info-circle"></i> No directory of sitio on this barangay
+                <i class="fa fa-info-circle"></i> Base the barangay on this profile, No directory found on this sitio
             </div>
         @endif
     </div>

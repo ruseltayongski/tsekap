@@ -289,9 +289,10 @@ Route::post("deng/save","DengController@save");
 Route::post("deng/profile_id","DengController@sessionProfileId");
 
 //BHERT API
-Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BhertApiCtrl@login');
-Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BhertApiCtrl@getProfiles');
-Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert');
+Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BhertApiCtrl@login'); //login
+Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BhertApiCtrl@getProfiles'); //get profile where barangay of userid
+Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert'); //insert bhert
+Route::get('oKibOqWOFZUYYm6RbkuEtRDEiNpLWu03/{userid}','BhertApiCtrl@countProfile'); //count profile defends on userid
 
 
 //SITIO

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BhertApiCtrl extends Controller{
     public function login($username,$password){
@@ -73,15 +74,6 @@ class BhertApiCtrl extends Controller{
                     'profile.barangay_id',
                     'profile.muncity_id',
                     'profile.province_id',
-                    'profile.income',
-                    'profile.unmet',
-                    'profile.water',
-                    'profile.toilet',
-                    'profile.education',
-                    'profile.hypertension',
-                    'profile.diabetic',
-                    'profile.pwd',
-                    'profile.pregnant',
                     'bhert_patient.date_of_arrival',
                     'bhert_patient.end_of_quarantine',
                     'bhert_patient.patient_code',
@@ -133,29 +125,44 @@ class BhertApiCtrl extends Controller{
         return $data;
     }
 
+    public function countProfile($userid){
+        $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
+        $profile_count = Profile::where(function($q) use ($tmpBrgy){
+                            foreach($tmpBrgy as $tmp){
+                                $q->orwhere('profile.barangay_id',$tmp->barangay_id);
+                            }
+                        })
+                        ->count();
+
+        return $profile_count;
+    }
+
     public function savePopulation(Request $req)
     {
-        $con=mysqli_connect("localhost","root","","tsekap_main");
         $dateNow = date('Y-m-d H:i:s');
         $user = User::find($req->userid);
-        $fname = mysqli_real_escape_string($con,($req->fname));
-        $mname = mysqli_real_escape_string($con,($req->mname));
-        $lname = mysqli_real_escape_string($con,($req->lname));
+        $fname = $req->fname;
+        $mname = $req->mname;
+        $lname = $req->lname;
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $unique_id = mysqli_real_escape_string($con,$unique_id);
 
-        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pregnant)
-                VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
-                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pregnant')
-            ON DUPLICATE KEY UPDATE
-                familyID = '$req->familyID',
-                sex = '$req->sex',
-                relation = '$req->relation',
-                education = '$req->education',
-                unmet = '$req->unmet'
-            ";
-        DB::select($q);
+        $profile = new Profile();
+        $profile->unique_id = $unique_id;
+        $profile->familyID = $req->familyID;
+        $profile->phicID = $req->phicID;
+        $profile->nhtsID = $req->nhtsID;
+        $profile->head = 'NO';
+        $profile->relation = $req->relation;
+        $profile->fname = $fname;
+        $profile->mname = $mname;
+        $profile->lname = $lname;
+        $profile->suffix = $req->suffix;
+        $profile->dob = date('Y-m-d',strtotime($req->dob));
+        $profile->sex = $req->sex;
+        $profile->barangay_id = $req->barangay_id;
+        $profile->muncity_id = $req->muncity_id;
+        $profile->province_id = $req->province_id;
+        $profile->save();
 
         $q = "INSERT IGNORE profile_device(profile_id,device) values(
                 '$unique_id',
@@ -173,19 +180,15 @@ class BhertApiCtrl extends Controller{
 
         DB::connection($db)->select($q);
 
-        return redirect()->back()->with('status','added');
+        return $profile->id;
     }
 
     public function saveHeadProfile(Request $req)
     {
-        $con=mysqli_connect("localhost","root","","tsekap_main");
-        $dateNow = date('Y-m-d H:i:s');
         $user = User::find($req->userid);
-        $fname = mysqli_real_escape_string($con,($req->fname));
-        $mname = mysqli_real_escape_string($con,($req->mname));
-        $lname = mysqli_real_escape_string($con,($req->lname));
-        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $unique_id = mysqli_real_escape_string($con,$unique_id);
+        $fname = $req->fname;
+        $mname = $req->mname;
+        $lname = $req->lname;
 
         //family ID
         $ctrlNo = date('His');
@@ -193,14 +196,25 @@ class BhertApiCtrl extends Controller{
         $idNo = str_pad($user->id, 4, '0', STR_PAD_LEFT);
         $family_id = date('mdy').'-'.$idNo.'-'.$ctrlNo;
         //end familyID
+        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity.$ctrlNo;
 
-        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pregnant)
-                VALUES('$unique_id', '$family_id', 'YES', 'Head', '".$fname."',
-                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pregnant')
-            ";
-        //echo $q;
-        DB::select($q);
+        $profile = new Profile();
+        $profile->unique_id = $unique_id;
+        $profile->familyID = $family_id;
+        $profile->phicID = $req->phicID;
+        $profile->nhtsID = $req->nhtsID;
+        $profile->head = 'YES';
+        $profile->relation = 'HEAD';
+        $profile->fname = $fname;
+        $profile->mname = $mname;
+        $profile->lname = $lname;
+        $profile->suffix = $req->suffix;
+        $profile->dob = date('Y-m-d',strtotime($req->dob));
+        $profile->sex = $req->sex;
+        $profile->barangay_id = $req->barangay_id;
+        $profile->muncity_id = $req->muncity_id;
+        $profile->province_id = $req->province_id;
+        $profile->save();
 
         $q = "INSERT IGNORE profile_device(profile_id,device) values(
                 '$unique_id',
@@ -216,10 +230,12 @@ class BhertApiCtrl extends Controller{
             )";
         $db = 'db_'.date('Y');
         DB::connection($db)->select($q);
+
+        return $profile->id;
     }
 
     public function insertBhert(Request $request){
-        return $request->all();
+
         $check_profile = Profile::where('id','=',$request->profile_id)
                                 ->orWhere(function($q) use ($request){
                                     $q->where('fname','=',$request->fname);
@@ -229,21 +245,23 @@ class BhertApiCtrl extends Controller{
                                     $q->where('barangay_id','=',$request->barangay_id); // no need muncity_id and province_id kay barangay unique na ang id, and naa napud ang muncity_id and province_id
                                 })
                                 ->first();
+
         if($check_profile){
-            $message = $check_profile; //The profile is exist
+            $message = 'The profile was exist'; //The profile is exist
+            $profile_id = $check_profile->id;
         } else{
             if($request->head == 'YES'){
-                //$this->saveHeadProfile($request);
-                $message = 'Successfully save the patient(Head)';
+                $message = 'Successfully save the new patient(Head)';
+                $profile_id = $this->saveHeadProfile($request); //return profile id
             }
             else{
-                //$this->savePopulation($request);
-                $message = 'Successfully save the patient';
+                $message = 'Successfully save the new patient';
+                $profile_id = $this->savePopulation($request); // return profile id
             }
         }
 
         BhertPatient::updateOrCreate(
-            ['profile_id'=>$request->profile_id],
+            ['profile_id'=>$profile_id],
             [
                 "date_of_arrival" => $request->date_of_arrival,
                 "end_of_quarantine" => $request->end_of_quarantine,

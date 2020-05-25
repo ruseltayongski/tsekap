@@ -12,7 +12,7 @@ class CreateBherds extends Migration
      */
     public function up()
     {
-        Schema::create('bherds_patient', function (Blueprint $table) {
+        Schema::create('bhert_patient', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('profile_id')->nullable();
             $table->integer('encoded_by')->nullable();
@@ -68,6 +68,6 @@ class CreateBherds extends Migration
      */
     public function down()
     {
-        Schema::drop("bherds_patient");
+        Schema::drop("bhert_patient");
     }
 }
