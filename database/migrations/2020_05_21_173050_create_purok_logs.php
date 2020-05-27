@@ -12,13 +12,14 @@ class CreatePurokDeleted extends Migration
      */
     public function up()
     {
-        Schema::create('purok_deleted', function (Blueprint $table) {
-            $table->increments('purok_id');
-            $table->integer('purok_deleted_by')->nullable();
+        Schema::create('purok_logs', function (Blueprint $table) {
+            $table->increments('purok_logs_id');
+            $table->integer('purok_id')->nullable();
+            $table->integer('purok_logs_by')->nullable();
             $table->string('purok_name',255)->nullable();
             $table->integer('purok_barangay_id')->nullable();
             $table->integer('purok_target')->nullable();
-            $table->integer('purok_status')->nullable();
+            $table->string('purok_status',255)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreatePurokDeleted extends Migration
      */
     public function down()
     {
-        Schema::drop("purok_deleted");
+        Schema::drop("purok_logs");
     }
 }

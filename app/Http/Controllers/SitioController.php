@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Profile;
+use App\Purok;
 use App\Sitio;
-use App\SitioDeleted;
+use App\SitioLogs;
 use App\UserBrgy;
 use Illuminate\Http\Request;
 
@@ -54,16 +56,35 @@ class SitioController extends Controller
 
     public function addSitio(Request $request){
 
-        Sitio::updateOrCreate(
-            ["sitio_id" => $request->sitio_id],
-            [
+        $sitio_check = Sitio::find($request->sitio_id);
+        if($sitio_check){
+            $sitio_check->update([
                 "sitio_created_by" => Auth::user()->id,
                 "sitio_name" => $request->get('name'),
                 "sitio_barangay_id" => $request->get('barangay_id'),
                 "sitio_target" => $request->get('target'),
                 "sitio_status" => 1
-            ]
-        );
+            ]);
+
+            //logs purok
+            $sitio_logs = new SitioLogs();
+            $sitio_logs->sitio_id = $sitio_check->sitio_id;
+            $sitio_logs->sitio_logs_by = Auth::user()->id;
+            $sitio_logs->sitio_name = $sitio_check->sitio_name;
+            $sitio_logs->sitio_barangay_id = $sitio_check->sitio_barangay_id;
+            $sitio_logs->sitio_target = $sitio_check->sitio_targer;
+            $sitio_logs->sitio_status = 'UPDATE';
+            $sitio_logs->save();
+            //end logs
+        } else {
+            $sitio_add = new Sitio();
+            $sitio_add->sitio_created_by = Auth::user()->id;
+            $sitio_add->sitio_name = $request->get('name');
+            $sitio_add->sitio_barangay_id = $request->get('barangay_id');
+            $sitio_add->sitio_target = $request->get('target');
+            $sitio_add->sitio_status = 1;
+            $sitio_add->save();
+        }
 
         Session::put('add',true);
         return redirect()->back();
@@ -73,13 +94,13 @@ class SitioController extends Controller
         $sitio = Sitio::find($request->sitio_id);
 
         //logs deleted purok
-        $sitio_deleted = new SitioDeleted();
+        $sitio_deleted = new SitioLogs();
         $sitio_deleted->sitio_id = $sitio->sitio_id;
-        $sitio_deleted->sitio_deleted_by = Auth::user()->id;
+        $sitio_deleted->sitio_logs_by = Auth::user()->id;
         $sitio_deleted->sitio_name = $sitio->sitio_name;
         $sitio_deleted->sitio_barangay_id = $sitio->sitio_barangay_id;
-        $sitio_deleted->sitio_target = $sitio->sitoi_targer;
-        $sitio_deleted->sitio_status = 1;
+        $sitio_deleted->sitio_target = $sitio->sitio_targer;
+        $sitio_deleted->sitio_status = 'DELETE';
         $sitio_deleted->save();
         //end logs
 
@@ -101,8 +122,21 @@ class SitioController extends Controller
     public function selectSitioGet(Request $request){
         $sitio = Sitio::where("sitio_barangay_id",$request->barangay_id)->get();
         return view("sitio.sitio_select",[
-            "sitio" => $sitio
+            "sitio" => $sitio,
+            "familyID" => $request->familyID
         ]);
+    }
+
+    public function selectSitioPost(Request $request){
+        $familyID = $request->familyID;
+
+        $profile = Profile::where('familyID',$familyID);
+        $profile->update([
+            "sitio_id" => $request->sitio_id
+        ]);
+
+        Session::put('family_updated_sitio',true);
+        return redirect()->back();
     }
 
 

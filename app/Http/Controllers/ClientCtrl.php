@@ -155,7 +155,7 @@ class ClientCtrl extends Controller
         $dengvaxia = $temp['dengvaxia'];
 
         $user = Auth::user();
-        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia')
+        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia','profile.sitio_id','profile.purok_id')
             ->where('barangay_id','!=',0);
 
         if($keyword || $keyword!='' || $keyword!=null){

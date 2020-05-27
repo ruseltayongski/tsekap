@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Purok;
-use App\PurokDeleted;
+use App\PurokLogs;
 use Illuminate\Support\Facades\Session;
 use App\User;
 use App\UserBrgy;
@@ -54,16 +54,35 @@ class PurokController extends Controller
     }
 
     public function addPurok(Request $request){
-        Purok::updateOrCreate(
-            ["purok_id" => $request->purok_id],
-            [
+        $purok_check = Purok::find($request->purok_id);
+        if($purok_check){
+            $purok_check->update([
                 "purok_created_by" => Auth::user()->id,
                 "purok_name" => $request->get('name'),
                 "purok_barangay_id" => $request->get('barangay_id'),
                 "purok_target" => $request->get('target'),
                 "purok_status" => 1
-            ]
-        );
+            ]);
+
+            //logs purok
+            $purok_logs = new PurokLogs();
+            $purok_logs->purok_id = $purok_check->purok_id;
+            $purok_logs->purok_logs_by = Auth::user()->id;
+            $purok_logs->purok_name = $purok_check->purok_name;
+            $purok_logs->purok_barangay_id = $purok_check->purok_barangay_id;
+            $purok_logs->purok_target = $purok_check->purok_targer;
+            $purok_logs->purok_status = 'UPDATE';
+            $purok_logs->save();
+            //end logs
+        } else {
+            $purok_add = new Purok();
+            $purok_add->purok_created_by = Auth::user()->id;
+            $purok_add->purok_name = $request->get('name');
+            $purok_add->purok_barangay_id = $request->get('barangay_id');
+            $purok_add->purok_target = $request->get('target');
+            $purok_add->purok_status = 1;
+            $purok_add->save();
+        }
 
         Session::put('add',true);
         return redirect()->back();
@@ -72,15 +91,15 @@ class PurokController extends Controller
     public function removePurok(Request $request){
         $purok = Purok::find($request->purok_id);
 
-        //logs deleted purok
-        $purok_deleted = new PurokDeleted();
-        $purok_deleted->purok_id = $purok->purok_id;
-        $purok_deleted->purok_deleted_by = Auth::user()->id;
-        $purok_deleted->purok_name = $purok->purok_name;
-        $purok_deleted->purok_barangay_id = $purok->purok_barangay_id;
-        $purok_deleted->purok_target = $purok->purok_targer;
-        $purok_deleted->purok_status = 1;
-        $purok_deleted->save();
+        //logs purok
+        $purok_logs = new PurokLogs();
+        $purok_logs->purok_id = $purok->purok_id;
+        $purok_logs->purok_logs_by = Auth::user()->id;
+        $purok_logs->purok_name = $purok->purok_name;
+        $purok_logs->purok_barangay_id = $purok->purok_barangay_id;
+        $purok_logs->purok_target = $purok->purok_targer;
+        $purok_logs->purok_status = 'DELETE';
+        $purok_logs->save();
         //end logs
 
         $purok->delete();

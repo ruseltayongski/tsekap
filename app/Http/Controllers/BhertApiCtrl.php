@@ -47,9 +47,8 @@ class BhertApiCtrl extends Controller{
         }
     }
 
-    public function getProfiles($userid,$offset,$limit)
+    public function getProfileSitio($userid,$sitio_id,$offset,$limit)
     {
-
         $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
 
 
@@ -71,6 +70,8 @@ class BhertApiCtrl extends Controller{
                     'profile.suffix',
                     'profile.dob',
                     'profile.sex',
+                    'profile.sitio_id',
+                    'profile.purok_id',
                     'profile.barangay_id',
                     'profile.muncity_id',
                     'profile.province_id',
@@ -78,8 +79,6 @@ class BhertApiCtrl extends Controller{
                     'bhert_patient.end_of_quarantine',
                     'bhert_patient.patient_code',
                     'bhert_patient.nationality',
-                    'bhert_patient.purok',
-                    'bhert_patient.sitio',
                     'bhert_patient.contact_no',
                     'bhert_patient.travel_history',
                     'bhert_patient.passport_number',
@@ -111,11 +110,7 @@ class BhertApiCtrl extends Controller{
                     'bhert_patient.number_person_living',
                     'bhert_patient.outcome_date_died'
                 )
-                ->where(function($q) use ($tmpBrgy){
-                    foreach($tmpBrgy as $tmp){
-                        $q->orwhere('profile.barangay_id',$tmp->barangay_id);
-                    }
-                })
+                ->where('profile.sitio_id',$sitio_id)
                 ->leftJoin('bhert_patient','bhert_patient.profile_id','=','profile.id')
                 ->orderBy('profile.lname','asc')
                 ->skip($offset)
@@ -124,6 +119,80 @@ class BhertApiCtrl extends Controller{
 
         return $data;
     }
+
+    public function getProfilePurok($userid,$purok_id,$offset,$limit)
+    {
+        $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
+
+
+        if(count($tmpBrgy) <= 0){
+            return 'no data';
+        }
+
+        $data = Profile::
+        select(
+            'profile.id',
+            'profile.familyID',
+            'profile.phicID',
+            'profile.nhtsID',
+            'profile.head',
+            'profile.relation',
+            'profile.fname',
+            'profile.mname',
+            'profile.lname',
+            'profile.suffix',
+            'profile.dob',
+            'profile.sex',
+            'profile.sitio_id',
+            'profile.purok_id',
+            'profile.barangay_id',
+            'profile.muncity_id',
+            'profile.province_id',
+            'bhert_patient.date_of_arrival',
+            'bhert_patient.end_of_quarantine',
+            'bhert_patient.patient_code',
+            'bhert_patient.nationality',
+            'bhert_patient.contact_no',
+            'bhert_patient.travel_history',
+            'bhert_patient.passport_number',
+            'bhert_patient.flight_number',
+            'bhert_patient.type_quarantine',
+            'bhert_patient.sign_symptoms',
+            'bhert_patient.remarks',
+            'bhert_patient.latitude',
+            'bhert_patient.longitude',
+            'bhert_patient.start_time',
+            'bhert_patient.completion_time',
+            'bhert_patient.email',
+            'bhert_patient.icd_10',
+            'bhert_patient.admitted',
+            'bhert_patient.date_admission',
+            'bhert_patient.date_onset',
+            'bhert_patient.name_coordinator',
+            'bhert_patient.dsc_contact_number',
+            'bhert_patient.cat1',
+            'bhert_patient.cat_date',
+            'bhert_patient.admitting_diagnosis',
+            'bhert_patient.with_fever',
+            'bhert_patient.with_colds',
+            'bhert_patient.with_cough',
+            'bhert_patient.with_sore_throat',
+            'bhert_patient.with_diarrhea',
+            'bhert_patient.with_difficult_breathing',
+            'bhert_patient.parent_name',
+            'bhert_patient.number_person_living',
+            'bhert_patient.outcome_date_died'
+        )
+            ->where('profile.purok_id',$purok_id)
+            ->leftJoin('bhert_patient','bhert_patient.profile_id','=','profile.id')
+            ->orderBy('profile.lname','asc')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+
+        return $data;
+    }
+
 
     public function countProfile($userid){
         $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
@@ -267,8 +336,6 @@ class BhertApiCtrl extends Controller{
                 "end_of_quarantine" => $request->end_of_quarantine,
                 "patient_code" => $request->patient_code,
                 "nationality" => $request->nationality,
-                "purok" => $request->purok,
-                "sitio" => $request->sitio,
                 "contact_no" => $request->contact_no,
                 "travel_history" => $request->travel_history,
                 "passport_number" => $request->passport_number,

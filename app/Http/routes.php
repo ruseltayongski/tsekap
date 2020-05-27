@@ -290,7 +290,8 @@ Route::post("deng/profile_id","DengController@sessionProfileId");
 
 //BHERT API
 Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BhertApiCtrl@login'); //login
-Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BhertApiCtrl@getProfiles'); //get profile where barangay of userid
+Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{sitio_id}/{offset}/{limit}','BhertApiCtrl@getProfileSitio'); //get profile where sitio_id
+Route::get('mR9tbLLFIwxnWCKWMFS3EMyKrrNHrxYE/{userid}/{purok_id}/{offset}/{limit}','BhertApiCtrl@getProfilePurok'); //get profile where purok_id
 Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert'); //insert bhert
 Route::get('oKibOqWOFZUYYm6RbkuEtRDEiNpLWu03/{userid}','BhertApiCtrl@countProfile'); //count profile defends on userid
 
@@ -299,13 +300,16 @@ Route::get('oKibOqWOFZUYYm6RbkuEtRDEiNpLWu03/{userid}','BhertApiCtrl@countProfil
 Route::match(['GET','POST'],"sitio","SitioController@Sitio");
 Route::post("sitio/add","SitioController@addSitio");
 Route::post("sitio/remove","SitioController@removeSitio");
+Route::match(['GET','POST'],"sitio/add/content","SitioController@addContent");
 Route::post("sitio/select/get","SitioController@selectSitioGet");
 Route::post("sitio/select/post","SitioController@selectSitioPost");
-Route::match(['GET','POST'],"sitio/add/content","SitioController@addContent");
 
 //PUROK
 Route::match(['GET','POST'],"purok","PurokController@Purok");
 Route::post("purok/add","PurokController@addPurok");
 Route::post("purok/remove","PurokController@removePurok");
 Route::match(['GET','POST'],"purok/add/content","PurokController@addContent");
+Route::post("purok/select/get","PurokController@selectPurokGet");
+Route::post("purok/select/post","PurokController@selectPurokPost");
+
 

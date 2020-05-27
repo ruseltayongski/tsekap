@@ -12,13 +12,14 @@ class CreateSitioDeleted extends Migration
      */
     public function up()
     {
-        Schema::create('sitio_deleted', function (Blueprint $table) {
-            $table->increments('sitio_id');
-            $table->integer('sitio_deleted_by')->nullable();
+        Schema::create('sitio_logs', function (Blueprint $table) {
+            $table->increments('sitio_logs_id');
+            $table->integer('sitio_id')->nullable();
+            $table->integer('sitio_logs_by')->nullable();
             $table->string('sitio_name',255)->nullable();
             $table->integer('sitio_barangay_id')->nullable();
             $table->integer('sitio_target')->nullable();
-            $table->integer('sitio_status')->nullable();
+            $table->string('sitio_status',255)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateSitioDeleted extends Migration
      */
     public function down()
     {
-        Schema::drop("sitio_deleted");
+        Schema::drop("sitio_logs");
     }
 }

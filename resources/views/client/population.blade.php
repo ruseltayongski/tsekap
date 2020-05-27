@@ -78,13 +78,19 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Family ID</th>
-                            <th>Full Name</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Sitio</th>
-                            <th>Purok</th>
-                            <th>Harmonized</th>
+                            <th>Family ID<br>&nbsp;</th>
+                            <th>Full Name<br>&nbsp;</th>
+                            <th>Age<br>&nbsp;</th>
+                            <th>Sex<br>&nbsp;</th>
+                            <th>
+                                Sitio<br>
+                                <small class="text-info">(Update by family)</small>
+                            </th>
+                            <th>
+                                Purok<br>
+                                <small class="text-warning">(Update by family)</small>
+                            </th>
+                            <th>Harmonized<br>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,8 +140,24 @@
                                 @endif
                             </td>
                             <td>{{ $p->sex }}</td>
-                            <td><small class="text-info cursor" onclick="selectSitio({{ $p->barangay_id }})"><i class="fa fa-institution"></i> Update sitio by family</small></td>
-                            <td><small class="text-info cursor"><i class="fa fa-building"></i> Update purok by family</small></td>
+                            <td>
+                                <small class="text-info cursor" onclick="selectSitio('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-institution"></i>
+                                    @if($p->sitio_id)
+                                        {{ \App\Sitio::find($p->sitio_id)->sitio_name }}
+                                    @else
+                                        Update
+                                    @endif
+                                </small>
+                            </td>
+                            <td>
+                                <small class="text-warning cursor" onclick="selectPurok('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-building"></i>
+                                    @if($p->purok_id)
+                                        {{ \App\Purok::find($p->purok_id)->purok_name }}
+                                    @else
+                                        Update
+                                    @endif
+                                </small>
+                            </td>
                             <td>
                                 @if($p->dengvaxia == 'yes')
                                     <small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small><br>
@@ -192,6 +214,17 @@
         <script>
             Lobibox.notify('success', {
                 msg: 'Deleted successfully!'
+            });
+        </script>
+    @endif
+
+    @if(Session::get('family_updated_sitio'))
+        <script>
+            <?php Session::put('family_updated_sitio',false); ?>
+            Lobibox.notify('success', {
+                size: 'mini',
+                title: '',
+                msg: 'The family had chosen was successfully updated their sitio'
             });
         </script>
     @endif
@@ -401,13 +434,42 @@
         window.location.href = "<?php echo asset('deng/form'); ?>";
     }
 
-    function selectSitio($barangay_id){
+    function selectSitio($familyID,$barangay_id){
         $('#select_sitio').modal({backdrop: 'static', keyboard: false});
         $(".select_sitio").html(loadingState);
 
         setTimeout(function(){
             var url = "<?php echo asset('sitio/select/get'); ?>";
             var json = {
+                "familyID" : $familyID,
+                "barangay_id" : $barangay_id
+            };
+            $.ajaxSetup(
+                {
+                    headers:
+                        {
+                            'X-CSRF-Token': "<?php echo csrf_token(); ?>"
+                        }
+                });
+            $.ajax({
+                url:url,
+                data: json,
+                type: 'POST',
+                success: function(result) {
+                    $(".select_sitio").html(result);
+                }
+            });
+        },200);
+    }
+
+    function selectPurok($familyID,$barangay_id){
+        $('#select_sitio').modal({backdrop: 'static', keyboard: false});
+        $(".select_sitio").html(loadingState);
+
+        setTimeout(function(){
+            var url = "<?php echo asset('sitio/select/get'); ?>";
+            var json = {
+                "familyID" : $familyID,
                 "barangay_id" : $barangay_id
             };
             $.ajaxSetup(
