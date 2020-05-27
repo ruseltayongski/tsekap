@@ -208,7 +208,6 @@ class BhertApiCtrl extends Controller{
 
     public function savePopulation(Request $req)
     {
-        $dateNow = date('Y-m-d H:i:s');
         $user = User::find($req->userid);
         $fname = $req->fname;
         $mname = $req->mname;
@@ -228,6 +227,8 @@ class BhertApiCtrl extends Controller{
         $profile->suffix = $req->suffix;
         $profile->dob = date('Y-m-d',strtotime($req->dob));
         $profile->sex = $req->sex;
+        $profile->sitio_id = $req->sitio_id;
+        $profile->purok_id = $req->purok_id;
         $profile->barangay_id = $req->barangay_id;
         $profile->muncity_id = $req->muncity_id;
         $profile->province_id = $req->province_id;
@@ -263,13 +264,13 @@ class BhertApiCtrl extends Controller{
         $ctrlNo = date('His');
         $ctrlNo = str_pad($ctrlNo, 4, '0', STR_PAD_LEFT);
         $idNo = str_pad($user->id, 4, '0', STR_PAD_LEFT);
-        $family_id = date('mdy').'-'.$idNo.'-'.$ctrlNo;
+        //$family_id = date('mdy').'-'.$idNo.'-'.$ctrlNo;
         //end familyID
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity.$ctrlNo;
 
         $profile = new Profile();
         $profile->unique_id = $unique_id;
-        $profile->familyID = $family_id;
+        $profile->familyID = $req->familyID;
         $profile->phicID = $req->phicID;
         $profile->nhtsID = $req->nhtsID;
         $profile->head = 'YES';
@@ -280,6 +281,8 @@ class BhertApiCtrl extends Controller{
         $profile->suffix = $req->suffix;
         $profile->dob = date('Y-m-d',strtotime($req->dob));
         $profile->sex = $req->sex;
+        $profile->sitio_id = $req->sitio_id;
+        $profile->purok_id = $req->purok_id;
         $profile->barangay_id = $req->barangay_id;
         $profile->muncity_id = $req->muncity_id;
         $profile->province_id = $req->province_id;
