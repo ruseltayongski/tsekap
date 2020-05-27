@@ -6,12 +6,15 @@ use App\Barangay;
 use App\Bracket;
 use App\Cases;
 use App\Device;
+use App\Facility;
 use App\Feedback;
 use App\Muncity;
 use App\Profile;
 use App\Province;
+use App\Purok;
 use App\Service;
 use App\ServiceGroup;
+use App\Sitio;
 use App\User;
 use App\UserBrgy;
 use Illuminate\Http\Request;
@@ -647,6 +650,27 @@ class ApiCtrl extends Controller
         return UserBrgy::offset($offset)
             ->limit($limit)
             ->get();
+    }
+
+    public function getSitio(){
+        if(Input::get('count'))
+            return Sitio::count();
+
+        return Sitio::get();
+    }
+
+    public function getPurok(){
+        if(Input::get('count'))
+            return Purok::count();
+
+        return Purok::get();
+    }
+
+    public function getFacility(){
+        if(Input::get('count'))
+            return Facility::count();
+
+        return Facility::get();
     }
 
 

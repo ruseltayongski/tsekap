@@ -136,6 +136,20 @@ return [
             'engine' => null,
         ],
 
+        'doh_referral' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'port' => '3306',
+            'database' => 'doh_referral',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'dengvaxia_dummy' => [
             'driver' => 'mysql',
             'host' => 'localhost',

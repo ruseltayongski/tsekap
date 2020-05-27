@@ -257,6 +257,9 @@ Route::get('api/profile_device/x6ubxP0lotYU1TpCdK0W0icVgcKDlZnq/{offset}/{limit}
 Route::get('api/province/hPSKFkWhBtNtYiU70Ud4nvwIKV8fmXqp','ApiCtrl@getProvince');
 Route::get('api/services/58eqDKCL4HRO1oUxnCXzG0g1GS14fIWa','ApiCtrl@getServices');
 Route::get('api/userbrgy/4D7PzqmsPHkHLhQU84bcVO5d9Pp0B2Fp/{offset}/{limit}','ApiCtrl@getUserBrgy');
+Route::get('api/sitio/Q2X97Uniunk4Y3rAMioPZaIGuWqusRp5','ApiCtrl@getSitio');
+Route::get('api/purok/DQ7d1CSfd6qcPizNugRcsRFJVkfOaPO7','ApiCtrl@getPurok');
+Route::get('api/facility/hmLGUE1trAZ4gwdSGikiWpOPnSaACcoe','ApiCtrl@getFacility');
 
 //RUSEL
 Route::get('verify_dengvaxia/{id}/{unique_id}','DengvaxiaController@verify_dengvaxia');
