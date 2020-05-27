@@ -323,11 +323,11 @@ class BhertApiCtrl extends Controller{
             $profile_id = $check_profile->id;
         } else{
             if($request->head == 'YES'){
-                $message = 'Successfully save the new patient(Head)';
+                $message = 'Success(Head)';
                 $profile_id = $this->saveHeadProfile($request); //return profile id
             }
             else{
-                $message = 'Successfully save the new patient';
+                $message = 'Success';
                 $profile_id = $this->savePopulation($request); // return profile id
             }
         }
