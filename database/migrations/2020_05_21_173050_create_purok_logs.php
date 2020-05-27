@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePurokDeleted extends Migration
+class CreatePurokLogs extends Migration
 {
     /**
      * Run the migrations.
