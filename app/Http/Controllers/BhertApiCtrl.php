@@ -335,6 +335,7 @@ class BhertApiCtrl extends Controller{
         BhertPatient::updateOrCreate(
             ['profile_id'=>$profile_id],
             [
+                "encoded_by" => $request->userid,
                 "date_of_arrival" => $request->date_of_arrival,
                 "end_of_quarantine" => $request->end_of_quarantine,
                 "patient_code" => $request->patient_code,
