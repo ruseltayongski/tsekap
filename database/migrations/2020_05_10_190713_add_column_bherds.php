@@ -12,7 +12,7 @@ class AddColumnBherds extends Migration
      */
     public function up()
     {
-        Schema::table('bherds_patient', function (Blueprint $table) {
+        Schema::table('bhert_patient', function (Blueprint $table) {
             $table->integer('integration_id')->nullable();
         });
     }
@@ -24,7 +24,7 @@ class AddColumnBherds extends Migration
      */
     public function down()
     {
-        Schema::table('bherds_patient', function (Blueprint $table) {
+        Schema::table('bhert_patient', function (Blueprint $table) {
             $table->dropColumn(['integration_id']);
         });
     }

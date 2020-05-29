@@ -34,25 +34,27 @@
         </div>
     </div>
 
-    <div class="panel panel-jim">
-        <div class="panel-heading">
-            <h3 class="panel-title">Barangay Completion</h3>
-        </div>
-        <div class="panel-body">
-            @if(Auth::user()->user_priv == 2 || Auth::user()->user_priv == 4)
-                <?php $profile_percent = 0; ?>
-                @foreach($barangay as $bar)
-                    <div class="progress-group" style="margin-top: 10px;">
-                        <span class="progress-text">{{ $bar->description }}</span>
-                        <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
-                        <div class="progress sm">
-                            <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
+    @if(isset($barangay))
+        <div class="panel panel-jim">
+            <div class="panel-heading">
+                <h3 class="panel-title">Barangay Completion</h3>
+            </div>
+            <div class="panel-body">
+                @if(Auth::user()->user_priv == 2 || Auth::user()->user_priv == 4)
+                    <?php $profile_percent = 0; ?>
+                    @foreach($barangay as $bar)
+                        <div class="progress-group" style="margin-top: 10px;">
+                            <span class="progress-text">{{ $bar->description }}</span>
+                            <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
+                            <div class="progress sm">
+                                <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            @endif
+                    @endforeach
+                @endif
+            </div>
         </div>
-    </div>
+    @endif
 
     @if(Auth::user()->user_priv==0 || Auth::user()->user_priv==2 || Auth::user()->user_priv == 4)
         <div class="panel panel-jim">

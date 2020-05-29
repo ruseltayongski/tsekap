@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
-use App\BherdsPatient;
+use App\BhertPatient;
 use App\IntegrationPatient;
 use App\Profile;
 use App\Service;
@@ -68,14 +68,14 @@ class ClientCtrl extends Controller
                 $validServices = Param::countMustService('barangay');
             elseif($user_priv == 4){
                 $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
-                $bherds_count = BherdsPatient::
-                    leftJoin('profile','profile.id','=','bherds_patient.profile_id')
+                $bherds_count = BhertPatient::
+                    leftJoin('profile','profile.id','=','bhert_patient.profile_id')
                         ->where(function($q) use ($tmpBrgy){
                             foreach($tmpBrgy as $tmp){
                                 $q->orwhere('profile.barangay_id',$tmp->barangay_id);
                             }
                         })
-                    ->where('bherds_patient.integration_id','=',1)
+                    ->where('bhert_patient.integration_id','=',1)
                     ->count();
             }
 
@@ -156,7 +156,7 @@ class ClientCtrl extends Controller
         $dengvaxia = $temp['dengvaxia'];
 
         $user = Auth::user();
-        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia')
+        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia','profile.sitio_id','profile.purok_id')
             ->where('barangay_id','!=',0);
 
         if($keyword || $keyword!='' || $keyword!=null){
@@ -208,8 +208,8 @@ class ClientCtrl extends Controller
             }
 
             /*if($user->user_priv == 4){
-                $data['profile'] = $data['profiles']->leftJoin('bherds_patient','bherds_patient.profile_id','=','profile.id');
-                $data['profiles'] = $data['profiles']->where('bherds_patient.integration_id','=',1);
+                $data['profile'] = $data['profiles']->leftJoin('bhert_patient','bhert_patient.profile_id','=','profile.id');
+                $data['profiles'] = $data['profiles']->where('bhert_patient.integration_id','=',1);
             }*/
         }
 
@@ -282,6 +282,7 @@ class ClientCtrl extends Controller
 
         return redirect()->back()->with('status','added');
     }
+
     public function addHeadProfile()
     {
         return view('client.addHeadProfile');

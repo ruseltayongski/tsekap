@@ -275,7 +275,7 @@ $brgy = $brgy->orderBy('description','asc')
                                 <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
                                     <i class="fa fa-arrow-left"></i> Back
                                 </a>
-                                @if(in_array(Date("F"), array("April","August","December"), true))
+                                @if(in_array(Date("F"), array("April","August","December","May"), true))
                                 <button type="submit" class="btn btn-success btn-sm" name="update" value="1">
                                     <i class="fa fa-pencil"></i> Update
                                 </button>

@@ -47,21 +47,47 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <label style="font-size: 15pt"><i class="fa fa-stethoscope"></i> Select System</label>
+                <label style="font-size: 15pt">Select System</label>
                 <table class="table table-hover table-striped">
                     <tr>
-                        <td><label class="text-blue cursor"><i class="fa fa-user"></i> Dengvaxia</label></td>
-                        <td><label class="text-green cursor"><i class="fa fa-users"></i> Bhert</label></td>
+                        <td><label class="text-blue cursor" onclick="openDengvaxia();"><i class="fa fa-stethoscope"></i> Dengvaxia</label></td>
+                        <td><label class="text-green cursor"><i class="fa fa-stethoscope"></i> Bhert</label></td>
                     </tr>
                     <tr>
-                        <td><label class="text-yellow cursor"><i class="fa fa-users"></i> E - Referral</label></td>
-                        <td><label class="text-red cursor"><i class="fa fa-users"></i> IHOMIS</label></td>
+                        <td><label class="text-yellow cursor"><i class="fa fa-stethoscope"></i> E - Referral</label></td>
+                        <td><label class="text-red cursor"><i class="fa fa-stethoscope"></i> IHOMIS</label></td>
                     </tr>
                 </table>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade" id="select_sitio" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h5 class="modal-title">Select Sitio</h5>
+            </div>
+            <div class="select_sitio"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="select_purok" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h5 class="modal-title">Select Purok</h5>
+            </div>
+            <div class="select_purok"></div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" role="dialog" id="familyProfile">
     <div class="modal-dialog modal-sm" role="document">

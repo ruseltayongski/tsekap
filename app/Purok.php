@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BherdsPatient extends Model
+class Purok extends Model
 {
     protected $connection = 'mysql';
-    protected $table = 'bherds_patient';
+    protected $table = 'purok';
+    protected $primaryKey = 'purok_id';
     protected $guarded = array();
 }

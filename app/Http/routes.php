@@ -257,6 +257,9 @@ Route::get('api/profile_device/x6ubxP0lotYU1TpCdK0W0icVgcKDlZnq/{offset}/{limit}
 Route::get('api/province/hPSKFkWhBtNtYiU70Ud4nvwIKV8fmXqp','ApiCtrl@getProvince');
 Route::get('api/services/58eqDKCL4HRO1oUxnCXzG0g1GS14fIWa','ApiCtrl@getServices');
 Route::get('api/userbrgy/4D7PzqmsPHkHLhQU84bcVO5d9Pp0B2Fp/{offset}/{limit}','ApiCtrl@getUserBrgy');
+Route::get('api/sitio/Q2X97Uniunk4Y3rAMioPZaIGuWqusRp5','ApiCtrl@getSitio');
+Route::get('api/purok/DQ7d1CSfd6qcPizNugRcsRFJVkfOaPO7','ApiCtrl@getPurok');
+Route::get('api/facility/hmLGUE1trAZ4gwdSGikiWpOPnSaACcoe','ApiCtrl@getFacility');
 
 //RUSEL
 Route::get('verify_dengvaxia/{id}/{unique_id}','DengvaxiaController@verify_dengvaxia');
@@ -288,7 +291,28 @@ Route::get("deng/pdf","DengController@pdf");
 Route::post("deng/save","DengController@save");
 Route::post("deng/profile_id","DengController@sessionProfileId");
 
-//BHERDS API
-Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BherdsApiCtrl@login');
-Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{offset}/{limit}','BherdsApiCtrl@getProfiles');
+//BHERT API
+Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}','BhertApiCtrl@login'); //login
+Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{sitio_id}/{offset}/{limit}','BhertApiCtrl@getProfileSitio'); //get profile where sitio_id
+Route::get('mR9tbLLFIwxnWCKWMFS3EMyKrrNHrxYE/{userid}/{purok_id}/{offset}/{limit}','BhertApiCtrl@getProfilePurok'); //get profile where purok_id
+Route::post('IhBKItxoEpTK425HpIMtyKCqan2IdRUn','BhertApiCtrl@insertBhert'); //insert bhert
+Route::get('oKibOqWOFZUYYm6RbkuEtRDEiNpLWu03/{userid}','BhertApiCtrl@countProfile'); //count profile defends on userid
+
+
+//SITIO
+Route::match(['GET','POST'],"sitio","SitioController@Sitio");
+Route::post("sitio/add","SitioController@addSitio");
+Route::post("sitio/remove","SitioController@removeSitio");
+Route::match(['GET','POST'],"sitio/add/content","SitioController@addContent");
+Route::post("sitio/select/get","SitioController@selectSitioGet");
+Route::post("sitio/select/post","SitioController@selectSitioPost");
+
+//PUROK
+Route::match(['GET','POST'],"purok","PurokController@Purok");
+Route::post("purok/add","PurokController@addPurok");
+Route::post("purok/remove","PurokController@removePurok");
+Route::match(['GET','POST'],"purok/add/content","PurokController@addContent");
+Route::post("purok/select/get","PurokController@selectPurokGet");
+Route::post("purok/select/post","PurokController@selectPurokPost");
+
 
