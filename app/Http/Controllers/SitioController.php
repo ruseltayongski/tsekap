@@ -131,13 +131,20 @@ class SitioController extends Controller
 
     public function selectSitioPost(Request $request){
         $familyID = $request->familyID;
-
         $profile = Profile::where('familyID',$familyID);
-        $profile->update([
-            "sitio_id" => $request->sitio_id
-        ]);
 
-        Session::put('family_updated_sitio',true);
+        if($request->clear){
+            $profile->update([
+                "sitio_id" => null
+            ]);
+            Session::put('family_updated_sitio','The family had chosen, there Sitio has been cleared');
+        } else {
+            $profile->update([
+                "sitio_id" => $request->sitio_id
+            ]);
+            Session::put('family_updated_sitio','The family had chosen, there Sitio has been updated');
+        }
+
         return redirect()->back();
     }
 

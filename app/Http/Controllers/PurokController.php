@@ -130,13 +130,20 @@ class PurokController extends Controller
 
     public function selectPurokPost(Request $request){
         $familyID = $request->familyID;
-
         $profile = Profile::where('familyID',$familyID);
-        $profile->update([
-            "purok_id" => $request->purok_id
-        ]);
 
-        Session::put('family_updated_purok',true);
+        if($request->clear){
+            $profile->update([
+                "purok_id" => null
+            ]);
+            Session::put('family_updated_purok','The family had chosen, there Purok has been cleared');
+        } else {
+            $profile->update([
+                "purok_id" => $request->purok_id
+            ]);
+            Session::put('family_updated_purok','The family had chosen, there Purok has been updated');
+        }
+
         return redirect()->back();
     }
 

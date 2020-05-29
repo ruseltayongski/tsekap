@@ -24,7 +24,10 @@
     <div class="modal-footer">
         <button type="button" class="btn-sm btn-default" data-dismiss="modal">Close</button>
         @if(count($sitio) >= 1)
-        <button type="submit" class="btn-sm btn-success">Select</button>
+            @if($sitio_choose)
+                <button type="submit" name="clear" value="true" class="btn-sm btn-danger">Clear</button>
+            @endif
+            <button type="submit" class="btn-sm btn-success">Select</button>
         @endif
     </div>
 </form>

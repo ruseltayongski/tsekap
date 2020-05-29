@@ -220,23 +220,23 @@
 
     @if(Session::get('family_updated_sitio'))
         <script>
-            <?php Session::put('family_updated_sitio',false); ?>
             Lobibox.notify('success', {
                 size: 'mini',
                 title: '',
-                msg: 'The family had chosen was successfully updated their sitio'
+                msg: "<?php echo Session::get('family_updated_sitio'); ?>"
             });
+            <?php Session::put('family_updated_sitio',false); ?>
         </script>
     @endif
 
     @if(Session::get('family_updated_purok'))
         <script>
-            <?php Session::put('family_updated_purok',false); ?>
             Lobibox.notify('success', {
                 size: 'mini',
                 title: '',
                 msg: 'The family had chosen was successfully updated their purok'
             });
+            <?php Session::put('family_updated_purok',false); ?>
         </script>
     @endif
 
