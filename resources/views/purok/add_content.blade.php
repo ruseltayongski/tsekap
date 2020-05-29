@@ -9,7 +9,7 @@
                     <select name="barangay_id" id="" class="form-control" required>
                         @if(!isset($purok))<option value="">Select Option</option>@endif
                         @foreach($user_brgy as $brgy)
-                            <option value="{{ $brgy->barangay_id }}" <?php if(isset($purok->purok_barangay_id)){if($purok->purok_barangay_id==$brgy->barangay_id) echo 'slected';} ?> >{{ \App\Barangay::find($brgy->barangay_id)->description }}</option>
+                            <option value="{{ $brgy->barangay_id }}" <?php if(isset($purok->purok_barangay_id)){if($purok->purok_barangay_id==$brgy->barangay_id) echo 'selected';} ?> >{{ \App\Barangay::find($brgy->barangay_id)->description }}</option>
                         @endforeach
                     </select>
                 </td>

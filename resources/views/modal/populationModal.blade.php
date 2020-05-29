@@ -76,6 +76,19 @@
     </div>
 </div>
 
+<div class="modal fade" id="select_purok" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span></button>
+                <h5 class="modal-title">Select Purok</h5>
+            </div>
+            <div class="select_purok"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" role="dialog" id="familyProfile">
     <div class="modal-dialog modal-sm" role="document">
         <input type="hidden" name="currentID" id="currentID">

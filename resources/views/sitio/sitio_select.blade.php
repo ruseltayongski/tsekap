@@ -9,7 +9,7 @@
                 <td>
                     <select name="sitio_id" class="form-control" required>
                         @foreach($sitio as $row)
-                            <option value="{{ $row->sitio_id }}">{{ $row->sitio_name }}</option>
+                            <option value="{{ $row->sitio_id }}" <?php if($row->sitio_id == $sitio_choose) echo 'selected'; ?>>{{ $row->sitio_name }}</option>
                         @endforeach
                     </select>
                 </td>

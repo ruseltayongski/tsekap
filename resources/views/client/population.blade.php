@@ -143,7 +143,7 @@
                             <td>
                                 <small class="text-info cursor" onclick="selectSitio('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-institution"></i>
                                     @if($p->sitio_id)
-                                        {{ \App\Sitio::find($p->sitio_id)->sitio_name }}
+                                        <b>{{ \App\Sitio::find($p->sitio_id)->sitio_name }}</b>
                                     @else
                                         Update
                                     @endif
@@ -152,7 +152,7 @@
                             <td>
                                 <small class="text-warning cursor" onclick="selectPurok('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-building"></i>
                                     @if($p->purok_id)
-                                        {{ \App\Purok::find($p->purok_id)->purok_name }}
+                                        <b>{{ \App\Purok::find($p->purok_id)->purok_name }}</b>
                                     @else
                                         Update
                                     @endif
@@ -225,6 +225,17 @@
                 size: 'mini',
                 title: '',
                 msg: 'The family had chosen was successfully updated their sitio'
+            });
+        </script>
+    @endif
+
+    @if(Session::get('family_updated_purok'))
+        <script>
+            <?php Session::put('family_updated_purok',false); ?>
+            Lobibox.notify('success', {
+                size: 'mini',
+                title: '',
+                msg: 'The family had chosen was successfully updated their purok'
             });
         </script>
     @endif
@@ -463,11 +474,11 @@
     }
 
     function selectPurok($familyID,$barangay_id){
-        $('#select_sitio').modal({backdrop: 'static', keyboard: false});
-        $(".select_sitio").html(loadingState);
+        $('#select_purok').modal({backdrop: 'static', keyboard: false});
+        $(".select_purok").html(loadingState);
 
         setTimeout(function(){
-            var url = "<?php echo asset('sitio/select/get'); ?>";
+            var url = "<?php echo asset('purok/select/get'); ?>";
             var json = {
                 "familyID" : $familyID,
                 "barangay_id" : $barangay_id
@@ -484,7 +495,7 @@
                 data: json,
                 type: 'POST',
                 success: function(result) {
-                    $(".select_sitio").html(result);
+                    $(".select_purok").html(result);
                 }
             });
         },200);

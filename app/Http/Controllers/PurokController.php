@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Profile;
 use App\Purok;
 use App\PurokLogs;
 use Illuminate\Support\Facades\Session;
@@ -115,6 +116,28 @@ class PurokController extends Controller
             "user_brgy" => $user_brgy,
             "purok" => $purok
         ]);
+    }
+
+    public function selectPurokGet(Request $request){
+        $purok = Purok::where("purok_barangay_id",$request->barangay_id)->get();
+        $purok_choose = Profile::where('familyID',$request->familyID)->first()->purok_id;
+        return view("purok.purok_select",[
+            "purok" => $purok,
+            "familyID" => $request->familyID,
+            "purok_choose" => $purok_choose
+        ]);
+    }
+
+    public function selectPurokPost(Request $request){
+        $familyID = $request->familyID;
+
+        $profile = Profile::where('familyID',$familyID);
+        $profile->update([
+            "purok_id" => $request->purok_id
+        ]);
+
+        Session::put('family_updated_purok',true);
+        return redirect()->back();
     }
 
 }

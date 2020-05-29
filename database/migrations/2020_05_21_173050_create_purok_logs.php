@@ -12,6 +12,9 @@ class CreatePurokLogs extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('purok_logs')){
+            return true;
+        }
         Schema::create('purok_logs', function (Blueprint $table) {
             $table->increments('purok_logs_id');
             $table->integer('purok_id')->nullable();

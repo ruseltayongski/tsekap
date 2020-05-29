@@ -12,6 +12,9 @@ class CreateSitioLogs extends Migration
      */
     public function up()
     {
+        if(Schema::hasTable('sitio_logs')){
+            return true;
+        }
         Schema::create('sitio_logs', function (Blueprint $table) {
             $table->increments('sitio_logs_id');
             $table->integer('sitio_id')->nullable();

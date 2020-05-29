@@ -121,9 +121,11 @@ class SitioController extends Controller
 
     public function selectSitioGet(Request $request){
         $sitio = Sitio::where("sitio_barangay_id",$request->barangay_id)->get();
+        $sitio_choose = Profile::where('familyID',$request->familyID)->first()->sitio_id;
         return view("sitio.sitio_select",[
             "sitio" => $sitio,
-            "familyID" => $request->familyID
+            "familyID" => $request->familyID,
+            "sitio_choose" => $sitio_choose
         ]);
     }
 
