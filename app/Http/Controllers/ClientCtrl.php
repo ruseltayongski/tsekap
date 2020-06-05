@@ -6,6 +6,7 @@ use App\Barangay;
 use App\BhertPatient;
 use App\IntegrationPatient;
 use App\Profile;
+use App\ProfilePending;
 use App\Service;
 use App\ServiceGroup;
 use App\UserBrgy;
@@ -36,6 +37,14 @@ class ClientCtrl extends Controller
 
     public function index(){
         $barangay = UserBrgy::select("barangay.*")->leftJoin("barangay","barangay.id","=","userbrgy.barangay_id")->where('userbrgy.user_id',Auth::user()->id)->get();
+        $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+        $profile_pending_count = ProfilePending::where(function($q) use ($tmpBrgy){
+            foreach($tmpBrgy as $tmp){
+                $q->orwhere('barangay_id',$tmp->barangay_id);
+            }
+        })->count();
+        Session::put('profile_pending_count',$profile_pending_count);
+
         return view('client.home',[
             "barangay" => $barangay
         ]);
@@ -1801,4 +1810,20 @@ class ClientCtrl extends Controller
         $age = ParameterCtrl::getAge($dob);
         return $age;
     }
+
+    public function profilePending(){
+        $userid = Auth::user()->id;
+        $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
+
+        $profile_pending = ProfilePending::where(function($q) use ($tmpBrgy){
+            foreach($tmpBrgy as $tmp){
+                $q->orwhere('barangay_id',$tmp->barangay_id);
+            }
+        })->paginate(10);
+
+        return view('client.profile_pending',[
+            "profile_pending" => $profile_pending
+        ]);
+    }
+
 }

@@ -145,6 +145,7 @@ use App\Province;
                 </li>
                 <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
                 <li><a href="{{ url('purok') }}"><i class="fa fa-building"></i> Purok</a></li>
+                <li><a href="{{ url('user/profiles/pending') }}"><span class="badge bg-yellow">{{ Session::get('profile_pending_count') }}</span> Profile Pending</a></li>
                 <!--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>

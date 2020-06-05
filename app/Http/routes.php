@@ -119,6 +119,7 @@ Route::get('user/population/less/service/{profileID}','ClientCtrl@servicePopulat
 
 Route::get('user/profiles','ClientCtrl@getFamilyProfiles');
 Route::get('user/profiles/all','ClientCtrl@getProfiles');
+Route::get('user/profiles/pending','ClientCtrl@profilePending');
 //end population
 //services
 Route::post('user/services/date','ClientCtrl@updateDate');
