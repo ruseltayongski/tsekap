@@ -21,13 +21,12 @@
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header">Manage Profile Pending</h2>
-
             <div class="row">
                 <div class="col-md-8">
-                    <form class="form-inline" method="POST" action="{{ asset('purok') }}">
+                    <form class="form-inline" method="POST" action="{{ asset('profile_pending') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Quick Search" name="purok_keyword" value="{{ Session::get('purok_keyword') }}" autofocus>
+                            <input type="text" class="form-control" placeholder="Quick Search" name="profile_pending_keyword" value="{{ Session::get('profile_pending_keyword') }}" autofocus>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>
@@ -35,16 +34,25 @@
                         </div>
                         @if(Session::get('purok_keyword'))
                             <div class="form-group">
-                                <button type="submit" name="view_all" value="true" class="btn btn-warning"><i class="fa fa-eye"></i> View All</button>
+                                <button type="button" name="view_all" value="true" class="btn btn-warning"><i class="fa fa-eye"></i> View All</button>
                                 <div class="clearfix"></div>
                             </div>
                         @endif
                     </form>
                 </div>
             </div>
-
-            <div class="clearfix"></div>
-            <div class="page-divider"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <br>
+                    <div class="alert alert-warning">
+                        <label for="" class="text-blue">NOTE:</label>
+                        <ul>
+                            <li ><span class="badge bg-red">RED TEXT MEANS LATEST DATA</span></li>
+                            <li ><span class="badge bg-green">GREEN TEXT MEANS PREVIOUS DATA</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 @if(count($profile_pending))
                     <table class="table table-hover table-striped">
@@ -54,9 +62,10 @@
                             <th>phicID</th>
                             <th>nhtsID</th>
                             <th>Relation</th>
-                            <th>Fname</th>
-                            <th>Mname</th>
-                            <th>Lname</th>
+                            <th>First name</th>
+                            <th>Middle name</th>
+                            <th>Last name</th>
+                            <th>Suffix</th>
                             <th>DOB</th>
                             <th>Sex</th>
                             <th>Sitio</th>
@@ -69,58 +78,69 @@
                         @foreach($profile_pending as $row)
                             <?php $profile = \App\Profile::find($row->id); ?>
                             <tr>
-                                <td>
-                                    <a href="#familyProfile" data-backdrop="static" data-id="{{ $row->familyID }}" data-toggle="modal" class="title-info">
+                                <td width="10%">
+                                    <a href="#familyProfile" class="text-yellow" data-backdrop="static" data-id="{{ $row->familyID }}" data-toggle="modal">
                                         {{ $profile->familyID }}
                                     </a>
                                 </td>
                                 <td>
-                                    {{ $row->phicID }}<br>
-                                    <small class="text-green">{{ $profile->familyID }}</small>
+                                    <small class="text-red">{{ $row->phicID }}</small><br>
+                                    <small class="text-green">{{ $profile->phicID }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->nhtsID }}<br>
+                                    <small class="text-red">{{ $row->nhtsID }}</small><br>
                                     <small class="text-green">{{ $profile->nhtsID }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->relation }}<br>
+                                    <small class="text-red">{{ $row->relation }}</small><br>
                                     <small class="text-green">{{ $profile->relation }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->fname }}<br>
+                                    <small class="text-red">{{ $row->fname }}</small><br>
                                     <small class="text-green">{{ $profile->fname }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->mname }}<br>
+                                    <small class="text-red">{{ $row->mname }}</small><br>
                                     <small class="text-green">{{ $profile->mname }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->lname }}<br>
+                                    <small class="text-red">{{ $row->lname }}</small><br>
                                     <small class="text-green">{{ $profile->lname }}</small>
                                 </td>
+                                <td width="5%">
+                                    <small class="text-red">{{ $row->suffix }}</small><br>
+                                    <small class="text-green">{{ $profile->suffix }}</small>
+                                </td>
                                 <td>
-                                    {{ $row->dob }}<br>
+                                    <small class="text-red">{{ $row->dob }}</small><br>
                                     <small class="text-green">{{ $profile->dob }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->sex }}<br>
+                                    <small class="text-red">{{ $row->sex }}</small><br>
                                     <small class="text-green">{{ $profile->sex }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->sitio_id }}<br>
-                                    <small class="text-green">{{ $profile->sitio_id }}</small>
+                                    <small class="text-red">{{ \App\Sitio::find($row->sitio_id)->sitio_name }}</small><br>
+                                    <small class="text-green">{{ \App\Sitio::find($profile->sitio_id)->sitio_name }}</small>
                                 </td>
                                 <td>
-                                    {{ $row->purok_id }}<br>
-                                    <small class="text-green">{{ $profile->purok_id }}</small>
+                                    <small class="text-red">{{ \App\Purok::find($row->purok_id)->purok_name }}</small><br>
+                                    <small class="text-green">{{ \App\Purok::find($profile->purok_id)->purok_name }}</small>
                                 </td>
                                 <td>
-                                    {{ \App\Barangay::find($row->barangay_id)->description }}<br>
+                                    <small class="text-red">{{ \App\Barangay::find($row->barangay_id)->description }}</small><br>
                                     <small class="text-green">{{ \App\Barangay::find($profile->barangay_id)->description }}</small>
                                 </td>
                                 <td>
-                                    <button class="btn-xs btn-success">Approve</button><br>
-                                    <button class="btn-xs btn-danger">Disapprove</button>
+                                    @if($row->status == 'approve')
+                                        <small class="label bg-green">Approve</small>
+                                    @elseif($row->status == 'disapprove')
+                                        <small class="label bg-red">Disapprove</small>
+                                    @else
+                                        <button class="btn-xs btn-success">Approve</button><br>
+                                        <button class="btn-xs btn-danger">Disapprove</button>
+                                    @endif
+
                                 </td>
                             </tr>
 

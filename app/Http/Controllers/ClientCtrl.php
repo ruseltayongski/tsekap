@@ -37,13 +37,6 @@ class ClientCtrl extends Controller
 
     public function index(){
         $barangay = UserBrgy::select("barangay.*")->leftJoin("barangay","barangay.id","=","userbrgy.barangay_id")->where('userbrgy.user_id',Auth::user()->id)->get();
-        $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
-        $profile_pending_count = ProfilePending::where(function($q) use ($tmpBrgy){
-            foreach($tmpBrgy as $tmp){
-                $q->orwhere('barangay_id',$tmp->barangay_id);
-            }
-        })->count();
-        Session::put('profile_pending_count',$profile_pending_count);
 
         return view('client.home',[
             "barangay" => $barangay
@@ -1816,9 +1809,14 @@ class ClientCtrl extends Controller
         $tmpBrgy = UserBrgy::where('user_id',$userid)->get();
 
         $profile_pending = ProfilePending::where(function($q) use ($tmpBrgy){
-            foreach($tmpBrgy as $tmp){
-                $q->orwhere('barangay_id',$tmp->barangay_id);
+            if(count($tmpBrgy) > 0){
+                foreach($tmpBrgy as $tmp){
+                    $q->orwhere('barangay_id',$tmp->barangay_id);
+                }
+            } else {
+                $q->where('barangay_id','=','no_barangay');
             }
+
         })->paginate(10);
 
         return view('client.profile_pending',[
