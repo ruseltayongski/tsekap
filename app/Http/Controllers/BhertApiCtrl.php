@@ -305,7 +305,7 @@ class BhertApiCtrl extends Controller{
     }
 
     public function insertBhert(Request $request){
-
+        header('Access-Control-Allow-Origin: *');
         $check_profile = Profile::where('id','=',$request->profile_id)
                                 ->orWhere(function($q) use ($request){
                                     $q->where('fname','=',$request->fname);
