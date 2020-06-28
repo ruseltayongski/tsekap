@@ -317,3 +317,9 @@ Route::post("purok/select/get","PurokController@selectPurokGet");
 Route::post("purok/select/post","PurokController@selectPurokPost");
 
 
+//ISSUE
+Route::get('issue/duplicate/population','ClientCtrl@populationDuplicate');
+Route::post('issue/duplicate/population','ClientCtrl@searchPopulationDuplicate');
+Route::get('issue/head/child','ClientCtrl@headChild');
+Route::post('issue/head/child','ClientCtrl@searchHeadChild');
+

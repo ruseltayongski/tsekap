@@ -147,6 +147,7 @@ class ClientCtrl extends Controller
         }
         return $data;
     }
+
     public function population(){
         $temp = Session::get('profileKeyword');
 
@@ -235,6 +236,182 @@ class ClientCtrl extends Controller
         Session::put('profileKeyword',$data);
         //Session::put('profileKeyword',$req->keyword);
         return self::population();
+    }
+
+    public function populationDuplicate(){
+        $temp = Session::get('profileKeyword');
+
+        $keyword = $temp['keyword'];
+        $head = $temp['familyHead'];
+        $sex = $temp['sex'];
+        $barangay = $temp['barangay'];
+        $dengvaxia = $temp['dengvaxia'];
+
+        $user = Auth::user();
+        $data['profiles'] = Profile::select(DB::raw("count(profile.id) as count_duplicate"),'profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia','profile.sitio_id','profile.purok_id')
+            ->where('barangay_id','!=',0);
+
+        if($keyword || $keyword!='' || $keyword!=null){
+            $data['profiles'] =  $data['profiles']->where(function($q) use ($keyword){
+                $q->where(DB::raw('concat(profile.fname," ",profile.mname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.fname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.lname," ",profile.fname," ",profile.mname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%");
+            });
+        }
+
+        if($head || $head!='' || $head!=null)
+        {
+            $data['profiles'] = $data['profiles']->where('profile.head',$head);
+        }
+
+        if($sex || $sex!='' || $sex!=null)
+        {
+            if($sex!=='non')
+            {
+                $data['profiles'] = $data['profiles']->where('profile.sex',$sex);
+            }else{
+                $data['profiles'] = $data['profiles']->where('profile.sex','');
+            }
+        }
+
+        if($barangay || $barangay!='' || $barangay!=null)
+        {
+            $data['profiles'] = $data['profiles']->where('profile.barangay_id',$barangay);
+        }
+
+        if($dengvaxia || $dengvaxia!='' || $dengvaxia!=null){
+            $data['profiles'] = $data['profiles']->where('profile.dengvaxia',$dengvaxia);
+        }
+
+        if($user->user_priv == 0 || $user->user_priv == 4){
+            $data['profiles'] = $data['profiles']->where('profile.muncity_id',$user->muncity);
+        }
+
+        $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc');
+        if($user->user_priv == 2 || $user->user_priv == 4){ //NDP = 2 and //BHERDS = 4
+            $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+            $data['profiles'] = $data['profiles']->where(function($q) use ($tmpBrgy){
+                foreach($tmpBrgy as $tmp){
+                    $q->orwhere('profile.barangay_id',$tmp->barangay_id);
+                }
+            });
+            if(count($tmpBrgy)==0){
+                $data['profiles'] = $data['profiles']->where('profile.barangay_id',0);
+            }
+
+        }
+
+        $data['profiles'] = $data['profiles']->groupBy(DB::raw("concat(profile.fname,profile.mname,profile.lname,profile.sex,profile.dob,profile.barangay_id)"))
+            ->havingRaw(DB::raw("count(profile.id) > 1"));
+
+        $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc')
+            //->limit(10)
+            ->paginate(20);
+
+        return view('client.duplicate_population',$data);
+    }
+
+    public function searchPopulationDuplicate(Request $req){
+        if($req->viewAll){
+            Session::forget('profileKeyword');
+            return redirect()->back();
+        }
+        $data = array(
+            'keyword' => $req->keyword,
+            'familyHead' => $req->familyHead,
+            'sex' => $req->sex,
+            'barangay' => $req->barangay,
+            'dengvaxia' => $req->dengvaxia
+        );
+        Session::put('profileKeyword',$data);
+        return self::populationDuplicate();
+    }
+
+    public function headChild(){
+        $temp = Session::get('profileKeyword');
+
+        $keyword = $temp['keyword'];
+        $head = $temp['familyHead'];
+        $sex = $temp['sex'];
+        $barangay = $temp['barangay'];
+        $dengvaxia = $temp['dengvaxia'];
+
+        $user = Auth::user();
+        $data['profiles'] = Profile::select('profile.id','profile.unique_id','profile.familyID','profile.head','profile.lname','profile.mname','profile.fname','profile.suffix','profile.sex','profile.dob','profile.barangay_id','profile.dengvaxia','profile.sitio_id','profile.purok_id')
+            ->where('barangay_id','!=',0);
+
+        if($keyword || $keyword!='' || $keyword!=null){
+            $data['profiles'] =  $data['profiles']->where(function($q) use ($keyword){
+                $q->where(DB::raw('concat(profile.fname," ",profile.mname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.fname," ",profile.lname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%")
+                    ->orwhere(DB::raw('concat(profile.lname," ",profile.fname," ",profile.mname," ",profile.suffix," ",profile.familyID)'),'like',"%$keyword%");
+            });
+        }
+
+        if($head || $head!='' || $head!=null)
+        {
+            $data['profiles'] = $data['profiles']->where('profile.head',$head);
+        }
+
+        if($sex || $sex!='' || $sex!=null)
+        {
+            if($sex!=='non')
+            {
+                $data['profiles'] = $data['profiles']->where('profile.sex',$sex);
+            }else{
+                $data['profiles'] = $data['profiles']->where('profile.sex','');
+            }
+        }
+
+        if($barangay || $barangay!='' || $barangay!=null)
+        {
+            $data['profiles'] = $data['profiles']->where('profile.barangay_id',$barangay);
+        }
+
+        if($dengvaxia || $dengvaxia!='' || $dengvaxia!=null){
+            $data['profiles'] = $data['profiles']->where('profile.dengvaxia',$dengvaxia);
+        }
+
+        if($user->user_priv == 0 || $user->user_priv == 4){
+            $data['profiles'] = $data['profiles']->where('profile.muncity_id',$user->muncity);
+        }
+
+        $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc');
+        if($user->user_priv == 2 || $user->user_priv == 4){ //NDP = 2 and //BHERDS = 4
+            $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
+            $data['profiles'] = $data['profiles']->where(function($q) use ($tmpBrgy){
+                foreach($tmpBrgy as $tmp){
+                    $q->orwhere('profile.barangay_id',$tmp->barangay_id);
+                }
+            });
+            if(count($tmpBrgy)==0){
+                $data['profiles'] = $data['profiles']->where('profile.barangay_id',0);
+            }
+
+        }
+
+        $data['profiles'] = $data['profiles']->where(DB::raw("TIMESTAMPDIFF(YEAR, profile.dob, CURDATE())"),"<=",17)
+                                            ->where("profile.head","=","YES");
+        $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc')
+            ->paginate(20);
+
+        return view('client.head_child',$data);
+    }
+
+    public function searchHeadChild(Request $req){
+        if($req->viewAll){
+            Session::forget('profileKeyword');
+            return redirect()->back();
+        }
+        $data = array(
+            'keyword' => $req->keyword,
+            'familyHead' => $req->familyHead,
+            'sex' => $req->sex,
+            'barangay' => $req->barangay,
+            'dengvaxia' => $req->dengvaxia
+        );
+        Session::put('profileKeyword',$data);
+        return self::headChild();
     }
 
     public function addPopulation($id)
