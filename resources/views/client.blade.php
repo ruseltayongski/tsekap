@@ -76,15 +76,7 @@ use App\Province;
 
 
     </style>
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="{{ asset('resources/assets/js/ie-emulation-modes-warning.js') }}"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -141,10 +133,38 @@ use App\Province;
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
                         <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
+                        <li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>
+                        <li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
-                <li><a href="{{ url('purok') }}"><i class="fa fa-building"></i> Purok</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
+                        <li><a href="{{ url('purok') }}"> <i class="fa fa-building"></i> Purok</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{ url('user/profiles/pending') }}">
+                        <span class="badge bg-yellow">
+                            <?php
+                                $tmpBrgy = \App\UserBrgy::where('user_id',Auth::user()->id)->get();
+                                $profile_pending_count = \App\ProfilePending::where(function($query) use ($tmpBrgy){
+                                    if(count($tmpBrgy) > 0){
+                                        foreach($tmpBrgy as $tmp){
+                                            $query->orwhere('barangay_id','=',$tmp->barangay_id);
+                                        }
+                                    } else {
+                                        $query->where('barangay_id','=','no_barangay');
+                                    }
+                                })
+                                ->count();
+
+                                echo $profile_pending_count;
+                            ?>
+                        </span> Profile Pending
+                    </a>
+                </li>
                 <!--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>

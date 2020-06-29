@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\BhertPatient;
+use App\ProfilePending;
 use App\UserBrgy;
 use App\User;
 use Illuminate\Support\Facades\Hash;
@@ -249,8 +250,6 @@ class BhertApiCtrl extends Controller{
         $db = 'db_'.date('Y');
 
         DB::connection($db)->select($q);
-
-        return $profile->id;
     }
 
     public function saveHeadProfile(Request $req)
@@ -303,11 +302,10 @@ class BhertApiCtrl extends Controller{
         $db = 'db_'.date('Y');
         DB::connection($db)->select($q);
 
-        return $profile->id;
     }
 
     public function insertBhert(Request $request){
-
+        header('Access-Control-Allow-Origin: *');
         $check_profile = Profile::where('id','=',$request->profile_id)
                                 ->orWhere(function($q) use ($request){
                                     $q->where('fname','=',$request->fname);
@@ -321,6 +319,24 @@ class BhertApiCtrl extends Controller{
         if($check_profile){
             $message = 'The profile was exist'; //The profile is exist
             $profile_id = $check_profile->id;
+            $profile_pending = new ProfilePending();
+            $profile_pending->id = $check_profile->id;
+            $profile_pending->familyID = $request->familyID;
+            $profile_pending->phicID = $request->phicID;
+            $profile_pending->nhtsID = $request->nhtsID;
+            $profile_pending->relation = $request->relation;
+            $profile_pending->fname = $request->fname;
+            $profile_pending->mname = $request->mname;
+            $profile_pending->lname = $request->lname;
+            $profile_pending->dob = $request->dob;
+            $profile_pending->sex = $request->sex;
+            $profile_pending->sitio_id = $request->sitio_id;
+            $profile_pending->purok_id = $request->purok_id;
+            $profile_pending->barangay_id = $request->barangay_id;
+            $profile_pending->muncity_id = $request->muncity_id;
+            $profile_pending->province_id = $request->province_id;
+            $profile_pending->encoded_by = $request->userid;
+            $profile_pending->save();
         } else{
             if($request->head == 'YES'){
                 $message = 'Success(Head)';
