@@ -133,10 +133,17 @@ use App\Province;
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
                         <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
+                        <li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>
+                        <li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
-                <li><a href="{{ url('purok') }}"><i class="fa fa-building"></i> Purok</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
+                        <li><a href="{{ url('purok') }}"> <i class="fa fa-building"></i> Purok</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{{ url('user/profiles/pending') }}">
                         <span class="badge bg-yellow">
