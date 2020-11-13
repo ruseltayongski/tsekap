@@ -52,9 +52,10 @@ class ExcelCtrl extends Controller
         $muncity_id = $request->muncity_id;
         $municipality = Muncity::find($muncity_id)->description;
         $type = 'xlsx';
-        $offset = 200000;
+        /*$offset = 200000;
         $limit = 10;
-        $data = \DB::connection('mysql')->select("call GetProfileMunicipality('$province_id','$province','$muncity_id','$municipality','$offset','$limit')");
+        $data = \DB::connection('mysql')->select("call GetProfileMunicipality('$province_id','$province','$muncity_id','$municipality','$offset','$limit')");*/
+        $data = \DB::connection('mysql')->select("call GetProfileMunicipality('$province_id','$province','$muncity_id','$municipality')");
         $data = json_decode( json_encode($data), true);
 
         return Excel::create($municipality, function($excel) use ($data,$municipality) {
