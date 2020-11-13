@@ -91,6 +91,7 @@
                             @if($level == 'province')
                             <td>
                                 @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
+                                    <!--
                                     <div class="btn-group">
                                         <form action="{{ asset('ExportExcelMunicipality') }}" method="POST">
                                             <input type="hidden" value="{{ $row->id }}" name="muncity_id">
@@ -102,6 +103,8 @@
                                             </button>
                                         </form>
                                     </div>
+                                    -->
+                                        <a href="http://124.6.144.164/project/download/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>
                                 @endforeach
                             </td>
                             @endif
