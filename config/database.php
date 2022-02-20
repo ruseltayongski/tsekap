@@ -125,6 +125,34 @@ return [
             'engine' => null,
         ],
 
+        'db_2021' => [
+            'driver' => 'mysql',
+            'host' => $host,
+            'port' => '3306',
+            'database' => 'tsekap_2021',
+            'username' => $username,
+            'password' => $password,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'db_2022' => [
+            'driver' => 'mysql',
+            'host' => $host,
+            'port' => '3306',
+            'database' => 'tsekap_2021',
+            'username' => $username,
+            'password' => $password,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         'dengvaxia' => [
             'driver' => 'mysql',
             'host' => $host,

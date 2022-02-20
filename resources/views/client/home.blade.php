@@ -331,6 +331,6 @@
                 //end chart created docs
             }
         });
-        $('#notificationModal').modal('show');
+        //$('#notificationModal').modal('show');
     </script>
 @endsection
