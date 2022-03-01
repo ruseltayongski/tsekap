@@ -44,6 +44,12 @@
                         Currently using Family Planning Method but in inappropriate way thus leading to pregnancy.
                     </p>
                 </div>
+                <div class="alert alert-danger btn-unmet" data-id="4" data-dismiss="modal" style="cursor: pointer;">
+                    <p class="text-success">
+                        <strong>Option 4</strong><br />
+                        Women of reproductive age not sexually active
+                    </p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
