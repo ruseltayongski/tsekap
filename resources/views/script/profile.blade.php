@@ -122,28 +122,151 @@
             dob = "{{ date('Y-m-d') }}";
         }
         console.log(dob);
+
         $.ajax({
             url : "{{ url('user/profile/age/') }}/"+dob,
             type : 'GET',
             success: function(age){
-
-               if(age>14 && age<50){
-                    if(sex==='Female'){
-                        $('.unmetClass').removeClass('hide');
-                        $('.pregnant_lmp').removeClass('hide');
-                    }else{
-                        $('.unmetClass').addClass('hide');
-                        $('.pregnant_lmp').addClass('hide');
-                        $('#unmet').val('0');
-                        $('#unmet2').val('Not set');
-                    }
-
-               }else{
+                console.log("Age : " + age);
+               if(age>14 && age<50) {
+                   if (sex === 'Female') {
+                       $('.unmetClass').removeClass('hide');
+                       $('.menarcheClass').removeClass('hide');
+                       $('.pregnant_lmp').removeClass('hide');
+                   } else if (sex === 'Male') {
+                       $('.unmetClass').addClass('hide');
+                       $('.menarcheClass').addClass('hide');
+                       $('.pregnant_lmp').addClass('hide');
+                       $('#unmet').val('0');
+                       $('#unmet2').val('Not set');
+                   }
+               } else{
                    $('.unmetClass').addClass('hide');
+                   $('.menarcheClass').addClass('hide');
+                   $('.pregnant_lmp').addClass('hide');
                    $('#unmet').val('0');
                    $('#unmet2').val('Not set');
                }
+
+               if(age < 5) {
+                   $('.hypertensionClass, .diabetesClass').addClass('hide');
+                   $('.nutritionClass, .immuClass, .newbornClass').removeClass('hide');
+               } else {
+                   $('.hypertensionClass, .diabetesClass').removeClass('hide');
+                   $('.nutritionClass, .immuClass, .newbornClass').addClass('hide');
+               }
             }
         });
+    }
+
+    showMenarche();
+    function showMenarche() {
+        var menarche = $('input[name="menarche"]:checked').val();
+        if( menarche === "yes") {
+            $('.menarche_age').show();
+            $('.menarche_age').html("Age of Menarche: <input type='number' value='{{ $info->menarche_age }}' name='menarche_age' style='width:30%;' min='9'>");
+        } else {
+            $('.menarche_age').html('');
+            $('.menarche_age').hide();
+        }
+    }
+
+    showNewborn();
+    function showNewborn() {
+        var nb = $('input[name="newborn_screen"]:checked').val();
+        if( nb === 'yes') {
+            $('.newbornYes').show();
+            $('.newbornYes').html("Result: <input type='text' value='{{ $info->newborn_text }}' name='newborn_text' style='width:30%;'>");
+        } else {
+            $('.newbornYes').html('');
+            $('.newbornYes').hide();
+        }
+    }
+
+    $('input[name="cancer"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'yes') {
+            $('.cancer_type').show();
+            $('.cancer_type').html("Type: <input type='text' value='{{ $info->cancer_type }}' name='cancer_type' style='width:50%;'>");
+        } else {
+            $('.cancer_type').html('');
+            $('.cancer_type').hide();
+        }
+    });
+
+    $('input[name="pwd"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'yes') {
+            $('.pwd_description').show();
+            $('.pwd_description').html("Specify: <input type='text' value='{{ $info->pwd_desc }}' name='pwd_desc' style='width:60%;'>");
+        } else {
+            $('.pwd_description').html('');
+            $('.pwd_description').hide();
+        }
+    });
+
+    $('input[name="religion"]').on('click', function() {
+       var val = $(this).val();
+       if(val === "other") {
+           console.log("yow");
+           $('.other_religion').show();
+           $('.other_religion').html("<input type='text' style='width:50%;' name='other_religion' value='{{ $info->other_religion }}' class='form-control'/>");
+       } else {
+           $('.other_religion').html("");
+           $('.other_religion').hide();
+       }
+    });
+
+    $('input[name="deceased"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'yes') {
+            $('.deceased_date').show();
+            $('.deceased_date').html("Date of Death: <input type='date' value='{{ $info->deceased_date }}' name='deceased_date' style='width:30%;' min='1910-05-11'>");
+        } else {
+            $('.deceased_date').html('');
+            $('.deceased_date').hide();
+        }
+    });
+
+    populateNutriStat();
+    function populateNutriStat() {
+        @foreach($nutri_stat as $nutri)
+            var n = <?php echo $nutri?>;
+            if(n.nutri === 'Deworming')
+                $('.nutri_deworm').prop('checked', true);
+            if(n.nutri === 'Vitamin A Supplement')
+                $('.nutri_vitamina').prop('checked', true);
+        @endforeach
+    }
+
+    populateImmunization();
+    function populateImmunization() {
+        @foreach($immu_stat as $i)
+            var im = <?php echo $i?>;
+            if(im.immu === 'BCG')
+                $('.immu_bcg').prop('checked', true);
+            if(im.immu === 'HEP B')
+                $('.immu_hepb').prop('checked', true);
+            if(im.immu === 'Penta 1')
+                $('.immu_penta1').prop('checked', true);
+            if(im.immu === 'Penta 2')
+                $('.immu_penta2').prop('checked', true);
+            if(im.immu === 'Penta 3')
+                $('.immu_penta3').prop('checked', true);
+            if(im.immu === 'OPV 1')
+                $('.immu_opv1').prop('checked', true);
+            if(im.immu === 'OPV 2')
+                $('.immu_opv2').prop('checked', true);
+            if(im.immu === 'OPV 3')
+                $('.immu_opv3').prop('checked', true);
+            if(im.immu === 'IPV 1')
+                $('.immu_ipv1').prop('checked', true);
+            if(im.immu === 'IPV 2')
+                $('.immu_ipv2').prop('checked', true);
+            if(im.immu === 'MMR 1')
+                $('.immu_mmr1').prop('checked', true);
+            if(im.immu === 'MMR 2')
+                $('.immu_mmr2').prop('checked', true);
+        @endforeach
     }
 </script>
