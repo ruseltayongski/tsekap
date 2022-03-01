@@ -295,7 +295,27 @@ class ApiCtrlv21 extends Controller
                   hypertension,
                   diabetic,
                   pwd,
-                  pregnant
+                  pwd_desc,
+                  pregnant,
+                  birth_place,
+                  civil_status,
+                  religion,
+                  other_religion,
+                  contact,
+                  height,
+                  weight,
+                  cancer,
+                  cancer_type,
+                  mental_med,
+                  tbdots_med,
+                  cvd_med,
+                  covid_status,
+                  menarche,
+                  menarche_age,
+                  newborn_screen,
+                  newborn_text,
+                  deceased,
+                  deceased_date
                   )
                 VALUES(
                   '".mysqli_real_escape_string($con,$data['unique_id'])."',
@@ -323,7 +343,27 @@ class ApiCtrlv21 extends Controller
                   '".$data['hypertension']."',
                   '".$data['diabetic']."',
                   '".$data['pwd']."',
+                  '".$data['pwd_desc']."',
                   '".$data['pregnant']."'
+                  '".$data['birth_place']."',
+                  '".$data['civil_status']."',
+                  '".$data['religion']."',
+                  '".$data['other_religion']."',
+                  '".$data['contact']."',
+                  '".$data['height']."',
+                  '".$data['weight']."',
+                  '".$data['cancer']."',
+                  '".$data['cancer_type']."',
+                  '".$data['mental_med']."',
+                  '".$data['tbdots_med']."',
+                  '".$data['cvd_med']."',
+                  '".$data['covid_status']."',
+                  '".$data['menarche']."',
+                  '".$data['menarche_age']."',
+                  '".$data['newborn_screen']."',
+                  '".$data['newborn_text']."',
+                  '".$data['deceased']."',
+                  '".$data['deceased_date']."'
                   )
             ON DUPLICATE KEY UPDATE
                 familyID = '".mysqli_real_escape_string($con,$data['familyID'])."',
@@ -345,10 +385,50 @@ class ApiCtrlv21 extends Controller
                 '".$data['hypertension']."',
                 '".$data['diabetic']."',
                 '".$data['pwd']."',
-                '".$data['pregnant']."'
+                '".$data['pwd_desc']."',
+                '".$data['pregnant']."',
+                '".$data['birth_place']."',
+                '".$data['civil_status']."',
+                '".$data['religion']."',
+                '".$data['other_religion']."',
+                '".$data['contact']."',
+                '".$data['height']."',
+                '".$data['weight']."',
+                '".$data['cancer']."',
+                '".$data['cancer_type']."',
+                '".$data['mental_med']."',
+                '".$data['tbdots_med']."',
+                '".$data['cvd_med']."',
+                '".$data['covid_status']."',
+                '".$data['menarche']."',
+                '".$data['menarche_age']."',
+                '".$data['newborn_screen']."',
+                '".$data['newborn_text']."',
+                '".$data['deceased']."',
+                '".$data['deceased_date']."'
             ";
 
             DB::select($q);
+
+            $profile_id = $data['id'];
+            $nutri_del = NutritionStatus::where('profile_id', $profile_id)->delete();
+            $immu_del = Immunization::where('profile_id', $profile_id)->delete();
+
+            $nutri_stat = explode(',',$data['nutri_stat']);
+            foreach($nutri_stat as $nutri) {
+                $nstat = new NutritionStatus();
+                $nstat->profile_id = $profile_id;
+                $nstat->description = $nutri;
+                $nstat->save();
+            }
+
+            $immu_stat = explode(',',$data['immu_stat']);
+            foreach($immu_stat as $immu) {
+                $i = new Immunization();
+                $i->profile_id = $profile_id;
+                $i->description = $immu;
+                $i->save();
+            }
 
             $q = "INSERT IGNORE profile_device(profile_id,device) values(
                 '".mysqli_real_escape_string($con,$data['unique_id'])."',
