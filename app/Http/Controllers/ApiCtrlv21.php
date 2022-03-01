@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
+use App\Immunization;
 use App\Muncity;
+use App\NutritionStatus;
 use App\Profile;
 use App\ServiceGroup;
 use App\User;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use App\Dengvaxia;
 use App\Http\Controllers\AphroditeConnCtrl as aphrodite_conn;
+use function MongoDB\BSON\toJSON;
 
 
 class ApiCtrlv21 extends Controller
@@ -124,12 +127,82 @@ class ApiCtrlv21 extends Controller
             }
         }
 
-
-        $data = Profile::where('barangay_id',$brgy_id)
-            ->orderBy('lname','asc')
+        $profile = Profile::where('barangay_id',$brgy_id)
+            ->orderBy('profile.lname','asc')
             ->skip($offset)
             ->take($perPage)
             ->get();
+
+        $data = array();
+
+        foreach($profile as $p) {
+            $immu = Immunization::select('description')->where('profile_id', $p->id)->get();
+            $nutri = NutritionStatus::select('description')->where('profile_id', $p->id)->get();
+            $immu_data = $nutri_data = "";
+            $immu_count = $nutri_count = 0;
+            foreach($immu as $i) {
+                $immu_count++;
+                $immu_data .= $immu_count == 1 ? $i->description : ",".$i->description;
+            }
+            foreach($nutri as $n) {
+                $nutri_count++;
+                $nutri_data .= $nutri_count == 1 ? $n->description : ",".$n->description;
+            }
+            $res = array (
+                'id' => $p->id,
+                'unique_id' => $p->unique_id,
+                'familyID' => $p->familyID,
+                'phicID' => $p->phicID,
+                'nhtsID' => $p->nhtsID,
+                'head' => $p->head,
+                'relation' => $p->relation,
+                'fname' => $p->fname,
+                'mname' => $p->mname,
+                'lname' => $p->lname,
+                'suffix' => $p->suffix,
+                'dob' => $p->dob,
+                'sex' => $p->sex,
+                'barangay_id' => $p->barangay_id,
+                'muncity_id' => $p->muncity_id,
+                'province_id' => $p->province_id,
+                'income' => $p->income,
+                'unmet' => $p->unmet,
+                'water' => $p->water,
+                'toilet' => $p->toilet,
+                'education' => $p->education,
+                'hypertension' => $p->hypertension,
+                'diabetic' => $p->diabetic,
+                'pwd' => $p->pwd,
+                'pwd_desc' => $p->pwd_desc,
+                'pregnant' => $p->pregnant,
+                'dengvaxia' => $p->dengvaxia,
+                'sitio_id' => $p->sitio_id,
+                'purok_id' => $p->purok_id,
+                'birth_place' => $p->birth_place,
+                'civil_status' => $p->civil_status,
+                'religion' => $p->religion,
+                'other_religion' => $p->other_religion,
+                'contact' => $p->contact,
+                'height' => $p->height,
+                'weight' => $p->weight,
+                'cancer' => $p->cancer,
+                'cancer_type' => $p->cancer_type,
+                'mental_med' => $p->mental_med,
+                'tbdots_med' => $p->tbdots_med,
+                'cvd_med' => $p->cvd_med,
+                'covid_status' => $p->covid_status,
+                'menarche' => $p->menarche,
+                'menarche_age' => $p->menarche_age,
+                'newborn_screen' => $p->newborn_screen,
+                'newborn_text' => $p->newborn_text,
+                'deceased' => $p->deceased,
+                'deceased_date' => $p->deceased_date,
+                'immu_stat' => $immu_data,
+                'nutri_stat' => $nutri_data
+            );
+            array_push($data, $res);
+        }
+
         return array(
             'data' => $data
         );
@@ -466,6 +539,4 @@ class ApiCtrlv21 extends Controller
         $data = Dengvaxia::find($id);
         return $data;
     }
-
-
 }

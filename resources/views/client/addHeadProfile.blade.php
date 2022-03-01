@@ -89,8 +89,16 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         </td>
                     </tr>
                     <tr class="has-group">
+                        <td>Contact Number :</td>
+                        <td><input type="text" name="contact" class="form-control" /> </td>
+                    </tr>
+                    <tr class="has-group">
                         <td>Birth Date :</td>
-                        <td><input type="date" name="dob" class="form-control dob" required /> </td>
+                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" required /> </td>
+                    </tr>
+                    <tr class="has-group">
+                        <td>Birth Place :</td>
+                        <td><input type="text" name="birth_place" class="form-control birth_place" required /> </td>
                     </tr>
                     <tr>
                         <td>Sex :</td>
@@ -99,6 +107,40 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                             &nbsp;&nbsp;&nbsp;<br />
                             <label style="cursor: pointer;"><input onclick="showUnmet()" type="radio" name="sex" class="sex" value="Female" required> Female</label>
                             <span class="span"></span>
+                        </td>
+                    </tr>
+                    <tr class="has-group">
+                        <td>Height <i>(cm)</i>:</td>
+                        <td>
+                            <span><input type="number" name="height" class="form-control" min="0" style="width: 25%"/></span>
+                        </td>
+                    </tr>
+                    <tr class="has-group">
+                        <td>Weight <i>(kg)</i>:</td>
+                        <td>
+                            <span><input type="number" name="weight" class="form-control" min="0" style="width: 25%"/></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Civil Status :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Religion Status :<br><br><br><br></td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Christian" > Christian</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="INC" > INC</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Islam" > Islam</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
+                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
+                            <span class="other_religion"></span>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -128,18 +170,6 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="7">At least 157,800</option>
                                 <option value="8">Unable to provide</option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr class="unmet hide">
-                        <td>Unmet Need :</td>
-                        <td>
-                            <input type="hidden" name="unmet" id="unmet" />
-                            <div class="form-inline">
-                                <input type="text" id="unmet2" class="form-control" readonly value="Not set" data-toggle="modal" data-target="#unmetNeed" />
-                                <button type="button" style="margin:5px 0;" class="btn btn-info" data-toggle="modal" data-target="#unmetNeed">Yes</button>
-                                <button type="button" style="margin:5px 0;" class="btn btn-warning" onclick="unmet_need()"> No </button>
-                            </div>
-
                         </td>
                     </tr>
                     <tr>
@@ -182,6 +212,14 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="unable_provide">Unable to provide</option>
                             </select>
                         </td>
+                    </tr
+                    <tr>
+                        <td>Diagnosed with Cancer :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="cancer" class="cancer" value="yes" style="display:inline;"> Yes </label>
+                            &emsp;<span class="cancer_type"></span> <br />
+                            <label style="cursor: pointer;"><input type="radio" name="cancer" class="cancer" value="no"> No </label>
+                        </td>
                     </tr>
                     <tr>
                         <td>Hypertension :</td>
@@ -200,16 +238,71 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         </td>
                     </tr>
                     <tr>
+                        <td>Mental Health Medication :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental_med" value="No Medication Avail" > No Medication Avail</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TBDOTS Availment :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tbdots_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tbdots_med" value="No Medication Avail" > No Medication Avail</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CVD Medication :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
+                            &nbsp;&nbsp;&nbsp;<br />
+                            <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd_med" value="No Medication Avail" > No Medication Avail</label>
+                        </td>
+                    </tr>
+                    <tr class="has-group">
+                        <td>Covid Status :</td>
+                        <td><input type="text" name="covid_status" class="form-control"/> </td>
+                    </tr>
+                    <tr class="unmetClass hide">
+                        <td>Unmet Need :</td>
+                        <td>
+                            <input type="hidden" name="unmet" id="unmet" />
+                            <div class="form-inline">
+                                <input type="text" id="unmet2" class="form-control" readonly value="Not set" data-toggle="modal" data-target="#unmetNeed" />
+                                <button type="button" style="margin:5px 0;" class="btn btn-info" data-toggle="modal" data-target="#unmetNeed">Yes</button>
+                                <button type="button" style="margin:5px 0;" class="btn btn-warning" onclick="unmet_need()"> No </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="menarcheClass hide">
+                        <td>Menarche :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="yes" style="display:inline;"> Yes</label>
+                            &emsp;<span class="menarche_age"></span><br/>
+                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="no"> No</label>&emsp;
+                        </td>
+                    </tr>
+                    <tr>
                         <td>PWD :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" name="pwd" class="pwd" value="yes" style="display:inline;"> Yes</label>
-                            &nbsp;&nbsp;&nbsp;<br />
+                            &emsp;<span class="pwd_description"></span><br />
                             <label style="cursor: pointer;"><input type="radio" name="pwd" class="pwd" value="no" > No</label>
                         </td>
                     </tr>
-                    <tr class="has-group hide pregnant_lmp">
+                    <tr class="has-group pregnant_lmp hide">
                         <td>Pregnant Date LMP:</td>
                         <td><input type="date" name="pregnant" class="form-control" /> </td>
+                    </tr>
+                    <tr>
+                        <td><span class="text-red">Deceased : </span></td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="yes" style="display:inline;"> Yes</label>
+                            &emsp;<span class="deceased_date"></span><br />
+                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="no" > No</label>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -244,22 +337,46 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
         </script>
     @endif
 
+
     <script>
         showUnmet();
-        function showUnmet()
-        {
+        function showUnmet() {
             var sex = $('input[name="sex"]:checked').val();
             console.log(sex);
-            if(sex==='Female')
-            {
-                $('.unmet').removeClass('hide');
+            if (sex === 'Female') {
+                $('.unmetClass').removeClass('hide');
+                $('.menarcheClass').removeClass('hide');
                 $('.pregnant_lmp').removeClass('hide');
-            }else{
-                $('.unmet').addClass('hide');
+            } else {
+                $('.unmetClass').addClass('hide');
+                $('.menarcheClass').addClass('hide');
                 $('.pregnant_lmp').addClass('hide');
                 $('#unmet').val('0');
                 $('#unmet2').val('Not set');
             }
         }
+
+        showMenarche();
+        function showMenarche() {
+            var menarche = $('input[name="menarche"]:checked').val();
+            if( menarche === "yes") {
+                $('.menarche_age').show();
+                $('.menarche_age').html("Age of Menarche: <input type='number' value='{{ $info->menarche_age }}' name='menarche_age' style='width:30%;' min='9'>");
+            } else {
+                $('.menarche_age').html('');
+                $('.menarche_age').hide();
+            }
+        }
+
+        $('input[name="religion"]').on('click', function() {
+            var val = $(this).val();
+            if(val === "other") {
+                $('.other_religion').show();
+                $('.other_religion').html("<input type='text' style='width:50%;' name='other_religion' value='{{ $info->other_religion }}' class='form-control'/>");
+            } else {
+                $('.other_religion').html("");
+                $('.other_religion').hide();
+            }
+        });
     </script>
 @endsection

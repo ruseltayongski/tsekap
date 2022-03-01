@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Barangay;
 use App\BhertPatient;
+use App\Immunization;
 use App\IntegrationPatient;
+use App\Medications;
+use App\NutritionStatus;
 use App\Profile;
 use App\ProfilePending;
 use App\Service;
@@ -430,10 +433,11 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pregnant)
+        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date)
                 VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pregnant')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pwd_desc','$req->pregnant',
+                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date')
             ON DUPLICATE KEY UPDATE
                 familyID = '$req->familyID',
                 sex = '$req->sex',
@@ -442,6 +446,22 @@ class ClientCtrl extends Controller
                 unmet = '$req->unmet'
             ";
         DB::select($q);
+
+        $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+
+        foreach($req->nutri_stat as $nutri) {
+            $nstat = new NutritionStatus();
+            $nstat->profile_id = $profile_id;
+            $nstat->description = $nutri;
+            $nstat->save();
+        }
+
+        foreach($req->immunization as $immu) {
+            $i = new Immunization();
+            $i->profile_id = $profile_id;
+            $i->description = $immu;
+            $i->save();
+        }
 
         $q = "INSERT IGNORE profile_device(profile_id,device) values(
                 '$unique_id',
@@ -477,13 +497,30 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pregnant)
+        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date)
                 VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pregnant')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pwd_desc', '$req->pregnant', 
+                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date')
             ";
         //echo $q;
-        DB::select($q);
+        DB::select($q); //saving profile
+
+        $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+
+        foreach($req->nutri_stat as $nutri) {
+            $nstat = new NutritionStatus();
+            $nstat->profile_id = $profile_id;
+            $nstat->description = $nutri;
+            $nstat->save();
+        }
+
+        foreach($req->immunization as $immu) {
+            $i = new Immunization();
+            $i->profile_id = $profile_id;
+            $i->description = $immu;
+            $i->save();
+        }
 
         $q = "INSERT IGNORE profile_device(profile_id,device) values(
                 '$unique_id',
@@ -510,12 +547,19 @@ class ClientCtrl extends Controller
             'id' => $id
         );
         Session::put('toDelete',$delete);
-        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pregnant')
+        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pwd_desc','pregnant','birth_place','civil_status','religion','other_religion','contact','height','weight','cancer','cancer_type','mental_med','tbdots_med','cvd_med','covid_status','menarche','menarche_age','newborn_screen','newborn_text','deceased','deceased_date')
             ->where('id',$id)
             ->first();
         Session::put('profile_id',$id);
 
-        return view('client.updateProfile',['info' => $info ]);
+        $nutri_stat = NutritionStatus::select('description as nutri')->where('profile_id', $id)->get();
+        $immu_stat = Immunization::select('description as immu')->where('profile_id', $id)->get();
+
+        return view('client.updateProfile',[
+            'info' => $info,
+            'nutri_stat' => $nutri_stat,
+            'immu_stat' => $immu_stat
+            ]);
     }
 
     public function updatePopulation(Request $req)
@@ -549,7 +593,27 @@ class ClientCtrl extends Controller
                 'hypertension' => $req->hypertension,
                 'diabetic' => $req->diabetic,
                 'pwd' => $req->pwd,
-                'pregnant' => $req->pregnant
+                'pwd_desc' => $req->pwd_desc,
+                'pregnant' => $req->pregnant,
+                'birth_place' => $req->birth_place,
+                'civil_status' => $req->civil_status,
+                'religion' => $req->religion,
+                'other_religion' => $req->other_religion,
+                'contact' => $req->contact,
+                'height' => $req->height,
+                'weight' => $req->weight,
+                'cancer' => $req->cancer,
+                'cancer_type' => $req->cancer_type,
+                'mental_med' => $req->mental_med,
+                'tbdots_med' => $req->tbdots_med,
+                'cvd_med' => $req->cvd_med,
+                'covid_status' => $req->covid_status,
+                'menarche' => $req->menarche,
+                'menarche_age' => $req->menarche_age,
+                'newborn_screen' => $req->newborn_screen,
+                'newborn_text' => $req->newborn_text,
+                'deceased' => $req->deceased,
+                'deceased_date' => $req->deceased_date
             );
             if($relation=='Head')
             {
@@ -559,6 +623,25 @@ class ClientCtrl extends Controller
             }
             //$unique_id =$fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$muncity_id;
             $unique_id = $req->unique_id;
+
+            $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+            $nutri_stat = NutritionStatus::where('profile_id', $profile_id)->delete();
+            $immu_stat = Immunization::where('profile_id', $profile_id)->delete();
+
+            foreach($req->nutri_stat as $nutri) {
+                $nstat = new NutritionStatus();
+                $nstat->profile_id = $profile_id;
+                $nstat->description = $nutri;
+                $nstat->save();
+            }
+
+            foreach($req->immunization as $immu) {
+                $i = new Immunization();
+                $i->profile_id = $profile_id;
+                $i->description = $immu;
+                $i->save();
+            }
+
             $validate = self::validatePopulation($unique_id,$req->currentID);
             if(!$validate){
                 $data = Profile::where('id',$req->currentID);
