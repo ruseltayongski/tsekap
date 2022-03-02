@@ -257,6 +257,7 @@ class ApiCtrlv21 extends Controller
         try{
             $con=aphrodite_conn::AphroditeConn();
             $user_id = $req->user_id;
+
             if($user_id){
                 $check = User::find($user_id);
                 if(!$check){
@@ -410,7 +411,7 @@ class ApiCtrlv21 extends Controller
 
             DB::select($q);
 
-            $profile_id = $data['id'];
+            $profile_id = $data['user_id'];
             $nutri_del = NutritionStatus::where('profile_id', $profile_id)->delete();
             $immu_del = Immunization::where('profile_id', $profile_id)->delete();
 

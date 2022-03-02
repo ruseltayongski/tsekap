@@ -323,4 +323,4 @@ Route::post('issue/duplicate/population','ClientCtrl@searchPopulationDuplicate')
 Route::get('issue/head/child','ClientCtrl@headChild');
 Route::post('issue/head/child','ClientCtrl@searchHeadChild');
 
-Route::post('api/getProfile','ApiCtrlv21@getProfiles');
+
