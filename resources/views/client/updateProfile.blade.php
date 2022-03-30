@@ -409,14 +409,14 @@ $brgy = $brgy->orderBy('description','asc')
                                 <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
                                     <i class="fa fa-arrow-left"></i> Back
                                 </a>
-                                @if(in_array(Date("F"), array("April","August","December","June"), true))
+{{--                                @if(in_array(Date("F"), array("April","August","December","June"), true))--}}
                                 <button type="submit" class="btn btn-success btn-sm" name="update" value="1">
                                     <i class="fa fa-pencil"></i> Update
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                     <i class="fa fa-trash"></i> Delete
                                 </button>
-                                @endif
+                                {{--@endif--}}
                                 <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-user-md"></i> Proceed to dengvaxia
                                 </a>
