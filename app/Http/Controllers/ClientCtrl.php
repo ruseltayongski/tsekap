@@ -497,11 +497,11 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date)
+        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date,sexually_active)
                 VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
                 '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pwd_desc', '$req->pregnant', 
-                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date')
+                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date', '$req->sexually_active')
             ";
         //echo $q;
         DB::select($q); //saving profile
@@ -547,7 +547,7 @@ class ClientCtrl extends Controller
             'id' => $id
         );
         Session::put('toDelete',$delete);
-        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pwd_desc','pregnant','birth_place','civil_status','religion','other_religion','contact','height','weight','cancer','cancer_type','mental_med','tbdots_med','cvd_med','covid_status','menarche','menarche_age','newborn_screen','newborn_text','deceased','deceased_date')
+        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pwd_desc','pregnant','birth_place','civil_status','religion','other_religion','contact','height','weight','cancer','cancer_type','mental_med','tbdots_med','cvd_med','covid_status','menarche','menarche_age','newborn_screen','newborn_text','deceased','deceased_date','sexually_active')
             ->where('id',$id)
             ->first();
         Session::put('profile_id',$id);
@@ -613,10 +613,11 @@ class ClientCtrl extends Controller
                 'newborn_screen' => $req->newborn_screen,
                 'newborn_text' => $req->newborn_text,
                 'deceased' => $req->deceased,
-                'deceased_date' => $req->deceased_date
+                'deceased_date' => $req->deceased_date,
             );
             if($relation=='Head')
             {
+                $update['sexually_active'] = $req->sexually_active;
                 $update['income'] = $req->income;
                 $update['water'] = $req->water;
                 $update['toilet'] = $req->toilet;

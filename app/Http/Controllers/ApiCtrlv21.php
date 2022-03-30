@@ -197,6 +197,7 @@ class ApiCtrlv21 extends Controller
                 'newborn_text' => (isset($p->newborn_text)) ? $p->newborn_text : '',
                 'deceased' => (isset($p->deceased)) ? $p->deceased : '',
                 'deceased_date' => (isset($p->deceased_date)) ? $p->deceased_date : '',
+                'sexually_active' => (isset($p->sexually_active)) ? $p->sexually_active : '',
                 'immu_stat' => $immu_data,
                 'nutri_stat' => $nutri_data
             );

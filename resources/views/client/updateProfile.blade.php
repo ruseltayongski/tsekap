@@ -320,6 +320,22 @@ $brgy = $brgy->orderBy('description','asc')
                         <td>Covid Status :</td>
                         <td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>
                     </tr>
+                    <tr class="menarcheClass hide">
+                        <td>Menarche :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input <?php if($info->menarche=='yes') echo 'checked'; ?> onclick="showMenarche()" type="radio" name="menarche" class="menarche_yes" value="yes" style="display:inline;"> Yes</label>
+                            &emsp;<span class="menarche_age"><?php if($info->menarche=='yes') echo"Age of Menarche: <input type='number' value='$info->menarche_age' name='menarche_age' style='width:30%;' min='9'>";?></span><br/>
+                            <label style="cursor: pointer;"><input <?php if($info->menarche=='no') echo 'checked'; ?> onclick="showMenarche()" type="radio" name="menarche" class="menarche_no" value="no"> No</label>&emsp;
+
+                        </td>
+                    </tr>
+                    <tr class="head">
+                        <td>Sexually Active :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='yes') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='no') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="no"> No </label>
+                        </td>
+                    </tr>
                     <tr class="has-group unmetClass {{ $class }}">
                         <td>Unmet Need :</td>
                         <td>
@@ -335,13 +351,12 @@ $brgy = $brgy->orderBy('description','asc')
 
                         </td>
                     </tr>
-                    <tr class="menarcheClass hide">
-                        <td>Menarche :</td>
+                    <tr>
+                        <td>PWD :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input <?php if($info->menarche=='yes') echo 'checked'; ?> onclick="showMenarche()" type="radio" name="menarche" class="menarche_yes" value="yes" style="display:inline;"> Yes</label>
-                            &emsp;<span class="menarche_age"><?php if($info->menarche=='yes') echo"Age of Menarche: <input type='number' value='$info->menarche_age' name='menarche_age' style='width:30%;' min='9'>";?></span><br/>
-                            <label style="cursor: pointer;"><input <?php if($info->menarche=='no') echo 'checked'; ?> onclick="showMenarche()" type="radio" name="menarche" class="menarche_no" value="no"> No</label>&emsp;
-
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=="yes") echo "checked"; ?> name="pwd" class="pwd" value="yes" style="display:inline;"> Yes</label>
+                            &emsp;<span class="pwd_description"><?php if($info->pwd=='yes') echo"Specify: <input type='text' value='$info->pwd_desc' name='pwd_desc' style='width:60%;'>";?></span><br />
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=="no") echo "checked"; ?> name="pwd" class="pwd" value="no" > No</label>
                         </td>
                     </tr>
                     <tr class="nutritionClass hide">
@@ -374,14 +389,6 @@ $brgy = $brgy->orderBy('description','asc')
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->newborn_screen=='yes') echo 'checked'; ?> onclick="showNewborn()" name="newborn_screen" value="yes" style="display:inline;"> Yes</label>
                             &emsp; <span class="newbornYes"><?php if($info->newborn_screen=='yes') echo"Result: <input type='text' value='$info->newborn_text' name='newborn_text' style='width:50%;'>";?></span> <br />
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->newborn_screen=='no') echo 'checked'; ?> onclick="showNewborn()" name="newborn_screen" value="no" > No</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>PWD :</td>
-                        <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=="yes") echo "checked"; ?> name="pwd" class="pwd" value="yes" style="display:inline;"> Yes</label>
-                            &emsp;<span class="pwd_description"><?php if($info->pwd=='yes') echo"Specify: <input type='text' value='$info->pwd_desc' name='pwd_desc' style='width:60%;'>";?></span><br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->pwd=="no") echo "checked"; ?> name="pwd" class="pwd" value="no" > No</label>
                         </td>
                     </tr>
                     <tr class="has-group hide pregnant_lmp">
