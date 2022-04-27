@@ -212,7 +212,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="unable_provide">Unable to provide</option>
                             </select>
                         </td>
-                    </tr
+                    </tr>
                     <tr>
                         <td>Diagnosed with Cancer :</td>
                         <td class="has-group">
@@ -265,6 +265,21 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         <td>Covid Status :</td>
                         <td><input type="text" name="covid_status" class="form-control"/> </td>
                     </tr>
+                    <tr class="menarcheClass hide">
+                        <td>Menarche :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="yes" style="display:inline;"> Yes</label>
+                            &emsp;<span class="menarche_age"></span><br/>
+                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="no"> No</label>&emsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sexually Active :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="no"> No </label>
+                        </td>
+                    </tr>
                     <tr class="unmetClass hide">
                         <td>Unmet Need :</td>
                         <td>
@@ -274,14 +289,6 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <button type="button" style="margin:5px 0;" class="btn btn-info" data-toggle="modal" data-target="#unmetNeed">Yes</button>
                                 <button type="button" style="margin:5px 0;" class="btn btn-warning" onclick="unmet_need()"> No </button>
                             </div>
-                        </td>
-                    </tr>
-                    <tr class="menarcheClass hide">
-                        <td>Menarche :</td>
-                        <td class="has-group">
-                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="yes" style="display:inline;"> Yes</label>
-                            &emsp;<span class="menarche_age"></span><br/>
-                            <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="no"> No</label>&emsp;
                         </td>
                     </tr>
                     <tr>
