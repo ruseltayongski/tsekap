@@ -6,14 +6,32 @@
     $totalProfilePer = 0;
     $totalValidPer = 0;
     $c = 0;
+    $year_selected = '';
 ?>
 @extends('app')
 @section('content')
     @include('report.sidebar')
     <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
-            <h3 class="page-header">Status Report</h3>
-            <div class="clearfix"></div>
+            <div class="col-md-8">
+                <h4><b>STATUS REPORT</b></h4>
+            </div>
+            <div class="col-md-2 pull-right">
+                <span>
+                    <b>Year: &nbsp;&nbsp;</b>
+                    <select class="select2 pull-right" id="select_year">
+                        <?php
+                        $cur_year = \Carbon\Carbon::now()->format('Y');
+                        echo "<option value='' selected>Select...</option>";
+                        while($cur_year >= '2017') {
+                            echo "<option>".$cur_year--."</option>";
+                        }
+                        ?>
+                    </select>
+                </span>
+            </div>
+
+            <div class="clearfix" style="margin-bottom: 5px"></div>
             <div class="table-responsive">
                 <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
                     <tr>
@@ -91,19 +109,32 @@
                             @if($level == 'province')
                             <td>
                                 @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
-                                    <!--
-                                    <div class="btn-group">
-                                        <form action="{{ asset('ExportExcelMunicipality') }}" method="POST">
-                                            <input type="hidden" value="{{ $row->id }}" name="muncity_id">
-                                            <input type="hidden" value="{{ $row->province_id }}" name="province_id">
-                                            <input type="hidden" value="{{ $s->description }}" name="province">
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn-sm btn-primary">
-                                                <i class="fa fa-download"></i> {{ $row->description }}
-                                            </button>
-                                        </form>
-                                    </div>
-                                    -->
+
+                                    {{--<div class="btn-group">--}}
+                                        {{--<form action="{{ asset('ExportExcelMunicipality') }}" method="POST">--}}
+                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
+                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
+                                            {{--<input type="hidden" value="{{ $s->description }}" name="province">--}}
+                                            {{--{{ csrf_field() }}--}}
+                                            {{--<button type="submit" class="btn-sm btn-primary">--}}
+                                                {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
+                                            {{--</button>--}}
+                                        {{--</form>--}}
+                                    {{--</div>--}}
+
+                                    {{--<div class="btn-group">--}}
+                                        {{--<form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">--}}
+                                            {{--{{ csrf_field() }}--}}
+                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
+                                            {{--<input type="hidden" value="{{ $s->description }}" name="province_desc">--}}
+                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
+                                            {{--<input type="hidden" value="{{ $row->description }}" name="muncity_desc">--}}
+                                            {{--<input type="hidden" value="" name="year_selected" id="year_selected">--}}
+                                            {{--<button class="btn-primary btn">--}}
+                                                {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
+                                            {{--</button>--}}
+                                        {{--</form>--}}
+                                    {{--</div>--}}
                                         <a href="{{ str_replace('tsekap/vii','project',asset('download')) }}/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>
                                 @endforeach
                             </td>
@@ -178,5 +209,12 @@
             });
         }
     }
+
+    $(".select2").select2({ width: '100%' });
+
+    $('#select_year').on('change', function() {
+       $('#year_selected').val($(this).val());
+    });
+
 </script>
 @endsection

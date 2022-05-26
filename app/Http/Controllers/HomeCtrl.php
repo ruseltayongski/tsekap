@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Muncity;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,48 @@ class HomeCtrl extends Controller
             );
         }
         return false;
+    }
+
+    public function countPerMuncity($id) {
+        $target = 0;
+        $countPopulation = 0;
+        $profilePercentage = 0;
+
+        if(!$id)
+            $id = Session::get('homeMuncity');
+
+        if($id) {
+            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$id)->first()->count;
+            $countPopulation = Profile::where('muncity_id', $id)->count();
+            $profilePercentage = ($countPopulation / $target) * 100;
+        }
+        Session::put('homeMuncity', $id);
+        Session::put('homeBarangay', '');
+
+        return array(
+            'countPopulation' => number_format($countPopulation),
+            'profilePercentage' => number_format($profilePercentage,1),
+        );
+    }
+
+    public function countPerBarangay($id) {
+        $target = 0;
+        $countPopulation = 0;
+        $profilePercentage = 0;
+
+        if(!$id)
+            $id = Session::get('homeBarangay');
+
+        if($id) {
+            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('id',$id)->first()->count;
+            $countPopulation = Profile::where('barangay_id', $id)->count();
+            $profilePercentage = ($countPopulation / $target) * 100;
+            Session::put('homeBarangay',$id);
+        }
+        return array(
+            'countPopulation' => number_format($countPopulation),
+            'profilePercentage' => number_format($profilePercentage,1),
+        );
     }
 
     public function counts()

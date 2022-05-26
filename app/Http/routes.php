@@ -9,6 +9,8 @@ Route::get('/', 'HomeCtrl@index');
 Route::get('home', 'HomeCtrl@index');
 Route::get('home/chart','HomeCtrl@chart');
 Route::get('home/count/{type}','HomeCtrl@count');
+Route::get('home/count/muncity/{id}', 'HomeCtrl@countPerMuncity');
+Route::get('home/count/barangay/{id}', 'HomeCtrl@countPerBarangay');
 
 Route::get('population', 'PopulationCtrl@index');
 Route::post('population', 'PopulationCtrl@searchPopulation');
@@ -55,9 +57,9 @@ Route::get('change/password',function(){
 //DOWNLOAD
 Route::get('download','DownloadCtrl@index');
 Route::post('download','DownloadCtrl@index');
-Route::get('download/{id}','DownloadCtrl@generateDownload');
+Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
 Route::get('download/user/{id}','DownloadCtrl@generateUserDownload');
-
+//Route::post('generatedownload', 'DownloadCtrl@generateDownload');
 //END DOWNLOAD
 
 //parameters
@@ -89,6 +91,7 @@ Route::post('feedback/status','FeedbackCtrl@status');
 //client
 Route::get('user/home','ClientCtrl@index');
 Route::get('user/home/chart','ClientCtrl@chart');
+Route::get('user/count/barangay/{id}','ClientCtrl@countPerBarangay');
 
 //count
 Route::get('user/home/count','ClientCtrl@count');
@@ -323,4 +326,16 @@ Route::post('issue/duplicate/population','ClientCtrl@searchPopulationDuplicate')
 Route::get('issue/head/child','ClientCtrl@headChild');
 Route::post('issue/head/child','ClientCtrl@searchHeadChild');
 
+//FACILITY
+Route::match(['GET','POST'],'facility','FacilityCtrl@index');
+Route::get('facility/body', 'FacilityCtrl@getFacility');
+Route::post('facility/add', 'FacilityCtrl@addFacility');
+Route::post('facility/delete', 'FacilityCtrl@deleteFacility');
 
+//HEALTH SPECIALISTS
+Route::match(['GET','POST'],'specialist','SpecialistCtrl@index');
+Route::get('specialist/body', 'SpecialistCtrl@getSpecialist');
+Route::get('specialist/facilities/{id}', 'SpecialistCtrl@getUserFacilities');
+Route::post('specialist/add', 'SpecialistCtrl@addSpecialist');
+Route::post('specialist/delete', 'SpecialistCtrl@deleteSpecialist');
+Route::get('specialist/verify', 'SpecialistCtrl@verify');

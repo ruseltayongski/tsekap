@@ -1,3 +1,17 @@
+<style>
+    .chosen-search {
+        color: black;
+    }
+
+    .icon {
+        padding-top: 17px;
+    }
+
+    .info-box-icon {
+        padding-top: 20px;
+    }
+</style>
+
 @extends('client')
 @section('content')
     @if(!Session::get('featuress'))
@@ -252,6 +266,28 @@
                 </div>
             </div>
 
+            @if(Auth::user()->user_priv == 0)
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-yellow-gradient">
+                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Population Profiled <br> (PER BARANGAY)</span>
+                        <input type="hidden" id="tmpBarangay" value="{{ Session::get('muncityBarangay') }}" />
+                        <select name="barangay" class="filterBarangay form-control chosen-select-static">
+                            <option value="">Select Barangay</option>
+                        </select>
+                        <span class="info-box-number countPopulationPerBarangay"><i class="fa fa-refresh fa-spin"></i></span>
+                        <div class="progress">
+                            <div class="progress-bar profilePercentageBarPerBarangay"></div>
+                        </div>
+                        <span class="progress-description">
+                    <span class="profilePercentagePerBarangay"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                  </span>
+                    </div><!-- /.info-box-content -->
+                </div>
+            </div>
+            @endif
+
             <div class="clearfix"></div>
             <h3 class="page-header">Monthly
                 <small>Progress</small>
@@ -332,5 +368,66 @@
             }
         });
         //$('#notificationModal').modal('show');
+
+        muncity_id = <?php echo Auth::user()->muncity;?>;
+        getBarangay(muncity_id);
+        function getBarangay(id) {
+            $('.filterBarangay').empty()
+                .append($('<option>', {
+                    value: "",
+                    text : "Select Barangay..."
+                }));
+            if(id) {
+                var barangay = $('#tmpBarangay').val();
+                $.ajax({
+                    url: '../location/barangay/' + id,
+                    type: 'GET',
+                    success: function(data) {
+                        jQuery.each(data, function (i, val) {
+                            $('.filterBarangay').append($('<option>', {
+                                value: val.id,
+                                text: val.description,
+                                selected: function () {
+                                    if (barangay == val.id) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                }
+                            }));
+                            $('.filterBarangay').chosen().trigger('chosen:updated');
+                        });
+                        refreshBarangay($('#tmpBarangay').val());
+                    }
+                });
+            }
+        }
+
+        $('.filterBarangay').on('change', function() {
+            var id = $(this).val();
+            var tmp = $('#tmpBarangay').val();
+            if(id === tmp)
+                refreshBarangay($('#tmpBarangay').val());
+            else
+                refreshBarangay(id);
+        });
+
+        function refreshBarangay(id) {
+            if (id) {
+                $.ajax({
+                    url: 'count/barangay/' + id,
+                    type: 'GET',
+                    success: function (result) {
+                        $('.countPopulationPerBarangay').html(result.countPopulation);
+                        $('.profilePercentagePerBarangay').html(result.profilePercentage);
+                        $('.profilePercentageBarPerBarangay').css({width: result.profilePercentage + '%'});
+                    }
+                });
+            } else {
+                $('.countPopulationPerBarangay').html(0);
+                $('.profilePercentagePerBarangay').html(0);
+                $('.profilePercentageBarPerBarangay').css({width: 0 + '%'});
+            }
+        }
     </script>
 @endsection

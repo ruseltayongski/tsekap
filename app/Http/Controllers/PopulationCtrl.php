@@ -22,6 +22,7 @@ class PopulationCtrl extends Controller
         $keyword = Session::get('profileKeyword');
         $province = Session::get('profileProvince');
         $muncity = Session::get('profileMuncity');
+        $barangay = Session::get('profileBarangay');
         $user = Auth::user();
         $profiles = Profile::select('profile.unique_id','profile.familyID','profile.created_at','profile.head','profile.id','profile.lname','profile.mname','profile.fname','profile.suffix','profile.dob','profile.sex','profile.barangay_id','profile.muncity_id','profile.province_id');
 
@@ -50,6 +51,10 @@ class PopulationCtrl extends Controller
             $profiles = $profiles->where('profile.muncity_id',$muncity);
         }
 
+        if($barangay) {
+            $profiles = $profiles->where('profile.barangay_id',$barangay);
+        }
+
         $profiles = $profiles->where('profile.id','>',0)
             ->orderBy('profile.id','desc');
 
@@ -62,12 +67,14 @@ class PopulationCtrl extends Controller
             Session::forget('profileKeyword');
             Session::forget('profileProvince');
             Session::forget('profileMuncity');
+            Session::forget('profileBarangay');
             return redirect()->back();
         }
 
         Session::put('profileKeyword',$req->keyword);
         Session::put('profileProvince',$req->province);
         Session::put('profileMuncity',$req->muncity);
+        Session::put('profileBarangay',$req->barangay);
         return self::index();
     }
 

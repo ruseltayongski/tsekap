@@ -35,7 +35,7 @@ $case = Cases::orderBy('description','asc')->get();
                 {{ csrf_field() }}
                 <table width="100%">
                     <?php
-                        $year = isset($year) ? $year : '2018';
+                        $year = isset($year) ? $year : \Carbon\Carbon::now()->format('Y');
                         $monthF = isset($monthF) ? $monthF : 1;
                         $monthT = isset($monthT) ? $monthT : 12;
 

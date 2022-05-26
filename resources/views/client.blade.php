@@ -26,6 +26,8 @@ use App\Province;
     <link href="{{ asset('resources/plugin/chosen/chosen.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/plugin/select2/select2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/plugin/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/plugin/table-fixed-header/table-fixed-header.css') }}" rel="stylesheet">
+
     @yield('css')
     <style>
         body {
@@ -138,6 +140,13 @@ use App\Province;
                     </ul>
                 </li>
                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Manage<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('facility') }}"><i class="fa fa-hospital-o"></i> Facilities</a></li>
+                        <li><a href="{{ url('specialist') }}"><i class="fa fa-user-md"></i> Health Specialists</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
@@ -224,7 +233,7 @@ use App\Province;
     </div>
 </nav>
 
-<div class="container container_body">
+<div class="container-fluid container_body">
     <div class="loading"></div>
     @yield('content')
     <div class="clearfix"></div>
@@ -259,6 +268,8 @@ use App\Province;
 <script src="{{ asset('resources/plugin/daterangepicker/moment.min.js') }}"></script>
 <!-- DATE RANGE SELECT -->
 <script src="{{ asset('resources/plugin/daterangepicker/daterangepicker.js') }}"></script>
+<!-- FIXED HEADER FOR TABLES -->
+<script src="{{ asset('resources/plugin/table-fixed-header/table-fixed-header.js?version=1') }}"></script>
 
 <script>
     $('.chosen-select').chosen({width: "100%"});

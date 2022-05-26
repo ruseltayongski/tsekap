@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ProfileCases;
 use App\ServiceGroup;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests;
@@ -748,10 +749,18 @@ class ParameterCtrl extends Controller
 
     static function getYear()
     {
-        return array(
-            '2018',
-            '2017'
-        );
+        $arr = array();
+        $cur_year = Carbon::now()->format('Y');
+        while($cur_year >= 2017) {
+            array_push($arr, $cur_year--);
+        }
+
+        return $arr;
+//
+//        return array(
+//            '2018',
+//            '2017'
+//        );
     }
 
     static function getMonth()

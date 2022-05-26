@@ -13,6 +13,7 @@ use App\ProfilePending;
 use App\Service;
 use App\ServiceGroup;
 use App\UserBrgy;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,6 +113,26 @@ class ClientCtrl extends Controller
             'profilePercentage' => number_format($profilePercentage,1),
             'servicePercentage' => number_format($servicePercentage,1),
             'bhert_count' => $bherds_count,
+        );
+    }
+
+    public function countPerBarangay($id) {
+        $target = 0;
+        $countPopulation = 0;
+        $profilePercentage = 0;
+
+        if(!$id)
+            $id = Session::get('muncityBarangay');
+
+        if($id) {
+            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('id',$id)->first()->count;
+            $countPopulation = Profile::where('barangay_id', $id)->count();
+            $profilePercentage = ($countPopulation / $target) * 100;
+            Session::put('muncityBarangay',$id);
+        }
+        return array(
+            'countPopulation' => number_format($countPopulation),
+            'profilePercentage' => number_format($profilePercentage,1),
         );
     }
 
@@ -1005,10 +1026,11 @@ class ClientCtrl extends Controller
     public function report(){
         $user = Auth::user();
         $keyword = Session::get('filterResult');
+        $year = Carbon::now()->format('Y');
 
-        $db = 'db_'.date('Y');
-        $startdate = date('Y').'-01-01';
-        $enddate = date('Y').'-12-31';
+        $db = 'db_'.$year;
+        $startdate = $year.'-01-01';
+        $enddate = $year.'-12-31';
         if($keyword){
             $db = 'db_'.$keyword['year'];
             $startdate = $keyword['year'].'-'.$keyword['monthF'].'-01';
@@ -1624,7 +1646,7 @@ class ClientCtrl extends Controller
         $user = Auth::user();
         $servicegroup = new ServiceGroup();
 
-        $db = 'db_2018';
+        $db = 'db_'.date('Y');
         if(isset($temp['year']))
         {
             $db = 'db_'.$temp['year'];

@@ -18,7 +18,7 @@ use App\Http\Controllers\ParameterCtrl;
                     {
                         $from = 'January';
                         $to = 'December';
-                        $year = date('Y');
+                        $year = \Carbon\Carbon::now()->format('Y');
                     }
                 ?>
                 <div class="text-info">Date: {{ $from }} - {{ $to }} {{ $year }}</div>

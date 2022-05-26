@@ -315,7 +315,8 @@ class ApiCtrlv21 extends Controller
                 'newborn_screen' => $data['newborn_screen'],
                 'newborn_text' => $data['newborn_text'],
                 'deceased' => $data['deceased'],
-                'deceased_date' => date('Y-m-d',strtotime($data['deceased_date']))
+                'deceased_date' => date('Y-m-d',strtotime($data['deceased_date'])),
+                'sexually_active' => $data['sexually_active']
             );
 
             Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2);
