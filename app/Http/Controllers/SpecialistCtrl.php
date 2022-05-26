@@ -72,7 +72,7 @@ class SpecialistCtrl extends Controller
         return view('specialist.specialist',[
             'title' => 'List of Health Specialists',
             'data' => $data,
-            'dashboard' => (Auth::user()->user_priv == 3) ? 'app' : 'client'
+            'dashboard' => (Auth::user()->user_priv == 3 || Auth::user()->user_priv == 1) ? 'app' : 'client'
         ]);
     }
 

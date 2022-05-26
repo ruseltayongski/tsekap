@@ -99,7 +99,7 @@ class FacilityCtrl extends Controller
             'title' => 'List of Facilities',
             'data' => $data,
             'avail_services' => $avail_services,
-            'dashboard' => (Auth::user()->user_priv == 3) ? 'app' : 'client'
+            'dashboard' => (Auth::user()->user_priv == 3 || Auth::user()->user_priv == 1) ? 'app' : 'client'
         ]);
     }
 
