@@ -4,3 +4,6 @@
 Homestead.yaml
 Homestead.json
 .env
+/config/database.php
+/app/Http/Controllers/AphroditeConnCtrl.php
+

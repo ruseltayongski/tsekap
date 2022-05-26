@@ -53,6 +53,9 @@
         "preferred-install": "dist",
         "platform": {
             "php": "7.1.9"
+        },
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
         }
     }
 }

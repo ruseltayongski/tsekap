@@ -29,7 +29,12 @@ use App\FamilyProfile;
                     <input type="hidden" id="tmpMuncity" value="{{ Session::get('profileMuncity') }}" />
                     <select name="muncity" class="filterMuncity form-control chosen-select-static">
                         <option value="">Select Municipal/City</option>
-
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" id="tmpBarangay" value="{{ Session::get('profileBarangay') }}" />
+                    <select name="barangay" class="filterBarangay form-control chosen-select-static">
+                        <option value="">Select Barangay</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -145,21 +150,19 @@ use App\FamilyProfile;
         filterProvince(id);
     });
 
+    $('.filterMuncity').on('change', function() {
+       var id = $(this).val();
+       getBarangay(id);
+    });
+
     function filterProvince(id,muncity)
     {
         var muncity = $('#tmpMuncity').val();
-        console.log(muncity);
         var url = 'location/muncity/'+id;
         $('.filterMuncity').empty()
                 .append($('<option>', {
                     value: "",
                     text : "Select Municipal / City..."
-                }));
-
-        $('.filterBarangay').empty()
-                .append($('<option>', {
-                    value: "",
-                    text : "Select Barangay..."
                 }));
         if(id){
             $('.loading').show();
@@ -167,6 +170,7 @@ use App\FamilyProfile;
                 url: url,
                 type: 'GET',
                 success: function(data) {
+                    console.log("success muncity");
                     jQuery.each(data, function(i,val){
                         $('.filterMuncity').append($('<option>', {
                             value: val.id,
@@ -187,6 +191,40 @@ use App\FamilyProfile;
                 }
             });
         }
+        getBarangay($('#tmpMuncity').val());
+    }
+
+    function getBarangay(id) {
+        $('.filterBarangay').empty()
+            .append($('<option>', {
+                value: "",
+                text : "Select Barangay..."
+            }));
+
+        var barangay = $('#tmpBarangay').val();
+        $.ajax({
+            url: 'location/barangay/'+id,
+            type: 'GET',
+            success: function(data) {
+                jQuery.each(data, function(i,val){
+                    $('.filterBarangay').append($('<option>', {
+                        value: val.id,
+                        text : val.description,
+                        selected : function(){
+                            if(barangay==val.id){
+                                return true;
+                            }else{
+                                return false;
+                            }
+                        }
+                    }));
+                    $('.filterBarangay').chosen().trigger('chosen:updated');
+                });
+                setTimeout(function(){
+                    $('.loading').hide();
+                },200);
+            }
+        });
     }
 </script>
 @endsection
