@@ -9,7 +9,7 @@ use App\Http\Requests;
 class AphroditeConnCtrl extends Controller
 {
     static function AphroditeConn(){
-        return mysqli_connect("localhost","root","adm1n","tsekap_main");
+        return mysqli_connect("192.168.81.5","rtayong","rtayong","tsekap_main");
     }
 
 }
