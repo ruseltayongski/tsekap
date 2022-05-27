@@ -6,7 +6,6 @@
     $totalProfilePer = 0;
     $totalValidPer = 0;
     $c = 0;
-    $year_selected = '';
 ?>
 @extends('app')
 @section('content')
@@ -122,20 +121,20 @@
                                         {{--</form>--}}
                                     {{--</div>--}}
 
-                                    {{--<div class="btn-group">--}}
-                                        {{--<form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">--}}
-                                            {{--{{ csrf_field() }}--}}
-                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
-                                            {{--<input type="hidden" value="{{ $s->description }}" name="province_desc">--}}
-                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
-                                            {{--<input type="hidden" value="{{ $row->description }}" name="muncity_desc">--}}
-                                            {{--<input type="hidden" value="" name="year_selected" id="year_selected">--}}
-                                            {{--<button class="btn-primary btn">--}}
-                                                {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
-                                            {{--</button>--}}
-                                        {{--</form>--}}
-                                    {{--</div>--}}
-                                        <a href="{{ str_replace('tsekap/vii','project',asset('download')) }}/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>
+                                    <div class="btn-group">
+                                        <form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" value="{{ $row->province_id }}" name="province_id">
+                                            <input type="hidden" value="{{ $s->description }}" name="province_desc">
+                                            <input type="hidden" value="{{ $row->id }}" name="muncity_id">
+                                            <input type="hidden" value="{{ $row->description }}" name="muncity_desc">
+                                            <input type="hidden" value="" name="year_selected" class="year_selected">
+                                            <button class="btn-primary btn">
+                                                <i class="fa fa-download"></i> {{ $row->description }}
+                                            </button>
+                                        </form>
+                                    </div>
+{{--                                        <a href="{{ str_replace('tsekap/vii','project',asset('download')) }}/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>--}}
                                 @endforeach
                             </td>
                             @endif
@@ -213,7 +212,7 @@
     $(".select2").select2({ width: '100%' });
 
     $('#select_year').on('change', function() {
-       $('#year_selected').val($(this).val());
+       $('.year_selected').val($(this).val());
     });
 
 </script>

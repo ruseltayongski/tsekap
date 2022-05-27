@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Barangay;
 use App\Facility;
 use App\Facility2;
 use App\AvailService;
 use App\Http\Controllers\Controller;
+use App\Muncity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -234,5 +236,16 @@ class FacilityCtrl extends Controller
         Session::put('facility_message','Successfully deleted facility');
         Session::put('facility',true);
         return Redirect::back();
+    }
+
+    public static function getMuncityDesc($muncity_id) {
+        return Muncity::select('description')->where('id',$muncity_id)->first();
+    }
+
+    public static function getBarangays($prov_id, $muncity_id) {
+        return Barangay::select('id','description')
+            ->where('province_id',$prov_id)
+            ->where('muncity_id', $muncity_id)
+            ->get();
     }
 }

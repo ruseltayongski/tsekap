@@ -128,7 +128,8 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
                         </td>
                     </tr>
                     <tr>

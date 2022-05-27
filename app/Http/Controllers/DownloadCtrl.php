@@ -39,14 +39,13 @@ class DownloadCtrl extends Controller
         ]);
     }
 
-    public function generateDownload($id, $prov_desc, $mun_id, $mun_desc){
-//        $id = $req->province_id;
-//        $prov_desc = $req->province_desc;
-//        $mun_id = $req->muncity_id;
-//        $mun_desc = $req->muncity_desc;
-//        $year = isset($req->year_selected) ? $req->year_selected : Carbon::now()->format('Y');
-
-        $year = Carbon::now()->format('Y');
+//    public function generateDownload($id, $prov_desc, $mun_id, $mun_desc){
+    public function generateDownload(Request $req){
+        $id = $req->province_id;
+        $prov_desc = $req->province_desc;
+        $mun_id = $req->muncity_id;
+        $mun_desc = $req->muncity_desc;
+        $year = ($req->year_selected != '') ? $req->year_selected : Carbon::now()->format('Y');
 
         $start = $year.'-01-01';
         $end = $year.'-12-31';
@@ -74,8 +73,8 @@ class DownloadCtrl extends Controller
             ->get();
 
         $user_priv = Auth::user()->user_priv;
-        if($user_priv == 3) {
-            $filename = Muncity::find($mun_id)->description.'-'.date('Y-m-d');
+        if($user_priv == 3 || $user_priv == 1 || $user_priv == 0) {
+            $filename = Muncity::find($mun_id)->description.'-'.$year;
             $profile = Profile::where('muncity_id',$mun_id)->get();
 
             $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id)->get();
@@ -83,7 +82,7 @@ class DownloadCtrl extends Controller
             $femalestatus = $femalestatus->where('femalestatus.muncity_id',$mun_id)->get();
         }
         else if($user_priv == 2) {
-            $filename = Barangay::find($id)->description.'-'.date('Y-m-d');
+            $filename = Barangay::find($id)->description.'-'.$year;
             $profile = Profile::where('barangay_id',$id)->get();
             $profileservices = $profileservices->where('profileservices.barangay_id',$id)->get();
             $profilecases = $profilecases->where('profilecases.barangay_id',$id)->get();

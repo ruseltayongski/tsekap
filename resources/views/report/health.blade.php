@@ -13,7 +13,7 @@
     </style>
     <div class="col-sm-12 wrapper">
         <div class="alert alert-jim">
-            <h2 class="title-header">Environmental Health Graph</h2>
+            <h2 class="title-header">{{--Environmental Health Graph--}} Statistical Data</h2>
             <div class="clearfix"></div>
         </div>
     </div>

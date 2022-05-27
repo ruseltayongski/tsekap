@@ -1,3 +1,7 @@
+<?php
+$user = Auth::user();
+?>
+
 <style>
     .container2 {
         border: 1px solid lightgrey;
@@ -55,7 +59,12 @@
                     <option value="{{ $row->id }}" <?php if($data->muncity == $row->id)echo 'selected'; ?> >{{ $row->description }}</option>
                 @endforeach
             @else
-                <option value="">Select Municipality</option>
+                @if($user->user_priv == 0 || $user->user_priv == 2)
+                    <?php $muncity_desc = \App\Http\Controllers\FacilityCtrl::getMuncityDesc($user->muncity);?>
+                    <option value="{{ $user->muncity }}">{{ $muncity_desc->description }}</option>
+                @else
+                    <option value="">Select Municipality</option>
+                @endif
             @endif
         </select>
     </div>
@@ -68,7 +77,15 @@
                 @endforeach
             @else
                 <option value="">Select Barangay</option>
+                <?php
+                if($user->user_priv == 0 || $user->user_priv == 2) {
+                    $barangay = \App\Http\Controllers\FacilityCtrl::getBarangays($user->province, $user->muncity);
+                    foreach($barangay as $b)
+                        echo "<option value='".$b->id."'>".$b->description."</option>";
+                }
+                ?>
             @endif
+
         </select>
     </div>
     <div class="form-group">
@@ -86,19 +103,6 @@
     <div class="form-group">
 
         <label>Head of Facility (Name):</label>
-        <!--{{--<select class="form-control" name="chief_hospital">--}}
-            {{--@foreach($data->chief_list as $chief)--}}
-                {{--<option ></option>--}}
-            {{--@endforeach--}}
-            {{--<?php--}}
-/*            foreach($data->chief_list as $chief) {
-                echo "<option";
-                if($chief->id == $data->chief_hospital)
-                    echo 'selected';
-                echo "> ".$chief->name."</option>";
-            }
-            */?>
-        {{--</select>--}}!-->
         <input type="text" class="form-control" value="@if(isset($data->chief_hospital)){{ $data->chief_hospital }}@endif" name="chief_hospital" required>
     </div>
     <div class="form-group">
@@ -116,6 +120,16 @@
                 }
                 ?>
             >Health Center
+            </option>
+            <option value="Birthing Home"
+            <?php
+                if(isset($add_info->service_cap)){
+                    if($add_info->service_cap == "Birthing Home"){
+                        echo 'selected';
+                    }
+                }
+                ?>
+            >Birthing Home
             </option>
             <option value="Level 1"
             <?php
@@ -175,7 +189,7 @@
                     }
                 }
                 ?>
-            >RHU
+            >Rural Health Unit
             </option>
             <option value="Dental Clinic"
             <?php
@@ -763,6 +777,10 @@
 <script>
     $(".select2").select2({ width: '100%' });
 
+    @if($user->user_priv == 0 || $user->user_priv == 2)
+        $('.select_province').val({{ $user->province }});
+    @endif
+
     $('.select_province').on('change',function(){
         $('.loading').show();
         var province_id = $(this).val();
@@ -794,7 +812,6 @@
                 $('#serverModal').modal();
             }
         });
-
     });
 
     $('.select_muncity').on('change',function(){
@@ -813,6 +830,7 @@
                         text : 'Select Barangay'
                     }));
                 jQuery.each(data, function(i,val){
+
                     $('.select_barangay').append($('<option>', {
                         value: val.id,
                         text : val.description
@@ -823,7 +841,6 @@
                 $('#serverModal').modal();
             }
         });
-
     });
 </script>
 

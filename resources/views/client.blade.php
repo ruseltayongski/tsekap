@@ -134,9 +134,9 @@ use App\Province;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
-                        <li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>
-                        <li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>
-                        <li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>
+                        {{--<li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>--}}
+                        {{--<li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>--}}
+                        {{--<li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>--}}
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -146,34 +146,34 @@ use App\Province;
                         <li><a href="{{ url('specialist') }}"><i class="fa fa-user-md"></i> Health Specialists</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>
-                        <li><a href="{{ url('purok') }}"> <i class="fa fa-building"></i> Purok</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{ url('user/profiles/pending') }}">
-                        <span class="badge bg-yellow">
-                            <?php
-                                $tmpBrgy = \App\UserBrgy::where('user_id',Auth::user()->id)->get();
-                                $profile_pending_count = \App\ProfilePending::where(function($query) use ($tmpBrgy){
-                                    if(count($tmpBrgy) > 0){
-                                        foreach($tmpBrgy as $tmp){
-                                            $query->orwhere('barangay_id','=',$tmp->barangay_id);
-                                        }
-                                    } else {
-                                        $query->where('barangay_id','=','no_barangay');
-                                    }
-                                })
-                                ->count();
+                {{--<li class="dropdown">--}}
+                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>--}}
+                    {{--<ul class="dropdown-menu">--}}
+                        {{--<li><a href="{{ url('sitio') }}"><i class="fa fa-institution"></i> Sitio</a></li>--}}
+                        {{--<li><a href="{{ url('purok') }}"> <i class="fa fa-building"></i> Purok</a></li>--}}
+                    {{--</ul>--}}
+                {{--</li>--}}
+                {{--<li>--}}
+                    {{--<a href="{{ url('user/profiles/pending') }}">--}}
+                        {{--<span class="badge bg-yellow">--}}
+                            {{--<?php--}}
+                                {{--$tmpBrgy = \App\UserBrgy::where('user_id',Auth::user()->id)->get();--}}
+                                {{--$profile_pending_count = \App\ProfilePending::where(function($query) use ($tmpBrgy){--}}
+                                    {{--if(count($tmpBrgy) > 0){--}}
+                                        {{--foreach($tmpBrgy as $tmp){--}}
+                                            {{--$query->orwhere('barangay_id','=',$tmp->barangay_id);--}}
+                                        {{--}--}}
+                                    {{--} else {--}}
+                                        {{--$query->where('barangay_id','=','no_barangay');--}}
+                                    {{--}--}}
+                                {{--})--}}
+                                {{--->count();--}}
 
-                                echo $profile_pending_count;
-                            ?>
-                        </span> Profile Pending
-                    </a>
-                </li>
+                                {{--echo $profile_pending_count;--}}
+                            {{--?>--}}
+                        {{--</span> Profile Pending--}}
+                    {{--</a>--}}
+                {{--</li>--}}
                 <!--
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wheelchair"></i> Dengvaxia<span class="caret"></span></a>
@@ -193,7 +193,7 @@ use App\Province;
                         <li class="divider"></li>
                         <?php $validBrgy = \App\Http\Controllers\UserCtrl::validateBrgy();?>
                         @if($validBrgy)
-                        <li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; Environmental Health Graph</a></li>
+                        <li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; {{--Environmental Health Graph--}} Statistical Data</a></li>
                         @endif
                         <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
                         @if(Auth::user()->user_priv==0)

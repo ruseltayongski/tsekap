@@ -120,7 +120,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('population') }}"><i class="fa fa-users"></i>&nbsp;&nbsp; List of Population</a></li>
-                        <li><a href="{{ asset('population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Lacking 3 MUST Services<br />(PE, Laboratory and Other Services)</a></li>
+{{--                        <li><a href="{{ asset('population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Lacking 3 MUST Services<br />(PE, Laboratory and Other Services)</a></li>--}}
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -137,9 +137,9 @@
                         <!--
                         <li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
                         -->
-                        <li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>
-                        <li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>
-                        <li><a href="{{ asset('ProfiledByFamilyId') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Profiled By FamilyId</a></li>
+                        {{--<li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>--}}
+                        {{--<li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>--}}
+                        {{--<li><a href="{{ asset('ProfiledByFamilyId') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Profiled By FamilyId</a></li>--}}
                     </ul>
                 </li>
                 @if(Auth::user()->user_priv==1)

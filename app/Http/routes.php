@@ -57,9 +57,9 @@ Route::get('change/password',function(){
 //DOWNLOAD
 Route::get('download','DownloadCtrl@index');
 Route::post('download','DownloadCtrl@index');
-Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
+//Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
 Route::get('download/user/{id}','DownloadCtrl@generateUserDownload');
-//Route::post('generatedownload', 'DownloadCtrl@generateDownload');
+Route::post('generatedownload', 'DownloadCtrl@generateDownload');
 //END DOWNLOAD
 
 //parameters
