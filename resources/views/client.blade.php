@@ -134,6 +134,7 @@ use App\Province;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
+                        <li><a href="{{ asset('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
                         {{--<li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>--}}
                         {{--<li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>--}}
                         {{--<li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>--}}
@@ -198,6 +199,12 @@ use App\Province;
                         <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
                         @if(Auth::user()->user_priv==0)
                         <li><a href="{{ asset('/user/report/status') }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        @endif
+                        @if(Auth::user()->user_priv==2)
+                        <?php
+                            $brgy = \App\UserBrgy::where('user_id',Auth::user()->id)->first()->barangay_id;
+                        ?>
+                        <li><a href="{{ asset('generatedownload/barangay') }}/{{ $brgy }}/{{ Auth::user()->muncity}}"><i class="fa fa-download"></i>&nbsp;&nbsp; Status Report</a></li>
                         @endif
                     </ul>
                 </li>

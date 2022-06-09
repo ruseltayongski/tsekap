@@ -1,6 +1,6 @@
 <?php
 $counter = 0;
-$user_facilities = \App\Http\Controllers\SpecialistCtrl::getUserFacilities($data->user_id);
+$user_facilities = \App\Http\Controllers\SpecialistCtrl::getUserFacilities($data->username);
 $faci_count = 0;
 ?>
 
@@ -21,6 +21,7 @@ $faci_count = 0;
 <form method="POST" action="{{ asset('specialist/add') }}" id="add_new_specialist">
     {{ csrf_field() }}
     <input type="hidden" id="special_id" name="user_id" value="{{ $data->user_id }}" />
+    <input type="hidden" name="username" value="{{ $data->username }}" />
     <fieldset><legend>
         @if(isset($data->user_id))
             <i class="fa fa-user-md"></i> Update Health Specialist
@@ -65,7 +66,7 @@ $faci_count = 0;
                                     <select class="form-control select2" id="facility" name="affil_faci[]" style="width: 100%">
                                         <option value="">Select...</option>
                                         @foreach($facilities as $faci)
-                                            <option <?php if($faci->facility_id == $f->facility_id) echo 'selected'?> value="{{  $faci->facility_id }}">{{ $faci->facility_name }}</option>
+                                            <option <?php if($faci->facility_code == $f->facility_code && $f->facility_code != '' && $f->facility_code != null) echo 'selected'?> value="{{  $faci->facility_code }}">{{ $faci->facility_name }}</option>
                                         @endforeach
                                     </select>
                                 </small>
@@ -86,7 +87,7 @@ $faci_count = 0;
                                 <small><input class="money_format{{$counter}}" value="{{ $f->fee }}" oninput="formatMoney({{$counter}})" type="text" name="specialist_fee[]" placeholder="Enter fee..." style="width: 100%"></small>
                             </td>
                             <td>
-                                <button class="btn-xs btn-danger text-center" id="btn_remove{{$counter}}" value="{{ $f->facility_id }}" onclick="removeFacility({{$counter++}})"type="button" style="width: 100%">Remove</button>
+                                <button class="btn-xs btn-danger text-center" id="btn_remove{{$counter}}" value="{{ $f->facility_code }}" onclick="removeFacility({{$counter++}})"type="button" style="width: 100%">Remove</button>
                             </td>
                         </tr>
                     @endforeach
@@ -99,7 +100,7 @@ $faci_count = 0;
                                 <select class="form-control select2" id="facility" name="affil_faci[]" style="width: 100%">
                                     <option value="">Select...</option>
                                     @foreach($facilities as $f)
-                                        <option value="{{  $f->facility_id }}">{{ $f->facility_name }}</option>
+                                        <option value="{{  $f->facility_code }}">{{ $f->facility_name }}</option>
                                     @endforeach
                                 </select>
                             </small>
@@ -137,7 +138,7 @@ $faci_count = 0;
     <div class="modal-footer">
         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
         @if(isset($data->user_id))
-            <a href="#remove_specialist" data-toggle="modal" class="btn btn-danger btn-sm btn-flat" onclick="SpecialistDelete('{{ $data->user_id }}', '{{ $data->fname }}', '{{ $data->lname }}')">
+            <a href="#remove_specialist" data-toggle="modal" class="btn btn-danger btn-sm btn-flat" onclick="SpecialistDelete('{{ $data->user_id }}', '{{ $data->fname }}', '{{ $data->lname }}', '{{ $data->username }}')">
                 <i class="fa fa-trash"></i> Remove
             </a>
         @endif
@@ -167,11 +168,15 @@ $faci_count = 0;
     function transformString(str) {
         str = str.replace(/[^0-9]/g, '');
 
-        integer = str.slice(0, str.length-2).toLocaleString();
-        decimal = str.slice(-2);
+        var integer = str.slice(0, str.length-2).toLocaleString();
+        var decimal = str.slice(-2);
 
-        final = "PHP " + integer + '.' + decimal;
+        var final = "PHP " + integer + '.' + decimal;
         final = final.replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+        if(final === "PHP .") {
+            return "";
+        }
         return final;
     }
 
@@ -210,7 +215,7 @@ $faci_count = 0;
             '                            <option value="">Select...</option>\n';
 
         @foreach($facilities as $f)
-            id = '{{ $f->facility_id }}';
+            id = '{{ $f->facility_code }}';
             name = '{{ $f->facility_name }}';
             string += "<option value="+id+">"+name+"</option>";
         @endforeach

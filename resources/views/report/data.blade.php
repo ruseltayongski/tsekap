@@ -1,130 +1,218 @@
 <?php
+use App\Bracket;
+use App\Cases;
 use App\Service;
-$filename = "Content-Disposition: attachment; filename=$filename.DOH7";
-// output headers so that the file is downloaded rather than displayed
-header('Content-Type: text/csv; charset=utf-8');
-header($filename);
+use \App\Http\Controllers\LocationCtrl;
 
-// create a file pointer connected to the output stream
-$output = fopen('php://output', 'w');
+header("Content-Type: application/vnd.ms-excel");
+header("Content-Disposition: attachment; filename=".$filename.".xls");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-// output the column headings
-//fputcsv($output, array('Column 1', 'Column 2', 'Column 3'));
-fputcsv($output, array('PROFILE'));
-fputcsv($output, array('FAMILY ID','HEAD','RELATION TO HEAD','FIRST NAME','MIDDLE NAME','LAST NAME','SUFFIX','BIRTHDAY','SEX','BARANGAY ID','MUNICIPAL / CITY ID','PROVINCE ID'));
-// fetch the data
-//mysql_connect('localhost', 'root', '');
-//mysql_select_db('sdn_v2');
-//$rows = mysql_query('SELECT fname,mname,lname FROM users');
+$table_body ='
+    <div class="col-md-12" style="white-space: nowrap;">
+        <h3>PROFILES</h3>
+    </div>
+    <table cellspacing="1" cellpadding="5" border="1" width="150%">
+        <tr style="background-color: lightgreen; text-align: center">
+            <th> FAMILY ID </th>
+            <th> HEAD </th>
+            <th> RELATION TO HEAD </th>
+            <th> FIRST NAME </th>
+            <th> MIDDLE NAME </th>
+            <th> LAST NAME </th>
+            <th> SUFFIX </th>
+            <th> BIRTHDAY </th>
+            <th> SEX </th
+            <th> BARANGAY </th>
+            <th> MUNICIPAL / CITY </th>
+            <th> PROVINCE </th>
+        </tr>
+    ';
 
-// loop over the rows, outputting them
-//while ($row = mysql_fetch_assoc($rows)) fputcsv($output, $row);
+foreach($profile as $row) {
+    $table_body .= '
+        <tr>
+            <td>'.$row->familyID.'</td>
+            <td style="text-align:center">'.$row->head.'</td>
+            <td style="text-align:center">'.$row->relation.'</td>
+            <td>'.$row->fname.'</td>
+            <td>'.$row->mname.'</td>
+            <td>'.$row->lname.'</td>
+            <td>'.$row->suffix.'</td>
+            <td style="text-align:center">'.$row->dob.'</td>
+            <td style="text-align:center">'.$row->sex.'</td>
+            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getProvince($row->province_id).'</td>
+        </tr>
+    ';
+}
+
+$table_body .= '</table><br><br>';
+
+$table_body .='
+    <div class="col-md-12" style="white-space: nowrap;">
+        <h3> SERVICES </h3>
+    </div>
+    <table cellspacing="1" cellpadding="5" border="1" width="150%">
+        <tr style="background-color: lightgreen; text-align: center;">
+            <th> DATE CREATED </th>
+            <th> FIRST NAME </th>
+            <th> MIDDLE NAME </th>
+            <th> LAST NAME </th>
+            <th> SUFFIX </th>
+            <th> SERVICE </th>
+            <th> BRACKET </th>
+            <th> BARANGAY </th>
+            <th> MUNICIPAL / CITY </th>
+        </tr>
+    ';
+
+foreach($profileservices as $row) {
+    $table_body .= '
+        <tr>
+            <td style="text-align: center">'.$row->dateProfile.'</td>
+            <td>'.$row->fname.'</td>
+            <td>'.$row->mname.'</td>
+            <td>'.$row->lname.'</td>
+            <td>'.$row->suffix.'</td>
+            <td style="text-align:center">'.Service::find($row->service_id)->description.'</td>
+            <td style="text-align:center">'.Bracket::find($row->bracket_id)->description.'</td>
+            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+        </tr>
+    ';
+}
+$table_body .= '</table><br><br>';
+
+$table_body .='
+    <div class="col-md-12" style="white-space: nowrap;">
+        <h3> CASES </h3>
+    </div>
+    <table cellspacing="1" cellpadding="5" border="1" width="150%">
+        <tr style="background-color: lightgreen; text-align: center">
+            <th style="text-align: left"> DATE CREATED </th>
+            <th> FIRST NAME </th>
+            <th> MIDDLE NAME </th>
+            <th> LAST NAME </th>
+            <th> SUFFIX </th>
+            <th> CASE </th>
+            <th> BRACKET </th>
+            <th> BARANGAY </th>
+            <th> MUNICIPAL / CITY </th>
+        </tr>
+    ';
+
+foreach($profilecases as $row) {
+    $table_body .= '
+        <tr>
+            <td style="text-align: center">'.$row->dateProfile.'</td>
+            <td>'.$row->fname.'</td>
+            <td>'.$row->mname.'</td>
+            <td>'.$row->lname.'</td>
+            <td>'.$row->suffix.'</td>
+            <td style="text-align:center">'.Cases::find($row->case_id)->description.'</td>
+            <td style="text-align:center">'.Bracket::find($row->bracket_id)->description.'</td>
+            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+        </tr>
+    ';
+}
+$table_body .= '</table><br><br>';
+
+//$table_body .='
+//    <div class="col-md-12" style="white-space: nowrap;">
+//        <h3> STATUS </h3>
+//    </div>
+//    <table cellspacing="1" cellpadding="5" border="1" width="150%">
+//        <tr style="background-color: lightgreen">
+//            <th> DATE CREATED </th>
+//            <th> FIRST NAME </th>
+//            <th> MIDDLE NAME </th>
+//            <th> LAST NAME </th>
+//            <th> SUFFIX </th>
+//            <th> STATUS </th>
+//            <th> CODE </th>
+//            <th> BARANGAY </th>
+//            <th> MUNICIPAL / CITY </th>
+//        </tr>
+//    ';
 //
-foreach($profile as $row){
-    $data = array(
-            'familyID' => $row->familyID,
-            'head' => $row->head,
-            'relation' => $row->relation,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'dob' => $row->dob,
-            'sex' => $row->sex,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-            'province_id' => $row->province_id,
-    );
-    fputcsv($output, $data);
-}
+//foreach($status1 as $row) {
+//    $code = Service::find($row->service_id);
+//    if($code){
+//        $code = $code->code;
+//    }else{
+//        $code=null;
+//    }
+//    $table_body .= '
+//        <tr>
+//            <td>'.$row->dateProfile.'</td>
+//            <td>'.$row->fname.'</td>
+//            <td>'.$row->mname.'</td>
+//            <td>'.$row->lname.'</td>
+//            <td>'.$row->suffix.'</td>
+//            <td>'.$row->status.'</td>
+//            <td>'.$code.'</td>
+//            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+//            <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+//        </tr>
+//    ';
+//}
+//
+//foreach($status2 as $row){
+//    $code = 'case-'.$row->case_id;
+//    $table_body .= '
+//        <tr>
+//            <td>'.$row->dateProfile.'</td>
+//            <td>'.$row->fname.'</td>
+//            <td>'.$row->mname.'</td>
+//            <td>'.$row->lname.'</td>
+//            <td>'.$row->suffix.'</td>
+//            <td>'.$row->status.'</td>
+//            <td>'.$code.'</td>
+//            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+//            <td style="text-align:center"'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+//        </tr>
+//    ';
+//}
+//
+//$table_body .= '</table><br><br>';
 
-fputcsv($output, array('SERVICES'));
-fputcsv($output, array('DATE CREATED','FIRST NAME','MIDDLE NAME','LAST NAME','SUFFIX','SERVICE ID','BRACKET ID','BARANGAY ID','MUNICIPAL / CITY ID'));
-foreach($profileservices as $row){
-    $data = array(
-            'dateProfile' => $row->dateProfile,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'service_id' => $row->service_id,
-            'bracket_id' => $row->bracket_id,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-    );
-    fputcsv($output, $data);
+$table_body .='
+    <div class="col-md-12" style="white-space: nowrap;">
+        <h3> SERVICE OPTION </h3>
+    </div>
+    <table cellspacing="1" cellpadding="5" border="1" width="150%">
+        <tr style="background-color: lightgreen; text-align: center">
+            <th style="text-align: left"> DATE CREATED </th>
+            <th> FIRST NAME </th>
+            <th> MIDDLE NAME </th>
+            <th> LAST NAME </th>
+            <th> SUFFIX </th>
+            <th> OPTION </th>
+            <th> STATUS </th>
+            <th> BARANGAY </th>
+            <th> MUNICIPAL / CITY </th>
+        </tr>
+    ';
 
+foreach($serviceoption as $row) {
+    $table_body .= '
+        <tr>
+            <td style="text-align: center">'.$row->dateProfile.'</td>
+            <td>'.$row->fname.'</td>
+            <td>'.$row->mname.'</td>
+            <td>'.$row->lname.'</td>
+            <td>'.$row->suffix.'</td>
+            <td style="text-align: center">'.$row->option.'</td>
+            <td style="text-align: center">'.$row->status.'</td>
+            <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
+        </tr>
+    ';
 }
+$table_body .= '</table><br><br>';
 
-fputcsv($output, array('CASES'));
-fputcsv($output, array('DATE CREATED','FIRST NAME','MIDDLE NAME','LAST NAME','SUFFIX','CASE ID','BRACKET ID','BARANGAY ID','MUNICIPAL / CITY ID'));
-foreach($profilecases as $row){
-    $data = array(
-            'dateProfile' => $row->dateProfile,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'case_id' => $row->case_id,
-            'bracket_id' => $row->bracket_id,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-    );
-    fputcsv($output, $data);
-}
-
-fputcsv($output, array('STATUS'));
-fputcsv($output, array('DATE CREATED','FIRST NAME','MIDDLE NAME','LAST NAME','SUFFIX','STATUS','CODE','BARANGAY ID','MUNICIPAL / CITY ID'));
-foreach($status1 as $row){
-    $code = Service::find($row->service_id);
-    if($code){
-        $code = $code->code;
-    }else{
-        $code=null;
-    }
-    $data = array(
-            'dateProfile' => $row->dateProfile,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'status' => $row->status,
-            'code' => $code,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-    );
-    fputcsv($output, $data);
-}
-
-foreach($status2 as $row){
-    $code = 'case-'.$row->case_id;
-    $data = array(
-            'dateProfile' => $row->dateProfile,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'status' => $row->status,
-            'code' => $code,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-    );
-    fputcsv($output, $data);
-}
-
-fputcsv($output, array('SERVICE OPTION'));
-fputcsv($output, array('DATE CREATED','FIRST NAME','MIDDLE NAME','LAST NAME','SUFFIX','OPTION','STATUS','BARANGAY ID','MUNICIPAL / CITY ID'));
-foreach($serviceoption as $row){
-    $data = array(
-            'dateProfile' => $row->dateProfile,
-            'fname' => $row->fname,
-            'mname' => $row->mname,
-            'lname' => $row->lname,
-            'suffix' => $row->suffix,
-            'option' => $row->option,
-            'status' => $row->status,
-            'barangay_id' => $row->barangay_id,
-            'muncity_id' => $row->muncity_id,
-    );
-    fputcsv($output, $data);
-}
+echo $table_body;

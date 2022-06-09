@@ -17,6 +17,7 @@
                 <form action="{{ asset('specialist/delete') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="user_id" class="user_id">
+                    <input type="hidden" name="username" class="username">
                     <fieldset>
                         <legend><i class="fa fa-trash"></i> Remove Specialist</legend>
                     </fieldset>

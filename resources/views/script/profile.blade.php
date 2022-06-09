@@ -128,13 +128,12 @@
             type : 'GET',
             success: function(age){
                 console.log("Age : " + age);
-               if(age>14 && age<50) {
+               if(age>14 && age<=50) {
+                  $('.unmetClass').removeClass('hide');
                    if (sex === 'Female') {
-                       $('.unmetClass').removeClass('hide');
                        $('.menarcheClass').removeClass('hide');
                        $('.pregnant_lmp').removeClass('hide');
                    } else if (sex === 'Male') {
-                       $('.unmetClass').addClass('hide');
                        $('.menarcheClass').addClass('hide');
                        $('.pregnant_lmp').addClass('hide');
                        $('#unmet').val('0');

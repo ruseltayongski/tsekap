@@ -37,7 +37,7 @@ $user = Auth::user();
                         <th class="text-center" style="vertical-align: middle;"> Affiliated Facilities </th>
                         <th class="text-center" style="vertical-align: middle;"> Contact Info </th>
                         <th class="text-center" style="vertical-align: middle;"> Specialization </th>
-                        <th class="text-center" style="vertical-align: middle;"> Schedule </th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;"> Schedule </th>
                         <th class="text-center" style="vertical-align: middle;"> Specialist Fee </th>
                     </tr>
                 </thead>
@@ -53,7 +53,7 @@ $user = Auth::user();
                                             data-backdrop="static"
                                             data-keyboard="false"
                                             data-id = "{{ $row->user_id }}"
-                                            onclick="SpecialistBody('<?php echo $row->user_id ?>')"
+                                            onclick="SpecialistBody('<?php echo $row->username ?>')"
                                             class="update_info"
                                     >
                                         {{ $row->lname }}, {{ $row->fname }}, {{ $row->mname }}
@@ -63,7 +63,7 @@ $user = Auth::user();
                                 @endif
                             </b><br>
                         </th>
-                        <?php $facilities = \App\Http\Controllers\SpecialistCtrl::getUserFacilities($row->user_id);?>
+                        <?php $facilities = \App\Http\Controllers\SpecialistCtrl::getUserFacilities($row->username);?>
                         <td>
                         @foreach($facilities as $f)
                             <b class="text-green">{{$f->facility_name}}</b><br><br><br>
@@ -147,7 +147,7 @@ $user = Auth::user();
                                 '<td>'+val.mname+'</td>' +
                                 '<td>'+val.lname+'</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="" data-dismiss="modal" data-toggle="modal" onclick="SpecialistBody('+val.user_id+')" class="btn btn-success btn-sm">' +
+                                    '<a href="" data-dismiss="modal" data-toggle="modal" onclick="SpecialistBody('+val.username+')" class="btn btn-success btn-sm">' +
                                         '<i class="fa fa-pencil"></i> Update' +
                                     '</a></td>' +
                             '</tr>';
@@ -199,14 +199,14 @@ $user = Auth::user();
     *   ------------------------
     */
     <?php $user = Session::get('auth'); ?>
-    function SpecialistBody(user_id){
-        if(user_id == '') {
+    function SpecialistBody(username){
+        if(username == '') {
             resetVerificationModal();
         }
         $.ajax({
             url: "<?php echo asset('specialist/body') ?>",
             type: 'GET',
-            data: { "user_id": user_id},
+            data: { "username": username},
             success: function (data) {
                 $('.specialist_body').html(data);
             }
@@ -217,8 +217,9 @@ $user = Auth::user();
     *   |  REMOVE SPECIALIST |
     *   ----------------------
     */
-    function SpecialistDelete(user_id, fname, lname) {
+    function SpecialistDelete(user_id, fname, lname, username) {
         $(".user_id").val(user_id);
+        $(".username").val(username);
         $(".delete_name").html(fname+" "+lname);
     }
 

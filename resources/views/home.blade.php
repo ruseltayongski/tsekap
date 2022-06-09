@@ -1,5 +1,5 @@
 <?php
-
+$user_priv = Auth::user()->user_priv;
 ?>
 
 <style>
@@ -63,9 +63,9 @@
                         <div class="progress">
                             <div class="progress-bar profilePercentageBar"></div>
                         </div>
-                  <span class="progress-description">
-                    <span class="profilePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                  </span>
+                        <span class="progress-description">
+                            <span class="profilePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                        </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
@@ -86,8 +86,34 @@
                 </div>
             </div>
 
-            <div class="clearfix"></div>
-            <hr />
+            @if($user_priv == 1)
+                <div class="clearfix"></div>
+                <hr />
+                <div class="col-sm-6 col-xs-12">
+                    <div class="info-box bg-yellow">
+                        <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Population Profiled <br> (Per Province)</span>
+                            <input type="hidden" id="tmpProvince" value="{{ Session::get('homeProvince') }}" />
+                            <select name="province" class="filterProvince form-control chosen-select-static">
+                                <option value="0">Select Province</option>
+                                <option value="1">Bohol</option>
+                                <option value="2">Cebu</option>
+                                <option value="3">Negros Oriental</option>
+                                <option value="4">Siquijor</option>
+                            </select>
+                            <span class="info-box-number countPopulationPerProvince"><i class="fa fa-refresh fa-spin"></i></span>
+                            <div class="progress">
+                                <div class="progress-bar profilePercentageBarPerProvince"></div>
+                            </div>
+                            <span class="progress-description">
+                                <span class="profilePercentagePerProvince"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                            </span>
+                        </div><!-- /.info-box-content -->
+                    </div>
+                </div>
+            @endif
+
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-yellow">
                     <span class="info-box-icon"><i class="fa fa-users"></i></span>
@@ -102,12 +128,15 @@
                             <div class="progress-bar profilePercentageBarPerMuncity"></div>
                         </div>
                         <span class="progress-description">
-                    <span class="profilePercentagePerMuncity"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                  </span>
+                            <span class="profilePercentagePerMuncity"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                        </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
 
+            @if($user_priv == 1)
+                <div class="clearfix"></div>
+            @endif
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-yellow">
                     <span class="info-box-icon"><i class="fa fa-users"></i></span>
@@ -227,8 +256,63 @@
             }
         });
 
-        prov_id = <?php echo Auth::user()->province;?>;
-        filterProvince(prov_id);
+
+        user_priv = <?php echo Auth::user()->user_priv;?>;
+
+        if(user_priv === 1) {
+            refreshProvince('');
+            filterProvince('');
+            refreshMuncity('');
+            refreshBarangay('');
+        } else {
+            prov_id = <?php echo Auth::user()->province;?>;
+            filterProvince(prov_id);
+        }
+
+        $('.filterProvince').on('change', function() {
+            var id = $(this).val();
+            console.log("id (regional account): " + id);
+            if (id === 0) {
+                $('.filterMuncity').empty()
+                    .append($('<option>', {
+                        value: "",
+                        text: "Select Municipal / City..."
+                    }));
+                $('.filterBarangay').empty()
+                    .append($('<option>', {
+                        value: "",
+                        text: "Select Municipal / City..."
+                    }));
+                $('.filterMuncity, .filterBarangay').val('');
+                $('#tmpBarangay').val('');
+                $('#tmpMuncity').val('');
+                refreshProvince(0);
+                refreshMuncity(0);
+                refreshBarangay(0);
+                filterProvince(0);
+            } else {
+                refreshProvince(id);
+                filterProvince(id);
+            }
+        });
+
+        function refreshProvince(id){
+            if(id) {
+                $.ajax({
+                    url: 'home/count/province/'+id,
+                    type: 'GET',
+                    success: function(result) {
+                        $('.countPopulationPerProvince').html(result.countPopulation);
+                        $('.profilePercentagePerProvince').html(result.profilePercentage);
+                        $('.profilePercentageBarPerProvince').css({ width: result.profilePercentage+'%' });
+                    }
+                });
+            } else {
+                $('.countPopulationPerProvince').html(0);
+                $('.profilePercentagePerProvince').html(0);
+                $('.profilePercentageBarPerProvince').css({ width: 0+'%' });
+            }
+        }
 
         $('.filterMuncity').on('change', function() {
             var id = $(this).val();
@@ -256,7 +340,7 @@
                     type: 'GET',
                     success: function(data) {
                         var sameMuncity = false;
-                        console.log("filter province: " + id);
+                        console.log("filter for muncity: " + id);
                         jQuery.each(data, function(i,val){
                             $('.filterMuncity').append($('<option>', {
                                 value: val.id,
@@ -341,7 +425,7 @@
         });
 
         function refreshBarangay(id) {
-            if (id) {
+            if(id) {
                 $.ajax({
                     url: 'home/count/barangay/' + id,
                     type: 'GET',

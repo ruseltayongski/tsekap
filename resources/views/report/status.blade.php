@@ -6,11 +6,19 @@
     $totalProfilePer = 0;
     $totalValidPer = 0;
     $c = 0;
+    $muncity = '';
 ?>
 @extends('app')
 @section('content')
-    @include('report.sidebar')
-    <div class="col-md-9 wrapper">
+    <div class="modal fade" role="dialog" id="stat_details">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content details_body">
+            </div>
+        </div>
+    </div>
+
+    {{--@include('report.sidebar')--}}
+    <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
             <div class="col-md-8">
                 <h4><b>STATUS REPORT</b></h4>
@@ -34,13 +42,19 @@
             <div class="table-responsive">
                 <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
                     <tr>
-                        <th class="bg-primary">{{ $title }}</th>
+                        <th class="bg-primary" width="20%">{{ $title }}</th>
                         <th class="bg-primary">Target</th>
                         <th class="bg-primary">Population<br/>Profiled</th>
                         <th class="bg-primary">(%)</th>
                         @if($level == 'province')
                             <th class="bg-primary text-center">
-                                Municipality
+                                List of Municipalities
+                            </th>
+                            <th class="bg-primary text-center">
+                                List of Barangays
+                            </th>
+                            <th class="bg-primary text-center">
+                                Action
                             </th>
                         @endif
                         @if($level == 'brgy')
@@ -106,37 +120,68 @@
                             <td>{{ number_format($profile) }}</td>
                             <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
                             @if($level == 'province')
-                            <td>
-                                @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
+                            <form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POST">
+                                <td width="250px">
+                                {{--<div class="btn-group">--}}
+                                    {{--<form action="{{ asset('ExportExcelMunicipality') }}" method="POST">--}}
+                                        {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
+                                        {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
+                                        {{--<input type="hidden" value="{{ $s->description }}" name="province">--}}
+                                        {{--{{ csrf_field() }}--}}
+                                        {{--<button type="submit" class="btn-sm btn-primary">--}}
+                                            {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
+                                        {{--</button>--}}
+                                    {{--</form>--}}
+                                {{--</div>--}}
 
+                                    {{ csrf_field() }}
+                                    <input type="hidden" value="{{ $s->id }}" name="province_id">
+                                    <input type="hidden" value="" name="year_selected" class="year_selected">
+                                    <input type="hidden" value="" id="municipality{{$s->id}}">
+                                    <input type="hidden" value="" id="barangay{{$s->id}}">
+                                    <div>
+                                        <select class="form-control select2" id="muncity_select{{$s->id}}" onchange="filterMuncity({{$s->id}})" name="muncity_id">
+                                            <option value="">Select Municipality...</option>
+                                            @foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)
+                                                <option value="{{ $row->id }}">{{ $row->description }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td width="250px">
+                                    <div>
+                                        <select class="form-control select2" id="bar_select{{$s->id}}" onchange="setBarangay({{$s->id}})" name="bar_id">
+                                            <option value="">Select Barangay...</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <a href="" data-toggle="modal" id="details_btn{{$s->id}}" class="btn-success btn btn-sm" onclick="showDetails({{$s->id}})">
+                                            <i class="fa fa-info-circle"></i> Details
+                                        </a> &emsp;
+                                        <button class="btn-primary btn btn-sm">
+                                            <i class="fa fa-download"></i> Download
+                                        </button>
+                                    </div>
+                                </td>
+                                {{--@foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)--}}
                                     {{--<div class="btn-group">--}}
-                                        {{--<form action="{{ asset('ExportExcelMunicipality') }}" method="POST">--}}
-                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
-                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
-                                            {{--<input type="hidden" value="{{ $s->description }}" name="province">--}}
+                                        {{--<form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">--}}
                                             {{--{{ csrf_field() }}--}}
-                                            {{--<button type="submit" class="btn-sm btn-primary">--}}
+                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
+                                            {{--<input type="hidden" value="{{ $s->description }}" name="province_desc">--}}
+                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
+                                            {{--<input type="hidden" value="{{ $row->description }}" name="muncity_desc">--}}
+                                            {{--<input type="hidden" value="" name="year_selected" class="year_selected">--}}
+                                            {{--<button class="btn-primary btn">--}}
                                                 {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
                                             {{--</button>--}}
                                         {{--</form>--}}
                                     {{--</div>--}}
-
-                                    <div class="btn-group">
-                                        <form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" value="{{ $row->province_id }}" name="province_id">
-                                            <input type="hidden" value="{{ $s->description }}" name="province_desc">
-                                            <input type="hidden" value="{{ $row->id }}" name="muncity_id">
-                                            <input type="hidden" value="{{ $row->description }}" name="muncity_desc">
-                                            <input type="hidden" value="" name="year_selected" class="year_selected">
-                                            <button class="btn-primary btn">
-                                                <i class="fa fa-download"></i> {{ $row->description }}
-                                            </button>
-                                        </form>
-                                    </div>
 {{--                                        <a href="{{ str_replace('tsekap/vii','project',asset('download')) }}/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>--}}
-                                @endforeach
-                            </td>
+                                {{--@endforeach--}}
+                            </form>
                             @endif
                             @if($level == 'brgy')
                                 <td>
@@ -212,8 +257,76 @@
     $(".select2").select2({ width: '100%' });
 
     $('#select_year').on('change', function() {
-       $('.year_selected').val($(this).val());
+        $('.year_selected').val($(this).val());
     });
 
+    function filterMuncity(prov_id) {
+        muncity_id = $('#muncity_select'+prov_id).val();
+        $('#municipality'+prov_id).val(muncity_id);
+        $('#barangay'+prov_id).val('');
+        if(muncity_id !== '') {
+            var url = "{{ asset('population/target/getMuncityTotal') }}";
+            $.ajax({
+                url: url+'/'+muncity_id,
+                type: 'GET',
+                success: function(data){
+                    index = data.prov;
+                    console.log("index: " + index);
+                    $('#bar_select'+index).empty()
+                        .append($('<option>', {
+                                value: '',
+                                text : 'Select Barangay...',
+                                selected: 'true'
+                            }
+                        ));
+                    jQuery.each(data.barangay, function(i,val){
+                        $('#bar_select'+index).append($('<option>', {
+                            value: val.id,
+                            text : val.description
+                        }));
+                    });
+                    $('#bar_select'+prov_id).trigger('change');
+                }
+            });
+        } else {
+            $('#bar_select'+prov_id).empty().append($('<option>', {
+                    value: '',
+                    text : 'Select Barangay...'
+                }
+            ));
+            $('#bar_select'+prov_id).trigger('change');
+        }
+    }
+
+    function setBarangay(prov_id) {
+        $('#barangay'+prov_id).val($('#bar_select'+prov_id).val());
+    }
+
+    function showDetails(prov_id) {
+        var muncity = $('#municipality'+prov_id).val();
+        var barangay = $('#barangay'+prov_id).val();
+        console.log('barangay: ' + barangay);
+        if(barangay === '') {
+            barangay = 0;
+        }
+        if(muncity !== '' && muncity !== null) {
+            $('.details_body').html(loadingState);
+            $('#details_btn'+prov_id).attr('href','#stat_details');
+
+            var link = "{{ asset('admin/report/statdetails') }}";
+            link += '/'+muncity+'/'+barangay;
+            console.log('link: ' + link);
+            $.ajax({
+                url: link,
+                type: 'GET',
+                success: function(data){
+                    $('.details_body').html(data);
+                }
+            });
+        } else {
+            $('#stat_details').modal('hide');
+            $('#details_btn'+prov_id).attr('href','');
+        }
+    }
 </script>
 @endsection

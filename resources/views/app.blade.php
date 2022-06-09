@@ -120,6 +120,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('population') }}"><i class="fa fa-users"></i>&nbsp;&nbsp; List of Population</a></li>
+                        <li><a href="{{ url('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
 {{--                        <li><a href="{{ asset('population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Lacking 3 MUST Services<br />(PE, Laboratory and Other Services)</a></li>--}}
                     </ul>
                 </li>
