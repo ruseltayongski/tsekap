@@ -34,18 +34,20 @@ $user = Auth::user();
             <table class="table table-fixed-header table-bordered table-striped table-hover" style="width:100%;">
                 <thead class="header">
                     <tr class="bg-black-gradient">
-                        <th style="vertical-align: middle;">Facility Name</th>
-                        <th style="vertical-align: middle;">Facility Code</th>
-                        <th style="vertical-align: middle;">Contact</th>
-                        <th style="vertical-align: middle;">Email</th>
-                        <th style="white-space: nowrap; vertical-align: middle;">Clinic Hours / Schedule</th>
-                        <th style="white-space: nowrap; vertical-align: middle;">Head of Facility</th>
-                        <th style="white-space: nowrap; vertical-align: middle;">Service Capability</th>
-                        <th style="vertical-align: middle;">Available Services</th>
-                        <th style="vertical-align: middle;">Ownership</th>
-                        <th style="white-space: nowrap; vertical-align: middle;">PHIC <br>Accreditation Status</th>
-                        <th style="white-space: nowrap;vertical-align: middle;">Availability and <br> Type of Transport</th>
-                        <th style="white-space: nowrap; vertical-align: middle;">E-Referral <br>Hospital Status</th>
+                        <th class="text-center" style="vertical-align: middle;">Facility Name</th>
+                        <th class="text-center" style="vertical-align: middle;">Facility Code</th>
+                        <th class="text-center" style="vertical-align: middle;">Contact</th>
+                        <th class="text-center" style="vertical-align: middle;">Email</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">Clinic Hours / Schedule</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">Head of Facility</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">Service Capability</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">Licensing Status</th>
+                        <th class="text-center" style="vertical-align: middle;">Available Services</th>
+                        <th class="text-center" style="vertical-align: middle;">Ownership</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">PHIC <br>Accreditation Status</th>
+                        <th class="text-center" style="white-space: nowrap;vertical-align: middle;">Availability and <br> Type of Transport</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">E-Referral Health <br> Facility Status</th>
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle;">Health Facility Status</th>
                     </tr>
                 </thead>
                 @foreach($data as $row)
@@ -98,7 +100,10 @@ $user = Auth::user();
                         </td>
                         <td><small>{{ $row->chief_hospital }}</small></td>
                         <td> {{--Service Capability--}}
-                            <small>{{ $row->service_cap }}</small>
+                            <small class="bg">{{ $row->service_cap }}</small>
+                        </td>
+                        <td class="text-center">
+                            <span class="{{ $row->licensed==1 ? 'badge bg-light-blue' : 'badge bg-maroon' }}">{{ $row->licensed==1 ? 'Licensed' : 'Unlicensed' }}</span>
                         </td>
                         <td style="white-space: nowrap;"> {{--Available Services--}}
                             <?php
@@ -144,8 +149,11 @@ $user = Auth::user();
                         <td> {{--Availability and Type of Transport--}}
                             <small>{{ $row->transport }}</small>
                         </td>
-                        <td>
-                            <span class="text-center {{ $row->status ? 'badge bg-blue' : 'badge bg-red' }}">{{ $row->status ? 'Active' : 'Inactive' }}</span>
+                        <td class="text-center">
+                            <span class="{{ $row->status ? 'badge bg-blue' : 'badge bg-red' }}">{{ $row->status ? 'Active' : 'Inactive' }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="{{ $row->facility_status ? 'badge bg-aqua' : 'badge bg-orange' }}">{{ $row->facility_status ? 'Functional' : 'Not Functional' }}</span>
                         </td>
                     </tr>
                 @endforeach

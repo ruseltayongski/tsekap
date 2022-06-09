@@ -40,6 +40,7 @@ class SpecialistCtrl extends Controller
 
         $data = ReferralUser::select(
             'id as user_id',
+            'username',
             'fname',
             'mname',
             'lname',
@@ -49,6 +50,13 @@ class SpecialistCtrl extends Controller
             ->where('level','doctor')
             ->where('status','active');
 
+        if(isset($keyword)) {
+            $data = $data->where('fname','like','%'.$keyword.'%')
+                ->orWhere('mname','like','%'.$keyword.'%')
+                ->orWhere('lname','like','%'.$keyword.'%')
+                ->where('status','active');
+        }
+
         $province = Auth::user()->province;
         $muncity = Auth::user()->muncity;
         $user_priv = Auth::user()->user_priv;
@@ -57,13 +65,6 @@ class SpecialistCtrl extends Controller
             $data = $data->where('muncity',$muncity);
         } else if($user_priv == 3) {
             $data = $data->where('province',$province);
-        }
-
-        if(isset($keyword)) {
-            $data = $data->where('fname','like','%'.$keyword.'%')
-                    ->orWhere('mname','like','%'.$keyword.'%')
-                    ->orWhere('lname','like','%'.$keyword.'%')
-                    ->where('status','active');
         }
 
         $data = $data->orderBy('lname','asc')
@@ -78,14 +79,15 @@ class SpecialistCtrl extends Controller
 
     public function getSpecialist(Request $req) {
         $user_id = $req->user_id;
-        $data = ReferralUser::select('id as user_id','fname','mname','lname','contact','email')
-            ->where('id',$user_id)->first();
-        $user_facilities = self::getUserFacilities($user_id);
+        $data = ReferralUser::select('id as user_id','username','fname','mname','lname','contact','email')
+            ->where('username',$req->username)->first();
+        $user_facilities = self::getUserFacilities($data->username);
 
         $muncity = Auth::user()->muncity;
         $facilities = Facility::select(
             'id as facility_id',
-            'name as facility_name'
+            'name as facility_name',
+            'facility_code'
         )->where('muncity',$muncity)->orderBy('name','asc')->get();
 
         return view('specialist.specialist_body',[
@@ -95,10 +97,10 @@ class SpecialistCtrl extends Controller
         ]);
     }
 
-    public static function getUserFacilities($user_id) {
+    public static function getUserFacilities($username) {
         $data = FacilityAssign::select(
-            'facility_assignment.user_id',
-            'facility_assignment.facility_id',
+            'facility_assignment.username',
+            'facility_assignment.facility_code',
             'facility_assignment.specialization',
             'facility_assignment.schedule',
             'facility_assignment.fee',
@@ -106,8 +108,8 @@ class SpecialistCtrl extends Controller
             'facility_assignment.email',
             'facility.name as facility_name'
         )
-            ->leftJoin('doh_referral.facility','facility.id','=','facility_assignment.facility_id')
-            ->where('facility_assignment.user_id',$user_id)->get();
+            ->leftJoin('doh_referral.facility','facility.facility_code','=','facility_assignment.facility_code')
+            ->where('facility_assignment.username',$username)->get();
 
         if(count($data) == 0) {
             $data = ReferralUser::select(
@@ -115,56 +117,70 @@ class SpecialistCtrl extends Controller
                 'users.facility_id',
                 'users.contact',
                 'users.email',
-                'facility.name as facility_name'
+                'facility.name as facility_name',
+                'facility.facility_code'
             )
                 ->leftJoin('facility','facility.id','=','users.facility_id')
-                ->where('users.id',$user_id)->get();
+                ->where('users.username',$username)->get();
         }
 
         return $data;
     }
 
     public function addSpecialist(Request $req){
-        $user_id = $req->user_id;
-        $today = Carbon::now()->format('ymdhm');
+        $username = $req->username;
+        $today = Carbon::now()->format('ymdhi');
 
-        if($user_id) {
+        if($username) {
             $data = array(
                 'fname' => $req->fname,
                 'mname' => $req->mname,
                 'lname' => $req->lname,
             );
-            ReferralUser::find($user_id)->update($data);
-            for($i = 0; $i < count($req->affil_faci); $i++) {
-                $faci_id = $req->affil_faci[$i];
-                $check = FacilityAssign::where('user_id',$user_id)->where('facility_id',$faci_id)->first();
+            ReferralUser::where('username', $username)->update($data);
+            $delete = FacilityAssign::select('facility_code')->where('username',$username)->get();
+
+            for ($i = 0; $i < count($req->affil_faci); $i++) {
+                $faci_code = $req->affil_faci[$i];
                 $faci_data = array(
-                    'user_id' => $user_id,
-                    'facility_id' => $faci_id,
+                    'username' => $req->username,
+                    'facility_code' => isset($faci_code) ? $faci_code : null,
                     'specialization' => $req->specialization[$i],
                     'schedule' => $req->schedule[$i],
-                    'fee' => $req->specialist_fee[$i],
+                    'fee' => ($req->specialist_fee[$i] !== "PHP .") ? $req->specialist_fee[$i] : "",
                     'contact' => $req->contact[$i],
                     'email' => $req->email[$i]
                 );
-
-                if($check) {
-                    FacilityAssign::where('user_id',$user_id)->where('facility_id',$faci_id)->update($faci_data);
+                $assign = null;
+                $check = FacilityAssign::where('username', $username)->where('facility_code', $faci_code)->first();
+                if(isset($check) && $check != '') {
+                    FacilityAssign::where('username', $username)->where('facility_code', $faci_code)->update($faci_data);
                 } else {
                     FacilityAssign::create($faci_data);
                 }
 
-                foreach($req->remove_facility as $remove) {
-                    FacilityAssign::where('user_id',$user_id)->where('facility_id',$remove)->delete();
+                for($counter = 0; $counter < count($delete); $counter++) {
+                    if($faci_code == $delete[$counter]->facility_code) {
+                        $delete[$counter] = null;
+                        break;
+                    }
+                }
+
+                foreach ($req->remove_facility as $remove) {
+                    FacilityAssign::where('username', $username)->where('facility_code', $remove)->delete();
                 }
             }
-            Session::put('specialist_msg','Successfully updated specialist information!');
+
+            foreach($delete as $code) {
+                FacilityAssign::where('username', $username)->where('facility_code', $code->facility_code)->delete();
+            }
+            Session::put('specialist_msg', 'Successfully updated specialist information!');
         } else {
             $data = array(
                 'fname' => $req->fname,
                 'mname' => $req->mname,
                 'lname' => $req->lname,
-                'username' => ($req->username) ? $req->username : strtolower(substr($req->fname,0,1).$req->lname.$today),
+                'username' => ($req->username) ? $req->username : strtolower(substr($req->fname,0,1).str_replace(' ','',$req->lname).$today),
                 'password' => ($req->password) ? $req->password: bcrypt('123'),
                 'level' => 'doctor',
                 'facility_id' => 0,
@@ -176,11 +192,11 @@ class SpecialistCtrl extends Controller
                 'email' => '',
                 'contact' => ''
             );
-            $user_id = ReferralUser::create($data)->id;
+            $username = ReferralUser::create($data)->username;
             for($i = 0; $i < count($req->affil_faci); $i++) {
                 $facility = new FacilityAssign();
-                $facility->user_id = $user_id;
-                $facility->facility_id = $req->affil_faci[$i];
+                $facility->username = $username;
+                $facility->facility_code = $req->affil_faci[$i];
                 $facility->specialization = $req->specialization[$i];
                 $facility->schedule = $req->schedule[$i];
                 $facility->fee = $req->specialist_fee[$i];
@@ -196,15 +212,15 @@ class SpecialistCtrl extends Controller
     }
 
     public function deleteSpecialist(Request $req) {
-        ReferralUser::where('id',$req->user_id)->update(['status' => 'inactive']);
-        FacilityAssign::where('user_id',$req->user_id)->delete();
+        ReferralUser::where('username',$req->username)->update(['status' => 'inactive']);
+        FacilityAssign::where('username',$req->username)->delete();
         Session::put('specialist_msg','Successfully deleted specialist information!');
         Session::put('specialist_notif',true);
         return Redirect::back();
     }
 
     public function verify(Request $req) {
-        $profile = ReferralUser::select('id as user_id','fname','mname','lname','muncity','province')
+        $profile = ReferralUser::select('id as user_id','fname','mname','lname','muncity','province','username')
             ->where('level','doctor')
             ->where('status','active');
 

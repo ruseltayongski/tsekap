@@ -1,3 +1,4 @@
+
 <?php
 use App\Barangay;
 use App\FamilyProfile;
@@ -325,14 +326,6 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr class="has-group hide pregnant_lmp">
                         <td>Pregnant Date LMP:</td>
                         <td><input type="date" name="pregnant" class="form-control" /> </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-red">Deceased : </span></td>
-                        <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="yes" style="display:inline;"> Yes</label>
-                            &emsp;<span class="deceased_date"></span><br />
-                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="no" > No</label>
-                        </td>
                     </tr>
                     <tr>
                         <td></td>

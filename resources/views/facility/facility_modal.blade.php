@@ -10,7 +10,7 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" role="dialog" id="facility_delete">
+<div class="modal fade bg-" role="dialog" id="facility_delete">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-body">

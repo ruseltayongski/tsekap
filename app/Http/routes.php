@@ -9,6 +9,7 @@ Route::get('/', 'HomeCtrl@index');
 Route::get('home', 'HomeCtrl@index');
 Route::get('home/chart','HomeCtrl@chart');
 Route::get('home/count/{type}','HomeCtrl@count');
+Route::get('home/count/province/{id}', 'HomeCtrl@countPerProvince');
 Route::get('home/count/muncity/{id}', 'HomeCtrl@countPerMuncity');
 Route::get('home/count/barangay/{id}', 'HomeCtrl@countPerBarangay');
 
@@ -60,6 +61,7 @@ Route::post('download','DownloadCtrl@index');
 //Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
 Route::get('download/user/{id}','DownloadCtrl@generateUserDownload');
 Route::post('generatedownload', 'DownloadCtrl@generateDownload');
+Route::get('generatedownload/barangay/{province_id}/{muncity_id}', 'FacilityCtrl@downloadBarangay');
 //END DOWNLOAD
 
 //parameters
@@ -153,6 +155,7 @@ Route::get('/user/report/health','ClientCtrl@health');
 Route::get('/user/report/health/data','ClientCtrl@healthData');
 
 Route::get('user/report/status','ClientCtrl@statusReport');
+Route::get('admin/report/statdetails/{mun_id}/{bar_id}','ReportCtrl@statusDetails');
 //upload report
 Route::get('user/upload/temp',function(){
     return view('temp');
@@ -339,3 +342,12 @@ Route::get('specialist/facilities/{id}', 'SpecialistCtrl@getUserFacilities');
 Route::post('specialist/add', 'SpecialistCtrl@addSpecialist');
 Route::post('specialist/delete', 'SpecialistCtrl@deleteSpecialist');
 Route::get('specialist/verify', 'SpecialistCtrl@verify');
+
+//TARGET POPULATION
+Route::get('population/target','TargetCtrl@targetPopulation');
+Route::post('population/target','TargetCtrl@targetPopulation');
+Route::post('population/target/update','TargetCtrl@update');
+Route::post('population/target/delete','TargetCtrl@delete');
+Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTotal');
+Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
+Route::post('target/generateDownload','TargetCtrl@generateDownload');

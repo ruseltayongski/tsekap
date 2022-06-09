@@ -39,56 +39,87 @@ class DownloadCtrl extends Controller
         ]);
     }
 
-//    public function generateDownload($id, $prov_desc, $mun_id, $mun_desc){
     public function generateDownload(Request $req){
         $id = $req->province_id;
-        $prov_desc = $req->province_desc;
         $mun_id = $req->muncity_id;
-        $mun_desc = $req->muncity_desc;
-        $year = ($req->year_selected != '') ? $req->year_selected : Carbon::now()->format('Y');
+        $bar_id = $req->bar_id;
+
+        return self::generate($id, $mun_id, $bar_id, $req->year_selected);
+    }
+    public static function generate($id, $mun_id, $bar_id, $year) {
+        $withyear = (isset($year) && $year != '') ? true : false;
+        $year = (isset($year) && $year != '') ? $year : Carbon::now()->format('Y');
+//        return array(
+//            'withyear' => $withyear,
+//            'year' => $year
+//        );
 
         $start = $year.'-01-01';
         $end = $year.'-12-31';
         $connection = 'db_'.$year;
 
         $profileservices = ProfileServices::on($connection)->select('profileservices.dateProfile','profileservices.service_id','profileservices.bracket_id','profileservices.barangay_id','profileservices.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','profileservices.profile_id','=','profile.id')
+            ->leftJoin('tsekap_main.profile','profileservices.profile_id','=','profile.unique_id')
             ->where('profileservices.dateProfile','>=',$start)
             ->where('profileservices.dateProfile','<=',$end);
 
         $profilecases = ProfileCases::on($connection)->select('profilecases.dateProfile','profilecases.case_id','profilecases.bracket_id','profilecases.barangay_id','profilecases.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','profilecases.profile_id','=','profile.id')
+            ->leftJoin('tsekap_main.profile','profilecases.profile_id','=','profile.unique_id')
             ->where('profilecases.dateProfile','>=',$start)
             ->where('profilecases.dateProfile','<=',$end);
 
         $femalestatus = FemaleStatus::on($connection)->select('femalestatus.dateProfile','femalestatus.status','femalestatus.code','femalestatus.barangay_id','femalestatus.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','femalestatus.profile_id','=','profile.id')
+            ->leftJoin('tsekap_main.profile','femalestatus.profile_id','=','profile.unique_id')
             ->where('femalestatus.dateProfile','>=',$start)
             ->where('femalestatus.dateProfile','<=',$end);
 
         $serviceoption = ServiceOption::on($connection)->select('serviceoption.dateProfile','serviceoption.option','serviceoption.status','serviceoption.barangay_id','serviceoption.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','serviceoption.profile_id','=','profile.id')
+            ->leftJoin('tsekap_main.profile','serviceoption.profile_id','=','profile.unique_id')
             ->where('serviceoption.dateProfile','>=',$start)
-            ->where('serviceoption.dateProfile','<=',$end)
-            ->get();
+            ->where('serviceoption.dateProfile','<=',$end);
 
-        $user_priv = Auth::user()->user_priv;
+        $user = Auth::user();
+        $user_priv = $user->user_priv;
+
         if($user_priv == 3 || $user_priv == 1 || $user_priv == 0) {
-            $filename = Muncity::find($mun_id)->description.'-'.$year;
-            $profile = Profile::where('muncity_id',$mun_id)->get();
+            $filename = Muncity::find($mun_id)->description.' - '.$year;
+            $profile = Profile::select(
+                'familyID', 'head', 'relation',
+                'fname', 'mname', 'lname', 'suffix',
+                'dob', 'sex',
+                'barangay_id', 'muncity_id', 'province_id', 'updated_at'
+            )->where('province_id',$id)->where('muncity_id',$mun_id);
 
-            $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id)->get();
-            $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id)->get();
-            $femalestatus = $femalestatus->where('femalestatus.muncity_id',$mun_id)->get();
+            $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id);
+            $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id);
+            $serviceoption = $serviceoption->where('serviceoption.muncity_id',$mun_id);
+
+            if(isset($bar_id) && $bar_id != '') {
+                $filename = Muncity::find($mun_id)->description.' ('.Barangay::find($bar_id)->description.')-'.$year;
+                $profile = $profile->where('barangay_id',$bar_id);
+                $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id);
+                $profilecases = $profilecases->where('profilecases.barangay_id', $bar_id);
+                $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id);
+            }
+
+            $profileservices = $profileservices->get();
+            $profilecases = $profilecases->get();
+            $serviceoption = $serviceoption->get();
+
+            if($withyear == true) {
+                $profile = $profile->where('updated_at','>=',$start)->where('updated_at','<=',$end);
+            }
+            $profile = $profile->get();
         }
         else if($user_priv == 2) {
-            $filename = Barangay::find($id)->description.'-'.$year;
-            $profile = Profile::where('barangay_id',$id)->get();
-            $profileservices = $profileservices->where('profileservices.barangay_id',$id)->get();
-            $profilecases = $profilecases->where('profilecases.barangay_id',$id)->get();
-            $femalestatus = $femalestatus->where('femalestatus.barangay_id',$id)->get();
-        }
+            $filename = Barangay::find($bar_id)->description.'-'.$year;
+            $profile = Profile::where('barangay_id',$bar_id)
+                ->get();
 
+            $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id)->get();
+            $profilecases = $profilecases->where('profilecases.barangay_id',$bar_id)->get();
+            $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id)->get();
+        }
         return view('report.data',[
             'filename' => $filename,
             'profile' => $profile,
@@ -97,9 +128,5 @@ class DownloadCtrl extends Controller
             'femalestatus' => $femalestatus,
             'serviceoption' => $serviceoption,
         ]);
-    }
-
-    function generateUserDownload($id){
-        echo $id;
     }
 }

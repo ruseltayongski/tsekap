@@ -19,14 +19,14 @@ $user = Auth::user();
         <legend><i class="fa fa-hospital-o"></i> Facility</legend>
     </fieldset>
     <input type="hidden" value="@if(isset($data->id)){{ $data->id }}@endif" name="id">
-    <input type="hidden" value="1" name="status">
+    {{--<input type="hidden" value="1" name="status">--}}
     <div class="form-group">
         <label>Facility Name:</label>
         <input type="text" class="form-control" value="@if(isset($data->name)){{ $data->name }}@endif" autofocus name="name" required>
     </div>
     <div class="form-group">
         <label>Facility Code:</label>
-        <input type="text" class="form-control" value="@if(isset($data->facility_code)){{ $data->facility_code }}@endif" name="facility_code">
+        <input type="text" class="form-control" value="@if(isset($data->facility_code)){{ $data->facility_code }}@endif" name="facility_code" required>
     </div>
     <div class="form-group">
         <label>Abbr:</label>
@@ -101,7 +101,6 @@ $user = Auth::user();
         <input type="text" class="form-control" value="@if(isset($data->email)){{ $data->email }}@endif" name="email" required>
     </div>
     <div class="form-group">
-
         <label>Head of Facility (Name):</label>
         <input type="text" class="form-control" value="@if(isset($data->chief_hospital)){{ $data->chief_hospital }}@endif" name="chief_hospital" required>
     </div>
@@ -111,16 +110,6 @@ $user = Auth::user();
             @if(!isset($add_info->service_cap))
                 <option value="">Select Service Capability</option>
             @endif
-            <option value="Health Center"
-            <?php
-                if(isset($add_info->service_cap)){
-                    if($add_info->service_cap == "Health Center"){
-                        echo 'selected';
-                    }
-                }
-                ?>
-            >Health Center
-            </option>
             <option value="Birthing Home"
             <?php
                 if(isset($add_info->service_cap)){
@@ -171,25 +160,15 @@ $user = Auth::user();
                 ?>
             >TTMF
             </option>
-            <option value="Licensed PCF"
+            <option value="Primary Care Facility"
             <?php
                 if(isset($add_info->service_cap)){
-                    if($add_info->service_cap == "Licensed PCF"){
+                    if($add_info->service_cap == "Primary Care Facility"){
                         echo 'selected';
                     }
                 }
                 ?>
-            >Licensed PCF
-            </option>
-            <option value="RHU"
-            <?php
-                if(isset($add_info->service_cap)){
-                    if($add_info->service_cap == 'RHU'){
-                        echo 'selected';
-                    }
-                }
-                ?>
-            >Rural Health Unit
+            >Primary Care Facility
             </option>
             <option value="Dental Clinic"
             <?php
@@ -252,6 +231,13 @@ $user = Auth::user();
             >Pharmacy
             </option>
         </select>
+    </div>
+    <div class="form-group">
+        <label>Licensing Status:</label>
+        <div class="container" style="width:inherit; border: 1px solid lightgrey; padding: 3px;">
+            &emsp;&emsp;<label><input type="radio" value="1" name="licensed" <?php if($add_info->licensed== '1') echo 'checked'; ?>> Licensed </label>
+            &emsp;&emsp;<label><input type="radio" value="0" name="licensed" <?php if($add_info->licensed== '0') echo 'checked'; ?>> Unlicensed </label>
+        </div>
     </div>
     <div class="form-group">
         <label>Ownership:</label>
@@ -371,7 +357,10 @@ $user = Auth::user();
     </div>
     <div class="form-group">
         <label>PHIC Accreditation Status:</label>
-        <input type="text" class="form-control" value="@if(isset($add_info->phic_status)){{ $add_info->phic_status }}@endif" name="phic_status">
+        <div class="container" style="width:inherit; border: 1px solid lightgrey; padding: 3px;">
+            &emsp;&emsp;<label><input type="radio" value="Accredited" name="phic_status" <?php if($add_info->phic_status== 'Accredited') echo 'checked'; ?>> Accredited </label>
+            &emsp;&emsp;<label><input type="radio" value="Non-Accredited" name="phic_status" <?php if($add_info->phic_status== 'Non-Accredited') echo 'checked'; ?>> Non-Accredited </label>
+        </div>
     </div>
     <div class="form-group">
         <label>Availability and Type of Transport:</label>
@@ -739,29 +728,27 @@ $user = Auth::user();
     </div>
 
     <div class="form-group">
-        <label>E-Referral Hospital Status:</label>
-        <select class="form-control" name="status">
-            <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
-            <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
-        </select>
+        <label>E-Referral Health Facility Status:</label>
+        <div class="container" style="width:inherit; border: 1px solid lightgrey; padding: 3px;">
+            &emsp;&emsp;<label><input type="radio" value="1" name="status" <?php if($data->status== '1') echo 'checked'; ?>> Active </label>
+            &emsp;&emsp;<label><input type="radio" value="0" name="status" <?php if($data->status== '0') echo 'checked'; ?>> Inactive </label>
+        </div>
     </div>
     <div class="form-group">
-        <label>Tri City</label>
-        <select class="select2" name="tricity_id">
-            <option value="">Select tricity</option>
-            @foreach(\App\Muncity::where("province_id",2)->get() as $row)
-                <option value="{{ $row->id }}" <?php if($row->id==$data->tricity_id) echo 'selected'; ?>>{{ $row->description }}</option>
-            @endforeach
-        </select>
+        <label>Health Facility Status:</label><br>
+        <div class="container" style="width:inherit; border: 1px solid lightgrey; padding: 3px;">
+            &emsp;&emsp;<label><input type="radio" value="1" name="facility_status" <?php if($add_info->facility_status== '1') echo 'checked'; ?>> Functional </label>
+            &emsp;&emsp;<label><input type="radio" value="0" name="facility_status" <?php if($add_info->facility_status== '0') echo 'checked'; ?>> Not Functional </label>
+        </div>
     </div>
-    <div class="form-group">
-        <label>Latitude:</label>
-        <input type="text" class="form-control" value="@if(isset($data->latitude)){{ $data->latitude }}@endif" name="latitude">
-    </div>
-    <div class="form-group">
-        <label>Longitude:</label>
-        <input type="text" class="form-control" value="@if(isset($data->longitude)){{ $data->longitude }}@endif" name="longitude">
-    </div>
+    {{--<div class="form-group">--}}
+        {{--<label>Latitude:</label>--}}
+        {{--<input type="text" class="form-control" value="@if(isset($data->latitude)){{ $data->latitude }}@endif" name="latitude">--}}
+    {{--</div>--}}
+    {{--<div class="form-group">--}}
+        {{--<label>Longitude:</label>--}}
+        {{--<input type="text" class="form-control" value="@if(isset($data->longitude)){{ $data->longitude }}@endif" name="longitude">--}}
+    {{--</div>--}}
     <hr />
     <div class="modal-footer">
         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>

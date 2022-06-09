@@ -337,7 +337,7 @@ $brgy = $brgy->orderBy('description','asc')
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='no') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="no"> No </label>
                         </td>
                     </tr>
-                    <tr class="has-group unmetClass {{ $class }}">
+                    <tr class="has-group unmetClass hide">
                         <td>Unmet Need :</td>
                         <td>
                             <input type="hidden" name="unmet" id="unmet" value="{{ $info->unmet }}"  />

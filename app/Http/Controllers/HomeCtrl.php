@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Muncity;
+use App\Province;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +88,30 @@ class HomeCtrl extends Controller
             );
         }
         return false;
+    }
+
+    public function countPerProvince($id) {
+        $target = 0;
+        $countPopulation = 0;
+        $profilePercentage = 0;
+
+        if(!$id)
+            $id = Session::get('homeProvince');
+
+        if($id) {
+            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('province_id',$id)->first()->count;
+            $countPopulation = Profile::where('province_id', $id)->count();
+            $profilePercentage = ($countPopulation / $target) * 100;
+        }
+
+        Session::put('homeProvince', $id);
+        Session::put('homeMuncity', '');
+        Session::put('homeBarangay', '');
+
+        return array(
+            'countPopulation' => number_format($countPopulation),
+            'profilePercentage' => number_format($profilePercentage, 1)
+        );
     }
 
     public function countPerMuncity($id) {

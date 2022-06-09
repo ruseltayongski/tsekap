@@ -8,6 +8,7 @@ use App\Facility2;
 use App\AvailService;
 use App\Http\Controllers\Controller;
 use App\Muncity;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,12 +56,14 @@ class FacilityCtrl extends Controller
             "facility.referral_used",
             "info.service_cap",
             "info.phic_status",
+            "info.licensed",
             "info.sched_day_from",
             "info.sched_day_to",
             "info.sched_time_from",
             "info.sched_time_to",
             "info.sched_notes",
-            "info.transport"
+            "info.transport",
+            "info.facility_status"
         )
             ->leftJoin("province as prov","prov.id","=","facility.province")
             ->leftJoin("muncity as mun","mun.id","=","facility.muncity")
@@ -200,12 +203,14 @@ class FacilityCtrl extends Controller
         $fac->facility_code = $request->facility_code;
         $fac->service_cap = ($request->service_cap) ? $request->service_cap : null;
         $fac->phic_status = ($request->phic_status) ? $request->phic_status : '';
+        $fac->licensed = ($request->licensed) ? $request->licensed : 0;
         $fac->sched_day_from = ($request->sched_day_from) ? $request->sched_day_from : null;
         $fac->sched_day_to = ($request->sched_day_to) ? $request->sched_day_to : null;
         $fac->sched_time_from = ($request->sched_time_from) ? $request->sched_time_from : null;
         $fac->sched_time_to = ($request->sched_time_to) ? $request->sched_time_to : null;
         $fac->sched_notes = ($request->sched_notes) ? $request->sched_notes : '';
         $fac->transport = ($request->transport) ? $request->transport : null;
+        $fac->facility_status = ($request->facility_status) ? $request->facility_status : 0;
         $fac->save();
 
         unset($data['service_cap']);
@@ -216,6 +221,8 @@ class FacilityCtrl extends Controller
         unset($data['sched_time_to']);
         unset($data['sched_notes']);
         unset($data['transport']);
+        unset($data['facility_status']);
+        unset($data['licensed']);
 
         if($request->id){
             Facility::find($request->id)->update($data);
@@ -248,4 +255,10 @@ class FacilityCtrl extends Controller
             ->where('muncity_id', $muncity_id)
             ->get();
     }
+
+    public function downloadBarangay($barangay, $muncity_id) {
+        $prov_id = Auth::user()->province;
+        return DownloadCtrl::generate($prov_id, $muncity_id, $barangay, '');
+    }
+
 }

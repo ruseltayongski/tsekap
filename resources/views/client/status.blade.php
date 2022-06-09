@@ -7,12 +7,12 @@
     $user = Auth::user();
     $brgy = Barangay::where('muncity_id',$user->muncity)->get();
 ?>
+
 @extends('client')
 @section('content')
     <style>
         .table thead tr th {
             font-weight: bold;
-
         }
     </style>
     <div class="col-md-9 wrapper">
@@ -30,6 +30,7 @@
                         <th>Target</th>
                         <th>Profiled</th>
                         <th>Percentage</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,7 +62,7 @@
 
                             </td>
                             <td>
-                                {{ $row->target }}
+                                {{ number_format($row->target) }}
                             </td>
                             <td>
                                 <?php
@@ -93,6 +94,11 @@
                                 {{ number_format($profile) }}
                             </td>
                             <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
+                            <td class="text-center">
+                                <a class="btn-primary btn" href="{{ asset('generatedownload/barangay') }}/{{ $row->id  }}/{{ Auth::user()->muncity}}" method="POST">
+                                    <i class="fa fa-download"></i> Download
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -287,4 +287,8 @@ class ReportCtrl extends Controller
         }
         return $count;
     }
+
+    public function statusDetails($mun_id, $bar_id) {
+        return view('report.stat_details', ['muncity'=>$mun_id, 'bar_id'=>$bar_id]);
+    }
 }

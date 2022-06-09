@@ -34,7 +34,7 @@ class LocationCtrl extends Controller
         return Muncity::where('province_id',$id)->orderBy('description','asc')->get();
     }
 
-    public  function getBarangayByMuncity($id)
+    public static function getBarangayByMuncity($id)
     {
         return Barangay::where('muncity_id',$id)->orderBy('description','asc')->get();
     }

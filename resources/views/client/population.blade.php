@@ -78,19 +78,20 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Family ID<br>&nbsp;</th>
-                            <th>Full Name<br>&nbsp;</th>
-                            <th>Age<br>&nbsp;</th>
-                            <th>Sex<br>&nbsp;</th>
-                            <th>
+                            <th class="text-center">Family ID<br>&nbsp;</th>
+                            <th class="text-center">Full Name<br>&nbsp;</th>
+                            <th class="text-center">Age<br>&nbsp;</th>
+                            <th class="text-center">Sex<br>&nbsp;</th>
+                            <th class="text-center">Barangay<br>&nbsp;</th>
+                            <th class="text-center">
                                 Sitio<br>
                                 <small class="text-info">(Update by family)</small>
                             </th>
-                            <th>
+                            <th class="text-center">
                                 Purok<br>
                                 <small class="text-warning">(Update by family)</small>
                             </th>
-                            <th>Harmonized<br>&nbsp;</th>
+                            <th class="text-center">Harmonized<br>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,6 +141,8 @@
                                 @endif
                             </td>
                             <td>{{ $p->sex }}</td>
+                            <?php $bar_desc = \App\Http\Controllers\LocationCtrl::getBarangay($p->barangay_id);?>
+                            <td>{{ $bar_desc }}</td>
                             <td>
                                 <small class="text-info cursor" onclick="selectSitio('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-institution"></i>
                                     @if($p->sitio_id)

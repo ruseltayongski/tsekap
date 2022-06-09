@@ -305,14 +305,6 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         <td><input type="date" name="pregnant" class="form-control" /> </td>
                     </tr>
                     <tr>
-                        <td><span class="text-red">Deceased : </span></td>
-                        <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="yes" style="display:inline;"> Yes</label>
-                            &emsp;<span class="deceased_date"></span><br />
-                            <label style="cursor: pointer;"><input type="radio" name="deceased" value="no" > No</label>
-                        </td>
-                    </tr>
-                    <tr>
                         <td></td>
                         <td>
                             <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
@@ -352,11 +344,11 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
             var sex = $('input[name="sex"]:checked').val();
             console.log(sex);
             if (sex === 'Female') {
-                $('.unmetClass').removeClass('hide');
+//                $('.unmetClass').removeClass('hide');
                 $('.menarcheClass').removeClass('hide');
                 $('.pregnant_lmp').removeClass('hide');
             } else {
-                $('.unmetClass').addClass('hide');
+//                $('.unmetClass').addClass('hide');
                 $('.menarcheClass').addClass('hide');
                 $('.pregnant_lmp').addClass('hide');
                 $('#unmet').val('0');
