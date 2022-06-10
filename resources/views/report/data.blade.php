@@ -31,7 +31,7 @@ $table_body .='
             <th> LAST NAME </th>
             <th> SUFFIX </th>
             <th> BIRTHDAY </th>
-            <th> SEX </th
+            <th> SEX </th>
             <th> BARANGAY </th>
             <th> MUNICIPAL / CITY </th>
             <th> PROVINCE </th>
