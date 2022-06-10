@@ -9,7 +9,15 @@ header("Content-Disposition: attachment; filename=".$filename.".xls");
 header("Pragma: no-cache");
 header("Expires: 0");
 
-$table_body ='
+$table_body = "
+    <div class='col-md-12' style='white-space: nowrap; background-color: lightgoldenrodyellow'>
+        <h3>TARGET (TOTAL): ".number_format($total_target)."&emsp;&emsp;
+        PROFILED (TOTAL): ".number_format($total_profiled)."&emsp;&emsp;
+        PERCENTAGE: ".$total_percentage." % </h3>
+    </div>
+";
+
+$table_body .='
     <div class="col-md-12" style="white-space: nowrap;">
         <h3>PROFILES</h3>
     </div>

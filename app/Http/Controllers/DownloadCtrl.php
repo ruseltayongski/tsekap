@@ -7,6 +7,7 @@ use App\Province;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests;
 use App\Barangay;
@@ -49,10 +50,6 @@ class DownloadCtrl extends Controller
     public static function generate($id, $mun_id, $bar_id, $year) {
         $withyear = (isset($year) && $year != '') ? true : false;
         $year = (isset($year) && $year != '') ? $year : Carbon::now()->format('Y');
-//        return array(
-//            'withyear' => $withyear,
-//            'year' => $year
-//        );
 
         $start = $year.'-01-01';
         $end = $year.'-12-31';
@@ -80,6 +77,7 @@ class DownloadCtrl extends Controller
 
         $user = Auth::user();
         $user_priv = $user->user_priv;
+        $total_target = $total_profiled = 0;
 
         if($user_priv == 3 || $user_priv == 1 || $user_priv == 0) {
             $filename = Muncity::find($mun_id)->description.' - '.$year;
@@ -94,12 +92,17 @@ class DownloadCtrl extends Controller
             $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id);
             $serviceoption = $serviceoption->where('serviceoption.muncity_id',$mun_id);
 
+            $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
+            $total_profiled = Profile::where('muncity_id',$mun_id)->count();
+
             if(isset($bar_id) && $bar_id != '') {
                 $filename = Muncity::find($mun_id)->description.' ('.Barangay::find($bar_id)->description.')-'.$year;
                 $profile = $profile->where('barangay_id',$bar_id);
                 $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id);
                 $profilecases = $profilecases->where('profilecases.barangay_id', $bar_id);
                 $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id);
+                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
+                $total_profiled = Profile::where('barangay_id',$bar_id)->count();
             }
 
             $profileservices = $profileservices->get();
@@ -119,7 +122,13 @@ class DownloadCtrl extends Controller
             $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id)->get();
             $profilecases = $profilecases->where('profilecases.barangay_id',$bar_id)->get();
             $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id)->get();
+
+            $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
+            $total_profiled = Profile::where('barangay_id',$bar_id)->count();
         }
+
+        $total_percentage = ($total_profiled / $total_target) * 100;
+
         return view('report.data',[
             'filename' => $filename,
             'profile' => $profile,
@@ -127,6 +136,9 @@ class DownloadCtrl extends Controller
             'profilecases' => $profilecases,
             'femalestatus' => $femalestatus,
             'serviceoption' => $serviceoption,
+            'total_target' => $total_target,
+            'total_profiled' => $total_profiled,
+            'total_percentage' => number_format($total_percentage, 1)
         ]);
     }
 }

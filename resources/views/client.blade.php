@@ -197,15 +197,15 @@ use App\Province;
                         <li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; {{--Environmental Health Graph--}} Statistical Data</a></li>
                         @endif
                         <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
-                        @if(Auth::user()->user_priv==0)
+                        @if(Auth::user()->user_priv==0 || Auth::user()->user_priv =2)
                         <li><a href="{{ asset('/user/report/status') }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
                         @endif
-                        @if(Auth::user()->user_priv==2)
-                        <?php
-                            $brgy = \App\UserBrgy::where('user_id',Auth::user()->id)->first()->barangay_id;
-                        ?>
-                        <li><a href="{{ asset('generatedownload/barangay') }}/{{ $brgy }}/{{ Auth::user()->muncity}}"><i class="fa fa-download"></i>&nbsp;&nbsp; Status Report</a></li>
-                        @endif
+                        {{--@if(Auth::user()->user_priv==2)--}}
+                        {{--<?php--}}
+                            {{--$brgy = \App\UserBrgy::where('user_id',Auth::user()->id)->first()->barangay_id;--}}
+                        {{--?>--}}
+                        {{--<li><a href="{{ asset('generatedownload/barangay') }}/{{ $brgy }}/{{ Auth::user()->muncity}}"><i class="fa fa-download"></i>&nbsp;&nbsp; Status Report</a></li>--}}
+                        {{--@endif--}}
                     </ul>
                 </li>
                 <li class="dropdown hide">

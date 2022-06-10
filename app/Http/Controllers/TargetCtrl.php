@@ -43,8 +43,17 @@ class TargetCtrl extends Controller
             $data = Barangay::where('muncity_id', Auth::user()->muncity);
         }
         else if($user_priv == 2)  {
-            $barangay_id = UserBrgy::select('barangay_id')->where('user_id', $user->id)->first()->barangay_id;
-            $data = Barangay::where('id', $barangay_id);
+//            $barangay_id = UserBrgy::select('barangay_id')->where('user_id', $user->id)->first()->barangay_id;
+//            $data = Barangay::where('id', $barangay_id);
+            $data = UserBrgy::select(
+                'barangay.id',
+                'barangay.description',
+                'barangay.province_id',
+                'barangay.muncity_id',
+                'barangay.target'
+            )
+                ->where('userbrgy.user_id',$user->id)
+                ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id');
         }
         else if($user_priv == 3 || $user_priv == 1) {
             $data = Province::select(
@@ -79,7 +88,7 @@ class TargetCtrl extends Controller
         return $data;
     }
 
-    public function getMuncityTotal($mun_id) {
+    public static function getMuncityTotal($mun_id) {
         $prov = Muncity::select('province_id')->where('id',$mun_id)->first()->province_id;
         $mun_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
         $mun_profiled = Profile::where('muncity_id',$mun_id)->count();
@@ -92,7 +101,7 @@ class TargetCtrl extends Controller
         );
     }
 
-    public function getBrgyTotal($bar_id) {
+    public static function getBrgyTotal($bar_id) {
         $prov = Barangay::select('province_id')->where('id',$bar_id)->first()->province_id;
         $bar_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
         $bar_profiled = Profile::where('barangay_id',$bar_id)->count();

@@ -1962,7 +1962,7 @@ class ClientCtrl extends Controller
     public function statusReport()
     {
         $priv = Auth::user()->user_priv;
-        if($priv!=0){
+        if($priv!=0 && $priv!=2){
             return redirect('/');
         }
         return view('client.status');

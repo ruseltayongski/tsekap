@@ -1,5 +1,10 @@
 <?php
+use App\Barangay;
+use App\Profile;
+
 $user = Auth::user();
+$total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+$total_profiled = Profile::where('muncity_id',$user->muncity)->count();
 ?>
 
 @extends('client')
@@ -29,7 +34,8 @@ $user = Auth::user();
                 <thead class="header">
                 <tr class="bg-navy-active">
                     <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:30%;"> Barangay </th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 30%;"> Target </th>
+                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
+                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
                     <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
                 </tr>
                 </thead>
@@ -41,6 +47,10 @@ $user = Auth::user();
                         <td class="text-center" style="font-size: 15px">
                             {{ number_format($row->target) }}
                         </td>
+                        <td class="text-center" style="font-size: 15px">
+                            <?php $profiled = Profile::where('barangay_id',$row->id)->count();?>
+                            {{ number_format($profiled) }}
+                        </td>
                         <td class="text-center">
                             <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
                                 <i class="fa fa-pencil-square-o"></i> Update
@@ -51,6 +61,14 @@ $user = Auth::user();
                         </td>
                     </tr>
                 @endforeach
+                <tfoot>
+                    <tr style="background-color: lightgoldenrodyellow">
+                        <td><b>TOTAL:</b></td>
+                        <td class="text-center">{{ number_format($total_target) }}</td>
+                        <td class="text-center">{{ number_format($total_profiled) }}</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

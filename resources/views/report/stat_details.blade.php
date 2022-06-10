@@ -4,13 +4,19 @@ use App\Muncity;
 use App\Http\Controllers\ReportCtrl as Report;
 use App\UserBrgy;
 use App\User;
+use App\Profile;
 
 $user = Auth::user();
+$total_target = $total_profiled = 0;
 if(isset($bar_id) && $bar_id != '' && $bar_id != 0) {
     $brgy = Barangay::where('id', $bar_id)->get();
 } else {
     $brgy = Barangay::where('muncity_id',$muncity)->get();
+    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$muncity)->first()->target_count;
+    $total_profiled = Profile::where('muncity_id',$muncity)->count();
 }
+$total_percentage = ($total_profiled / $total_target) * 100;
+$total_percentage = number_format($total_percentage, 1);
 
 ?>
 <style>
@@ -20,6 +26,12 @@ if(isset($bar_id) && $bar_id != '' && $bar_id != 0) {
 </style>
 <div class="modal-header" style="background-color: #2d92a1">
     <span style="font-size: 14pt;">{{ Muncity::find($muncity)->description }} Status Report (Per Barangay)</span>
+    @if(count($brgy) > 1)
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        <span class="" style="font-size: 14px;">
+            <b>(TOTAL)</b>&nbsp;&nbsp; Target: {{ number_format($total_target) }}&emsp;&emsp;Profiled: {{ number_format($total_profiled) }}
+        </span>
+    @endif
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 
@@ -106,6 +118,19 @@ if(isset($bar_id) && $bar_id != '' && $bar_id != 0) {
                     </tr>
                 @endforeach
                 </tbody>
+
+                @if(count($brgy) > 1)
+                <tfoot style="background-color: lightgoldenrodyellow">
+                    <tr>
+                        <th><b>TOTAL:</b></th>
+                        <th></th>
+                        <th class="text-center">{{ number_format($total_target) }}</th>
+                        <th class="text-center">{{ number_format($total_profiled) }}</th>
+                        <th class="text-center">{{ $total_percentage }} %</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+                @endif
             </table>
         </div>
     @else
