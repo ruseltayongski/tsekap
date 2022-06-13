@@ -1,10 +1,31 @@
 <?php
 use App\Barangay;
 use App\Profile;
+use App\UserBrgy;
 
 $user = Auth::user();
-$total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-$total_profiled = Profile::where('muncity_id',$user->muncity)->count();
+$total_target = $total_profiled = 0;
+
+if($user->user_priv == 2) {
+    $brgy = UserBrgy::select(
+        'barangay.id',
+        'barangay.description',
+        'barangay.province_id',
+        'barangay.muncity_id',
+        'barangay.target'
+    )
+        ->where('userbrgy.user_id',$user->id)
+        ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id')
+        ->get();
+    $total_target = $total_profiled = 0;
+    foreach($brgy as $bar) {
+        $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
+        $total_profiled += Profile::where('barangay_id',$bar->id)->count();
+    }
+} else {
+    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+    $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
+}
 ?>
 
 @extends('client')
@@ -61,6 +82,7 @@ $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
                         </td>
                     </tr>
                 @endforeach
+                @if(count($data) > 1)
                 <tfoot>
                     <tr style="background-color: lightgoldenrodyellow">
                         <td><b>TOTAL:</b></td>
@@ -69,6 +91,7 @@ $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
                         <td></td>
                     </tr>
                 </tfoot>
+                @endif
             </table>
         </div>
     </div>
