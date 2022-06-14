@@ -26,6 +26,7 @@ if($user->user_priv == 2) {
     $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
     $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
 }
+$total_percentage = ($total_profiled / $total_target) * 100;
 ?>
 
 @extends('client')
@@ -54,9 +55,10 @@ if($user->user_priv == 2) {
             <table class="table table-bordered table-striped table-fixed-header" style="width:100%;">
                 <thead class="header">
                 <tr class="bg-navy-active">
-                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:30%;"> Barangay </th>
+                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:25%;"> Barangay </th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
+                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Percentage </th>
                     <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
                 </tr>
                 </thead>
@@ -71,6 +73,10 @@ if($user->user_priv == 2) {
                         <td class="text-center" style="font-size: 15px">
                             <?php $profiled = Profile::where('barangay_id',$row->id)->count();?>
                             {{ number_format($profiled) }}
+                        </td>
+                        <td class="text-center text-info" style="font-size: 15px">
+                            <?php $percent = ($profiled / $row->target) * 100;?>
+                            <b>{{ number_format($percent, 1) }} %</b>
                         </td>
                         <td class="text-center">
                             <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
@@ -88,6 +94,7 @@ if($user->user_priv == 2) {
                         <td><b>TOTAL:</b></td>
                         <td class="text-center">{{ number_format($total_target) }}</td>
                         <td class="text-center">{{ number_format($total_profiled) }}</td>
+                        <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
                         <td></td>
                     </tr>
                 </tfoot>

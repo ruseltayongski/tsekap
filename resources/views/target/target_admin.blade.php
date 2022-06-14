@@ -15,9 +15,10 @@ $user = Auth::user();
             <table class="table table-bordered table-striped" style="width:100%;">
                 <thead class="header">
                 <tr class="bg-navy-active">
-                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:20%;"> Province </th>
+                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:17%;"> Province </th>
                     <th class="text-center" style="vertical-align: middle; width:10%;"> Target (Total)</th>
                     <th class="text-center" style="vertical-align: middle; width:10%;"> Profiled (Total)</th>
+                    <th class="text-center" style="vertical-align: middle; width:10%;"> Percentage (Total)</th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Municipality </th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Barangay </th>
                     <th class="text-center" style="vertical-align: middle"> Action </th>
@@ -35,10 +36,14 @@ $user = Auth::user();
                         <th class="text-center text-info" style="font-size: 15px">
                             <?php $profile = Report::getProfile('province',$row->id);?>
                             {{ number_format($profile) }}
-                            </th>
-                            <form action="{{ asset('target/generateDownload') }}" method="POST">
-                                <input type="hidden" value="{{ $row->id }}" name="province_id">
-                                {{ csrf_field() }}
+                        </th>
+                        <th class="text-center text-info" style="font-size: 15px">
+                            <?php $percentage = ($profile / $prov_total) * 100;?>
+                            {{ number_format($percentage, 1) }} %
+                        </th>
+                        <form action="{{ asset('target/generateDownload') }}" method="POST">
+                            <input type="hidden" value="{{ $row->id }}" name="province_id">
+                            {{ csrf_field() }}
                             <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
                                 <select class="form-control select2 select_muncity" style="width:100%;" name="mun_id">
                                     <option value="">Select municipality...</option>
@@ -50,6 +55,7 @@ $user = Auth::user();
                                 <input type="hidden" id="tmpMuncity{{$row->id}}">
                                 <b style="color: darkgreen"> Target: </b><input type="text" id="mun_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
                                 <b style="color: darkgreen"> Profiled: </b><input type="text" id="mun_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                <b style="color: darkgreen"> Percentage: </b><input type="text" id="mun_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                             </td>
                             <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
                                 <select class="form-control select2" id="bar_select{{$row->id}}" name="bar_id">
@@ -57,6 +63,7 @@ $user = Auth::user();
                                 </select><br>
                                 <b style="color: darkgreen"> Target: </b><input type="text" id="bar_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
                                 <b style="color: darkgreen"> Profiled: </b><input type="text" id="bar_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                <b style="color: darkgreen"> Percentage: </b><input type="text" id="bar_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                             </td>
                             <td>
                                 <button class="btn btn-primary btn-sm">
@@ -113,6 +120,8 @@ $user = Auth::user();
                    $('#tmpMuncity'+index).val(muncity_id);
                    $('#mun_target'+index).val(numberFormat(data.mun_target));
                    $('#mun_profiled'+index).val(numberFormat(data.mun_profiled));
+                   var percent = (data.mun_profiled / data.mun_target) * 100;
+                   $('#mun_percentage'+index).val(percent.toFixed(1) + " %");
 
                    $('#bar_select'+index).empty()
                        .append($('<option>', {
@@ -141,6 +150,8 @@ $user = Auth::user();
                 success: function(data){
                     $('#bar_target'+data.prov).val(data.bar_target);
                     $('#bar_profiled'+data.prov).val(data.bar_profiled);
+                    var percent = (data.bar_profiled / data.bar_target) * 100;
+                    $('#bar_percentage'+data.prov).val(percent.toFixed(1) + " %");
                 }
             });
         });
