@@ -136,7 +136,7 @@ use App\Province;
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
                         <li><a href="{{ asset('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
                         {{--<li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>--}}
-                        {{--<li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>--}}
+                        <li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>
                         {{--<li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>--}}
                     </ul>
                 </li>
