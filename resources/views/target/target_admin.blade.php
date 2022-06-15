@@ -131,6 +131,7 @@ $user = Auth::user();
                        ));
                    $('#bar_target'+index).val('');
                    $('#bar_profiled'+index).val('');
+                   $('#bar_percentage'+index).val('');
                    jQuery.each(data.barangay, function(i,val){
                        $('#bar_select'+index).append($('<option>', {
                            value: val.id,
