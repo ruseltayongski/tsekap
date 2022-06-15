@@ -126,7 +126,7 @@ $user = Auth::user();
                    $('#bar_select'+index).empty()
                        .append($('<option>', {
                            value: '',
-                           text : 'Select Barangay...'
+                           text : 'Select barangay...'
                            }
                        ));
                    $('#bar_target'+index).val('');
