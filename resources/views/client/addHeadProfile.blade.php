@@ -313,6 +313,9 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                             <button type="submit" class="btn btn-success btn-sm">
                                 <i class="fa fa-send"></i> Submit
                             </button>
+                            <button class="btn btn-info btn-sm">
+                                <i class="fa fa-arrow-right"></i> Proceed to EMR
+                            </button>
                         </td>
                     </tr>
                 </table>
