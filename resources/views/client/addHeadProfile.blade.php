@@ -347,11 +347,11 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
             var sex = $('input[name="sex"]:checked').val();
             console.log(sex);
             if (sex === 'Female') {
-//                $('.unmetClass').removeClass('hide');
+                $('.unmetClass').removeClass('hide');
                 $('.menarcheClass').removeClass('hide');
                 $('.pregnant_lmp').removeClass('hide');
             } else {
-//                $('.unmetClass').addClass('hide');
+                $('.unmetClass').addClass('hide');
                 $('.menarcheClass').addClass('hide');
                 $('.pregnant_lmp').addClass('hide');
                 $('#unmet').val('0');
