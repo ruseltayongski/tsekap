@@ -330,7 +330,7 @@ $brgy = $brgy->orderBy('description','asc')
 
                         </td>
                     </tr>
-                    <tr class="head">
+                    <tr class="sexuallyActiveClass hide">
                         <td>Sexually Active :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='yes') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>

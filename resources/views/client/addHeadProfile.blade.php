@@ -274,7 +274,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                             <label style="cursor: pointer;"><input onclick="showMenarche()" type="radio" name="menarche" value="no"> No</label>&emsp;
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="sexuallyActiveClass hide">
                         <td>Sexually Active :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>

@@ -263,6 +263,13 @@ $brgy = $brgy->orderBy('description','asc')
                         <td>Covid Status :</td>
                         <td><input type="text" name="covid_status" class="form-control"/> </td>
                     </tr>
+                    <tr class="sexuallyActiveClass hide">
+                        <td>Sexually Active :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="no"> No </label>
+                        </td>
+                    </tr>
                     <tr class="has-group unmetClass hide">
                         <td>Unmeet Need :</td>
                         <td>

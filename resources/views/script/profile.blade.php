@@ -128,37 +128,44 @@
             type : 'GET',
             success: function(age){
                 console.log("Age : " + age);
-                if(age >= 10 && age <= 49 && sex === "Female") {
-                    $('.unmetClass').removeClass('hide');
+                if(age >= 10) {
+                    if(age <= 49  && sex === "Female") {
+                        $('.unmetClass').removeClass('hide');
+                    } else {
+                        $('.unmetClass').addClass('hide');
+                    }
+                    $('.sexuallyActiveClass').removeClass('hide');
                 } else {
-                    $('.unmetClass').addClass('hide');
+                    $('.sexuallyActiveClass').addClass('hide');
+                }
+
+                if(age >= 6 && sex === "Female") {
+                    $('.menarcheClass').removeClass('hide');
+                } else {
+                    $('.menarcheClass').addClass('hide');
                 }
 
                 if(age>14 && age<=50) {
                    if (sex === 'Female') {
-                       $('.menarcheClass').removeClass('hide');
                        $('.pregnant_lmp').removeClass('hide');
                    } else if (sex === 'Male') {
-                       $('.menarcheClass').addClass('hide');
                        $('.pregnant_lmp').addClass('hide');
                        $('#unmet').val('0');
                        $('#unmet2').val('Not set');
                    }
                 } else{
-                    $('.unmetClass').addClass('hide');
-                    $('.menarcheClass').addClass('hide');
                     $('.pregnant_lmp').addClass('hide');
                     $('#unmet').val('0');
                     $('#unmet2').val('Not set');
                 }
 
-               if(age < 5) {
-                   $('.hypertensionClass, .diabetesClass').addClass('hide');
-                   $('.nutritionClass, .immuClass, .newbornClass').removeClass('hide');
-               } else {
-                   $('.hypertensionClass, .diabetesClass').removeClass('hide');
-                   $('.nutritionClass, .immuClass, .newbornClass').addClass('hide');
-               }
+                if(age < 5) {
+                    $('.hypertensionClass, .diabetesClass').addClass('hide');
+                    $('.nutritionClass, .immuClass, .newbornClass').removeClass('hide');
+                } else {
+                    $('.hypertensionClass, .diabetesClass').removeClass('hide');
+                    $('.nutritionClass, .immuClass, .newbornClass').addClass('hide');
+                }
             }
         });
     }
