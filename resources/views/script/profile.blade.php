@@ -128,35 +128,28 @@
             type : 'GET',
             success: function(age){
                 console.log("Age : " + age);
-                if(age >= 10) {
-                    if(age <= 49  && sex === "Female") {
+                if(age >= 10 && age <= 49) {
+                    if(sex === "Female") {
                         $('.unmetClass').removeClass('hide');
-                    } else {
+                        $('.sexuallyActiveClass').removeClass('hide');
+                        $('.pregnant_lmp').removeClass('hide');
+                    } else if(sex === 'Male') {
                         $('.unmetClass').addClass('hide');
+                        $('.sexuallyActiveClass').addClass('hide');
+                        $('.pregnant_lmp').addClass('hide');
+                        $('#unmet').val('0');
+                        $('#unmet2').val('Not set');
                     }
-                    $('.sexuallyActiveClass').removeClass('hide');
                 } else {
-                    $('.sexuallyActiveClass').addClass('hide');
+                    $('.pregnant_lmp').addClass('hide');
+                    $('#unmet').val('0');
+                    $('#unmet2').val('Not set');
                 }
 
                 if(age >= 6 && sex === "Female") {
                     $('.menarcheClass').removeClass('hide');
                 } else {
                     $('.menarcheClass').addClass('hide');
-                }
-
-                if(age>14 && age<=50) {
-                   if (sex === 'Female') {
-                       $('.pregnant_lmp').removeClass('hide');
-                   } else if (sex === 'Male') {
-                       $('.pregnant_lmp').addClass('hide');
-                       $('#unmet').val('0');
-                       $('#unmet2').val('Not set');
-                   }
-                } else{
-                    $('.pregnant_lmp').addClass('hide');
-                    $('#unmet').val('0');
-                    $('#unmet2').val('Not set');
                 }
 
                 if(age < 5) {
