@@ -350,10 +350,12 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                 $('.unmetClass').removeClass('hide');
                 $('.menarcheClass').removeClass('hide');
                 $('.pregnant_lmp').removeClass('hide');
+                $('.sexuallyActiveClass').removeClass('hide');
             } else {
                 $('.unmetClass').addClass('hide');
                 $('.menarcheClass').addClass('hide');
                 $('.pregnant_lmp').addClass('hide');
+                $('.sexuallyActiveClass').addClass('hide');
                 $('#unmet').val('0');
                 $('#unmet2').val('Not set');
             }
