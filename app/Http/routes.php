@@ -351,3 +351,5 @@ Route::post('population/target/delete','TargetCtrl@delete');
 Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTotal');
 Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
 Route::post('target/generateDownload','TargetCtrl@generateDownload');
+
+Route::get('apiv21/getSpecialists/{user_id}/{province}/{muncity}','ApiCtrlv21@getSpecialists');

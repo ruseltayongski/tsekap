@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Barangay;
+use App\Facility;
+use App\FacilityAssign;
 use App\Immunization;
 use App\Muncity;
 use App\NutritionStatus;
 use App\Profile;
+use App\ReferralUser;
 use App\ServiceGroup;
 use App\User;
 use App\UserBrgy;
@@ -528,6 +531,79 @@ class ApiCtrlv21 extends Controller
 
     public function patient_api($id){
         $data = Dengvaxia::find($id);
+        return $data;
+    }
+
+    public function getSpecialists($user_priv, $province, $muncity) {
+        $data = array();
+
+        $specialists = ReferralUser::select(
+            'username',
+            'fname',
+            'mname',
+            'lname',
+            'contact',
+            'email'
+        )
+            ->where('level','doctor')
+            ->where('status','active');
+
+        if($user_priv == 0 || $user_priv == 2)
+            $specialists = $specialists->where('muncity',$muncity)->get();
+        else if($user_priv == 3)
+            $specialists = $specialists->where('province',$province->get());
+
+        foreach($specialists as $s) {
+            $arr = array(
+                "username" => $s->username,
+                "fname" => $s->fname,
+                "mname" => $s->mname,
+                "lname" => $s->lname
+            );
+            $facility = FacilityAssign::select(
+                "facility_code",
+                "specialization",
+                "contact",
+                "email",
+                "schedule",
+                "fee"
+            )
+                ->where('username',$s->username)->get();
+
+            $affiliated = array();
+            if(count($facility) == 0) {
+                $faci = Facility::select(
+                    'facility_code'
+                )
+                    ->leftJoin('users','users.facility_id','=','facility.id')
+                    ->where('users.username',$s->username)->first();
+
+                $temp = array(
+                    "facility_code" => $faci->facility_code,
+                    "specialization" => "",
+                    "contact" => $s->contact,
+                    "email" => $s->email,
+                    "schedule" => "",
+                    "fee" => ""
+                );
+                array_push($affiliated, $temp);
+            } else {
+                foreach($facility as $faci) {
+                    $temp = array(
+                        "facility_code" => $faci->facility_code,
+                        "specialization" => $faci->specialization,
+                        "contact" => $faci->contact,
+                        "email" => $faci->email,
+                        "schedule" => $faci->schedule,
+                        "fee" => $faci->fee
+                    );
+                    array_push($affiliated, $temp);
+                }
+            }
+
+            $arr["affiliated"] = $affiliated;
+            array_push($data, $arr);
+        }
         return $data;
     }
 }
