@@ -568,7 +568,7 @@ $user = Auth::user();
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="dental[]" id='service6' onchange="triggerServiceCosting(6)" value="Oralprophylaxis (Cleaning)"> Oralprophylaxis (Cleaning) </label> <br>
+                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="dental[]" id='service6' onchange="triggerServiceCosting(6)" value="Oral Prophylaxis (Cleaning)"> Oral Prophylaxis (Cleaning) </label> <br>
                         <span class="servicesign6"><input class="money_format19" oninput="formatMoney(19)" type="text" id="servicecost6" name="dental_cost[]" placeholder="Cost" style="margin-bottom: 10px; width:75%;"></span>
                     </div>
                     <div class="col-md-4">
@@ -684,11 +684,11 @@ $user = Auth::user();
                         <span class="servicesign21"><input class="money_format34" oninput="formatMoney(34)" type="text" id="servicecost21" name="fam_plan_cost[]" placeholder="Cost" style="margin-bottom: 10px; width:75%;"></span>
                     </div>
                     <div class="col-md-4">
-                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="fam_plan[]" id="service22" onchange="triggerServiceCosting(22)" value="(DMPA) Pure Inject Contraceptive"> (DMPA) Pure Inject Contraceptive</label><br>
+                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="fam_plan[]" id="service22" onchange="triggerServiceCosting(22)" value="(DMPA) Pure Inject Contraceptives"> (DMPA) Pure Inject Contraceptives</label><br>
                         <span class="servicesign22"><input class="money_format35" oninput="formatMoney(35)" type="text" id="servicecost22" name="fam_plan_cost[]" placeholder="Cost" style="margin-bottom: 10px; width:75%;"></span>
                     </div>
                     <div class="col-md-4">
-                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="fam_plan[]" id="service23" onchange="triggerServiceCosting(23)" value="(DMPA) Combine Inject Contraceptive"> (DMPA) Combine Inject Contraceptive</label><br>
+                        <label style="cursor: pointer; font-size: 12px;"><input type="checkbox" name="fam_plan[]" id="service23" onchange="triggerServiceCosting(23)" value="(DMPA) Combined Inject Contraceptives"> (DMPA) Combined Inject Contraceptives</label><br>
                         <span class="servicesign23"><input class="money_format36" oninput="formatMoney(36)" type="text" id="servicecost23" name="fam_plan_cost[]" placeholder="Cost" style="margin-bottom: 10px; width:75%;"></span>
                     </div>
                 </div>

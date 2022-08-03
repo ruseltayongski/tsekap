@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\AvailService;
 use App\Barangay;
 use App\Facility;
+use App\Facility2;
 use App\FacilityAssign;
 use App\Immunization;
 use App\Muncity;
@@ -602,6 +604,58 @@ class ApiCtrlv21 extends Controller
             }
 
             $arr["affiliated"] = $affiliated;
+            array_push($data, $arr);
+        }
+        return $data;
+    }
+
+    public function getFacilities($user_priv, $prov_id, $mun_id) {
+        $data = array();
+
+        if($user_priv == 0 || $user_priv == 2)
+            $facilities = Facility::where('muncity',$mun_id)->get();
+        else if($user_priv == 3)
+            $facilities = Facility::where('province',$prov_id->get());
+
+        foreach($facilities as $faci) {
+            $add_info = Facility2::where('facility_code',$faci->facility_code)->first();
+            $arr = array(
+                'facility_code' => isset($faci->facility_code) ? $faci->facility_code : '',
+                'facility_name' => $faci->name,
+                'facility_abbr' => $faci->abbr,
+                'prov_id' => $faci->province,
+                'muncity_id' => $faci->muncity,
+                'brgy_id' => $faci->brgy,
+                'address' => $faci->address,
+                'contact' => $faci->contact,
+                'email' => isset($faci->email) ? $faci->email : '',
+                'chief_hospital' => isset($faci->chief_hospital) ? $faci->chief_hospital : '',
+                'service_capability' => isset($add_info->service_cap) ? $add_info->service_cap : '',
+                'license_status' => ($add_info->licensed == 1) ? 'Licensed' : 'Unlicensed',
+                'ownership' => isset($faci->hospital_type) ? $faci->hospital_type : '',
+                'facility_status' => ($add_info->facility_status == 1) ? 'Functional' : 'Not Functional',
+                'phic_status' => isset($add_info->phic_status) ? $add_info->phic_status : '',
+                'referral_status' => ($faci->status == 1) ? 'Active' : 'Inactive',
+                'transport' => isset($add_info->transport) ? $add_info->transport : '',
+                'latitude' => isset($faci->latitude) ? $faci->latitude : '',
+                'longitude' => isset($faci->longitude) ? $faci->longitude : '',
+                'sched_day_from' => isset($add_info->sched_day_from) ? $add_info->sched_day_from : '',
+                'sched_day_to' => isset($add_info->sched_day_to) ? $add_info->sched_day_to : '',
+                'sched_time_from' => isset($add_info->sched_time_from) ? $add_info->sched_time_from : '',
+                'sched_time_to' => isset($add_info->sched_time_to) ? $add_info->sched_time_to : '',
+                'sched_notes' => isset($add_info->sched_notes) ? $add_info->sched_notes : ''
+            );
+
+            $services = array();
+            $avail = AvailService::where('facility_code',$faci->facility_code)->get();
+            foreach($avail as $s) {
+                array_push($services, array(
+                    'service_type' => $s->type,
+                    'service' => $s->service,
+                    'cost' => $s->costing
+                ));
+            }
+            $arr['services_cost'] = $services;
             array_push($data, $arr);
         }
         return $data;
