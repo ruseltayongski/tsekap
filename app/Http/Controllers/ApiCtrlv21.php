@@ -609,11 +609,11 @@ class ApiCtrlv21 extends Controller
         return $data;
     }
 
-    public function getFacilities($user_priv, $prov_id, $mun_id) {
+    public function getFacilities($user_priv, $prov_id, $muncity_id) {
         $data = array();
 
         if($user_priv == 0 || $user_priv == 2)
-            $facilities = Facility::where('muncity',$mun_id)->get();
+            $facilities = Facility::where('muncity',$muncity_id)->get();
         else if($user_priv == 3)
             $facilities = Facility::where('province',$prov_id->get());
 

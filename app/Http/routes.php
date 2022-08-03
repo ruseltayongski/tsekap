@@ -353,4 +353,4 @@ Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
 Route::post('target/generateDownload','TargetCtrl@generateDownload');
 
 Route::get('apiv21/getSpecialists/{user_id}/{province}/{muncity}','ApiCtrlv21@getSpecialists');
-Route::get('apiv21/getFacilities/{user_id}/{prov_id}/{mun_id}','ApiCtrlv21@getFacilities');
+Route::get('apiv21/getFacilities/{user_id}/{prov_id}/{muncity_id}','ApiCtrlv21@getFacilities');
