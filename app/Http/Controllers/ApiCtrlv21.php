@@ -559,7 +559,7 @@ class ApiCtrlv21 extends Controller
             $arr = array(
                 "username" => $s->username,
                 "fname" => $s->fname,
-                "mname" => $s->mname,
+                "mname" => isset($s->mname) ? $s->mname : '',
                 "lname" => $s->lname
             );
             $facility = FacilityAssign::select(
@@ -581,10 +581,10 @@ class ApiCtrlv21 extends Controller
                     ->where('users.username',$s->username)->first();
 
                 $temp = array(
-                    "facility_code" => $faci->facility_code,
+                    "facility_code" => isset($faci->facility_code) ? $faci->facility_code : '',
                     "specialization" => "",
-                    "contact" => $s->contact,
-                    "email" => $s->email,
+                    "contact" => isset($s->contact) ? $s->contact : '',
+                    "email" => isset($s->email) ? $s->email : '',
                     "schedule" => "",
                     "fee" => ""
                 );
@@ -592,12 +592,12 @@ class ApiCtrlv21 extends Controller
             } else {
                 foreach($facility as $faci) {
                     $temp = array(
-                        "facility_code" => $faci->facility_code,
-                        "specialization" => $faci->specialization,
-                        "contact" => $faci->contact,
-                        "email" => $faci->email,
-                        "schedule" => $faci->schedule,
-                        "fee" => $faci->fee
+                        "facility_code" => isset($faci->facility_code) ? $faci->facility_code : '',
+                        "specialization" => isset($faci->specialization) ? $faci->specialization : '',
+                        "contact" => isset($faci->contact) ? $faci->contact : '',
+                        "email" => isset($faci->email) ? $faci->email : '',
+                        "schedule" => isset($faci->schedule) ? $faci->schedule : '',
+                        "fee" => isset($faci->fee) ? $faci->fee : ''
                     );
                     array_push($affiliated, $temp);
                 }
