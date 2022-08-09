@@ -11,10 +11,12 @@ use App\Immunization;
 use App\Muncity;
 use App\NutritionStatus;
 use App\Profile;
+use App\Province;
 use App\ReferralUser;
 use App\ServiceGroup;
 use App\User;
 use App\UserBrgy;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -660,4 +662,128 @@ class ApiCtrlv21 extends Controller
         }
         return $data;
     }
+
+    public function uploadSpecialist(Request $req) {
+        $sent = $req->data;
+        $muncity = $sent['muncity'];
+        $province = $sent['province'];
+        for($count = 0; $count < count($sent['specialist']); $count++) {
+            $spec = $sent['specialist'][$count];
+            $username = $spec['username'];
+            $user = ReferralUser::where('username', $username)->first();
+            if(count($user) > 0) {
+                $data = array(
+                    'fname' => $spec['fname'],
+                    'mname' => $spec['mname'],
+                    'lname' => $spec['lname'],
+                );
+                ReferralUser::where('username', $username)->update($data);
+                FacilityAssign::select('facility_code')->where('username',$username)->delete();
+            } else {
+                $upload = array(
+                    'fname' => $spec['fname'],
+                    'mname' => $spec['mname'],
+                    'lname' => $spec['lname'],
+                    'username' => $spec['username'],
+                    'password' => ($spec['password']) ? $spec['password'] : bcrypt('123'),
+                    'level' => 'doctor',
+                    'facility_id' => 0,
+                    'department_id' => 0,
+                    'muncity' => $muncity,
+                    'province' => $province,
+                    'designation' => '',
+                    'status' => 'active',
+                    'email' => '',
+                    'contact' => ''
+                );
+                ReferralUser::create($upload);
+            }
+            for ($i = 0; $i < count($spec['affiliated']); $i++) {
+                $faci_code = $spec['affiliated'][$i]['facility_code'];
+                $faci_data = array(
+                    'username' => $username,
+                    'facility_code' => isset($faci_code) ? $faci_code : '',
+                    'specialization' => isset($spec['affiliated'][$i]['specialization']) ? $spec['affiliated'][$i]['specialization'] : '',
+                    'schedule' => isset($spec['affiliated'][$i]['schedule']) ? $spec['affiliated'][$i]['schedule'] : '',
+                    'fee' => ($spec['affiliated'][$i]['fee'] !== "PHP .") ? $spec['affiliated'][$i]['fee'] : "",
+                    'contact' => isset($spec['affiliated'][$i]['contact']) ? $spec['affiliated'][$i]['contact'] : '',
+                    'email' => isset($spec['affiliated'][$i]['email']) ? $spec['affiliated'][$i]['email'] : ''
+                );
+                FacilityAssign::create($faci_data);
+            }
+        }
+        return "Success: Specialist was updated/added!";
+    }
+
+    public function uploadFacility(Request $req) {
+        $sent = $req->data;
+        foreach($sent as $faci) {
+            $faci_code = $faci['facility_code'];
+            AvailService::where('facility_code', $faci_code)->delete();
+            foreach($faci['services_cost'] as $s) {
+                $service = array(
+                    'facility_code' => $faci_code,
+                    'service' => $s['service'],
+                    'costing' => $s['cost'],
+                    'type' => $s['service_type']
+                );
+                AvailService::create($service);
+            }
+
+            $fac = Facility2::where('facility_code', $faci_code)->first();
+            if (!$fac)
+                $fac = new Facility2();
+
+            $fac->facility_code = $faci_code;
+            $fac->service_cap = ($faci['service_capability']) ? $faci['service_capability'] : null;
+            $fac->phic_status = ($faci['phic_status']) ? $faci['phic_status'] : '';
+            $fac->licensed = ($faci['license_status'] == "Licensed") ? 1 : 0;
+            $fac->sched_day_from = ($faci['sched_day_from']) ? $faci['sched_day_from'] : null;
+            $fac->sched_day_to = ($faci['sched_day_to']) ? $faci['sched_day_to'] : null;
+            $fac->sched_time_from = ($faci['sched_time_from']) ? $faci['sched_time_from'] : null;
+            $fac->sched_time_to = ($faci['sched_time_to']) ? $faci['sched_time_to'] : null;
+            $fac->sched_notes = ($faci['sched_notes']) ? $faci['sched_notes'] : '';
+            $fac->transport = ($faci['transport']) ? $faci['transport'] : null;
+            $fac->facility_status = ($faci['facility_status'] == "Functional") ? 1 : 0;
+            $fac->save();
+
+            $faci_data = array(
+                'facility_code' => $faci_code,
+                'name' => $faci['facility_name'],
+                'abbr' => $faci['facility_abbr'],
+                'address' => $faci['address'],
+                'brgy' => $faci['brgy_id'],
+                'muncity' => $faci['muncity_id'],
+                'province' => $faci['prov_id'],
+                'contact' => $faci['contact'],
+                'email' => $faci['email'],
+                'chief_hospital' => $faci['chief_hospital'],
+                'latitude' => $faci['latitude'],
+                'longitude' => $faci['longitude'],
+                'hospital_type' => $faci['ownership'],
+                'status' => ($faci['status']=='Active') ? 1 : 0
+            );
+
+            $exist = Facility::where('facility_code', $faci_code)->first();
+            if ($exist) {
+                $exist->update($faci_data);
+            } else {
+                Facility::create($faci_data);
+            }
+        }
+        return "Success: Facility was updated/added!";
+    }
+
+    public function getProvinces() {
+        return Province::select('id', 'description as name')->get();
+    }
+
+    public function getMuncities() {
+        return Muncity::select('id', 'description as name', 'province_id as prov_id')->get();
+    }
+
+    public function getBarangays() {
+        return Barangay::select('id','description as name','province_id as prov_id','muncity_id')->get();
+    }
+
 }

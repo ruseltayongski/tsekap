@@ -59,11 +59,11 @@ $faci_count = 0;
                 @if(count($user_facilities) > 0)
                     @foreach($user_facilities as $f)
                         <?php $faci_count++; ?>
-                        <input type="hidden" name="remove_facility[]" value='' class="remove_facility{{$counter}}">
+                        {{--<input type="hidden" name="remove_facility[]" value='' class="remove_facility{{$counter}}">--}}
                         <tr style="font-size: 10pt" class="faci_apil{{$counter}}">
                             <td>
                                 <small>
-                                    <select class="form-control select2" id="facility" name="affil_faci[]" style="width: 100%">
+                                    <select class="form-control select2" id="facility" name="affil_faci[]" style="width: 100%" required>
                                         <option value="">Select...</option>
                                         @foreach($facilities as $faci)
                                             <option <?php if($faci->facility_code == $f->facility_code && $f->facility_code != '' && $f->facility_code != null) echo 'selected'?> value="{{  $faci->facility_code }}">{{ $faci->facility_name }}</option>
@@ -75,10 +75,10 @@ $faci_count = 0;
                                 <input type="text" value="{{ $f->specialization }}" name="specialization[]" placeholder="Enter specialization..." style="font-size: 12px; width:100%;">
                             </td>
                             <td>
-                                <input type="text" value="{{ $f->contact }}" name="contact[]" style="font-size: 12px; width:100%;">
+                                <input type="text" value="{{ $f->contact }}" name="contact[]" style="font-size: 12px; width:100%;" required>
                             </td>
                             <td>
-                                <input type="text" value="{{ $f->email }}" name="email[]" style="font-size: 12px; width:100%;"{{--value="@if(isset($data->email)) {{ $data->email }} @endif"--}}>
+                                <input type="text" value="{{ $f->email }}" name="email[]" style="font-size: 12px; width:100%;" required{{--value="@if(isset($data->email)) {{ $data->email }} @endif"--}}>
                             </td>
                             <td>
                                 <textarea class="form-control" cols="200" name="schedule[]" style="resize: none; width: 100%; font-size: 12px" rows="2" placeholder="Enter schedule...">{{ $f->schedule }}</textarea>
@@ -94,7 +94,7 @@ $faci_count = 0;
                 @else
                     <tr style="font-size: 10pt" class="faci_apil{{$counter}}">
                         <?php $faci_count++; ?>
-                        <input type="hidden" name="remove_facility[]" value='' class="remove_facility{{$counter}}">
+                        {{--<input type="hidden" name="remove_facility[]" value='' class="remove_facility{{$counter}}">--}}
                         <td>
                             <small>
                                 <select class="form-control select2" id="facility" name="affil_faci[]" style="width: 100%">
@@ -189,8 +189,8 @@ $faci_count = 0;
 
     function removeFacility(pos) {
         $('.faci_apil'+pos).prop('disabled', true);
-        $('.faci_apil'+pos).hide();
-        $('.remove_facility'+pos).val($('#btn_remove'+pos).val());
+        $('.faci_apil'+pos).remove();
+//        $('.remove_facility'+pos).val($('#btn_remove'+pos).val());
         faci_count -= 1;
         disableRemoveBtn();
     }
@@ -209,7 +209,7 @@ $faci_count = 0;
         faci_count += 1;
         string =
             '<tr style="font-size: 10pt" class="faci_apil'+counter+'">\n' +
-            '                    <input type="hidden" name="remove_facility[]" value="" class="remove_facility'+counter+'">\n' +
+//            '                    <input type="hidden" name="remove_facility[]" value="" class="remove_facility'+counter+'">\n' +
             '                    <td><small>\n' +
             '                        <select class="form-control select2" name="affil_faci[]" style="width: 100%">\n' +
             '                            <option value="">Select...</option>\n';
