@@ -538,8 +538,9 @@ class ApiCtrlv21 extends Controller
         return $data;
     }
 
-    public function getSpecialists($user_priv, $province, $muncity) {
-        $data = array();
+    public function getSpecialists($user_id) {
+        $user = User::select('user_priv', 'muncity', 'province')->where('id', $user_id)->first();
+        $user_priv = $user->user_priv;
 
         $specialists = ReferralUser::select(
             'username',
@@ -553,10 +554,11 @@ class ApiCtrlv21 extends Controller
             ->where('status','active');
 
         if($user_priv == 0 || $user_priv == 2)
-            $specialists = $specialists->where('muncity',$muncity)->get();
+            $specialists = $specialists->where('muncity',$user->muncity)->get();
         else if($user_priv == 3)
-            $specialists = $specialists->where('province',$province->get());
+            $specialists = $specialists->where('province',$user->province)->get();
 
+        $data = array();
         foreach($specialists as $s) {
             $arr = array(
                 "username" => $s->username,
@@ -611,14 +613,18 @@ class ApiCtrlv21 extends Controller
         return $data;
     }
 
-    public function getFacilities($user_priv, $prov_id, $muncity_id) {
+    public function getFacilities($user_id) {
+        $user = User::select('user_priv', 'muncity', 'province')->where('id', $user_id)->first();
+        $user_priv = $user->user_priv;
+
+        $facilities = '';
+        if($user_priv == 0 || $user_priv == 2) {
+            $facilities = Facility::where('muncity',$user->muncity)->get();
+        } else if($user_priv == 3) {
+            $facilities = Facility::where('province',$user->province)->get();
+        }
+
         $data = array();
-
-        if($user_priv == 0 || $user_priv == 2)
-            $facilities = Facility::where('muncity',$muncity_id)->get();
-        else if($user_priv == 3)
-            $facilities = Facility::where('province',$prov_id->get());
-
         foreach($facilities as $faci) {
             $add_info = Facility2::where('facility_code',$faci->facility_code)->first();
             $arr = array(

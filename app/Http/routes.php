@@ -353,8 +353,8 @@ Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
 Route::post('target/generateDownload','TargetCtrl@generateDownload');
 
 // API for Specialists and Facilities (retrieve and store)
-Route::get('apiv21/getSpecialists/{user_id}/{province}/{muncity}','ApiCtrlv21@getSpecialists');
-Route::get('apiv21/getFacilities/{user_id}/{prov_id}/{muncity_id}','ApiCtrlv21@getFacilities');
+Route::get('apiv21/getSpecialists/{user_id}','ApiCtrlv21@getSpecialists');
+Route::get('apiv21/getFacilities/{user_id}','ApiCtrlv21@getFacilities');
 Route::post('apiv21/uploadSpecialist','ApiCtrlv21@uploadSpecialist');
 Route::post('apiv21/uploadFacility','ApiCtrlv21@uploadFacility');
 
