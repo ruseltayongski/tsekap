@@ -151,7 +151,7 @@ class SpecialistCtrl extends Controller
                     'contact' => $req->contact[$i],
                     'email' => $req->email[$i]
                 );
-                $assign = null;
+                
                 $check = FacilityAssign::where('username', $username)->where('facility_code', $faci_code)->first();
                 if(isset($check) && $check != '') {
                     FacilityAssign::where('username', $username)->where('facility_code', $faci_code)->update($faci_data);
@@ -166,9 +166,9 @@ class SpecialistCtrl extends Controller
                     }
                 }
 
-                foreach ($req->remove_facility as $remove) {
-                    FacilityAssign::where('username', $username)->where('facility_code', $remove)->delete();
-                }
+//                foreach ($req->remove_facility as $remove) {
+//                    FacilityAssign::where('username', $username)->where('facility_code', $remove)->delete();
+//                }
             }
 
             foreach($delete as $code) {

@@ -323,19 +323,19 @@ Route::post("purok/select/get","PurokController@selectPurokGet");
 Route::post("purok/select/post","PurokController@selectPurokPost");
 
 
-//ISSUE
+// ISSUE
 Route::get('issue/duplicate/population','ClientCtrl@populationDuplicate');
 Route::post('issue/duplicate/population','ClientCtrl@searchPopulationDuplicate');
 Route::get('issue/head/child','ClientCtrl@headChild');
 Route::post('issue/head/child','ClientCtrl@searchHeadChild');
 
-//FACILITY
+// FACILITY
 Route::match(['GET','POST'],'facility','FacilityCtrl@index');
 Route::get('facility/body', 'FacilityCtrl@getFacility');
 Route::post('facility/add', 'FacilityCtrl@addFacility');
 Route::post('facility/delete', 'FacilityCtrl@deleteFacility');
 
-//HEALTH SPECIALISTS
+// HEALTH SPECIALISTS
 Route::match(['GET','POST'],'specialist','SpecialistCtrl@index');
 Route::get('specialist/body', 'SpecialistCtrl@getSpecialist');
 Route::get('specialist/facilities/{id}', 'SpecialistCtrl@getUserFacilities');
@@ -343,7 +343,7 @@ Route::post('specialist/add', 'SpecialistCtrl@addSpecialist');
 Route::post('specialist/delete', 'SpecialistCtrl@deleteSpecialist');
 Route::get('specialist/verify', 'SpecialistCtrl@verify');
 
-//TARGET POPULATION
+// TARGET POPULATION
 Route::get('population/target','TargetCtrl@targetPopulation');
 Route::post('population/target','TargetCtrl@targetPopulation');
 Route::post('population/target/update','TargetCtrl@update');
@@ -352,5 +352,13 @@ Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTo
 Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
 Route::post('target/generateDownload','TargetCtrl@generateDownload');
 
+// API for Specialists and Facilities (retrieve and store)
 Route::get('apiv21/getSpecialists/{user_id}/{province}/{muncity}','ApiCtrlv21@getSpecialists');
 Route::get('apiv21/getFacilities/{user_id}/{prov_id}/{muncity_id}','ApiCtrlv21@getFacilities');
+Route::post('apiv21/uploadSpecialist','ApiCtrlv21@uploadSpecialist');
+Route::post('apiv21/uploadFacility','ApiCtrlv21@uploadFacility');
+
+// API for province, muncity, and brgy
+Route::get('apiv21/getProvinces','ApiCtrlv21@getProvinces');
+Route::get('apiv21/getMuncities','ApiCtrlv21@getMuncities');
+Route::get('apiv21/getBarangays','ApiCtrlv21@getBarangays');
