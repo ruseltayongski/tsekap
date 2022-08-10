@@ -417,9 +417,9 @@ $brgy = $brgy->orderBy('description','asc')
                                 <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
                                     <i class="fa fa-trash"></i> Delete
                                 </button>
-                                <button class="btn btn-info btn-sm">
-                                    <i class="fa fa-arrow-right"></i> Proceed to EMR
-                                </button>
+                                {{--<button class="btn btn-info btn-sm">--}}
+                                    {{--<i class="fa fa-arrow-right"></i> Proceed to EMR--}}
+                                {{--</button>--}}
                                 {{--@endif--}}
                                 <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-user-md"></i> Proceed to dengvaxia
