@@ -718,7 +718,19 @@ class ApiCtrlv21 extends Controller
                 FacilityAssign::create($faci_data);
             }
         }
-        return "Success: Specialist was updated/added!";
+
+        $counter = 0;
+        for($count = 0; $count < count($sent['specialist']); $count++) {
+            $user = ReferralUser::where('username', $username)->first();
+            $faci = FacilityAssign::create($faci_data);
+            if(count($user) > 0 && count($faci) > 0) {
+                $counter++;
+            }
+        }
+        if($counter == count($sent['specialist']))
+            return array('status' => 'success');
+        else
+            return array('status' => 'failed');
     }
 
     public function uploadFacility(Request $req) {
@@ -777,7 +789,18 @@ class ApiCtrlv21 extends Controller
                 Facility::create($faci_data);
             }
         }
-        return "Success: Facility was updated/added!";
+
+        $counter = 0;
+        foreach($sent as $faci) {
+            $faci = Facility::where('facility_code', $faci_code)->first();
+            if(count($faci) > 0) {
+                $counter++;
+            }
+        }
+        if($counter == count($sent))
+            return array('status' => 'success');
+        else
+            return array('status' => 'failed');
     }
 
     public function getProvinces() {
