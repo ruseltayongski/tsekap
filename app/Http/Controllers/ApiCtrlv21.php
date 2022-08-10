@@ -722,7 +722,7 @@ class ApiCtrlv21 extends Controller
         $counter = 0;
         for($count = 0; $count < count($sent['specialist']); $count++) {
             $user = ReferralUser::where('username', $username)->first();
-            $faci = FacilityAssign::create($faci_data);
+            $faci = FacilityAssign::where('username', $username)->get();
             if(count($user) > 0 && count($faci) > 0) {
                 $counter++;
             }
