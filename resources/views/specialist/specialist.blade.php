@@ -141,13 +141,14 @@ $user = Auth::user();
                         '</thead>' +
                         '<tbody>';
                     users.forEach(function (val){
+                        var func = 'SpecialistBody("' + val.username + '")';
                         content +=
                             '<tr>' +
                                 '<td>'+val.fname+'</td>' +
                                 '<td>'+val.mname+'</td>' +
                                 '<td>'+val.lname+'</td>' +
                                 '<td class="text-center">' +
-                                    '<a href="" data-dismiss="modal" data-toggle="modal" onclick="SpecialistBody('+val.username+')" class="btn btn-success btn-sm">' +
+                                    '<a href="" data-dismiss="modal" data-toggle="modal" onclick=' + func + ' class="btn btn-success btn-sm">' +
                                         '<i class="fa fa-pencil"></i> Update' +
                                     '</a></td>' +
                             '</tr>';
