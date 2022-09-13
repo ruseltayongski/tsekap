@@ -1,7 +1,7 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "adm1n";
+$host = "192.168.81.5";
+$username = "rtayong_2020";
+$password = "rtayong_2020";
 //rtayong_dummy50
 return [
 
