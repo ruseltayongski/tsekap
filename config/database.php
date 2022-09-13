@@ -1,8 +1,8 @@
 <?php
-    $host = "192.168.81.5";
-    $username = "rtayong_2020";
-    $password = "rtayong_2020";
-
+$host = "localhost";
+$username = "root";
+$password = "adm1n";
+//rtayong_dummy50
 return [
 
     /*
@@ -143,7 +143,7 @@ return [
             'driver' => 'mysql',
             'host' => $host,
             'port' => '3306',
-            'database' => 'tsekap_2021',
+            'database' => 'tsekap_2022',
             'username' => $username,
             'password' => $password,
             'charset' => 'utf8',
@@ -169,11 +169,11 @@ return [
 
         'doh_referral' => [
             'driver' => 'mysql',
-            'host' => 'localhost',
+            'host' => $host,
             'port' => '3306',
             'database' => 'doh_referral',
-            'username' => 'root',
-            'password' => '',
+            'username' => $username,
+            'password' => $password,
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
