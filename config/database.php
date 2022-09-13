@@ -1,9 +1,7 @@
 <?php
-$host = "192.168.110.50";
-$username = "rtayong_dummy50";
-$password = "rtayong_dummy50";
-//    $username = "doh7_it";
-//    $password = "D0h7_1T";
+$host = "192.168.81.5";
+$username = "rtayong_2020";
+$password = "rtayong_2020";
 
 return [
 
