@@ -140,13 +140,13 @@ use App\Province;
                         {{--<li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>--}}
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Manage<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url('facility') }}"><i class="fa fa-hospital-o"></i> Facilities</a></li>
-                        <li><a href="{{ url('specialist') }}"><i class="fa fa-user-md"></i> Health Specialists</a></li>
-                    </ul>
-                </li>
+                {{--<li class="dropdown">--}}
+                    {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> Manage<span class="caret"></span></a>--}}
+                    {{--<ul class="dropdown-menu">--}}
+                        {{--<li><a href="{{ url('facility') }}"><i class="fa fa-hospital-o"></i> Facilities</a></li>--}}
+                        {{--<li><a href="{{ url('specialist') }}"><i class="fa fa-user-md"></i> Health Specialists</a></li>--}}
+                    {{--</ul>--}}
+                {{--</li>--}}
                 {{--<li class="dropdown">--}}
                     {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-map-o"></i> Address<span class="caret"></span></a>--}}
                     {{--<ul class="dropdown-menu">--}}
@@ -185,18 +185,18 @@ use App\Province;
                     </ul>
                 </li>
                 -->
-                <li><a href="{{ url('/user/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;Services Availed</a></li>
+                {{--<li><a href="{{ url('/user/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;Services Availed</a></li>--}}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ asset('/user/report')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Services Availed</a></li>
-                        <li><a href="{{ asset('/user/report/cases')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Diagnoses</a></li>
-                        <li class="divider"></li>
+{{--                        <li><a href="{{ asset('/user/report')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Services Availed</a></li>--}}
+{{--                        <li><a href="{{ asset('/user/report/cases')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Diagnoses</a></li>--}}
+                        {{--<li class="divider"></li>--}}
                         <?php $validBrgy = \App\Http\Controllers\UserCtrl::validateBrgy();?>
                         @if($validBrgy)
-                        <li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; {{--Environmental Health Graph--}} Statistical Data</a></li>
+                        {{--<li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; --}}{{--Environmental Health Graph Statistical Data</a></li>--}}
                         @endif
-                        <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
+{{--                        <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>--}}
                         @if(Auth::user()->user_priv==0 || Auth::user()->user_priv =2)
                         <li><a href="{{ asset('/user/report/status') }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
                         @endif

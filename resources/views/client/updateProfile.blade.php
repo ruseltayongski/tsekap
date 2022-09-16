@@ -19,6 +19,7 @@ if(Auth::user()->user_priv==2){
 }
 $brgy = $brgy->orderBy('description','asc')
         ->get();
+$today = date('Y-m-d');
 ?>
 @extends('client')
 @section('content')
@@ -65,8 +66,14 @@ $brgy = $brgy->orderBy('description','asc')
                         <td><input type="text" value="{{ $info->phicID }}" name="phicID" class="form-control" value="" /></td>
                     </tr>
                     <tr>
-                        <td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>
-                        <td><input type="text" value="{{ $info->nhtsID }}" name="nhtsID" class="form-control" value="" /></td>
+                        {{--<td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>--}}
+                        {{--<td><input type="text" value="{{ $info->nhtsID }}" name="nhtsID" class="form-control" value="" /></td>--}}
+                        <td>Beneficiaries:<br><small class="text-info"><em>(Check applicable)</em></small></td>
+                        <td>&emsp;
+                            <label style="font-size: 110%"><input <?php if($info->nhts=='yes') echo 'checked';?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input <?php if($info->four_ps=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input <?php if($info->ip=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>Family Head? :</td>
@@ -81,34 +88,39 @@ $brgy = $brgy->orderBy('description','asc')
                     <tr class="relation <?php if($info->head=='YES') echo 'hide'; ?> has-group" >
                         <td>Relation to Head :</td>
                         <td>
-                            <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
-                                <option value="">Select...</option>
-                                <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
-                                <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
-                                <option <?php if($info->relation=='Wife') echo 'selected'; ?>>Wife</option>
-                                <option <?php if($info->relation=='Husband') echo 'selected'; ?>>Husband</option>
-                                <option <?php if($info->relation=='Father') echo 'selected'; ?>>Father</option>
-                                <option <?php if($info->relation=='Mother') echo 'selected'; ?>>Mother</option>
-                                <option <?php if($info->relation=='Brother') echo 'selected'; ?>>Brother</option>
-                                <option <?php if($info->relation=='Sister') echo 'selected'; ?>>Sister</option>
-                                <option <?php if($info->relation=='Nephew') echo 'selected'; ?>>Nephew</option>
-                                <option <?php if($info->relation=='Niece') echo 'selected'; ?>>Niece</option>
-                                <option <?php if($info->relation=='Grandfather') echo 'selected'; ?>>Grandfather</option>
-                                <option <?php if($info->relation=='Grandmother') echo 'selected'; ?>>Grandmother</option>
-                                <option <?php if($info->relation=='Grandson') echo 'selected'; ?>>Grandson</option>
-                                <option <?php if($info->relation=='Granddaughter') echo 'selected'; ?>>Granddaughter</option>
-                                <option <?php if($info->relation=='Cousin') echo 'selected'; ?>>Cousin</option>
-                                <option <?php if($info->relation=='Relative') echo 'selected'; ?>>Relative</option>
-                                <option <?php if($info->relation=='Daughter in Law') echo 'selected'; ?>>Daughter in Law</option>
-                                <option <?php if($info->relation=='Son in Law') echo 'selected'; ?>>Son in Law</option>
-                                <option <?php if($info->relation=='Sister in Law') echo 'selected'; ?>>Sister in Law</option>
-                                <option <?php if($info->relation=='Brother in Law') echo 'selected'; ?>>Brother in Law</option>
-                                <option <?php if($info->relation=='Father in Law') echo 'selected'; ?>>Father in Law</option>
-                                <option <?php if($info->relation=='Mother in Law') echo 'selected'; ?>>Mother in Law</option>
-                                <option <?php if($info->relation=='partner') echo 'selected'; ?>>Live-in Partner</option>
-                                <option <?php if($info->relation=='Deceased') echo 'selected'; ?>>Deceased</option>
-                                <option <?php if($info->relation=='Others') echo 'selected'; ?>>Others</option>
-                            </select>
+                            <div class="col-md-8">
+                                <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
+                                    <option value="">Select...</option>
+                                    <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
+                                    <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
+                                    <option <?php if($info->relation=='Wife') echo 'selected'; ?>>Wife</option>
+                                    <option <?php if($info->relation=='Husband') echo 'selected'; ?>>Husband</option>
+                                    <option <?php if($info->relation=='Father') echo 'selected'; ?>>Father</option>
+                                    <option <?php if($info->relation=='Mother') echo 'selected'; ?>>Mother</option>
+                                    <option <?php if($info->relation=='Brother') echo 'selected'; ?>>Brother</option>
+                                    <option <?php if($info->relation=='Sister') echo 'selected'; ?>>Sister</option>
+                                    <option <?php if($info->relation=='Nephew') echo 'selected'; ?>>Nephew</option>
+                                    <option <?php if($info->relation=='Niece') echo 'selected'; ?>>Niece</option>
+                                    <option <?php if($info->relation=='Grandfather') echo 'selected'; ?>>Grandfather</option>
+                                    <option <?php if($info->relation=='Grandmother') echo 'selected'; ?>>Grandmother</option>
+                                    <option <?php if($info->relation=='Grandson') echo 'selected'; ?>>Grandson</option>
+                                    <option <?php if($info->relation=='Granddaughter') echo 'selected'; ?>>Granddaughter</option>
+                                    <option <?php if($info->relation=='Cousin') echo 'selected'; ?>>Cousin</option>
+                                    <option <?php if($info->relation=='Relative') echo 'selected'; ?>>Relative</option>
+                                    <option <?php if($info->relation=='Daughter in Law') echo 'selected'; ?>>Daughter in Law</option>
+                                    <option <?php if($info->relation=='Son in Law') echo 'selected'; ?>>Son in Law</option>
+                                    <option <?php if($info->relation=='Sister in Law') echo 'selected'; ?>>Sister in Law</option>
+                                    <option <?php if($info->relation=='Brother in Law') echo 'selected'; ?>>Brother in Law</option>
+                                    <option <?php if($info->relation=='Father in Law') echo 'selected'; ?>>Father in Law</option>
+                                    <option <?php if($info->relation=='Mother in Law') echo 'selected'; ?>>Mother in Law</option>
+                                    <option <?php if($info->relation=='partner') echo 'selected'; ?>>Live-in Partner</option>
+                                    <option <?php if($info->relation=='Deceased') echo 'selected'; ?>>Deceased</option>
+                                    <option <?php if($info->relation=='Others') echo 'selected'; ?> value="Others">Others (Specify)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="member_others" name="member_others" placeholder="Specify...">
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -142,7 +154,7 @@ $brgy = $brgy->orderBy('description','asc')
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" value="{{ $info->dob }}" required /> </td>
+                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" max="{{ $today }}" value="{{ $info->dob }}" required /> </td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
@@ -265,8 +277,16 @@ $brgy = $brgy->orderBy('description','asc')
                                 <option value="college_grad" {{ ($info->education=='college_grad') ? 'selected':null }}>College Graduate</option>
                                 <option value="vocational" {{ ($info->education=='vocational') ? 'selected':null }}>Vocational Course</option>
                                 <option value="master" {{ ($info->education=='master') ? 'selected':null }}>Masteral Degree</option>
+                                <option value="doctorate" {{ ($info->education=='doctorate') ? 'selected':null }}>Doctorate Degree</option>
                                 <option value="unable_provide" {{ ($info->education=='unable_provide') ? 'selected':null }}>Unable to provide</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Balik Probinsya, Bagong Pag-asa (PP2) :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'Yes') echo "checked" ?> type="radio" name="balik_probinsya" value="Yes" style="display:inline;"> Yes </label>&emsp;&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'No') echo "checked" ?> type="radio" name="balik_probinsya" value="No" style="display:inline;"> No </label>
                         </td>
                     </tr>
                     <tr>
@@ -318,8 +338,14 @@ $brgy = $brgy->orderBy('description','asc')
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Covid Status :</td>
-                        <td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>
+                        <td>Latest Covid Vaccination Status :</td>
+                        {{--<td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>--}}
+                        <td>
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Booster Dose') echo "checked" ?> type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'None') echo "checked" ?> type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                        </td>
                     </tr>
                     <tr class="menarcheClass hide">
                         <td>Menarche :</td>
@@ -461,6 +487,13 @@ $brgy = $brgy->orderBy('description','asc')
         }
     </script>
     <script>
+        var member_others = '<?php echo $info->member_others;?>';
+        if(member_others === '') {
+            $('#member_others').hide();
+        } else {
+            $('#member_others').val(member_others).show();
+        }
+
         function changeGender(form){
             var gender = form.val();
             $("input[name=sex]").prop('checked',false);
@@ -471,6 +504,14 @@ $brgy = $brgy->orderBy('description','asc')
             else if(gender == 'Daughter' || gender == 'Wife' || gender == 'Mother' || gender == 'Sister' || gender == 'Niece' || gender == 'Grandmother' || gender == 'Granddaughter' || gender == 'Sister in Law' || gender == 'Daughter in Law' || gender == 'Mother in Law')
             {
                 gender = 'Female';
+            }
+            if(gender === 'Others')
+            {
+                $('#member_others').show();
+                $('#member_others').attr('required', true);
+            } else {
+                $('#member_others').val('').hide();
+                $('#member_others').attr('required', false);
             }
             console.log(gender);
             $("input[name=sex][value=" + gender + "]").prop('checked',true);

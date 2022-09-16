@@ -20,6 +20,8 @@ if(Auth::user()->user_priv==2){
 }
 $brgy = $brgy->orderBy('description','asc')
         ->get();
+
+$today = date('Y-m-d');
 ?>
 @extends('client')
 @section('content')
@@ -66,39 +68,51 @@ $brgy = $brgy->orderBy('description','asc')
                         <td><input type="text" name="phicID" class="form-control" value="" /></td>
                     </tr>
                     <tr>
-                        <td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>
-                        <td><input type="text" name="nhtsID" class="form-control" value="" /></td>
+                        {{--<td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>--}}
+                        {{--<td><input type="text" name="nhtsID" class="form-control" value="" /></td>--}}
+                        <td>Beneficiaries :<br><small class="text-info"><em>(Check applicable)</em></small></td>
+                        <td>&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                        </td>
                     </tr>
                     <tr>
                         <td>Relation to Head :</td>
                         <td>
-                            <select name="relation" onchange="changeGender($(this))" class="chosen-select form-control" style="width: 100%">
-                                <option>Son</option>
-                                <option>Daughter</option>
-                                <option>Wife</option>
-                                <option>Husband</option>
-                                <option>Father</option>
-                                <option>Mother</option>
-                                <option>Brother</option>
-                                <option>Sister</option>
-                                <option>Nephew</option>
-                                <option>Niece</option>
-                                <option>Grandfather</option>
-                                <option>Grandmother</option>
-                                <option>Grandson</option>
-                                <option>Granddaughter</option>
-                                <option>Cousin</option>
-                                <option>Relative</option>
-                                <option>Daughter in Law</option>
-                                <option>Son in Law</option>
-                                <option>Sister in Law</option>
-                                <option>Brother in Law</option>
-                                <option>Father in Law</option>
-                                <option>Mother in Law</option>
-                                <option value="partner">Live-in Partner</option>
-                                <option>Deceased</option>
-                                <option>Others</option>
-                            </select>
+                            <div class="col-md-8">
+                                <select name="relation" onchange="changeGender($(this))" class="chosen-select form-control" style="width: 100%">
+                                    <option>Select...</option>
+                                    <option>Son</option>
+                                    <option>Daughter</option>
+                                    <option>Wife</option>
+                                    <option>Husband</option>
+                                    <option>Father</option>
+                                    <option>Mother</option>
+                                    <option>Brother</option>
+                                    <option>Sister</option>
+                                    <option>Nephew</option>
+                                    <option>Niece</option>
+                                    <option>Grandfather</option>
+                                    <option>Grandmother</option>
+                                    <option>Grandson</option>
+                                    <option>Granddaughter</option>
+                                    <option>Cousin</option>
+                                    <option>Relative</option>
+                                    <option>Daughter in Law</option>
+                                    <option>Son in Law</option>
+                                    <option>Sister in Law</option>
+                                    <option>Brother in Law</option>
+                                    <option>Father in Law</option>
+                                    <option>Mother in Law</option>
+                                    <option value="partner">Live-in Partner</option>
+                                    <option>Deceased</option>
+                                    <option value="Others">Others (Specify)</option>
+                                </select><br>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" id="member_others" name="member_others" placeholder="Specify...">
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -132,7 +146,7 @@ $brgy = $brgy->orderBy('description','asc')
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" id="dob" class="form-control" required /> </td>
+                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" max="{{ $today }}" id="dob" class="form-control" required /></td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
@@ -207,8 +221,16 @@ $brgy = $brgy->orderBy('description','asc')
                                 <option value="college_grad">College Graduate</option>
                                 <option value="vocational">Vocational Course</option>
                                 <option value="master">Masteral Degree</option>
+                                <option value="doctorate">Doctorate Degree</option>
                                 <option value="unable_provide">Unable to provide</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Balik Probinsya, Bagong Pag-asa (PP2) :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="Yes" style="display:inline;"> Yes </label>&emsp;&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="No" style="display:inline;"> No </label>
                         </td>
                     </tr>
                     <tr>
@@ -216,7 +238,7 @@ $brgy = $brgy->orderBy('description','asc')
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" name="cancer" class="cancer" value="yes" style="display:inline;"> Yes </label>
                             &emsp;<span class="cancer_type"></span> <br />
-                            <label style="cursor: pointer;"><input type="radio" name="cancer" class="cancer" value="no"> No </label>
+                            <label style="cursor: pointer;"><input type="radio" name="cancer" class="cancer" value="no" style="display:inline;"> No </label>
                         </td>
                     </tr>
                     <tr class="hypertensionClass hide">
@@ -260,8 +282,14 @@ $brgy = $brgy->orderBy('description','asc')
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Covid Status :</td>
-                        <td><input type="text" name="covid_status" class="form-control"/> </td>
+                        <td>Latest Covid Vaccination Status :</td>
+                        {{--<td><input type="text" name="covid_status" class="form-control"/> </td>--}}
+                        <td>
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                        </td>
                     </tr>
                     <tr class="sexuallyActiveClass hide">
                         <td>Sexually Active :</td>
@@ -298,7 +326,7 @@ $brgy = $brgy->orderBy('description','asc')
                         </td>
                     </tr>
                     <tr class="immuClass hide">
-                        <td>Immunization Status: <br><br><br><br><br><br><br><br><br></td>
+                        <td>Immunization Status : <br><br><br><br><br><br><br><br><br></td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input class="form-check-input" name="immunization[]" style="height: 18px;width: 18px;cursor: pointer;" type="checkbox" value="BCG"> BCG </label><br/>
                             <label style="cursor: pointer;"><input class="form-check-input" name="immunization[]" style="height: 18px;width: 18px;cursor: pointer;" type="checkbox" value="HEP B"> HEP B</label><br/>
@@ -415,6 +443,7 @@ $brgy = $brgy->orderBy('description','asc')
 
         $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
         var validator = $("#form-submit").validate();
+        $('#member_others').hide();
         function changeGender(form){
             var gender = form.val();
             $("input[name=sex]").prop('checked',false);
@@ -425,6 +454,14 @@ $brgy = $brgy->orderBy('description','asc')
             else if(gender == 'Daughter' || gender == 'Wife' || gender == 'Mother' || gender == 'Sister' || gender == 'Niece' || gender == 'Grandmother' || gender == 'Granddaughter' || gender == 'Sister in Law' || gender == 'Daughter in Law' || gender == 'Mother in Law')
             {
                 gender = 'Female';
+            }
+            if(gender === 'Others')
+            {
+                $('#member_others').show();
+                $('#member_others').attr('required', true);
+            } else {
+                $('#member_others').hide();
+                $('#member_others').attr('required', false);
             }
             console.log(gender);
             $("input[name=sex][value=" + gender + "]").prop('checked',true);

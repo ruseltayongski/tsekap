@@ -25,6 +25,7 @@ $brgyNo = str_pad(Auth::user()->barangay, 4, '0', STR_PAD_LEFT);
 $idNo = str_pad(Auth::user()->id, 4, '0', STR_PAD_LEFT);
 //$profileID = $muncityNo.'-'.$brgyNo.'-'.$ctrlNo;
 $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
+$today = date('Y-m-d');
 ?>
 @extends('client')
 @section('content')
@@ -60,8 +61,14 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         <td><input type="text" name="phicID" class="form-control" value="" /></td>
                     </tr>
                     <tr>
-                        <td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>
-                        <td><input type="text" name="nhtsID" class="form-control" value="" /></td>
+                        {{--<td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>--}}
+                        {{--<td><input type="text" name="nhtsID" class="form-control" value="" /></td>--}}
+                        <td>Beneficiaries :<br><small class="text-info"><em>(Check applicable)</em></small></td>
+                        <td>&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
+                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>First Name :</td>
@@ -94,7 +101,7 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" required /> </td>
+                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" max="{{ $today }}" class="form-control" required /> </td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
@@ -210,8 +217,16 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                                 <option value="college_grad">College Graduate</option>
                                 <option value="vocational">Vocational Course</option>
                                 <option value="master">Masteral Degree</option>
+                                <option value="doctorate">Doctorate Degree</option>
                                 <option value="unable_provide">Unable to provide</option>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Balik Probinsya, Bagong Pag-asa (PP2) :</td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="Yes" style="display:inline;"> Yes </label>&emsp;&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="No" > No </label>
                         </td>
                     </tr>
                     <tr>
@@ -263,8 +278,14 @@ $profileID = date('mdy').'-'.$idNo.'-'.$ctrlNo;
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Covid Status :</td>
-                        <td><input type="text" name="covid_status" class="form-control"/> </td>
+                        <td>Latest Covid Vaccination Status :</td>
+                        {{--<td><input type="text" name="covid_status" class="form-control"/> </td>--}}
+                        <td>
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                        </td>
                     </tr>
                     <tr class="menarcheClass hide">
                         <td>Menarche :</td>

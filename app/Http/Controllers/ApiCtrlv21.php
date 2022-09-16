@@ -206,7 +206,12 @@ class ApiCtrlv21 extends Controller
                 'deceased_date' => (isset($p->deceased_date)) ? $p->deceased_date : '',
                 'sexually_active' => (isset($p->sexually_active)) ? $p->sexually_active : '',
                 'immu_stat' => $immu_data,
-                'nutri_stat' => $nutri_data
+                'nutri_stat' => $nutri_data,
+                'nhts' => isset($p->nhts) ? $p->nhts : '',
+                'four_ps' => isset($p->four_ps) ? $p->four_ps : '',
+                'ip' => isset($p->ip) ? $p->ip : '',
+                'member_others' => isset($p->member_others) ? $p->member_others : '',
+                'balik_probinsya' => isset($p->balik_probinsya) ? $p->balik_probinsya : ''
             );
             array_push($data, $res);
         }
@@ -323,7 +328,12 @@ class ApiCtrlv21 extends Controller
                 'newborn_text' => $data['newborn_text'],
                 'deceased' => $data['deceased'],
                 'deceased_date' => date('Y-m-d',strtotime($data['deceased_date'])),
-                'sexually_active' => $data['sexually_active']
+                'sexually_active' => $data['sexually_active'],
+                'nhts' => $data['nhts'],
+                'four_ps' => $data['four_ps'],
+                'ip' => $data['ip'],
+                'member_others' => $data['member_others'],
+                'balik_probinsya' => $data['balik_probinsya']
             );
 
             Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2);
