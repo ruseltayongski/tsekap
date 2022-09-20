@@ -229,8 +229,8 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Balik Probinsya, Bagong Pag-asa (PP2) :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="Yes" style="display:inline;"> Yes </label>&emsp;&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="No" style="display:inline;"> No </label>
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="yes" style="display:inline;"> Yes </label>&emsp;&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="no" style="display:inline;"> No </label>
                         </td>
                     </tr>
                     <tr>

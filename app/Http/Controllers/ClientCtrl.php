@@ -454,12 +454,12 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya)
+        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya,sexually_active)
                 VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
                 '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pwd_desc','$req->pregnant',
                 '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date',
-                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya')
+                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya', '$req->sexually_active')
             ON DUPLICATE KEY UPDATE
                 familyID = '$req->familyID',
                 sex = '$req->sex',
@@ -642,11 +642,11 @@ class ClientCtrl extends Controller
                 'four_ps' => $req->four_ps,
                 'ip' => $req->ip,
                 'member_others' => $req->member_others,
-                'balik_probinsya' => $req->balik_probinsya
+                'balik_probinsya' => $req->balik_probinsya,
+                'sexually_active' => $req->sexually_active
             );
             if($relation=='Head')
             {
-                $update['sexually_active'] = $req->sexually_active;
                 $update['income'] = $req->income;
                 $update['water'] = $req->water;
                 $update['toilet'] = $req->toilet;
