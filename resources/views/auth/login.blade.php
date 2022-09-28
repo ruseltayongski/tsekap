@@ -50,16 +50,16 @@
                             <b class="text-warning">For further assistance, you may contact the following:</b>
                             <ol type="I">
                                 <li>System Concerns</li>
-                                <ul style="list-style-type:square">
+                                <ol type="1">
                                     <li>Amalio S. Enero Jr. - 09978755253</li>
-                                </ul>
+                                </ol>
                                 <li>Non - Technical</li>
-                                <ul style="list-style-type:square">
+                                <ol type="1">
                                     <li>Dr. Nelner D. Omus - 09175748119</li>
                                     <li>Jane Michelle E. Raagas - 09173100611 </li>
                                     <li>Prince Japee Neil C. Seno - 09171188310</li>
                                     <li>Gian Ricki M. Bontilao - 09608522236</li>
-                                </ul>
+                                </ol>
                             </ol>
                         </span>
 
