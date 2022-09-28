@@ -171,7 +171,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-mobile"></i> Mobile Check-Up<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ asset("resources/apk/PHA Check-App1.8.apk") }}">
+                            <a href="{{ asset("resources/apk/PHA-Check-App-2022.apk") }}">
                                 <i class="fa fa-download"></i> <small> Download APK</small>
                             </a>
                         </li>
