@@ -59,7 +59,7 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                         <label>Confirm Password</label>
                         <input type="password" pattern=".{3,}" title="Confirm password - minimum of 3 Character" class="form-control" id="password2" name="confirm" required onkeyup="checkPassword()">
                         <div class="has-error text-bold text-danger hide">
-                            <small>Password not match!</small>
+                            <small>Password does not match!</small>
                         </div>
                         <div class="has-match text-bold text-success hide">
                             <small><i class="fa fa-check-circle"></i> Password matched!</small>
@@ -130,7 +130,7 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                         <label>Confirm Password</label>
                         <input type="password" pattern=".{3,}" title="Confirm password - minimum of 3 Character" class="form-control" id="password12" name="confirm" onkeyup="checkPassword2()" placeholder="Unchanged">
                         <div class="has-error text-bold text-danger hide">
-                            <small>Password not match!</small>
+                            <small>Password does not match!</small>
                         </div>
                         <div class="has-match text-bold text-success hide">
                             <small><i class="fa fa-check-circle"></i> Password matched!</small>

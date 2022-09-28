@@ -333,7 +333,8 @@ class ApiCtrlv21 extends Controller
                 'four_ps' => strtolower($data['four_ps']),
                 'ip' => strtolower($data['ip']),
                 'member_others' => $data['member_others'],
-                'balik_probinsya' => strtolower($data['balik_probinsya'])
+                'balik_probinsya' => strtolower($data['balik_probinsya']),
+                'updated_by' => $data['user_id']
             );
 
             Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2);

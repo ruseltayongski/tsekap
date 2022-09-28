@@ -76,9 +76,9 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Family Head? :</td>
+                        <td>Family Head? <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="head" id="head" class="form-control required" style="width: 100%" required>
+                            <select name="head" id="head" class="form-control required" style="width: 100%">
                                 <option value="">Select...</option>
                                 <option <?php if($info->head=='YES') echo 'selected'; ?> value="YES">YES</option>
                                 <option <?php if($info->head=='NO') echo 'selected'; ?> value="NO">NO</option>
@@ -86,7 +86,7 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="relation <?php if($info->head=='YES') echo 'hide'; ?> has-group" >
-                        <td>Relation to Head :</td>
+                        <td>Relation to Head <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <div class="col-md-8">
                                 <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
@@ -124,15 +124,15 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>First Name :</td>
+                        <td>First Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td><input type="text" name="fname" value="{{ $info->fname }}" class="form-control" required /> </td>
                     </tr>
                     <tr>
-                        <td>Middle Name :</td>
+                        <td>Middle Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td><input type="text" name="mname" value="{{$info->mname }}" class="form-control" /> </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Last Name :</td>
+                        <td>Last Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td><input type="text" name="lname" value="{{$info->lname}}" class="form-control" required /> </td>
                     </tr>
                     <tr>
@@ -153,15 +153,15 @@ $today = date('Y-m-d');
                         <td><input type="text" name="contact" class="form-control" value="{{ $info->contact }}"/> </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Birth Date :</td>
+                        <td>Birth Date <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" max="{{ $today }}" value="{{ $info->dob }}" required /> </td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
-                        <td><input type="text" name="birth_place" class="form-control" value="{{ $info->birth_place }}" required /> </td>
+                        <td><input type="text" name="birth_place" class="form-control" value="{{ $info->birth_place }}" /> </td>
                     </tr>
                     <tr>
-                        <td>Sex :</td>
+                        <td>Sex <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($info->sex=='Male') echo 'checked'; ?> name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
                             &nbsp;&nbsp;&nbsp;<br />
@@ -182,30 +182,30 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr>
-                        <td>Civil Status :</td>
+                        <td>Civil Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Single') echo 'checked'; ?> name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Married') echo 'checked'; ?> name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Divorced') echo 'checked'; ?> name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Widowed') echo 'checked'; ?> name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Annulled') echo 'checked'; ?> name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Single') echo 'checked'; ?> name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Married') echo 'checked'; ?> name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Divorced') echo 'checked'; ?> name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Widowed') echo 'checked'; ?> name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Annulled') echo 'checked'; ?> name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
                         </td>
                     </tr>
                     <tr>
-                        <td>Religion Status : <br><br><br><br></td>
+                        <td>Religion <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='RC') echo 'checked'; ?> name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Christian') echo 'checked'; ?> name="religion" class="religion" value="Christian" > Christian</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='INC') echo 'checked'; ?> name="religion" class="religion" value="INC" > INC</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Islam') echo 'checked'; ?> name="religion" class="religion" value="Islam" > Islam</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Jehovah') echo 'checked'; ?> name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='other') echo 'checked'; ?> name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='RC') echo 'checked'; ?> name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Christian') echo 'checked'; ?> name="religion" class="religion" value="Christian" > Christian</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='INC') echo 'checked'; ?> name="religion" class="religion" value="INC" > INC</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Islam') echo 'checked'; ?> name="religion" class="religion" value="Islam" > Islam</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Jehovah') echo 'checked'; ?> name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
+                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='other') echo 'checked'; ?> name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
                             <span class="other_religion"><?php if($info->religion=='other') echo "<input type='text' style='width:50%;' name='other_religion' value='$info->other_religion' class='form-control'/>";?> </span>
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Barangay :</td>
+                        <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <select name="barangay" class="form-control chosen-select" required id="suffix" style="width: 100%">
                                 <option value="">Select...</option>
@@ -241,7 +241,7 @@ $today = date('Y-m-d');
                     }
                     ?>
                     <tr class="head">
-                        <td>Safe Water Supply :</td>
+                        <td>Safe Water Supply <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <input type="hidden" name="water" id="water" value="{{ $info->water }}"  />
                             <div class="form-inline">
@@ -252,7 +252,7 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="head">
-                        <td>Sanitary Toilet :</td>
+                        <td>Sanitary Toilet <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <select name="toilet" class="form-control chosen-select" id="toilet" style="width: 100%">
                                 <option value="">Select...</option>
@@ -283,7 +283,7 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr>
-                        <td>Balik Probinsya, Bagong Pag-asa (PP2) :</td>
+                        <td>Balik Probinsya, Bagong Pag-asa (BP2) :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'yes') echo "checked" ?> type="radio" name="balik_probinsya" value="yes" style="display:inline;"> Yes </label>&emsp;&emsp;
                             <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'no') echo "checked" ?> type="radio" name="balik_probinsya" value="no" style="display:inline;"> No </label>
@@ -338,13 +338,13 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="has-group">
-                        <td>Latest Covid Vaccination Status :</td>
+                        <td>Latest Covid Vaccination Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         {{--<td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>--}}
                         <td>
-                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Booster Dose') echo "checked" ?> type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'None') echo "checked" ?> type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Booster Dose') echo "checked" ?> type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'None') echo "checked" ?> type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
                         </td>
                     </tr>
                     <tr class="menarcheClass hide">
@@ -437,7 +437,7 @@ $today = date('Y-m-d');
                                     <i class="fa fa-arrow-left"></i> Back
                                 </a>
 {{--                                @if(in_array(Date("F"), array("April","August","December","June"), true))--}}
-                                <button type="submit" class="btn btn-success btn-sm" name="update" value="1">
+                                <button type="submit" class="btn btn-success btn-sm"  name="update" value="1">
                                     <i class="fa fa-pencil"></i> Update
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
@@ -477,12 +477,13 @@ $today = date('Y-m-d');
             if(head=='NO'){
                 $('.relation').removeClass('hide');
                 $('#relation').attr('required',true);
-
                 $('.head').addClass('hide');
+                $('#toilet').attr('required', false);
             }else{
                 $('.relation').addClass('hide');
                 $('#relation').removeAttr('required');
                 $('.head').removeClass('hide');
+                $('#toilet').attr('required', true);
             }
         }
     </script>

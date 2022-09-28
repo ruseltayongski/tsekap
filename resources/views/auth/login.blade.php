@@ -27,6 +27,49 @@
         </div>
     </div>
 @endif
+
+<div class="modal fade" tabindex="-1" role="dialog" id="loginModal" style="margin-top: 30px;z-index: 99999 ">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-success">
+                    <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4><b>PHILIPPINE HEALTH AGENDA CHECK-UP SYSTEM</b></h4>
+                </div><br>
+
+                <div class="">
+                    <div style="font-size:1.1em;">
+                        <i class="fa fa-phone"></i> <b class="text-warning">Main Contact Person:</b>
+                        <ul>
+                            <li style="font-size: 0.95em;">
+                                <span style="color: darkslategray">Amalio Enero Jr. - 09978755253 / amaliojrenero@gmail.com</span>
+                            </li>
+                        </ul><br>
+
+                        <span style="font-size: 0.95em; color: darkslategray;">
+                            <b class="text-warning">For further assistance, you may contact the following:</b>
+                            <ol type="I">
+                                <li>System Concerns</li>
+                                <ul style="list-style-type:square">
+                                    <li>Amalio S. Enero Jr. - 09978755253</li>
+                                </ul>
+                                <li>Non - Technical</li>
+                                <ul style="list-style-type:square">
+                                    <li>Dr. Nelner D. Omus - 09175748119</li>
+                                    <li>Jane Michelle E. Raagas - 09173100611 </li>
+                                    <li>Prince Japee Neil C. Seno - 09171188310</li>
+                                    <li>Gian Ricki M. Bontilao - 09608522236</li>
+                                </ul>
+                            </ol>
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="login-box">
     <div class="login-logo">
         <img src="{{ asset('resources/img/logo.png') }}" />
@@ -61,13 +104,23 @@
                     <div class="form-group">
                         <label style="cursor:pointer;">
                             <input type="checkbox" name="remember"> Remember Me
-                        </label>
+                        </label><br><br>
+                        <a href="{{ asset("resources/apk/PHA Check-App1.8.apk") }}" type="button" class="btn btn-success">
+                            <i class="fa fa-mobile"></i> <small> Mobile Check-Up (apk) </small>
+                        </a>
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div><!-- /.col -->
             </div>
+            {{--<i class="fa fa-phone-square"></i> For further assistance/questions, please contact--}}
+            {{--<strong><span class="text-success">Amalio S. Enero Jr.</span></strong>--}}
+                {{--<ul>--}}
+                    {{--<li>Contact #: <b class="text-primary">09978755253 </b> </li>--}}
+                    {{--<li>Email: <b class="text-primary">amaliojrenero@gmail.com </b></li>--}}
+                {{--</ul>--}}
+
         </div><!-- /.login-box-body -->
 
     </form>
@@ -78,5 +131,8 @@
 <!-- Bootstrap 3.3.5 -->
 <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
 <!-- iCheck -->
+<script>
+    $('#loginModal').modal('show');
+</script>
 </body>
 </html>

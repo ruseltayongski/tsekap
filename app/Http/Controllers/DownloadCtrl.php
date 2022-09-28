@@ -85,7 +85,8 @@ class DownloadCtrl extends Controller
                 'familyID', 'head', 'relation',
                 'fname', 'mname', 'lname', 'suffix',
                 'dob', 'sex',
-                'barangay_id', 'muncity_id', 'province_id', 'updated_at'
+                'barangay_id', 'muncity_id', 'province_id', 'updated_at',
+                'updated_by'
             )->where('province_id',$id)->where('muncity_id',$mun_id);
 
             $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id);

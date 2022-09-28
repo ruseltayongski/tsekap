@@ -3,6 +3,7 @@ use App\Bracket;
 use App\Cases;
 use App\Service;
 use \App\Http\Controllers\LocationCtrl;
+use App\Http\Controllers\UserCtrl;
 
 header("Content-Type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=".$filename.".xls");
@@ -35,6 +36,8 @@ $table_body .='
             <th> BARANGAY </th>
             <th> MUNICIPAL / CITY </th>
             <th> PROVINCE </th>
+            <th> ENCODED BY </th>
+            <th> UPDATED BY </th>
         </tr>
     ';
 
@@ -52,7 +55,17 @@ foreach($profile as $row) {
             <td style="text-align:center">'.$row->sex.'</td>
             <td style="text-align:center">'.LocationCtrl::getBarangay($row->barangay_id).'</td>
             <td style="text-align:center">'.LocationCtrl::getMuncity($row->muncity_id).'</td>
-            <td style="text-align:center">'.LocationCtrl::getProvince($row->province_id).'</td>
+            <td style="text-align:center">'.LocationCtrl::getProvince($row->province_id).'</td>';
+
+    $encoder = explode('-', $row->familyID);
+    $encoded_by = UserCtrl::getUser($encoder[1]);
+    $updated_by = UserCtrl::getUser($row->updated_by);
+    $encoder_name = isset($encoded_by) ? $encoded_by->fname." ".$encoded_by->lname : "User Deactivated";
+    $editor_name= isset($updated_by) ? $updated_by->fname." ".$updated_by->lname : "";
+
+    $table_body .= '
+            <td style="text-align: center;">'.$encoder_name.'</td>
+            <td style="text-align: center;">'.$editor_name.'</td>
         </tr>
     ';
 }

@@ -588,6 +588,7 @@ class ClientCtrl extends Controller
 
     public function updatePopulation(Request $req)
     {
+        $user = Auth::user();
         $muncity_id = Auth::user()->muncity;
         Session::put('deleteProfile',$req->currentID);
         if($req->update){
@@ -643,7 +644,8 @@ class ClientCtrl extends Controller
                 'ip' => $req->ip,
                 'member_others' => $req->member_others,
                 'balik_probinsya' => $req->balik_probinsya,
-                'sexually_active' => $req->sexually_active
+                'sexually_active' => $req->sexually_active,
+                'updated_by' => $user->id
             );
             if($relation=='Head')
             {

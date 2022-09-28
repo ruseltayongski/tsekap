@@ -212,4 +212,8 @@ class UserCtrl extends Controller
 //            return false;
 //        }
     }
+
+    static function getUser($id){
+        return User::find($id);
+    }
 }
