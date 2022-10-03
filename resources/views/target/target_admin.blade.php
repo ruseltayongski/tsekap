@@ -5,76 +5,78 @@ $user = Auth::user();
 
 @extends('app')
 @section('content')
-    <div class="col-md-12" style="padding-top: 15px; padding-left: 45px; padding-right: 35px">
+    <div class="container">
+        <div class="col-md-12" style="padding-top: 15px; padding-left: 45px; padding-right: 35px">
         <span> <b style="font-size: 18px">TARGET POPULATION</b>
         </span>
-    </div><br><br><br>
+        </div><br><br><br>
 
-    <div class="container">
-        <div class="table-responsive" style="background-color: whitesmoke; padding: 5px; width:100%;">
-            <table class="table table-bordered table-striped" style="width:100%;">
-                <thead class="header">
-                <tr class="bg-navy-active">
-                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:17%;"> Province </th>
-                    <th class="text-center" style="vertical-align: middle; width:10%;"> Target (Total)</th>
-                    <th class="text-center" style="vertical-align: middle; width:10%;"> Profiled (Total)</th>
-                    <th class="text-center" style="vertical-align: middle; width:10%;"> Percentage (Total)</th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Municipality </th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Barangay </th>
-                    <th class="text-center" style="vertical-align: middle"> Action </th>
-                </tr>
-                </thead>
-                @foreach($data as $row)
-                    <tr>
-                        <th style="padding-left: 20px">
-                            <?php $prov_total = \App\Barangay::select(DB::raw("SUM(target) as target_count"))->where('province_id',$row->id)->first()->target_count;?>
-                            <span style="font-size: 15px" class="text-success">{{ strtoupper($row->description) }}</span>
-                        </th>
-                        <th class="text-center text-info" style="font-size: 15px">
-                            {{ number_format($prov_total) }}
-                        </th>
-                        <th class="text-center text-info" style="font-size: 15px">
-                            <?php $profile = Report::getProfile('province',$row->id);?>
-                            {{ number_format($profile) }}
-                        </th>
-                        <th class="text-center text-info" style="font-size: 15px">
-                            <?php $percentage = ($profile / $prov_total) * 100;?>
-                            {{ number_format($percentage, 1) }} %
-                        </th>
-                        <form action="{{ asset('target/generateDownload') }}" method="POST">
-                            <input type="hidden" value="{{ $row->id }}" name="province_id">
-                            {{ csrf_field() }}
-                            <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
-                                <select class="form-control select2 select_muncity" style="width:100%;" name="mun_id">
-                                    <option value="">Select municipality...</option>
-                                    <?php $muncity = \App\Http\Controllers\TargetCtrl::getMuncity($row->id);?>
-                                    @foreach($muncity as $mun)
-                                        <option value="{{ $mun->id }}"> {{ $mun->description }} </option>
-                                    @endforeach
-                                </select><br>
-                                <input type="hidden" id="tmpMuncity{{$row->id}}">
-                                <b style="color: darkgreen"> Target: </b><input type="text" id="mun_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
-                                <b style="color: darkgreen"> Profiled: </b><input type="text" id="mun_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
-                                <b style="color: darkgreen"> Percentage: </b><input type="text" id="mun_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
-                            </td>
-                            <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
-                                <select class="form-control select2" id="bar_select{{$row->id}}" name="bar_id">
-                                    <option value="">Select barangay...</option>
-                                </select><br>
-                                <b style="color: darkgreen"> Target: </b><input type="text" id="bar_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
-                                <b style="color: darkgreen"> Profiled: </b><input type="text" id="bar_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
-                                <b style="color: darkgreen"> Percentage: </b><input type="text" id="bar_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
-                            </td>
-                            <td>
-                                <button class="btn btn-primary btn-sm">
-                                    <i class="fa fa-download"></i> Download
-                                </button>
-                            </td>
-                        </form>
+        <div class="container">
+            <div class="table-responsive" style="background-color: whitesmoke; padding: 5px; width:100%;">
+                <table class="table table-bordered table-striped" style="width:100%;">
+                    <thead class="header">
+                    <tr class="bg-navy-active">
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:17%;"> Province </th>
+                        <th class="text-center" style="vertical-align: middle; width:10%;"> Target (Total)</th>
+                        <th class="text-center" style="vertical-align: middle; width:10%;"> Profiled (Total)</th>
+                        <th class="text-center" style="vertical-align: middle; width:10%;"> Percentage (Total)</th>
+                        <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Municipality </th>
+                        <th class="text-center" style="white-space:nowrap; vertical-align: middle;"> Barangay </th>
+                        <th class="text-center" style="vertical-align: middle"> Action </th>
                     </tr>
-                @endforeach
-            </table>
-        </div><br>
+                    </thead>
+                    @foreach($data as $row)
+                        <tr>
+                            <th style="padding-left: 20px">
+                                <?php $prov_total = \App\Barangay::select(DB::raw("SUM(target) as target_count"))->where('province_id',$row->id)->first()->target_count;?>
+                                <span style="font-size: 15px" class="text-success">{{ strtoupper($row->description) }}</span>
+                            </th>
+                            <th class="text-center text-info" style="font-size: 15px">
+                                {{ number_format($prov_total) }}
+                            </th>
+                            <th class="text-center text-info" style="font-size: 15px">
+                                <?php $profile = Report::getProfile('province',$row->id);?>
+                                {{ number_format($profile) }}
+                            </th>
+                            <th class="text-center text-info" style="font-size: 15px">
+                                <?php $percentage = ($profile / $prov_total) * 100;?>
+                                {{ number_format($percentage, 1) }} %
+                            </th>
+                            <form action="{{ asset('target/generateDownload') }}" method="POST">
+                                <input type="hidden" value="{{ $row->id }}" name="province_id">
+                                {{ csrf_field() }}
+                                <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
+                                    <select class="form-control select2 select_muncity" style="width:100%;" name="mun_id">
+                                        <option value="">Select municipality...</option>
+                                        <?php $muncity = \App\Http\Controllers\TargetCtrl::getMuncity($row->id);?>
+                                        @foreach($muncity as $mun)
+                                            <option value="{{ $mun->id }}"> {{ $mun->description }} </option>
+                                        @endforeach
+                                    </select><br>
+                                    <input type="hidden" id="tmpMuncity{{$row->id}}">
+                                    <b style="color: darkgreen"> Target: </b><input type="text" id="mun_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
+                                    <b style="color: darkgreen"> Profiled: </b><input type="text" id="mun_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                    <b style="color: darkgreen"> Percentage: </b><input type="text" id="mun_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                </td>
+                                <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
+                                    <select class="form-control select2" id="bar_select{{$row->id}}" name="bar_id">
+                                        <option value="">Select barangay...</option>
+                                    </select><br>
+                                    <b style="color: darkgreen"> Target: </b><input type="text" id="bar_target{{$row->id}}" style="width:60%; border-color: transparent;" disabled><br>
+                                    <b style="color: darkgreen"> Profiled: </b><input type="text" id="bar_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                    <b style="color: darkgreen"> Percentage: </b><input type="text" id="bar_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fa fa-download"></i> Download
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                    @endforeach
+                </table>
+            </div><br>
+        </div>
     </div>
 
 @endsection

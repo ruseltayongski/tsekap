@@ -31,7 +31,8 @@ $total_percentage = ($total_profiled / $total_target) * 100;
 
 @extends('client')
 @section('content')
-    <div class="col-md-12" style="padding-top: 10px; padding-left: 35px; padding-right: 35px">
+    <div class="container">
+        <div class="col-md-12" style="padding-top: 10px; padding-left: 35px; padding-right: 35px">
         <span> <b style="font-size: 20px">TARGET POPULATION</b>
             <div class="pull-right">
                 <form action="{{ asset('population/target') }}" method="POST" class="form-inline">
@@ -48,64 +49,65 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                 </form>
             </div>
         </span>
-    </div><br><br><br>
+        </div><br><br><br>
 
-    <div class="container" style="padding: 10px;">
-        <div class="table-responsive" style="background-color: whitesmoke; padding: 15px; width:100%;">
-            <table class="table table-bordered table-striped table-fixed-header" style="width:100%;">
-                <thead class="header">
-                <tr class="bg-navy-active">
-                    <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:25%;"> Barangay </th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
-                    <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Percentage </th>
-                    @if($user_priv === 0)
-                    <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
+        <div class="container" style="padding: 10px;">
+            <div class="table-responsive" style="background-color: whitesmoke; padding: 15px; width:100%;">
+                <table class="table table-bordered table-striped table-fixed-header" style="width:100%;">
+                    <thead class="header">
+                    <tr class="bg-navy-active">
+                        <th class="text-center" style="white-space: nowrap; vertical-align: middle; width:25%;"> Barangay </th>
+                        <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
+                        <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
+                        <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Percentage </th>
+                        @if($user_priv === 0)
+                            <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
+                        @endif
+                    </tr>
+                    </thead>
+                    @foreach($data as $row)
+                        <tr>
+                            <th class="text-info" style="font-size: 15px">
+                                {{ $row->description }}
+                            </th>
+                            <td class="text-center" style="font-size: 15px">
+                                {{ number_format($row->target) }}
+                            </td>
+                            <td class="text-center" style="font-size: 15px">
+                                <?php $profiled = Profile::where('barangay_id',$row->id)->count();?>
+                                {{ number_format($profiled) }}
+                            </td>
+                            <td class="text-center text-info" style="font-size: 15px">
+                                <?php $percent = ($profiled / $row->target) * 100;?>
+                                <b>{{ number_format($percent, 1) }} %</b>
+                            </td>
+                            @if($user_priv === 0)
+                                <td class="text-center">
+                                    <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
+                                        <i class="fa fa-pencil-square-o"></i> Update
+                                    </a>
+                                    {{-- &emsp; &emsp; <a href="#delete_target" data-toggle="modal" class="btn btn-sm btn-danger btn-flat" onclick="deleteTarget('{{ $row->id }}', '{{ $row->description }}')">--}}
+                                    {{--<i class="fa fa-trash"></i> Reset--}}
+                                    {{--</a>--}}
+                                </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                    @if(count($data) > 1)
+                        <tfoot>
+                        <tr style="background-color: lightgoldenrodyellow">
+                            <td><b>TOTAL:</b></td>
+                            <td class="text-center">{{ number_format($total_target) }}</td>
+                            <td class="text-center">{{ number_format($total_profiled) }}</td>
+                            <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
+                            @if($user_priv === 0)
+                                <td></td>
+                            @endif
+                        </tr>
+                        </tfoot>
                     @endif
-                </tr>
-                </thead>
-                @foreach($data as $row)
-                    <tr>
-                        <th class="text-info" style="font-size: 15px">
-                            {{ $row->description }}
-                        </th>
-                        <td class="text-center" style="font-size: 15px">
-                            {{ number_format($row->target) }}
-                        </td>
-                        <td class="text-center" style="font-size: 15px">
-                            <?php $profiled = Profile::where('barangay_id',$row->id)->count();?>
-                            {{ number_format($profiled) }}
-                        </td>
-                        <td class="text-center text-info" style="font-size: 15px">
-                            <?php $percent = ($profiled / $row->target) * 100;?>
-                            <b>{{ number_format($percent, 1) }} %</b>
-                        </td>
-                        @if($user_priv === 0)
-                        <td class="text-center">
-                            <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
-                                <i class="fa fa-pencil-square-o"></i> Update
-                            </a>
-                            {{-- &emsp; &emsp; <a href="#delete_target" data-toggle="modal" class="btn btn-sm btn-danger btn-flat" onclick="deleteTarget('{{ $row->id }}', '{{ $row->description }}')">--}}
-                                {{--<i class="fa fa-trash"></i> Reset--}}
-                            {{--</a>--}}
-                        </td>
-                        @endif
-                    </tr>
-                @endforeach
-                @if(count($data) > 1)
-                <tfoot>
-                    <tr style="background-color: lightgoldenrodyellow">
-                        <td><b>TOTAL:</b></td>
-                        <td class="text-center">{{ number_format($total_target) }}</td>
-                        <td class="text-center">{{ number_format($total_profiled) }}</td>
-                        <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
-                        @if($user_priv === 0)
-                        <td></td>
-                        @endif
-                    </tr>
-                </tfoot>
-                @endif
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 
