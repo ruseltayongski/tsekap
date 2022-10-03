@@ -105,7 +105,7 @@
                         <label style="cursor:pointer;">
                             <input type="checkbox" name="remember"> Remember Me
                         </label><br><br>
-                        <a href="{{ asset("resources/apk/PHA-Check-App-2022.apk") }}" type="button" class="btn btn-success">
+                        <a href="{{ asset("resources/apk/dummy.apk") }}" type="button" class="btn btn-success">
                             <i class="fa fa-mobile"></i> <small> Mobile Check-Up (apk) </small>
                         </a>
                     </div>

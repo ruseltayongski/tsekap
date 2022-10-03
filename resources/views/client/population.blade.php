@@ -78,20 +78,20 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th class="text-center">Family ID<br>&nbsp;</th>
-                            <th class="text-center">Full Name<br>&nbsp;</th>
-                            <th class="text-center">Age<br>&nbsp;</th>
-                            <th class="text-center">Sex<br>&nbsp;</th>
-                            <th class="text-center">Barangay<br>&nbsp;</th>
-                            <th class="text-center">
-                                Sitio<br>
-                                <small class="text-info">(Update by family)</small>
-                            </th>
-                            <th class="text-center">
-                                Purok<br>
-                                <small class="text-warning">(Update by family)</small>
-                            </th>
-                            <th class="text-center">Harmonized<br>&nbsp;</th>
+                            <th>Family ID<br>&nbsp;</th>
+                            <th>Full Name<br>&nbsp;</th>
+                            <th>Age<br>&nbsp;</th>
+                            <th>Sex<br>&nbsp;</th>
+                            <th>Barangay<br>&nbsp;</th>
+                            {{--<th class="text-center">--}}
+                                {{--Sitio<br>--}}
+                                {{--<small class="text-info">(Update by family)</small>--}}
+                            {{--</th>--}}
+                            {{--<th class="text-center">--}}
+                                {{--Purok<br>--}}
+                                {{--<small class="text-warning">(Update by family)</small>--}}
+                            {{--</th>--}}
+                            {{--<th class="text-center">Harmonized<br>&nbsp;</th>--}}
                         </tr>
                     </thead>
                     <tbody>
@@ -143,37 +143,37 @@
                             <td>{{ $p->sex }}</td>
                             <?php $bar_desc = \App\Http\Controllers\LocationCtrl::getBarangay($p->barangay_id);?>
                             <td>{{ $bar_desc }}</td>
-                            <td>
-                                <small class="text-info cursor" onclick="selectSitio('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-institution"></i>
-                                    @if($p->sitio_id)
-                                        <b>{{ \App\Sitio::find($p->sitio_id)->sitio_name }}</b>
-                                    @else
-                                        Update
-                                    @endif
-                                </small>
-                            </td>
-                            <td>
-                                <small class="text-warning cursor" onclick="selectPurok('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-building"></i>
-                                    @if($p->purok_id)
-                                        <b>{{ \App\Purok::find($p->purok_id)->purok_name }}</b>
-                                    @else
-                                        Update
-                                    @endif
-                                </small>
-                            </td>
-                            <td>
-                                @if($p->dengvaxia == 'yes')
-                                    <small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small><br>
-                                    <!--
-                                    <small class="text-green"><i class="fa fa-users"></i> Bhert</small><br>
-                                    <small class="text-yellow"><i class="fa fa-users"></i> E - Referral</small><br>
-                                    <small class="text-purple"><i class="fa fa-users"></i> IHOMIS</small><br>
-                                    -->
-                                    <small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>
-                                @else
-                                    <small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>
-                                @endif
-                            </td>
+                            {{--<td>--}}
+                                {{--<small class="text-info cursor" onclick="selectSitio('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-institution"></i>--}}
+                                    {{--@if($p->sitio_id)--}}
+                                        {{--<b>{{ \App\Sitio::find($p->sitio_id)->sitio_name }}</b>--}}
+                                    {{--@else--}}
+                                        {{--Update--}}
+                                    {{--@endif--}}
+                                {{--</small>--}}
+                            {{--</td>--}}
+                            {{--<td>--}}
+                                {{--<small class="text-warning cursor" onclick="selectPurok('{{ $p->familyID }}','{{ $p->barangay_id }}')"><i class="fa fa-building"></i>--}}
+                                    {{--@if($p->purok_id)--}}
+                                        {{--<b>{{ \App\Purok::find($p->purok_id)->purok_name }}</b>--}}
+                                    {{--@else--}}
+                                        {{--Update--}}
+                                    {{--@endif--}}
+                                {{--</small>--}}
+                            {{--</td>--}}
+                            {{--<td>--}}
+                                {{--@if($p->dengvaxia == 'yes')--}}
+                                    {{--<small class="text-blue"><i class="fa fa-user"></i> Dengvaxia</small><br>--}}
+                                    {{--<!----}}
+                                    {{--<small class="text-green"><i class="fa fa-users"></i> Bhert</small><br>--}}
+                                    {{--<small class="text-yellow"><i class="fa fa-users"></i> E - Referral</small><br>--}}
+                                    {{--<small class="text-purple"><i class="fa fa-users"></i> IHOMIS</small><br>--}}
+                                    {{---->--}}
+                                    {{--<small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>--}}
+                                {{--@else--}}
+                                    {{--<small class="text-danger cursor" href="#select_harmonized" data-toggle="modal" onclick="setSession({{ $p->id }})"><i class="fa fa-plus"></i> Add</small>--}}
+                                {{--@endif--}}
+                            {{--</td>--}}
                         </tr>
                         @endforeach
                     </tbody>

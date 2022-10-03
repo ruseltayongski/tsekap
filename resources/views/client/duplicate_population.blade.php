@@ -42,7 +42,7 @@ use App\FamilyProfile;
 
             <div class="row">
                 <div class="col-md-8">
-                    <form class="form-inline" method="POST" action="{{ asset('duplicate/population') }}">
+                    <form class="form-inline" method="POST" action="{{ asset('issue/duplicate/population') }}">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <?php $tmp = Session::get('profileKeyword');?>
@@ -62,6 +62,7 @@ use App\FamilyProfile;
                             <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
                             <div class="clearfix"></div>
                         </div>
+
                     </form>
                 </div>
             </div>

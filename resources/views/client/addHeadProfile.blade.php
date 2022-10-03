@@ -183,6 +183,7 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Safe Water Supply <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
+                            {{--<input id="waterReq" type="text" class="text-red" readonly value="*This field is required." style="font-size: 12px;border-color: transparent; ">--}}
                             <input type="hidden" name="water" id="water" />
                             <div class="form-inline">
                                 <input type="text" id="water2" class="form-control" readonly value="Not set" data-toggle="modal" data-target="#waterLvl" />
@@ -331,7 +332,7 @@ $today = date('Y-m-d');
                             <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
                                 <i class="fa fa-arrow-left"></i> Back
                             </a>
-                            <button type="submit" class="btn btn-success btn-sm">
+                            <button type="submit" class="btn btn-success btn-sm" id="submitHeadBtn">
                                 <i class="fa fa-send"></i> Submit
                             </button>
                             {{--<button class="btn btn-info btn-sm">--}}
@@ -404,5 +405,9 @@ $today = date('Y-m-d');
                 $('.other_religion').hide();
             }
         });
+
+        $('#submitHeadBtn').on('click', function(e) {
+            if()
+        })
     </script>
 @endsection

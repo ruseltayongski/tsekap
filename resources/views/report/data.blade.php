@@ -37,7 +37,9 @@ $table_body .='
             <th> MUNICIPAL / CITY </th>
             <th> PROVINCE </th>
             <th> ENCODED BY </th>
+            <th> DATE ENCODED </th>
             <th> UPDATED BY </th>
+            <th> DATE UPDATED </th>
         </tr>
     ';
 
@@ -62,10 +64,16 @@ foreach($profile as $row) {
     $updated_by = UserCtrl::getUser($row->updated_by);
     $encoder_name = isset($encoded_by) ? $encoded_by->fname." ".$encoded_by->lname : "User Deactivated";
     $editor_name= isset($updated_by) ? $updated_by->fname." ".$updated_by->lname : "";
+    $date_created = date('M d, Y',strtotime($row->created_at));
+    $date_updated = date('M d, Y',strtotime($row->updated_at));
+    $date_created = ($date_created != 'Nov 30, -0001') ? $date_created : '';
+    $date_updated = ($date_updated != 'Nov 30, -0001') ? $date_updated : '';
 
     $table_body .= '
             <td style="text-align: center;">'.$encoder_name.'</td>
+            <td style="text-align: center;">'.$date_created.'</td>
             <td style="text-align: center;">'.$editor_name.'</td>
+            <td style="text-align: center;">'.$date_updated.'</td>
         </tr>
     ';
 }

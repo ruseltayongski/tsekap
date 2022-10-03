@@ -9,6 +9,7 @@
             success: function(jim){
                 var content = '<ul class="list-group">';
                 jQuery.each(jim.members,function(i,val){
+                    console.log(val);
                     var headClass = 'list-group-item-success';
                     var genderClass = 'text-danger';
                     if(val.head=='NO'){
@@ -21,9 +22,16 @@
                     content += '<li class="list-group-item '+headClass+' '+genderClass+'">';
                     var url2 = "{{  asset ('user/population/info') }}";
                     url2 += "/" + val.id;
-                    content += '<a href="'+url2+'">';
-                    content += val.lname+', '+val.fname+' '+val.mname+' '+val.suffix + '</a>';
-                    content += '<br/><small>('+val.relation+', '+val.sex+')</small>';
+                    content += '<a href="'+url2;
+                    if(val.deceased === 'yes') {
+                        content += '" class="text-red';
+                    }
+                    content += '">' +val.lname+', '+val.fname+' '+val.mname+' '+val.suffix + '</a>';
+                    content += '<br/><small>('+val.relation+', '+val.sex+')';
+                    if(val.deceased === 'yes') {
+                        content += ' <i class="text-red"> (Deceased)</i>';
+                    }
+                    content += '</small>';
                     var unmet = val.unmet;
                     if(unmet === 0) {
                         unmet = "Not set";
@@ -37,7 +45,7 @@
                 content += '</ul>';
 
                 content += '<ul class="list-group family">';
-                content += '<li class="list-group-item"><label>Month Family Income:</label><br />';
+                content += '<li class="list-group-item"><label>Monthly Family Income:</label><br />';
                 content += '<span class="info">'+jim.details.income+'</span>';
                 content += '<br/><span class="sub-info">('+jim.details.familyClass+')</span>';
                 content += '</li>';
