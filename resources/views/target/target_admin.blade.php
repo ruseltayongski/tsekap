@@ -149,8 +149,8 @@ $user = Auth::user();
                 url: url+'/'+($(this).val()),
                 type: 'GET',
                 success: function(data){
-                    $('#bar_target'+data.prov).val(data.bar_target);
-                    $('#bar_profiled'+data.prov).val(data.bar_profiled);
+                    $('#bar_target'+data.prov).val(numberFormat(data.bar_target));
+                    $('#bar_profiled'+data.prov).val(numberFormat(data.bar_profiled));
                     var percent = (data.bar_profiled / data.bar_target) * 100;
                     $('#bar_percentage'+data.prov).val(percent.toFixed(1) + " %");
                 }

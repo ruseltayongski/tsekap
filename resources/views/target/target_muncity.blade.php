@@ -59,7 +59,9 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
                     <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Percentage </th>
+                    @if($user_priv === 0)
                     <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
+                    @endif
                 </tr>
                 </thead>
                 @foreach($data as $row)
@@ -78,6 +80,7 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                             <?php $percent = ($profiled / $row->target) * 100;?>
                             <b>{{ number_format($percent, 1) }} %</b>
                         </td>
+                        @if($user_priv === 0)
                         <td class="text-center">
                             <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
                                 <i class="fa fa-pencil-square-o"></i> Update
@@ -86,6 +89,7 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                                 {{--<i class="fa fa-trash"></i> Reset--}}
                             {{--</a>--}}
                         </td>
+                        @endif
                     </tr>
                 @endforeach
                 @if(count($data) > 1)
@@ -95,7 +99,9 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                         <td class="text-center">{{ number_format($total_target) }}</td>
                         <td class="text-center">{{ number_format($total_profiled) }}</td>
                         <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
+                        @if($user_priv === 0)
                         <td></td>
+                        @endif
                     </tr>
                 </tfoot>
                 @endif
@@ -118,7 +124,7 @@ $total_percentage = ($total_profiled / $total_target) * 100;
         }
 
         /*  ______________________
-        *   |  REMOVE SPECIALIST |
+        *   |    RESET TARGET    |
         *   ----------------------
         */
         function deleteTarget(id, description) {

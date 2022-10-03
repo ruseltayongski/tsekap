@@ -10,7 +10,7 @@
                     </fieldset>
                     <div class="form-group">
                         <label>Barangay:</label>
-                        <input type="text" class="form-control" id="barangay_name" name="barangay_name" required>
+                        <input type="text" class="form-control" style="background-color: white" id="barangay_name" name="barangay_name" required readonly>
                     </div>
                     <div class="form-group">
                         <label>Target Population:</label>

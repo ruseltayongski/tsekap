@@ -73,7 +73,8 @@ class TargetCtrl extends Controller
                 $data = $data->where('barangay.description',"like","%$keyword%");
             $data = $data->get();
             return view('target.target_muncity',[
-                'data' => $data
+                'data' => $data,
+                'user_priv' => $user_priv
             ]);
         }
     }
