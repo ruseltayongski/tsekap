@@ -55,10 +55,11 @@
                                 </ol>
                                 <li>Non - Technical</li>
                                 <ol type="1">
-                                    <li>Dr. Nelner D. Omus - 09175748119</li>
-                                    <li>Jane Michelle E. Raagas - 09173100611 </li>
-                                    <li>Prince Japee Neil C. Seno - 09171188310</li>
-                                    <li>Gian Ricki M. Bontilao - 09608522236</li>
+                                    <li>HSDS Office - 260-9740 local 204</li>
+                                    <li>Dr. Nelner D. Omus, HSDS Head - 09175748119</li>
+                                    <li>Jane Michelle E. Raagas, DMO IV - 09173100611 </li>
+                                    <li>Prince Japee Neil C. Seno, PDO II - 099228947312</li>
+                                    <li>Gian Ricki M. Bontilao, Nurse II - 09608522236</li>
                                 </ol>
                             </ol>
                         </span>

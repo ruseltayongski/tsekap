@@ -89,7 +89,7 @@ $today = date('Y-m-d');
                         <td>Relation to Head <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <div class="col-md-8">
-                                <select name="relation" onchange="changeGender($(this))" id="relation" class="form-control chosen-select" style="width: 100%">
+                                <select name="relation" onchange="changeGender($(this))" required id="relation" class="form-control chosen-select" style="width: 100%">
                                     <option value="">Select...</option>
                                     <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
                                     <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
@@ -121,19 +121,29 @@ $today = date('Y-m-d');
                             <div class="col-md-4">
                                 <input type="text" class="form-control" id="member_others" name="member_others" placeholder="Specify...">
                             </div>
+                            <small class="text-red" id="relation_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>First Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="fname" value="{{ $info->fname }}" class="form-control" required /> </td>
+                        <td>
+                            <input type="text" name="fname" value="{{ $info->fname }}" class="form-control fname" required /><br>
+                            <small class="text-red" id="fname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr>
                         <td>Middle Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="mname" value="{{$info->mname }}" class="form-control" /> </td>
+                        <td>
+                            <input type="text" name="mname" value="{{$info->mname }}" class="form-control mname" required /><br>
+                            <small class="text-red" id="mname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>Last Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="lname" value="{{$info->lname}}" class="form-control" required /> </td>
+                        <td>
+                            <input type="text" name="lname" value="{{$info->lname}}" class="form-control lname" required /><br>
+                            <small class="text-red" id="lname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr>
                         <td>Suffix :</td>
@@ -154,7 +164,10 @@ $today = date('Y-m-d');
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" max="{{ $today }}" value="{{ $info->dob }}" required /> </td>
+                        <td>
+                            <input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" class="form-control" max="{{ $today }}" value="{{ $info->dob }}" required /><br>
+                            <small class="text-red" id="dob_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
@@ -166,7 +179,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($info->sex=='Male') echo 'checked'; ?> name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
                             &nbsp;&nbsp;&nbsp;<br />
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" <?php if($info->sex=='Female') echo 'checked'; ?> name="sex" class="sex" value="Female" required> Female</label>
-                            <span class="span"></span>
+                            <span class="span"></span><br>
+                            <small class="text-red" id="sex_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -184,35 +198,38 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Civil Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Single') echo 'checked'; ?> name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Married') echo 'checked'; ?> name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Divorced') echo 'checked'; ?> name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Widowed') echo 'checked'; ?> name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->civil_status=='Annulled') echo 'checked'; ?> name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Single') echo 'checked'; ?> name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Married') echo 'checked'; ?> name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Divorced') echo 'checked'; ?> name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Widowed') echo 'checked'; ?> name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Annulled') echo 'checked'; ?> name="civil_status" class="civil_status" value="Annulled" > Annulled</label><br>
+                            <small class="text-red" id="cs_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr>
                         <td>Religion <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='RC') echo 'checked'; ?> name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Christian') echo 'checked'; ?> name="religion" class="religion" value="Christian" > Christian</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='INC') echo 'checked'; ?> name="religion" class="religion" value="INC" > INC</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Islam') echo 'checked'; ?> name="religion" class="religion" value="Islam" > Islam</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='Jehovah') echo 'checked'; ?> name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
-                            <label style="cursor: pointer;"><input required type="radio" <?php if($info->religion=='other') echo 'checked'; ?> name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='RC') echo 'checked'; ?> name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Christian') echo 'checked'; ?> name="religion" class="religion" value="Christian" > Christian</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='INC') echo 'checked'; ?> name="religion" class="religion" value="INC" > INC</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Islam') echo 'checked'; ?> name="religion" class="religion" value="Islam" > Islam</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Jehovah') echo 'checked'; ?> name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='other') echo 'checked'; ?> name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
                             <span class="other_religion"><?php if($info->religion=='other') echo "<input type='text' style='width:50%;' name='other_religion' value='$info->other_religion' class='form-control'/>";?> </span>
+                            <small class="text-red" id="religion_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="suffix" style="width: 100%">
+                            <select name="barangay" class="form-control chosen-select" required id="brgy" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option <?php if($info->barangay_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                                 @endforeach
                             </select>
+                            <small class="text-red" id="brgy_warning">This field is required.</small>
                         </td>
                     </tr>
                     <?php $validBrgy = \App\Http\Controllers\UserCtrl::validateBrgy();?>
@@ -238,19 +255,19 @@ $today = date('Y-m-d');
                     $class = 'hide';
                     if($age>13 && $age<50){
                         $class = '';
-                    }
-                    ?>
-                    <tr class="head">
-                        <td>Safe Water Supply <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td>
-                            <input type="hidden" name="water" id="water" value="{{ $info->water }}"  />
-                            <div class="form-inline">
-                                <input type="text" id="water2" class="form-control" readonly value="{{ ($info->water!=0) ? 'Level '.$info->water : 'Not set' }}" data-toggle="modal" data-target="#waterLvl" />
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#waterLvl">Select...</button>
-                            </div>
-
-                        </td>
-                    </tr>
+                        }
+                        ?>
+                        <tr class="head">
+                            <td>Safe Water Supply <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
+                            <td>
+                                <input type="hidden" name="water" id="water" value="{{ $info->water }}"  />
+                                <div class="form-inline">
+                                    <input type="text" id="water2" class="form-control" readonly value="{{ ($info->water!=0) ? 'Level '.$info->water : 'Not set' }}" data-toggle="modal" data-target="#waterLvl" />
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#waterLvl">Select...</button>
+                                </div><br>
+                                <small class="text-red" id="water_warning">This field is required.</small>
+                            </td>
+                        </tr>
                     <tr class="head">
                         <td>Sanitary Toilet <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
@@ -259,7 +276,8 @@ $today = date('Y-m-d');
                                 <option value="non" {{ ($info->toilet=='non') ? 'selected':null }}>None</option>
                                 <option value="comm" {{ ($info->toilet=='comm') ? 'selected':null }}>Communal</option>
                                 <option value="indi" {{ ($info->toilet=='indi') ? 'selected':null }}>Individual Household</option>
-                            </select>
+                            </select><br>
+                            <small class="text-red" id="toilet_warning">This field is required.</small>
                         </td>
                     </tr>
                     @endif
@@ -341,10 +359,11 @@ $today = date('Y-m-d');
                         <td>Latest Covid Vaccination Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         {{--<td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>--}}
                         <td>
-                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'Booster Dose') echo "checked" ?> type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input required <?php if($info->covid_status === 'None') echo "checked" ?> type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Booster Dose') echo "checked" ?> type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
+                            <label style="cursor: pointer;"><input <?php if($info->covid_status === 'None') echo "checked" ?> type="radio" name="covid_status" value="None" style="display:inline;"> None </label><br>
+                            <small class="text-red" id="vaccine_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="menarcheClass hide">
@@ -437,7 +456,7 @@ $today = date('Y-m-d');
                                     <i class="fa fa-arrow-left"></i> Back
                                 </a>
 {{--                                @if(in_array(Date("F"), array("April","August","December","June"), true))--}}
-                                <button type="submit" class="btn btn-success btn-sm"  name="update" value="1">
+                                <button type="submit" class="btn btn-success btn-sm" id="updateProfileBtn" name="update" value="1">
                                     <i class="fa fa-pencil"></i> Update
                                 </button>
                                 <button type="button" class="btn btn-danger btn-sm" data-target="#remove" data-toggle="modal">
@@ -447,9 +466,9 @@ $today = date('Y-m-d');
                                     {{--<i class="fa fa-arrow-right"></i> Proceed to EMR--}}
                                 {{--</button>--}}
                                 {{--@endif--}}
-                                <a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-user-md"></i> Proceed to dengvaxia
-                                </a>
+                                {{--<a href="{{ asset('deng/form') }}" type="button" class="btn btn-primary btn-sm">--}}
+                                    {{--<i class="fa fa-user-md"></i> Proceed to dengvaxia--}}
+                                {{--</a>--}}
                             </div>
                         </td>
                     </tr>
@@ -478,12 +497,10 @@ $today = date('Y-m-d');
                 $('.relation').removeClass('hide');
                 $('#relation').attr('required',true);
                 $('.head').addClass('hide');
-                $('#toilet').attr('required', false);
             }else{
                 $('.relation').addClass('hide');
                 $('#relation').removeAttr('required');
                 $('.head').removeClass('hide');
-                $('#toilet').attr('required', true);
             }
         }
     </script>
@@ -533,6 +550,141 @@ $today = date('Y-m-d');
                     }
                 });
             },300);
+        });
+
+        hideWarnings();
+        function hideWarnings() {
+            $('#relation_warning, #fname_warning, #mname_warning, #lname_warning, #dob_warning, #sex_warning, #brgy_warning').hide();
+            $('#cs_warning, #religion_warning, #water_warning, #toilet_warning, #vaccine_warning').hide();
+        }
+
+        $('#updateProfileBtn').on('click', function() {
+            var submit = true;
+            var missing = "";
+
+            fname = $('.fname').val();
+            if(fname === "undefined" || fname === "") {
+                $('#fname_warning').show();
+                $('.fname').focus();
+                missing += "<u>First Name</u>";
+                submit = false;
+            } else
+                $('#fname_warning').hide();
+
+            mname = $('.mname').val();
+            if(mname === "undefined" || mname === "") {
+                $('#mname_warning').show();
+                $('.mname').focus();
+                missing += ", <u>Middle Name</u>";
+                submit = false;
+            } else
+                $('#mname_warning').hide();
+
+            lname = $('.lname').val();
+            if(lname === "undefined" || lname === "") {
+                $('#lname_warning').show();
+                $('.lname').focus();
+                missing += ", <u>Last Name</u>";
+                submit = false;
+            } else
+                $('#lname_warning').hide();
+
+            dob = $('#dob').val();
+            if(dob === "undefined" || dob === "") {
+                $('#dob_warning').show();
+                $('#dob').focus();
+                missing += ", <u>Birth Date</u>";
+                submit = false;
+            } else
+                $('#dob_warning').hide();
+
+            sex = $('input[name="sex"]:checked').length;
+            if(sex == 0) {
+                $('#sex_warning').show();
+                $('.sex').focus();
+                missing += ", <u>Sex</u>";
+                submit = false;
+            } else
+                $('#sex_warning').hide();
+
+            cs = $('input[name="civil_status"]:checked').length;
+            if(cs == 0) {
+                $('#cs_warning').show();
+                $('.civil_status').focus();
+                missing += ", <u>Civil Status</u>";
+                submit = false;
+            } else
+                $('#cs_warning').hide();
+
+            religion = $('input[name="religion"]:checked').length;
+            if(religion == 0) {
+                $('#religion_warning').show();
+                $('.religion').focus();
+                missing += ", <u>Religion</u>";
+                submit = false;
+            } else
+                $('#religion_warning').hide();
+
+            brgy = $('#brgy').val();
+            if(brgy === "undefined" || brgy === "") {
+                $('#brgy_warning').show();
+                $('#brgy').focus();
+                missing += ", <u>Barangay</u>";
+                submit = false;
+            } else
+                $('#brgy_warning').hide();
+
+            head = $('#head').val();
+            if(head=='YES') {
+                water = $('#water').val();
+                if (water === "undefined" || water === "" || water === '0') {
+                    $('#water_warning').show();
+                    $('#water2').focus();
+                    missing += ", <u>Safe Water Supply</u>";
+                    submit = false;
+                } else
+                    $('#water_warning').hide();
+
+                toilet = $('#toilet').val();
+                console.log('toilet : ' + toilet);
+                if (toilet === "undefined" || toilet === "") {
+                    $('#toilet_warning').show();
+                    $('#toilet').focus();
+                    missing += ", <u>Sanitary Toilet</u>";
+                    submit = false;
+                } else
+                    $('#toilet_warning').hide();
+            } else {
+                relation = $('#relation').val();
+                if(relation === "undefined" || relation == ""){
+                    $('#relation_warning').show();
+                    $('#relation').focus();
+                    missing += ", <u>Relation to Head</u>";
+                    submit = false;
+                } else
+                    $('#relation_warning').hide();
+            }
+
+            covid = $('input[name="covid_status"]:checked').length;
+            if(covid == 0) {
+                $('#vaccine_warning').show();
+                $('.covid_status').focus();
+                missing += ", <u>Covid Vaccination Status</u>";
+                submit = false;
+            } else
+                $('#vaccine_warning').hide();
+
+            if(missing.charAt(0) === ',')
+                missing = missing.replace(/, /, '');
+
+            if(submit === false) {
+                Lobibox.alert('error', {
+                    msg: "Please make sure to enter data in the required fields: <br><br> "+ missing + "<br>"
+                });
+                return false;
+            } else {
+                hideWarnings();
+            }
         });
 
     </script>

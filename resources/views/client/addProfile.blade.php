@@ -81,7 +81,7 @@ $today = date('Y-m-d');
                         <td>Relation to Head <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <div class="col-md-8">
-                                <select name="relation" onchange="changeGender($(this))" class="chosen-select form-control" style="width: 100%">
+                                <select name="relation" onchange="changeGender($(this))" class="chosen-select relation_to_head form-control" required style="width: 100%">
                                     <option>Select...</option>
                                     <option>Son</option>
                                     <option>Daughter</option>
@@ -113,19 +113,29 @@ $today = date('Y-m-d');
                             <div class="col-md-4">
                                 <input type="text" class="form-control" id="member_others" name="member_others" placeholder="Specify...">
                             </div>
+                            <small class="text-red" id="relation_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>First Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="fname" class="fname form-control" required /> </td>
+                        <td>
+                            <input type="text" name="fname" class="fname form-control" required /><br>
+                            <small class="text-red" id="fname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr>
                         <td>Middle Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="mname" class="mname form-control" /> </td>
+                        <td>
+                            <input type="text" name="mname" class="mname form-control" required /><br>
+                            <small class="text-red" id="mname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>Last Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="text" name="lname" class="lname form-control" required /> </td>
+                        <td>
+                            <input type="text" name="lname" class="lname form-control" required /><br>
+                            <small class="text-red" id="lname_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr>
                         <td>Suffix :</td>
@@ -146,7 +156,10 @@ $today = date('Y-m-d');
                     </tr>
                     <tr class="has-group">
                         <td>Birth Date <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        <td><input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" max="{{ $today }}" id="dob" class="form-control" required /></td>
+                        <td>
+                            <input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" max="{{ $today }}" id="dob" class="form-control" required /><br>
+                            <small class="text-red" id="dob_warning">This field is required.</small>
+                        </td>
                     </tr>
                     <tr class="has-group">
                         <td>Birth Place :</td>
@@ -158,7 +171,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
                             &nbsp;&nbsp;&nbsp;<br />
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" name="sex" class="sex" value="Female" required> Female</label>
-                            <span class="span"></span>
+                            <span class="span"></span><br>
+                            <small class="text-red" id="sex_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -181,7 +195,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label><br>
+                            <small class="text-red" id="cs_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr valign="top">
@@ -194,17 +209,19 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input required type="radio" name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
                             <label style="cursor: pointer;"><input required type="radio" name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
                             <span class="other_religion"></span>
+                            <small class="text-red" id="religion_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="suffix" style="width: 100%">
+                            <select name="barangay" class="form-control chosen-select" required id="brgy" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option <?php if($brgy_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                                 @endforeach
                             </select>
+                            <small class="text-red" id="brgy_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -288,7 +305,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                            <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="None" style="display:inline;"> None </label><br>
+                            <small class="text-red" id="vaccine_warning">This field is required.</small>
                         </td>
                     </tr>
                     <tr class="sexuallyActiveClass hide">
@@ -368,7 +386,7 @@ $today = date('Y-m-d');
                             <a href="{{ asset('user/population') }}" class="btn btn-sm btn-default">
                                 <i class="fa fa-arrow-left"></i> Back
                             </a>
-                            <button type="submit" class="btn btn-success btn-sm">
+                            <button type="submit" class="btn btn-success btn-sm" id="submitProfileBtn">
                                 <i class="fa fa-send"></i> Submit
                             </button>
                             {{--<button class="btn btn-info btn-sm">--}}
@@ -466,5 +484,119 @@ $today = date('Y-m-d');
             console.log(gender);
             $("input[name=sex][value=" + gender + "]").prop('checked',true);
         }
+
+        hideWarnings();
+        function hideWarnings() {
+            $('#fname_warning, #mname_warning, #lname_warning, #dob_warning, #sex_warning, #brgy_warning').hide();
+            $('#cs_warning, #religion_warning, #relation_warning, #vaccine_warning').hide();
+        }
+
+        $('#submitProfileBtn').on('click', function() {
+            var submit = true;
+            var missing = "";
+
+            relation = $('.relation_to_head').val();
+            if(relation === "undefined" || relation === "") {
+                $('#relation_warning').show();
+                $('.relation_to_head').focus();
+                missing += "<u>Relation to Head</u>";
+                submit = false;
+            } else
+                $('#relation_warning').hide();
+
+            fname = $('.fname').val();
+            if(fname === "undefined" || fname === "") {
+                $('#fname_warning').show();
+                $('.fname').focus();
+                missing += ", <u>First Name</u>";
+                submit = false;
+            } else
+                $('#fname_warning').hide();
+
+            mname = $('.mname').val();
+            if(mname === "undefined" || mname === "") {
+                $('#mname_warning').show();
+                $('.mname').focus();
+                missing += ", <u>Middle Name</u>";
+                submit = false;
+            } else
+                $('#mname_warning').hide();
+
+            lname = $('.lname').val();
+            if(lname === "undefined" || lname === "") {
+                $('#lname_warning').show();
+                $('.lname').focus();
+                missing += ", <u>Last Name</u>";
+                submit = false;
+            } else
+                $('#lname_warning').hide();
+
+            dob = $('#dob').val();
+            if(dob === "undefined" || dob === "") {
+                $('#dob_warning').show();
+                $('#dob').focus();
+                missing += ", <u>Birth Date</u>";
+                submit = false;
+            } else
+                $('#dob_warning').hide();
+
+            sex = $('input[name="sex"]:checked').length;
+            if(sex == 0) {
+                $('#sex_warning').show();
+                $('.sex').focus();
+                missing += ", <u>Sex</u>";
+                submit = false;
+            } else
+                $('#sex_warning').hide();
+
+            cs = $('input[name="civil_status"]:checked').length;
+            if(cs == 0) {
+                $('#cs_warning').show();
+                $('.civil_status').focus();
+                missing += ", <u>Civil Status</u>";
+                submit = false;
+            } else
+                $('#cs_warning').hide();
+
+            religion = $('input[name="religion"]:checked').length;
+            console.log('religion : ' + religion);
+            if(religion == 0) {
+                $('#religion_warning').show();
+                $('.religion').focus();
+                missing += ", <u>Religion</u>";
+                submit = false;
+            } else
+                $('#religion_warning').hide();
+
+            brgy = $('#brgy').val();
+            if(brgy === "undefined" || brgy === "") {
+                $('#brgy_warning').show();
+                $('#brgy').focus();
+                missing += ", <u>Barangay</u>";
+                submit = false;
+            } else
+                $('#brgy_warning').hide();
+
+            covid = $('input[name="covid_status"]:checked').length;
+            if(covid == 0) {
+                $('#vaccine_warning').show();
+                $('.covid_status').focus();
+                missing += ", <u>Covid Vaccination Status</u>";
+                submit = false;
+            } else
+                $('#vaccine_warning').hide();
+
+            if(missing.charAt(0) === ',')
+                missing = missing.replace(/, /, '');
+
+            if(submit === false) {
+                Lobibox.alert('error', {
+                    msg: "Please make sure to enter data in the required fields: <br><br> "+ missing + "<br>"
+                });
+                return false;
+            } else {
+                hideWarnings();
+            }
+        });
     </script>
 @endsection
