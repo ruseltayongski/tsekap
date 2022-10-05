@@ -113,12 +113,12 @@ class DownloadCtrl extends Controller
             if($withyear == true) {
                 $profile = $profile->where('updated_at','>=',$start)->where('updated_at','<=',$end);
             }
-            $profile = $profile->get();
+            $profile = $profile->orderBy('id','desc')->get();
         }
         else if($user_priv == 2) {
             $filename = Barangay::find($bar_id)->description.'-'.$year;
             $profile = Profile::where('barangay_id',$bar_id)
-                ->get();
+                ->orderBy('id','desc')->get();
 
             $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id)->get();
             $profilecases = $profilecases->where('profilecases.barangay_id',$bar_id)->get();
