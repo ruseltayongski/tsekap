@@ -81,7 +81,7 @@ $today = date('Y-m-d');
                         <td>Relation to Head <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
                             <div class="col-md-8">
-                                <select name="relation" onchange="changeGender($(this))" class="chosen-select relation_to_head form-control" required style="width: 100%">
+                                <select name="relation" id="relation" onchange="changeGender($(this))" class="chosen-select form-control" required style="width: 100%">
                                     <option>Select...</option>
                                     <option>Son</option>
                                     <option>Daughter</option>
@@ -113,28 +113,28 @@ $today = date('Y-m-d');
                             <div class="col-md-4">
                                 <input type="text" class="form-control" id="member_others" name="member_others" placeholder="Specify...">
                             </div>
-                            <small class="text-red" id="relation_warning">This field is required.</small>
+                            <small class="text-red" id="relation_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>First Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <input type="text" name="fname" class="fname form-control" required /><br>
-                            <small class="text-red" id="fname_warning">This field is required.</small>
+                            <input type="text" name="fname" class="fname form-control" required />
+                            <small class="text-red" id="fname_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr>
                         <td>Middle Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <input type="text" name="mname" class="mname form-control" required /><br>
-                            <small class="text-red" id="mname_warning">This field is required.</small>
+                            <input type="text" name="mname" class="mname form-control" required />
+                            <small class="text-red" id="mname_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
                         <td>Last Name <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <input type="text" name="lname" class="lname form-control" required /><br>
-                            <small class="text-red" id="lname_warning">This field is required.</small>
+                            <input type="text" name="lname" class="lname form-control" required />
+                            <small class="text-red" id="lname_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr>
@@ -157,7 +157,7 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Birth Date <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" max="{{ $today }}" id="dob" class="form-control" required /><br>
+                            <input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" min="1910-05-11" max="{{ $today }}" id="dob" class="form-control" required />
                             <small class="text-red" id="dob_warning">This field is required.</small>
                         </td>
                     </tr>
@@ -171,8 +171,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" name="sex" class="sex" value="Male" required style="display:inline;"> Male</label>
                             &nbsp;&nbsp;&nbsp;<br />
                             <label style="cursor: pointer;"><input onclick="calculateAge()" type="radio" name="sex" class="sex" value="Female" required> Female</label>
-                            <span class="span"></span><br>
-                            <small class="text-red" id="sex_warning">This field is required.</small>
+                            <span class="span"></span>
+                            <small class="text-red" id="sex_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -195,8 +195,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label><br>
-                            <small class="text-red" id="cs_warning">This field is required.</small>
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <small class="text-red" id="cs_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr valign="top">
@@ -215,13 +215,13 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="brgy" style="width: 100%">
+                            <select name="barangay" class="form-control chosen-select" required id="suffix" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option <?php if($brgy_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
                                 @endforeach
                             </select>
-                            <small class="text-red" id="brgy_warning">This field is required.</small>
+                            <small class="text-red" id="brgy_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -305,8 +305,8 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
                             <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="Booster Dose" style="display:inline;"> Booster Dose </label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="None" style="display:inline;"> None </label><br>
-                            <small class="text-red" id="vaccine_warning">This field is required.</small>
+                            <label style="cursor: pointer;"><input required type="radio" name="covid_status" value="None" style="display:inline;"> None </label>
+                            <small class="text-red" id="vaccine_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr class="sexuallyActiveClass hide">
@@ -495,8 +495,8 @@ $today = date('Y-m-d');
             var submit = true;
             var missing = "";
 
-            relation = $('.relation_to_head').val();
-            if(relation === "undefined" || relation === "") {
+            relation = $('#relation :selected').text();
+            if(relation === "Select..." || relation === ""){
                 $('#relation_warning').show();
                 $('.relation_to_head').focus();
                 missing += "<u>Relation to Head</u>";

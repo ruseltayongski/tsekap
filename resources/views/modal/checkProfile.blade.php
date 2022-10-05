@@ -11,7 +11,7 @@
                         <td><input type="text" name="fname" class="fname form-control" required /> </td>
                     </tr>
                     <tr>
-                        <td>Middle Initial :</td>
+                        <td>Middle Name :</td>
                         <td><input type="text" name="mname" minlength="1" class="mname form-control" /> </td>
                     </tr>
                     <tr class="has-group">
