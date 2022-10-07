@@ -67,7 +67,7 @@ foreach($profile as $row) {
     $date_created = date('M d, Y',strtotime($row->created_at));
     $date_updated = date('M d, Y',strtotime($row->updated_at));
     $date_created = ($date_created != 'Nov 30, -0001') ? $date_created : '';
-    $date_updated = ($date_updated != 'Nov 30, -0001') ? $date_updated : '';
+    $date_updated = ($date_updated != 'Nov 30, -0001' && isset($updated_by)) ? $date_updated : '';
 
     $table_body .= '
             <td style="text-align: center;">'.$encoder_name.'</td>
