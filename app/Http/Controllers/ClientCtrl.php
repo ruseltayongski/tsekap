@@ -714,11 +714,11 @@ class ClientCtrl extends Controller
                     $hyper_status = $info->hypertension;
                 if(isset($info->diabetic) && $info->diabetic != '')
                     $diab_status = $info->diabetic;
-                if(isset($info->mental_med))
+                if(isset($info->mental_med) && $info->mental_med != '')
                     $mental_status = $info->mental_med;
-                if(isset($info->tbdots_med))
+                if(isset($info->tbdots_med) && $info->tbdots_med != '')
                     $tb_status = $info->tbdots_med;
-                if(isset($info->cvd_med))
+                if(isset($info->cvd_med) && $info->cvd_med != '')
                     $cvd_status = $info->cvd_med;
 
                 $hyper_remarks = '';

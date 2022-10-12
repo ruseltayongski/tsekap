@@ -39,7 +39,7 @@ $total_target = $total_profiled = 0;
 @section('content')
     <div class="container">
         <div class="col-md-12" style="padding-top: 10px; padding-left: 35px; padding-right: 35px">
-        <span> <b style="font-size: 20px">TARGET POPULATION</b>
+        <span> <b style="font-size: 20px">TARGET POPULATION ({{ $year }})</b>
             <div class="pull-right">
                 <form action="{{ asset('population/target') }}" method="POST" class="form-inline">
                     {{ csrf_field() }}
@@ -85,7 +85,7 @@ $total_target = $total_profiled = 0;
                                   if($year == 2018)
                                       $profiled = Profile::where('barangay_id',$row->id)->where('created_at','<','2022-01-01 00:00:00')->count();
                                   else
-                                      $profiled = Profile::where('barangay_id',$row->id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+                                      $profiled = Profile::where('barangay_id',$row->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
                                   $total_profiled += $profiled;
                                 ?>
                                 {{ number_format($profiled) }}

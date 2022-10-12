@@ -168,31 +168,31 @@ class ApiCtrlv21 extends Controller
                 }
             } else {
                 if($p->updated_by === '') {
-                    if(isset($p->hypertension))
+                    if(isset($p->hypertension) && $p->hypertension != '')
                         array_push($med_availment,[
                             'type' => 'Hypertension',
                             'status' => $p->hypertension,
                             'remarks' => ''
                         ]);
-                    if(isset($p->diabetic))
+                    if(isset($p->diabetic) && $p->diabetic != '')
                         array_push($med_availment,[
                             'type' => 'Diabetic',
                             'status' => $p->diabetic,
                             'remarks' => ''
                         ]);
-                    if(isset($p->mental_med))
+                    if(isset($p->mental_med) && $p->mental_med != '')
                         array_push($med_availment,[
                             'type' => 'Mental Health Medication',
                             'status' => $p->mental_med,
                             'remarks' => ''
                         ]);
-                    if(isset($p->tbdots_med))
+                    if(isset($p->tbdots_med) && $p->tbdots_med != '')
                         array_push($med_availment,[
                             'type' => 'TB Medication',
                             'status' => $p->tbdots_med,
                             'remarks' => ''
                         ]);
-                    if(isset($p->cvd_med))
+                    if(isset($p->cvd_med) && $p->cvd_med != '')
                         array_push($med_availment,[
                             'type' => 'CVD Medication',
                             'status' => $p->cvd_med,
@@ -346,8 +346,6 @@ class ApiCtrlv21 extends Controller
                 'water' => $data['water'],
                 'toilet' => $data['toilet'],
                 'education' => $data['education'],
-                'hypertension' => $data['hypertension'],
-                'diabetic' => $data['diabetic'],
                 'pwd' => strtolower($data['pwd']),
                 'pwd_desc' => $data['pwd_desc'],
                 'pregnant' => $data['pregnant'],
@@ -360,9 +358,6 @@ class ApiCtrlv21 extends Controller
                 'weight' => $data['weight'],
                 'cancer' => strtolower($data['cancer']),
                 'cancer_type' => $data['cancer_type'],
-                'mental_med' => $data['mental_med'],
-                'tbdots_med' => $data['tbdots_med'],
-                'cvd_med' => $data['cvd_med'],
                 'covid_status' => $data['covid_status'],
                 'menarche' => strtolower($data['menarche']),
                 'menarche_age' => $data['menarche_age'],
@@ -379,11 +374,11 @@ class ApiCtrlv21 extends Controller
                 'updated_by' => $data['user_id']
             );
 
-            Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2);
+            $profile_id = Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2)->id;
 
-            $profile_id = $data['user_id'];
-            $nutri_del = NutritionStatus::where('profile_id', $profile_id)->delete();
-            $immu_del = Immunization::where('profile_id', $profile_id)->delete();
+            NutritionStatus::where('profile_id', $profile_id)->delete();
+            Immunization::where('profile_id', $profile_id)->delete();
+            Medication::where('profile_id', $profile_id)->delete();
 
             $nutri_stat = explode(',',$data['nutri_stat']);
             foreach($nutri_stat as $nutri) {
@@ -399,6 +394,15 @@ class ApiCtrlv21 extends Controller
                 $i->profile_id = $profile_id;
                 $i->description = $immu;
                 $i->save();
+            }
+
+            foreach($data['medication'] as $m) {
+                $med = new Medication();
+                $med->profile_id = $profile_id;
+                $med->type = $m['type'];
+                $med->status = $m['status'];
+                $med->remarks = $m['remarks'];
+                $med->save();
             }
 
             $q = "INSERT IGNORE profile_device(profile_id,device) values(
