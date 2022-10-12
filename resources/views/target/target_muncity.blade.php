@@ -6,27 +6,33 @@ use App\UserBrgy;
 $user = Auth::user();
 $total_target = $total_profiled = 0;
 
-if($user->user_priv == 2) {
-    $brgy = UserBrgy::select(
-        'barangay.id',
-        'barangay.description',
-        'barangay.province_id',
-        'barangay.muncity_id',
-        'barangay.target'
-    )
-        ->where('userbrgy.user_id',$user->id)
-        ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id')
-        ->get();
-    $total_target = $total_profiled = 0;
-    foreach($brgy as $bar) {
-        $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
-        $total_profiled += Profile::where('barangay_id',$bar->id)->count();
-    }
-} else {
-    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-    $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
-}
-$total_percentage = ($total_profiled / $total_target) * 100;
+//if($user->user_priv == 2) {
+//    $brgy = UserBrgy::select(
+//        'barangay.id',
+//        'barangay.description',
+//        'barangay.province_id',
+//        'barangay.muncity_id',
+//        'barangay.target'
+//    )
+//        ->where('userbrgy.user_id',$user->id)
+//        ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id')
+//        ->get();
+//    $total_target = $total_profiled = 0;
+//    foreach($brgy as $bar) {
+//        $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
+//        $total_profiled += Profile::where('barangay_id',$bar->id)->count();
+//    }
+//} else {
+//    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"));
+//    if($year == 2018)
+//        $total_target = $total_target->where('created_at','<','2022-01-01 00:00:00');
+//    else
+//        $total_target = $total_target->where('created_at','>=','2022-01-01 00:00:00');
+//
+//    $total_target = $total_target->where('muncity_id',$user->muncity)->first()->target_count;
+//    $total_profiled = Profile::where('muncity_id',$user->muncity)->count();
+//}
+//$total_percentage = ($total_profiled / $total_target) * 100;
 ?>
 
 @extends('client')
@@ -60,7 +66,7 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                         <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Target </th>
                         <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Profiled </th>
                         <th class="text-center" style="white-space:nowrap; vertical-align: middle; width: 20%;"> Percentage </th>
-                        @if($user_priv === 0)
+                        @if($user_priv === 0 && $year == 2022)
                             <th class="text-center" style="vertical-align: middle; width:20%;"> Action </th>
                         @endif
                     </tr>
@@ -71,17 +77,29 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                                 {{ $row->description }}
                             </th>
                             <td class="text-center" style="font-size: 15px">
+                                <?php $total_target += $row->target?>
                                 {{ number_format($row->target) }}
                             </td>
                             <td class="text-center" style="font-size: 15px">
-                                <?php $profiled = Profile::where('barangay_id',$row->id)->count();?>
+                                <?php
+                                  if($year == 2018)
+                                      $profiled = Profile::where('barangay_id',$row->id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                                  else
+                                      $profiled = Profile::where('barangay_id',$row->id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+                                  $total_profiled += $profiled;
+                                ?>
                                 {{ number_format($profiled) }}
                             </td>
                             <td class="text-center text-info" style="font-size: 15px">
-                                <?php $percent = ($profiled / $row->target) * 100;?>
+                                <?php
+                                    if($row->target != 0)
+                                        $percent = ($profiled / $row->target) * 100;
+                                    else
+                                        $percent = 0;
+                                ?>
                                 <b>{{ number_format($percent, 1) }} %</b>
                             </td>
-                            @if($user_priv === 0)
+                            @if($user_priv === 0 && $year == 2022)
                                 <td class="text-center">
                                     <a href="#update_target" data-toggle="modal" class="btn btn-sm btn-success btn-flat" onclick="updateTarget('{{ $row->id }}', '{{ $row->description }}', '{{ $row->target }}')">
                                         <i class="fa fa-pencil-square-o"></i> Update
@@ -99,8 +117,9 @@ $total_percentage = ($total_profiled / $total_target) * 100;
                             <td><b>TOTAL:</b></td>
                             <td class="text-center">{{ number_format($total_target) }}</td>
                             <td class="text-center">{{ number_format($total_profiled) }}</td>
+                            <?php $total_percentage = ($total_profiled / $total_target) * 100;?>
                             <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
-                            @if($user_priv === 0)
+                            @if($user_priv === 0 && $year == 2022)
                                 <td></td>
                             @endif
                         </tr>
