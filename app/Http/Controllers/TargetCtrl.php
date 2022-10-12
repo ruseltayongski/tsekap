@@ -20,7 +20,7 @@ class TargetCtrl extends Controller
         $this->middleware('auth');
     }
 
-    public function targetPopulation(Request $req) {
+    public function targetPopulation(Request $req, $year) {
         if($req->view_all == 'view_all')
             $keyword = null;
         else{
@@ -38,19 +38,23 @@ class TargetCtrl extends Controller
 
         $user = Auth::user();
         $user_priv = $user->user_priv;
+        $target_col = ($year === '2022') ? 'barangay.target_2022 as target' : 'barangay.target';
 
         if($user_priv == 0) {
-            $data = Barangay::where('muncity_id', Auth::user()->muncity);
+            $data = Barangay::select(
+                'id', 'description',
+                'province_id', 'muncity_id',
+                $target_col
+            )
+                ->where('muncity_id', Auth::user()->muncity);
         }
         else if($user_priv == 2)  {
-//            $barangay_id = UserBrgy::select('barangay_id')->where('user_id', $user->id)->first()->barangay_id;
-//            $data = Barangay::where('id', $barangay_id);
             $data = UserBrgy::select(
                 'barangay.id',
                 'barangay.description',
                 'barangay.province_id',
                 'barangay.muncity_id',
-                'barangay.target'
+                $target_col
             )
                 ->where('userbrgy.user_id',$user->id)
                 ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id');
@@ -74,7 +78,8 @@ class TargetCtrl extends Controller
             $data = $data->get();
             return view('target.target_muncity',[
                 'data' => $data,
-                'user_priv' => $user_priv
+                'user_priv' => $user_priv,
+                'year' => $year
             ]);
         }
     }
@@ -187,7 +192,7 @@ class TargetCtrl extends Controller
 
     public function update(Request $req) {
         $bar = Barangay::where('id',$req->barangay_id)->first();
-        $bar->target = str_replace(',', '', $req->target);
+        $bar->target_2022 = str_replace(',', '', $req->target);
         $bar->save();
 
         Session::put('target_msg','Successfully updated target population!');

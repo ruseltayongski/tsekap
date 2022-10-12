@@ -262,7 +262,12 @@ $today = date('Y-m-d');
                             <td>
                                 <input type="hidden" name="water" id="water" value="{{ $info->water }}"  />
                                 <div class="form-inline">
-                                    <input type="text" id="water2" class="form-control" readonly value="{{ ($info->water!=0) ? 'Level '.$info->water : 'Not set' }}" data-toggle="modal" data-target="#waterLvl" />
+                                    <?php
+                                        $water_value = ($info->water!=0) ? 'Level '.$info->water : 'Not set';
+                                        if($info->water == 4)
+                                            $water_value = "None of the above"
+                                    ?>
+                                    <input type="text" id="water2" class="form-control" readonly value="{{ $water_value }}" data-toggle="modal" data-target="#waterLvl" />
                                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#waterLvl">Select...</button>
                                 </div>
                                 <small class="text-red" id="water_warning"><br>This field is required.</small>
@@ -316,43 +321,68 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="hypertensionClass hide">
-                        <td>Hypertension :</td>
+                        <td>Hypertension : <br></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->hypertension=='No Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px">
+                                <label style="cursor: pointer;"><input type="radio" <?php if($hyper_status=='Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label><br />
+                                <label style="cursor: pointer;"><input type="radio" <?php if($hyper_status=='No Medication Avail') echo 'checked'; ?> name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_hypertension" onclick="clearMedication('hypertension')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="hypertension_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr class="diabetesClass hide">
                         <td>Diabetic :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->diabetic=='No Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px">
+                                <label style="cursor: pointer;"><input type="radio" <?php if($diab_status=='Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label> <br />
+                                <label style="cursor: pointer;"><input type="radio" <?php if($diab_status=='No Medication Avail') echo 'checked'; ?> name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_diabetic" onclick="clearMedication('diabetic')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="diabetic_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Mental Health Medication :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->mental_med=='Medication Avail') echo 'checked'; ?> name="mental_med" class="mental_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->mental_med=='No Medication Avail') echo 'checked'; ?> name="mental_med" class="mental_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px">
+                                <label style="cursor: pointer;"><input type="radio" <?php if($mental_status=='Medication Avail') echo 'checked'; ?> name="mental_med" class="mental" value="Medication Avail" style="display:inline;"> Medication Avail</label><br />
+                                <label style="cursor: pointer;"><input type="radio" <?php if($mental_status=='No Medication Avail') echo 'checked'; ?> name="mental_med" class="mental" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_mental" onclick="clearMedication('mental')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="mental_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>TBDOTS Availment :</td>
+                        <td>TB Medication :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->tbdots_med=='Medication Avail') echo 'checked'; ?> name="tbdots_med" class="tbdots_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->tbdots_med=='No Medication Avail') echo 'checked'; ?> name="tbdots_med" class="tbdots_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px">
+                                <label style="cursor: pointer;"><input type="radio" <?php if($tb_status=='Medication Avail') echo 'checked'; ?> name="tbdots_med" class="tb" value="Medication Avail" style="display:inline;"> Medication Avail</label><br />
+                                <label style="cursor: pointer;"><input type="radio" <?php if($tb_status=='No Medication Avail') echo 'checked'; ?> name="tbdots_med" class="tb" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_tb" onclick="clearMedication('tb')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="tb_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
                         <td>CVD Medication :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->cvd_med=='Medication Avail') echo 'checked'; ?> name="cvd_med" class="cvd_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->cvd_med=='No Medication Avail') echo 'checked'; ?> name="cvd_med" class="cvd_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px">
+                                <label style="cursor: pointer;"><input type="radio" <?php if($cvd_status=='Medication Avail') echo 'checked'; ?> name="cvd_med" class="cvd" value="Medication Avail" style="display:inline;"> Medication Avail</label><br />
+                                <label style="cursor: pointer;"><input type="radio" <?php if($cvd_status=='No Medication Avail') echo 'checked'; ?> name="cvd_med" class="cvd" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_cvd" onclick="clearMedication('cvd')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="cvd_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">

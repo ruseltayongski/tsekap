@@ -134,7 +134,13 @@ use App\Province;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('/user/population') }}"><i class="fa fa-user-plus"></i>&nbsp;&nbsp; Manage Population</a></li>
-                        <li><a href="{{ asset('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('population/target/2018') }}"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp; 2018</a></li>
+                                <li><a href="{{ url('population/target/2022') }}"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp; 2022</a></li>
+                            </ul>
+                        </li>
                         {{--<li><a href="{{ asset('/user/population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; 3 Must Services Status</a></li>--}}
                         <li><a href="{{ asset('issue/duplicate/population')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Duplicate Population</a></li>
                         {{--<li><a href="{{ asset('issue/head/child')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Children Head</a></li>--}}
@@ -199,6 +205,8 @@ use App\Province;
 {{--                        <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>--}}
                         @if(Auth::user()->user_priv==0 || Auth::user()->user_priv =2)
                         <li><a href="{{ asset('/user/report/status') }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        {{--<li><a href="{{ asset('/report/onboard/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Onboard Users</a></li>--}}
+                        {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
                         @endif
                         {{--@if(Auth::user()->user_priv==2)--}}
                         {{--<?php--}}
@@ -212,7 +220,7 @@ use App\Province;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-mobile"></i> Mobile Check-Up<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ asset("PHA-Check-Appv3.apk") }}">
+                            <a href="{{ asset("resources/apk/PHA-Check-Appv3.apk") }}">
                                 <i class="fa fa-download"></i> <small> Download APK</small>
                             </a>
                         </li>

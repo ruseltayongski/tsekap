@@ -6,6 +6,7 @@ use App\Barangay;
 use App\BhertPatient;
 use App\Immunization;
 use App\IntegrationPatient;
+use App\Medication;
 use App\Medications;
 use App\NutritionStatus;
 use App\Profile;
@@ -454,12 +455,19 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT INTO profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,unmet,barangay_id,muncity_id,province_id, created_at, updated_at, phicID, nhtsID, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya,sexually_active)
+        $q = "INSERT INTO profile(
+                unique_id, familyID, head, relation, 
+                fname,mname,lname,suffix,dob,sex,unmet,
+                barangay_id,muncity_id,province_id, created_at, updated_at, 
+                phicID, nhtsID, education,
+                pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,
+                cancer,cancer_type,covid_status,menarche,menarche_age,
+                newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya,sexually_active,updated_by)
                 VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->hypertension','$req->diabetic','$req->pwd','$req->pwd_desc','$req->pregnant',
-                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date',
-                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya', '$req->sexually_active')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->pwd','$req->pwd_desc','$req->pregnant',
+                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date',
+                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya', '$req->sexually_active', '$user->id')
             ON DUPLICATE KEY UPDATE
                 familyID = '$req->familyID',
                 sex = '$req->sex',
@@ -470,6 +478,51 @@ class ClientCtrl extends Controller
         DB::select($q);
 
         $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+
+        if(isset($req->hypertension)) {
+            $hyper = new Medication();
+            $hyper->profile_id = $profile_id;
+            $hyper->type = "Hypertension";
+            $hyper->status = $req->hypertension;
+            $hyper->remarks = $req->hyper_remarks;
+            $hyper->save();
+        }
+
+        if(isset($req->diabetic)) {
+            $diab = new Medication();
+            $diab->profile_id = $profile_id;
+            $diab->type = "Diabetic";
+            $diab->status = $req->diabetic;
+            $diab->remarks = $req->diabetic_remarks;
+            $diab->save();
+        }
+
+        if(isset($req->mental_med)) {
+            $mental = new Medication();
+            $mental->profile_id = $profile_id;
+            $mental->type = "Mental Health Medication";
+            $mental->status = $req->mental_med;
+            $mental->remarks = $req->mental_remarks;
+            $mental->save();
+        }
+
+        if(isset($req->tbdots_med)) {
+            $tb = new Medication();
+            $tb->profile_id = $profile_id;
+            $tb->type = "TB Medication";
+            $tb->status = $req->tbdots_med;
+            $tb->remarks = $req->tb_remarks;
+            $tb->save();
+        }
+
+        if(isset($req->cvd_med)) {
+            $cvd = new Medication();
+            $cvd->profile_id = $profile_id;
+            $cvd->type = "CVD Medication";
+            $cvd->status = $req->cvd_med;
+            $cvd->remarks = $req->cvd_remarks;
+            $cvd->save();
+        }
 
         foreach($req->nutri_stat as $nutri) {
             $nstat = new NutritionStatus();
@@ -519,17 +572,73 @@ class ClientCtrl extends Controller
         $lname = mysqli_real_escape_string($con,($req->lname));
         $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
         $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT IGNORE profile(unique_id, familyID, head, relation, fname,mname,lname,suffix,dob,sex,barangay_id,muncity_id,province_id,created_at,updated_at,phicID, nhtsID, income, unmet, water, toilet, education,hypertension,diabetic,pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,cancer,cancer_type,mental_med,tbdots_med,cvd_med,covid_status,menarche,menarche_age,newborn_screen,newborn_text,deceased,deceased_date,sexually_active,nhts,four_ps,ip,member_others,balik_probinsya)
+        $q = "INSERT IGNORE profile(
+                unique_id, familyID, head, relation, 
+                fname,mname,lname,suffix,dob,sex,
+                barangay_id,muncity_id,province_id,
+                created_at,updated_at,
+                phicID, nhtsID, income, unmet, water, toilet, education,
+                pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,
+                cancer,cancer_type,covid_status,menarche,menarche_age,
+                newborn_screen,newborn_text,
+                deceased,deceased_date,sexually_active,
+                nhts,four_ps,ip,member_others,balik_probinsya,updated_by)
                 VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
                 '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->hypertension', '$req->diabetic', '$req->pwd', '$req->pwd_desc', '$req->pregnant', 
-                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->mental_med', '$req->tbdots_med', '$req->cvd_med', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date', '$req->sexually_active',
-                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya')
+                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', 
+                '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->pwd', '$req->pwd_desc', '$req->pregnant', 
+                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date', '$req->sexually_active',
+                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya',$user->id)
             ";
         //echo $q;
         DB::select($q); //saving profile
 
         $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+
+        if(isset($req->hypertension)) {
+            $hyper = new Medication();
+            $hyper->profile_id = $profile_id;
+            $hyper->type = "Hypertension";
+            $hyper->status = $req->hypertension;
+            $hyper->remarks = $req->hyper_remarks;
+            $hyper->save();
+        }
+
+        if(isset($req->diabetic)) {
+            $diab = new Medication();
+            $diab->profile_id = $profile_id;
+            $diab->type = "Diabetic";
+            $diab->status = $req->diabetic;
+            $diab->remarks = $req->diabetic_remarks;
+            $diab->save();
+        }
+
+        if(isset($req->mental_med)) {
+            $mental = new Medication();
+            $mental->profile_id = $profile_id;
+            $mental->type = "Mental Health Medication";
+            $mental->status = $req->mental_med;
+            $mental->remarks = $req->mental_remarks;
+            $mental->save();
+        }
+
+        if(isset($req->tbdots_med)) {
+            $tb = new Medication();
+            $tb->profile_id = $profile_id;
+            $tb->type = "TB Medication";
+            $tb->status = $req->tbdots_med;
+            $tb->remarks = $req->tb_remarks;
+            $tb->save();
+        }
+
+        if(isset($req->cvd_med)) {
+            $cvd = new Medication();
+            $cvd->profile_id = $profile_id;
+            $cvd->type = "CVD Medication";
+            $cvd->status = $req->cvd_med;
+            $cvd->remarks = $req->cvd_remarks;
+            $cvd->save();
+        }
 
         foreach($req->nutri_stat as $nutri) {
             $nstat = new NutritionStatus();
@@ -571,19 +680,70 @@ class ClientCtrl extends Controller
         );
         Session::put('toDelete',$delete);
         $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pwd_desc','pregnant','birth_place','civil_status','religion','other_religion','contact','height','weight','cancer','cancer_type','mental_med','tbdots_med','cvd_med','covid_status','menarche',
-            'menarche_age','newborn_screen','newborn_text','deceased','deceased_date','sexually_active','nhts','four_ps','ip','member_others','balik_probinsya')
+            'menarche_age','newborn_screen','newborn_text','deceased','deceased_date','sexually_active','nhts','four_ps','ip','member_others','balik_probinsya', 'updated_by')
             ->where('id',$id)
             ->first();
         Session::put('profile_id',$id);
 
         $nutri_stat = NutritionStatus::select('description as nutri')->where('profile_id', $id)->get();
         $immu_stat = Immunization::select('description as immu')->where('profile_id', $id)->get();
+        $medication = Medication::where('profile_id',$id)->get();
+
+        if(count($medication) > 0) {
+            foreach($medication as $med) {
+                if($med->type === 'Hypertension') {
+                    $hyper_status = $med->status;
+                    $hyper_remarks = $med->remarks;
+                } else if($med->type === 'Diabetic') {
+                    $diab_status = $med->status;
+                    $diab_remarks = $med->remarks;
+                } else if($med->type === 'Mental Health Medication') {
+                    $mental_status = $med->status;
+                    $mental_remarks = $med->remarks;
+                } else if($med->type === 'TB Medication') {
+                    $tb_status = $med->status;
+                    $tb_remarks = $med->remarks;
+                } else if($med->type === 'CVD Medication') {
+                    $cvd_status = $med->status;
+                    $cvd_remarks = $med->remarks;
+                }
+            }
+        } else {
+            if($info->updated_by === '') {
+                if(isset($info->hypertension))
+                    $hyper_status = $info->hypertension;
+                if(isset($info->diabetic))
+                    $diab_status = $info->diabetic;
+                if(isset($info->mental_med))
+                    $mental_status = $info->mental_med;
+                if(isset($info->tbdots_med))
+                    $tb_status = $info->tbdots_med;
+                if(isset($info->cvd_med))
+                    $cvd_status = $info->cvd_med;
+
+                $hyper_remarks = '';
+                $diab_remarks = '';
+                $mental_remarks = '';
+                $tb_remarks = '';
+                $cvd_remarks = '';
+            }
+        }
 
         return view('client.updateProfile',[
             'info' => $info,
             'nutri_stat' => $nutri_stat,
-            'immu_stat' => $immu_stat
-            ]);
+            'immu_stat' => $immu_stat,
+            'hyper_status' => $hyper_status,
+            'hyper_remarks' => $hyper_remarks,
+            'diab_status' => $diab_status,
+            'diab_remarks' => $diab_remarks,
+            'mental_status' => $mental_status,
+            'mental_remarks' => $mental_remarks,
+            'tb_status' => $tb_status,
+            'tb_remarks' => $tb_remarks,
+            'cvd_status' => $cvd_status,
+            'cvd_remarks' => $cvd_remarks
+        ]);
     }
 
     public function updatePopulation(Request $req)
@@ -615,8 +775,6 @@ class ClientCtrl extends Controller
                 'unmet' => $req->unmet,
                 'barangay_id' => $req->barangay,
                 'education' => $req->education,
-                'hypertension' => $req->hypertension,
-                'diabetic' => $req->diabetic,
                 'pwd' => $req->pwd,
                 'pwd_desc' => $req->pwd_desc,
                 'pregnant' => $req->pregnant,
@@ -629,9 +787,6 @@ class ClientCtrl extends Controller
                 'weight' => $req->weight,
                 'cancer' => $req->cancer,
                 'cancer_type' => $req->cancer_type,
-                'mental_med' => $req->mental_med,
-                'tbdots_med' => $req->tbdots_med,
-                'cvd_med' => $req->cvd_med,
                 'covid_status' => $req->covid_status,
                 'menarche' => $req->menarche,
                 'menarche_age' => $req->menarche_age,
@@ -657,8 +812,54 @@ class ClientCtrl extends Controller
             $unique_id = $req->unique_id;
 
             $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
-            $nutri_stat = NutritionStatus::where('profile_id', $profile_id)->delete();
-            $immu_stat = Immunization::where('profile_id', $profile_id)->delete();
+            NutritionStatus::where('profile_id', $profile_id)->delete();
+            Immunization::where('profile_id', $profile_id)->delete();
+            Medication::where('profile_id', $profile_id)->delete();
+
+            if(isset($req->hypertension)) {
+                $hyper = new Medication();
+                $hyper->profile_id = $profile_id;
+                $hyper->type = "Hypertension";
+                $hyper->status = $req->hypertension;
+                $hyper->remarks = $req->hyper_remarks;
+                $hyper->save();
+            }
+
+            if(isset($req->diabetic)) {
+                $diab = new Medication();
+                $diab->profile_id = $profile_id;
+                $diab->type = "Diabetic";
+                $diab->status = $req->diabetic;
+                $diab->remarks = $req->diabetic_remarks;
+                $diab->save();
+            }
+
+            if(isset($req->mental_med)) {
+                $mental = new Medication();
+                $mental->profile_id = $profile_id;
+                $mental->type = "Mental Health Medication";
+                $mental->status = $req->mental_med;
+                $mental->remarks = $req->mental_remarks;
+                $mental->save();
+            }
+
+            if(isset($req->tbdots_med)) {
+                $tb = new Medication();
+                $tb->profile_id = $profile_id;
+                $tb->type = "TB Medication";
+                $tb->status = $req->tbdots_med;
+                $tb->remarks = $req->tb_remarks;
+                $tb->save();
+            }
+
+            if(isset($req->cvd_med)) {
+                $cvd = new Medication();
+                $cvd->profile_id = $profile_id;
+                $cvd->type = "CVD Medication";
+                $cvd->status = $req->cvd_med;
+                $cvd->remarks = $req->cvd_remarks;
+                $cvd->save();
+            }
 
             foreach($req->nutri_stat as $nutri) {
                 $nstat = new NutritionStatus();

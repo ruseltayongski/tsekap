@@ -84,6 +84,12 @@
                         It has service connection from system.
                     </p>
                 </div>
+                <div class="alert alert-success btn-water" data-id="4" data-dismiss="modal" style="cursor: pointer;">
+                    <p class="text-success">
+                        <strong>None of the above</strong><br />
+                        User's connection is not defined in the above list.
+                    </p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>

@@ -45,7 +45,11 @@
     $('.btn-water').on('click',function(){
         var value = $(this).data('id');
         $('#water').val(value);
-        $('#water2').val('Level '+value);
+        if(value === 4)
+            $('#water2').val('None of the above');
+        else
+            $('#water2').val('Level '+value);
+        console.log("water value: " + $('#water').val());
     });
 
     function unmet_need()
@@ -273,4 +277,185 @@
                 $('.immu_mmr2').prop('checked', true);
         @endforeach
     }
+
+    var dropdown = "<option>Select...</option>\n" +
+        "           <option value='BHS'>BHS</option>\n" +
+        "           <option value='RHU'>RHU</option>\n" +
+        "           <option value='Public Hospital'>Public Hospital</option>\n" +
+        "           <option value='Private Clinic'>Private Clinic</option>\n" +
+        "           <option value='Private Hospital'>Private Hospital</option>\n" +
+        "           <option value='Personal Expenses'>Personal Expenses</option>\n";
+
+    $('#clear_hypertension, #clear_diabetic, #clear_mental, #clear_tb, #clear_cvd').hide();
+
+    $('input[name="hypertension"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'Medication Avail') {
+            setHyperRemarks('dropdown');
+            $('#clear_hypertension').show();
+        } else if(val === 'No Medication Avail') {
+            setHyperRemarks('reason');
+            $('#clear_hypertension').show();
+        } else {
+            $('.hypertension_remarks').html('').hide();
+            $('#clear_hypertension').hide();
+        }
+    });
+
+    function setHyperRemarks(type){
+        if(type === 'dropdown')
+            $('.hypertension_remarks').html("Type of Facility: <small class='text-info'><em>(where medicine was availed) </em></small> " +
+                "<select name='hyper_remarks' id='hyper_dropdown' class='form-control select'>\n" + dropdown + "</select>").show();
+        else if(type === 'reason')
+            $('.hypertension_remarks').html('Reason: <small class="text-info"><i>(for not availing medicine) </i></small> <br> <textarea rows="2"  name="hyper_remarks" id="hyper_reason" style="resize: none;width: 100%;">').show();
+    }
+
+    $('input[name="diabetic"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'Medication Avail') {
+            setDiabRemarks('dropdown');
+            $('#clear_diabetic').show();
+        } else if(val === 'No Medication Avail') {
+            setDiabRemarks('reason');
+            $('#clear_diabetic').show();
+        } else {
+            $('.diabetic_remarks').html('').hide();
+            $('#clear_diabetic').hide();
+        }
+    });
+
+    function setDiabRemarks(type) {
+        if(type === 'dropdown')
+            $('.diabetic_remarks').html("Type of Facility: <small class='text-info'><em>(where medicine was availed) </em></small> " +
+                "<select name='diabetic_remarks' id='diab_dropdown' class='form-control select'>\n" + dropdown + "</select>").show();
+        else if(type === 'reason')
+            $('.diabetic_remarks').html('Reason: <small class="text-info"><i>(for not availing medicine) </i></small> <br> <textarea rows="2"  name="diabetic_remarks" id="diab_reason" style="resize: none;width: 100%;">').show();
+    }
+
+    $('input[name="mental_med"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'Medication Avail') {
+            setMentalRemarks('dropdown');
+            $('#clear_mental').show();
+        } else if(val === 'No Medication Avail') {
+            setMentalRemarks('reason');
+            $('#clear_mental').show();
+        } else {
+            $('.mental_remarks').html('').hide();
+            $('#clear_mental').hide();
+        }
+    });
+
+    function setMentalRemarks(type) {
+        if(type === 'dropdown')
+            $('.mental_remarks').html("Type of Facility: <small class='text-info'><em>(where medicine was availed) </em></small> " +
+                "<select name='mental_remarks' id='mental_dropdown' class='form-control select'>\n" + dropdown + "</select>").show();
+        else if(type === 'reason')
+            $('.mental_remarks').html('Reason: <small class="text-info"><i>(for not availing medicine) </i></small> <br> <textarea rows="2"  name="mental_remarks" id="mental_reason" style="resize: none;width: 100%;">').show();
+    }
+
+    $('input[name="tbdots_med"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'Medication Avail') {
+            setTBRemarks('dropdown');
+            $('#clear_tb').show();
+        } else if(val === 'No Medication Avail') {
+            setTBRemarks('reason');
+            $('#clear_tb').show();
+        } else {
+            $('.tb_remarks').html('').hide();
+            $('#clear_tb').hide();
+        }
+    });
+
+    function setTBRemarks(type) {
+        if(type === 'dropdown')
+            $('.tb_remarks').html("Type of Facility: <small class='text-info'><em>(where medicine was availed) </em></small> " +
+                "<select name='tb_remarks' id='tb_dropdown' class='form-control select'>\n" + dropdown + "</select>").show();
+        else if(type === 'reason')
+            $('.tb_remarks').html('Reason: <small class="text-info"><i>(for not availing medicine) </i></small> <br> <textarea rows="2"  name="tb_remarks" id="tb_reason" style="resize: none;width: 100%;">').show();
+    }
+
+    $('input[name="cvd_med"]').on('click', function() {
+        var val = $(this).val();
+        if(val === 'Medication Avail') {
+            setCvdRemarks('dropdown');
+            $('#clear_cvd').show();
+        } else if(val === 'No Medication Avail') {
+            setCvdRemarks('reason');
+            $('#clear_cvd').show();
+        } else {
+            $('.cvd_remarks').html('').hide();
+            $('#clear_cvd').hide();
+        }
+    });
+
+    function setCvdRemarks(type) {
+        if(type === 'dropdown')
+            $('.cvd_remarks').html("Type of Facility: <small class='text-info'><em>(where medicine was availed) </em></small> " +
+                "<select name='cvd_remarks' id='cvd_dropdown' class='form-control select'>\n" + dropdown + "</select>").show();
+        else if(type === 'reason')
+            $('.cvd_remarks').html('Reason: <small class="text-info"><i>(for not availing medicine) </i></small> <br> <textarea rows="2"  name="cvd_remarks" id="cvd_reason" style="resize: none;width: 100%;">').show();
+    }
+
+    function clearMedication(type) {
+        $('.' + type).attr('checked', false);
+        $('.' + type + '_remarks').html('').hide();
+        $('#clear_' + type).hide();
+    }
+
+    @if(isset($hyper_status))
+        @if($hyper_status === 'Medication Avail')
+            setHyperRemarks('dropdown');
+            $('#hyper_dropdown').val('{{ $hyper_remarks }}');
+        @elseif($hyper_status === 'No Medication Avail')
+            setHyperRemarks('reason');
+            $('#hyper_reason').val('{{ $hyper_remarks }}');
+        @endif
+        $('#clear_hypertension').show();
+    @endif
+
+    @if(isset($diab_status))
+        @if($diab_status === 'Medication Avail')
+            setDiabRemarks('dropdown');
+            $('#diab_dropdown').val('{{ $diab_remarks }}');
+        @elseif($diab_status === 'No Medication Avail')
+            setDiabRemarks('reason');
+            $('#diab_reason').val('{{ $diab_remarks }}');
+        @endif
+        $('#clear_diabetic').show();
+    @endif
+
+    @if(isset($mental_status))
+        @if($mental_status === 'Medication Avail')
+            setMentalRemarks('dropdown');
+            $('#mental_dropdown').val('{{ $mental_remarks }}');
+        @elseif($mental_status === 'No Medication Avail')
+            setMentalRemarks('reason');
+            $('#mental_reason').val('{{ $mental_remarks }}');
+        @endif
+        $('#clear_mental').show();
+    @endif
+
+    @if(isset($tb_status))
+        @if($tb_status === 'Medication Avail')
+            setTBRemarks('dropdown');
+            $('#tb_dropdown').val('{{ $tb_remarks }}');
+        @elseif($tb_status === 'No Medication Avail')
+            setTBRemarks('reason');
+            $('#tb_reason').val('{{ $tb_remarks }}');
+        @endif
+        $('#clear_tb').show();
+    @endif
+
+    @if(isset($cvd_status))
+        @if($cvd_status === 'Medication Avail')
+            setCvdRemarks('dropdown');
+            $('#cvd_dropdown').val('{{ $cvd_remarks }}');
+        @elseif($cvd_status === 'No Medication Avail')
+            setCvdRemarks('reason');
+            $('#cvd_reason').val('{{ $cvd_remarks }}');
+        @endif
+        $('#clear_cvd').show();
+    @endif
 </script>

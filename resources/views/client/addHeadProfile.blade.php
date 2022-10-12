@@ -257,43 +257,68 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr>
-                        <td>Hypertension :</td>
+                        <td>Hypertension : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="hypertension" class="hypertension" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_hypertension" onclick="clearMedication('hypertension')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="hypertension_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Diabetic :</td>
+                        <td>Diabetic : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="diabetic" class="diabetic" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_diabetic" onclick="clearMedication('diabetic')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="diabetic_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>Mental Health Medication :</td>
+                        <td>Mental Health Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_mental" onclick="clearMedication('mental')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="mental_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>TBDOTS Availment :</td>
+                        <td>TB Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tbdots_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tbdots_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tb" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="tbdots_med" class="tb" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_tb" onclick="clearMedication('tb')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="tb_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>CVD Medication :</td>
+                        <td>CVD Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd_med" value="Medication Avail" style="display:inline;"> Medication Avail</label>
-                            &nbsp;&nbsp;&nbsp;<br />
-                            <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd_med" value="No Medication Avail" > No Medication Avail</label>
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="cvd_med" class="cvd" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_cvd" onclick="clearMedication('cvd')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="cvd_remarks"></span>
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">

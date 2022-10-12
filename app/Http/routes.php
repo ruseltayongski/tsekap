@@ -344,7 +344,7 @@ Route::post('specialist/delete', 'SpecialistCtrl@deleteSpecialist');
 Route::get('specialist/verify', 'SpecialistCtrl@verify');
 
 // TARGET POPULATION
-Route::get('population/target','TargetCtrl@targetPopulation');
+Route::get('population/target/{year}','TargetCtrl@targetPopulation');
 Route::post('population/target','TargetCtrl@targetPopulation');
 Route::post('population/target/update','TargetCtrl@update');
 Route::post('population/target/delete','TargetCtrl@delete');
@@ -362,3 +362,7 @@ Route::post('apiv21/uploadFacility','ApiCtrlv21@uploadFacility');
 Route::get('apiv21/getProvinces','ApiCtrlv21@getProvinces');
 Route::get('apiv21/getMuncities','ApiCtrlv21@getMuncities');
 Route::get('apiv21/getBarangays','ApiCtrlv21@getBarangays');
+
+// onboard users
+Route::get('report/onboard/users','OnboardCtrl@users');
+Route::get('report/onboard/facility','OnboardCtrl@facility');

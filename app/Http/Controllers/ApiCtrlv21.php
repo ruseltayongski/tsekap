@@ -8,6 +8,7 @@ use App\Facility;
 use App\Facility2;
 use App\FacilityAssign;
 use App\Immunization;
+use App\Medication;
 use App\Muncity;
 use App\NutritionStatus;
 use App\Profile;
@@ -145,6 +146,7 @@ class ApiCtrlv21 extends Controller
         foreach($profile as $p) {
             $immu = Immunization::select('description')->where('profile_id', $p->id)->get();
             $nutri = NutritionStatus::select('description')->where('profile_id', $p->id)->get();
+            $medication = Medication::where('profile_id',$p->id)->get();
             $immu_data = $nutri_data = "";
             $immu_count = $nutri_count = 0;
             foreach($immu as $i) {
@@ -154,6 +156,49 @@ class ApiCtrlv21 extends Controller
             foreach($nutri as $n) {
                 $nutri_count++;
                 $nutri_data .= $nutri_count == 1 ? $n->description : ",".$n->description;
+            }
+            $med_availment = array();
+            if(count($medication) > 0) {
+                foreach($medication as $med) {
+                    array_push($med_availment,[
+                        'type' => $med->type,
+                        'status' => $med->status,
+                        'remarks' => $med->remarks
+                    ]);
+                }
+            } else {
+                if($p->updated_by === '') {
+                    if(isset($p->hypertension))
+                        array_push($med_availment,[
+                            'type' => 'Hypertension',
+                            'status' => $p->hypertension,
+                            'remarks' => ''
+                        ]);
+                    if(isset($p->diabetic))
+                        array_push($med_availment,[
+                            'type' => 'Diabetic',
+                            'status' => $p->diabetic,
+                            'remarks' => ''
+                        ]);
+                    if(isset($p->mental_med))
+                        array_push($med_availment,[
+                            'type' => 'Mental Health Medication',
+                            'status' => $p->mental_med,
+                            'remarks' => ''
+                        ]);
+                    if(isset($p->tbdots_med))
+                        array_push($med_availment,[
+                            'type' => 'TB Medication',
+                            'status' => $p->tbdots_med,
+                            'remarks' => ''
+                        ]);
+                    if(isset($p->cvd_med))
+                        array_push($med_availment,[
+                            'type' => 'CVD Medication',
+                            'status' => $p->cvd_med,
+                            'remarks' => ''
+                        ]);
+                }
             }
             $res = array (
                 'id' => $p->id,
@@ -177,8 +222,6 @@ class ApiCtrlv21 extends Controller
                 'water' => $p->water,
                 'toilet' => $p->toilet,
                 'education' => $p->education,
-                'hypertension' => $p->hypertension,
-                'diabetic' => $p->diabetic,
                 'pwd' => $p->pwd,
                 'pwd_desc' => (isset($p->pwd_desc)) ? $p->pwd_desc : '',
                 'pregnant' => $p->pregnant,
@@ -194,9 +237,6 @@ class ApiCtrlv21 extends Controller
                 'weight' => (isset($p->weight)) ? $p->weight : '',
                 'cancer' => (isset($p->cancer)) ? $p->cancer : '',
                 'cancer_type' => (isset($p->cancer_type)) ? $p->cancer_type : '',
-                'mental_med' => (isset($p->mental_med)) ? $p->mental_med : '',
-                'tbdots_med' => (isset($p->tbdots_med)) ? $p->tbdots_med : '',
-                'cvd_med' => (isset($p->cvd_med)) ? $p->cvd_med : '',
                 'covid_status' => (isset($p->covid_status)) ? $p->covid_status : '',
                 'menarche' => (isset($p->menarche)) ? $p->menarche : '',
                 'menarche_age' => (isset($p->menarche_age)) ? $p->menarche_age : '',
@@ -211,7 +251,9 @@ class ApiCtrlv21 extends Controller
                 'four_ps' => isset($p->four_ps) ? $p->four_ps : '',
                 'ip' => isset($p->ip) ? $p->ip : '',
                 'member_others' => isset($p->member_others) ? $p->member_others : '',
-                'balik_probinsya' => isset($p->balik_probinsya) ? $p->balik_probinsya : ''
+                'balik_probinsya' => isset($p->balik_probinsya) ? $p->balik_probinsya : '',
+                'updated_by' => $p->updated_by,
+                'medication' => $med_availment
             );
             array_push($data, $res);
         }

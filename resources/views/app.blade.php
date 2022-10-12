@@ -120,7 +120,12 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('population') }}"><i class="fa fa-users"></i>&nbsp;&nbsp; List of Population</a></li>
-                        <li><a href="{{ url('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Target Population <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ url('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
+                            </ul>
+                        </li>
 {{--                        <li><a href="{{ asset('population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Lacking 3 MUST Services<br />(PE, Laboratory and Other Services)</a></li>--}}
                     </ul>
                 </li>
@@ -135,8 +140,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/report/status')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
-                        <!--
-                        <li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>
+                        {{--<li><a href="{{ asset('/report/onboard/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Onboard Users</a></li>--}}
+                        {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
+                        {{--<!----}}
+                        {{--<li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>--}}
                         -->
                         {{--<li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>--}}
                         {{--<li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>--}}
