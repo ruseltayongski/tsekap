@@ -710,9 +710,9 @@ class ClientCtrl extends Controller
             }
         } else {
             if($info->updated_by === '') {
-                if(isset($info->hypertension))
+                if(isset($info->hypertension) && $info->hypertension != '')
                     $hyper_status = $info->hypertension;
-                if(isset($info->diabetic))
+                if(isset($info->diabetic) && $info->diabetic != '')
                     $diab_status = $info->diabetic;
                 if(isset($info->mental_med))
                     $mental_status = $info->mental_med;
