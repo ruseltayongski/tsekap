@@ -55,21 +55,27 @@ class ClientCtrl extends Controller
         $user_priv = Auth::user()->user_priv;
         $bherds_count = 0;
         $validServices = 0;
+        $countPopulation_2018 = 0;
+        $countPopulation_2022 = 0;
+        $target_2018 = 0;
+        $target_2022 = 0;
 
         if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
-            $countPopulation = Profile::where('muncity_id',$muncity_id)->count();
-            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
+            $target_2018 = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
+            $target_2022 = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('muncity_id',$muncity_id)->first()->count;
+            $countPopulation_2018 = Profile::where('muncity_id',$muncity_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+            $countPopulation_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
             $validServices = Param::countMustService('muncity');
         }
         if($user_priv==2 || $user_priv==4){ // 2 NDP BARANGAY LEVEL AND 4 BHERDS BARANGAY LEVEL
             $countBarangay = UserBrgy::where('user_id',Auth::user()->id)->count();
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
-            $countPopulation = 0;
-            $target = 0;
             foreach($tmpBrgy as $tmp){
-                $countPopulation += Profile::where('barangay_id',$tmp->barangay_id)->count();
-                $target += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->barangay_id)->first()->count;
+                $countPopulation_2018 += Profile::where('barangay_id',$tmp->barangay_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                $countPopulation_2022 += Profile::where('barangay_id',$tmp->barangay_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                $target_2018 += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->barangay_id)->first()->count;
+                $target_2022 += Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$tmp->barangay_id)->first()->count;
             }
             if($user_priv == 2)
                 $validServices = Param::countMustService('barangay');
@@ -87,33 +93,32 @@ class ClientCtrl extends Controller
             }
 
         }
+
+        $profilePercentage_2018 = ($countPopulation_2018 == 0) ? 0 : ($countPopulation_2018 / $target_2018) * 100;
+        $profilePercentage_2022 = ($countPopulation_2022 == 0) ? 0 : ($countPopulation_2022 / $target_2022) * 100;
+
         //$validServices = Param::countValidService('','','','');
 //        $validServices = Param::countMustService('barangay');
-        if($target==0){
-            $target=$countPopulation;
-        }
-
-        if($countPopulation==0){
-            $profilePercentage = 0;
-        }else{
-            $profilePercentage = ($countPopulation / $target) * 100;
-        }
-
-        if($validServices==0){
-            $servicePercentage = 0;
-        }else{
-            $servicePercentage = ($validServices / $target) * 100;
-        }
-
+//        if($target==0){
+//            $target=$countPopulation;
+//        }
+//        if($validServices==0){
+//            $servicePercentage = 0;
+//        }else{
+//            $servicePercentage = ($validServices / $target) * 100;
+//        }
 
         return array(
             'countBarangay' => number_format($countBarangay),
-            'countPopulation' => number_format($countPopulation),
+            'countPopulation_2018' => number_format($countPopulation_2018),
+            'countPopulation_2022' => number_format($countPopulation_2022),
             'validServices' => number_format($validServices),
-            'target' => number_format($target),
-            'profilePercentage' => number_format($profilePercentage,1),
-            'servicePercentage' => number_format($servicePercentage,1),
-            'bhert_count' => $bherds_count,
+            'target_2018' => number_format($target_2018),
+            'target_2022' => number_format($target_2022),
+            'profilePercentage_2018' => number_format($profilePercentage_2018,1),
+            'profilePercentage_2022' => number_format($profilePercentage_2022,1),
+//            'servicePercentage' => number_format($servicePercentage,1),
+//            'bhert_count' => $bherds_count,
         );
     }
 
@@ -126,8 +131,8 @@ class ClientCtrl extends Controller
             $id = Session::get('muncityBarangay');
 
         if($id) {
-            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('id',$id)->first()->count;
-            $countPopulation = Profile::where('barangay_id', $id)->count();
+            $target = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$id)->first()->count;
+            $countPopulation = Profile::where('barangay_id', $id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
             $profilePercentage = ($countPopulation / $target) * 100;
             Session::put('muncityBarangay',$id);
         }

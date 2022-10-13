@@ -154,15 +154,16 @@
                     </a>
                 </div>
             </div>
+            <div class="clearfix"></div>
 
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3 class="target"><i class="fa fa-refresh fa-spin"></i></h3>
-                        <p>Target Population</p>
+                        <h3 class="target_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <b>TARGET POPULATION (2022)</b>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-line-chart"></i>
                     </div>
                     <a href="{{ asset('user/population') }}" class="small-box-footer">
                         More info <i class="fa fa-arrow-circle-right"></i>
@@ -171,100 +172,126 @@
             </div>
 
             <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-green">
-                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3 class="countPopulation_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <b>POPULATION PROFILED (2022)</b><br>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <div class="small-box-footer" style="text-align: left">&emsp;
+                        <span class="profilePercentage_2022"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="info-box bg-yellow">
+                    <span class="info-box-icon"><i class="fa fa-line-chart"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Population Profiled</span>
-                        <span class="info-box-number countPopulation"><i class="fa fa-refresh fa-spin"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar profilePercentageBar"></div>
-                        </div>
-                        <span class="progress-description">
-                    <span class="profilePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                        <span class="info-box-text">TARGET POPULATION (2018)</span>
+                        <span class="target_2018"><i class="fa fa-refresh fa-spin"></i></span>
                   </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
 
             <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-red">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">Availed 3 MUST Services</span>
-                        <span class="info-box-number validServices"><i class="fa fa-refresh fa-spin"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar servicePercentageBar"></div>
-                        </div>
-                        <span class="progress-description">
-                                <span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                            </span>
-                    </div><!-- /.info-box-content -->
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-yellow-gradient">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">E REFERRAL</span>
-                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                        <span class="progress-description">
-                                From web application
-                            </span>
-                    </div><!-- /.info-box-content -->
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-purple">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">BHERT PROFILED</span>
-                        <span class="info-box-number bhert_count"><i class="fa fa-refresh fa-spin"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                        <span class="progress-description">
-                                From mobile application
-                            </span>
-                    </div><!-- /.info-box-content -->
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-12">
-                <div class="info-box bg-aqua-gradient">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">DENGVAXIA</span>
-                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
-                        <div class="progress">
-                            <div class="progress-bar"></div>
-                        </div>
-                        <span class="progress-description">
-                                From web application
-                            </span>
-                    </div><!-- /.info-box-content -->
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">IHOMIS</span>
-                        <span class="info-box-number bherds_count">Ongoing Harmonized</span>
+                        <span class="info-box-text">POPULATION PROFILED (2018)</span>
+                        <span class="info-box-number countPopulation_2018"><i class="fa fa-refresh fa-spin"></i></span>
                         <div class="progress">
-                            <div class="progress-bar"></div>
+                            <div class="progress-bar profilePercentageBar_2018"></div>
                         </div>
                         <span class="progress-description">
-                                From desktop application
-                            </span>
+                    <span class="profilePercentage_2018"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                  </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-red">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">Availed 3 MUST Services</span>--}}
+                        {{--<span class="info-box-number validServices"><i class="fa fa-refresh fa-spin"></i></span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar servicePercentageBar"></div>--}}
+                        {{--</div>--}}
+                        {{--<span class="progress-description">--}}
+                                {{--<span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion--}}
+                            {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-yellow-gradient">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">E REFERRAL</span>--}}
+                        {{--<span class="info-box-number bherds_count">Ongoing Harmonized</span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar"></div>--}}
+                        {{--</div>--}}
+                        {{--<span class="progress-description">--}}
+                                {{--From web application--}}
+                            {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-purple">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">BHERT PROFILED</span>--}}
+                        {{--<span class="info-box-number bhert_count"><i class="fa fa-refresh fa-spin"></i></span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar"></div>--}}
+                        {{--</div>--}}
+                        {{--<span class="progress-description">--}}
+                                {{--From mobile application--}}
+                            {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-aqua-gradient">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">DENGVAXIA</span>--}}
+                        {{--<span class="info-box-number bherds_count">Ongoing Harmonized</span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar"></div>--}}
+                        {{--</div>--}}
+                        {{--<span class="progress-description">--}}
+                                {{--From web application--}}
+                            {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-green">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">IHOMIS</span>--}}
+                        {{--<span class="info-box-number bherds_count">Ongoing Harmonized</span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar"></div>--}}
+                        {{--</div>--}}
+                        {{--<span class="progress-description">--}}
+                                {{--From desktop application--}}
+                            {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
             @if(Auth::user()->user_priv == 0)
             <div class="col-sm-6 col-xs-12">
@@ -306,17 +333,21 @@
         $.ajax({
             url: url,
             type: 'GET',
-            success: function(jim) {
-                console.log(jim);
-                $('.countBarangay').html(jim.countBarangay);
-                $('.target').html(jim.target);
-                $('.countPopulation').html(jim.countPopulation);
-                $('.validServices').html(jim.validServices);
-                $('.profilePercentage').html(jim.profilePercentage);
-                $('.servicePercentage').html(jim.servicePercentage);
-                $('.bhert_count').html(jim.bhert_count);
-                $('.profilePercentageBar').css({ width: jim.profilePercentage+'%' });
-                $('.servicePercentageBar').css({ width: jim.servicePercentage+'%' });
+            success: function(data) {
+                console.log(data);
+                console.log("hello world");
+                $('.countBarangay').html(data.countBarangay);
+                $('.target_2018').html(data.target_2018);
+                $('.target_2022').html(data.target_2022);
+                $('.countPopulation_2018').html(data.countPopulation_2018);
+                $('.countPopulation_2022').html(data.countPopulation_2022);
+                $('.validServices').html(data.validServices);
+                $('.profilePercentage_2018').html(data.profilePercentage_2018);
+                $('.profilePercentage_2022').html(data.profilePercentage_2022);
+                $('.servicePercentage').html(data.servicePercentage);
+                $('.bhert_count').html(data.bhert_count);
+                $('.profilePercentageBar_2018').css({ width: data.profilePercentage_2018+'%' });
+                $('.servicePercentageBar').css({ width: data.servicePercentage+'%' });
             }
         });
             <?php echo 'var url = "'.asset('user/home/chart').'";';?>

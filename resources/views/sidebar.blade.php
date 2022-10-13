@@ -37,7 +37,7 @@
     @if(isset($barangay))
         <div class="panel panel-jim">
             <div class="panel-heading">
-                <h3 class="panel-title">Barangay Completion</h3>
+                <h3 class="panel-title">Barangay Completion (2022)</h3>
             </div>
             <div class="panel-body">
                 @if(Auth::user()->user_priv == 2 || Auth::user()->user_priv == 4)
@@ -45,7 +45,10 @@
                     @foreach($barangay as $bar)
                         <div class="progress-group" style="margin-top: 10px;">
                             <span class="progress-text">{{ $bar->description }}</span>
-                            <span class="progress-number"><b>{{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->count() }}<?php $profile_percent = ($profile_count / $bar->target) * 100; ?></b>/{{ $bar->target }}</span>
+                            <span class="progress-number"><b>
+                                {{ $profile_count = \App\Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count() }}
+                                <?php $profile_percent = ($profile_count / $bar->target_2022) * 100; ?></b>/{{ $bar->target_2022 }}
+                            </span>
                             <div class="progress sm">
                                 <div class="progress-bar progress-bar-aqua" style="width: {{ number_format((float)$profile_percent, 0, '.', '') }}%"></div>
                             </div>
