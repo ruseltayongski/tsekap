@@ -191,8 +191,7 @@
                     <span class="info-box-icon"><i class="fa fa-line-chart"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">TARGET POPULATION (2018)</span>
-                        <span class="target_2018"><i class="fa fa-refresh fa-spin"></i></span>
-                  </span>
+                        <span class="info-box-number target_2018"><i class="fa fa-refresh fa-spin"></i></span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
