@@ -340,7 +340,7 @@ class ApiCtrlv21 extends Controller
                 'muncity_id' => $muncity_id,
                 'province_id' => $province_id,
                 'phicID' => $data['phicID'],
-                'nhtsID' => $data['nhtsID'],
+                'nhtsID' => isset($data['nhtsID']) ? $data['nhtsID'] : '',
                 'income' => $data['income'],
                 'unmet' => $data['unmet'],
                 'water' => $data['water'],
