@@ -37,19 +37,6 @@
                         <button type="submit" class="btn btn-info btn-sm btn-flat"><i class="fa fa-filter"></i> Filter</button>
                     </div>
                 </form>
-                {{--<span>--}}
-                    {{----}}
-                    {{--<b>Year: &nbsp;&nbsp;</b>--}}
-                    {{--<select class="select2 pull-right" id="select_year">--}}
-                        {{--<?php--}}
-                        {{--$cur_year = \Carbon\Carbon::now()->format('Y');--}}
-                        {{--echo "<option value='' selected>Select...</option>";--}}
-                        {{--while($cur_year >= '2017') {--}}
-                            {{--echo "<option>".$cur_year--."</option>";--}}
-                        {{--}--}}
-                        {{--?>--}}
-                    {{--</select>--}}
-                {{--</span>--}}
             </div>
 
             <div class="clearfix" style="margin-bottom: 5px"></div>
@@ -120,7 +107,7 @@
 
                             <td class="bg-{{$class}} text-center">{{ number_format($profilePercentage,1) }}%</td>
                             @if($level == 'province')
-                            <form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POST">
+                            <form action="{{ asset('generatedownload') }}" method="POST">
                                 <td width="250px">
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $s->id }}" name="province_id">
