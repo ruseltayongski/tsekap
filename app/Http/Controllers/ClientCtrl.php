@@ -133,7 +133,7 @@ class ClientCtrl extends Controller
         if($id) {
             $target = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$id)->first()->count;
             $countPopulation = Profile::where('barangay_id', $id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-            $profilePercentage = ($countPopulation / $target) * 100;
+            $profilePercentage = ($target > 0) ? ($countPopulation / $target) * 100 : 0;
             Session::put('muncityBarangay',$id);
         }
         return array(
@@ -2175,13 +2175,54 @@ class ClientCtrl extends Controller
         return $p->fname.''.$p->mname.''.$p->lname.''.$p->suffix.''.$p->barangay_id.''.$p->muncity_id;
     }
 
-    public function statusReport()
+    public function statusReport(Request $req)
     {
         $priv = Auth::user()->user_priv;
         if($priv!=0 && $priv!=2){
             return redirect('/');
         }
-        return view('client.status');
+        $cur_year = (isset($req->select_year)) ? $req->select_year : '2022';
+
+        $user = Auth::user();
+        if($user->user_priv == 2) {
+            $brgy = UserBrgy::select(
+                'barangay.id',
+                'barangay.description',
+                'barangay.province_id',
+                'barangay.muncity_id',
+                'barangay.target',
+                'barangay.target_2022'
+            )
+                ->where('userbrgy.user_id',$user->id)
+                ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id')
+                ->get();
+            $total_target = $total_profiled = 0;
+            foreach($brgy as $bar) {
+                if($cur_year == '2018') {
+                    $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                }else if($cur_year == '2022') {
+                    $total_target += Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar->id)->first()->target_count;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                }
+            }
+        } else {
+            $brgy = Barangay::where('muncity_id',$user->muncity)->get();
+            if($cur_year == '2018') {
+                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
+            }else if($cur_year == '2022') {
+                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            }
+        }
+        Session::put('statreport_year',$cur_year);
+        return view('client.status', [
+            'brgy' => $brgy,
+            'total_target' => $total_target,
+            'total_profiled' => $total_profiled,
+            'year' => $cur_year
+        ]);
     }
 
     public function updategender($gender,$id)

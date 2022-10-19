@@ -44,8 +44,9 @@ class DownloadCtrl extends Controller
         $id = $req->province_id;
         $mun_id = $req->muncity_id;
         $bar_id = $req->bar_id;
+        $year = Session::get('statreport_year');
 
-        return self::generate($id, $mun_id, $bar_id, $req->year_selected);
+        return self::generate($id, $mun_id, $bar_id, $year);
     }
     public static function generate($id, $mun_id, $bar_id, $year) {
         $withyear = (isset($year) && $year != '') ? true : false;
@@ -80,7 +81,6 @@ class DownloadCtrl extends Controller
         $total_target = $total_profiled = 0;
 
         if($user_priv == 3 || $user_priv == 1 || $user_priv == 0) {
-            $filename = Muncity::find($mun_id)->description.' - '.$year;
             $profile = Profile::select(
                 'familyID', 'head', 'relation',
                 'fname', 'mname', 'lname', 'suffix',
@@ -89,21 +89,31 @@ class DownloadCtrl extends Controller
                 'updated_by'
             )->where('province_id',$id)->where('muncity_id',$mun_id);
 
-            $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id);
-            $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id);
-            $serviceoption = $serviceoption->where('serviceoption.muncity_id',$mun_id);
-
-            $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
-            $total_profiled = Profile::where('muncity_id',$mun_id)->count();
-
             if(isset($bar_id) && $bar_id != '') {
                 $filename = Muncity::find($mun_id)->description.' ('.Barangay::find($bar_id)->description.')-'.$year;
                 $profile = $profile->where('barangay_id',$bar_id);
                 $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id);
                 $profilecases = $profilecases->where('profilecases.barangay_id', $bar_id);
                 $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id);
-                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
-                $total_profiled = Profile::where('barangay_id',$bar_id)->count();
+                if($year == '2022') {
+                    $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar_id)->first()->target_count;
+                    $total_profiled = Profile::where('barangay_id',$bar_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                } else {
+                    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
+                    $total_profiled = Profile::where('barangay_id',$bar_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                }
+            } else {
+                $filename = Muncity::find($mun_id)->description.' - '.$year;
+                $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id);
+                $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id);
+                $serviceoption = $serviceoption->where('serviceoption.muncity_id',$mun_id);
+                if($year == '2022') {
+                    $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
+                    $total_profiled = Profile::where('muncity_id',$mun_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                } else {
+                    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
+                    $total_profiled = Profile::where('muncity_id',$mun_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                }
             }
 
             $profileservices = $profileservices->get();
@@ -111,21 +121,31 @@ class DownloadCtrl extends Controller
             $serviceoption = $serviceoption->get();
 
             if($withyear == true) {
-                $profile = $profile->where('updated_at','>=',$start)->where('updated_at','<=',$end);
+                if($year == '2022')
+                    $profile = $profile->where('updated_at','>=',$start);
+                else
+                    $profile = $profile->where('created_at','<','2022-01-01 00:00:00');
+                
             }
             $profile = $profile->orderBy('id','desc')->get();
         }
         else if($user_priv == 2) {
             $filename = Barangay::find($bar_id)->description.'-'.$year;
-            $profile = Profile::where('barangay_id',$bar_id)
-                ->orderBy('id','desc')->get();
-
             $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id)->get();
             $profilecases = $profilecases->where('profilecases.barangay_id',$bar_id)->get();
             $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id)->get();
 
-            $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
-            $total_profiled = Profile::where('barangay_id',$bar_id)->count();
+            $profile = Profile::where('barangay_id',$bar_id);
+            if($year == '2022') {
+                $profile = $profile->where('updated_at','>=','2022-01-01 00:00:00');
+                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar_id)->first()->target_count;
+                $total_profiled = $profile->count();
+            } else {
+                $profile = $profile->where('updated_at','<','2022-01-01 00:00:00');
+                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
+                $total_profiled = $profile->count();
+            }
+            $profile = $profile->orderBy('id','desc')->get();
         }
 
         $total_percentage = ($total_profiled / $total_target) * 100;
@@ -139,7 +159,7 @@ class DownloadCtrl extends Controller
             'serviceoption' => $serviceoption,
             'total_target' => $total_target,
             'total_profiled' => $total_profiled,
-            'total_percentage' => number_format($total_percentage, 1)
+            'total_percentage' => ($total_target > 0) ? number_format($total_percentage, 1) : 0
         ]);
     }
 }

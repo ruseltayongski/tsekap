@@ -9,9 +9,10 @@ Route::get('/', 'HomeCtrl@index');
 Route::get('home', 'HomeCtrl@index');
 Route::get('home/chart','HomeCtrl@chart');
 Route::get('home/count/{type}','HomeCtrl@count');
-Route::get('home/count/province/{id}', 'HomeCtrl@countPerProvince');
-Route::get('home/count/muncity/{id}', 'HomeCtrl@countPerMuncity');
-Route::get('home/count/barangay/{id}', 'HomeCtrl@countPerBarangay');
+Route::get('home/count/target/{year}','HomeCtrl@countTarget');
+Route::get('home/count/province/{id}/{year}', 'HomeCtrl@countPerProvince');
+Route::get('home/count/muncity/{id}/{year}', 'HomeCtrl@countPerMuncity');
+Route::get('home/count/barangay/{id}/{year}', 'HomeCtrl@countPerBarangay');
 
 Route::get('population', 'PopulationCtrl@index');
 Route::post('population', 'PopulationCtrl@searchPopulation');
@@ -61,7 +62,7 @@ Route::post('download','DownloadCtrl@index');
 //Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
 Route::get('download/user/{id}','DownloadCtrl@generateUserDownload');
 Route::post('generatedownload', 'DownloadCtrl@generateDownload');
-Route::get('generatedownload/barangay/{province_id}/{muncity_id}', 'FacilityCtrl@downloadBarangay');
+Route::get('generatedownload/barangay/{province_id}/{muncity_id}/{year}', 'FacilityCtrl@downloadBarangay');
 //END DOWNLOAD
 
 //parameters
@@ -351,6 +352,7 @@ Route::post('population/target/delete','TargetCtrl@delete');
 Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTotal');
 Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
 Route::post('target/generateDownload','TargetCtrl@generateDownload');
+Route::post('target/getProfileCount/{id}/{year}','TargetCtrl@getProfileCount');
 
 // API for Specialists and Facilities (retrieve and store)
 Route::get('apiv21/getSpecialists/{user_id}','ApiCtrlv21@getSpecialists');

@@ -120,10 +120,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users"></i> Population<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('population') }}"><i class="fa fa-users"></i>&nbsp;&nbsp; List of Population</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Target Population <span class="caret"></span></a>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ url('population/target') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp; Target Population</a></li>
+                                <li><a href="{{ url('population/target/2018') }}"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp; 2018</a></li>
+                                <li><a href="{{ url('population/target/2022') }}"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp; 2022</a></li>
                             </ul>
                         </li>
 {{--                        <li><a href="{{ asset('population/less')  }}"><i class="fa fa-user-times"></i>&nbsp;&nbsp; Lacking 3 MUST Services<br />(PE, Laboratory and Other Services)</a></li>--}}
@@ -144,7 +145,6 @@
                         {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
                         {{--<!----}}
                         {{--<li><a href="{{ asset('/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>--}}
-                        -->
                         {{--<li><a href="{{ asset('NdpProfileExcel') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; NDP Profiled</a></li>--}}
                         {{--<li><a href="{{ asset('NumberColumnProfiled') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Number Per Column Profiled</a></li>--}}
                         {{--<li><a href="{{ asset('ProfiledByFamilyId') }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; Profiled By FamilyId</a></li>--}}
@@ -175,16 +175,6 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-mobile"></i> Mobile Check-Up<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="{{ asset("resources/apk/PHA-Check-Appv3.0.apk") }}">
-                                <i class="fa fa-download"></i> <small> Download APK</small>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li>
@@ -209,9 +199,9 @@
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            version 2.1
+            version 3.0
         </p>
-        <p>Copyright &copy; 2017 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2022 DOH-RO7 All rights reserved</p>
 
     </div>
 </footer>

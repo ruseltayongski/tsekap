@@ -256,9 +256,9 @@ class FacilityCtrl extends Controller
             ->get();
     }
 
-    public function downloadBarangay($barangay, $muncity_id) {
+    public function downloadBarangay($barangay, $muncity_id, $year) {
         $prov_id = Auth::user()->province;
-        return DownloadCtrl::generate($prov_id, $muncity_id, $barangay, '');
+        return DownloadCtrl::generate($prov_id, $muncity_id, $barangay, $year);
     }
 
 }

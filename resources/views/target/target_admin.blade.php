@@ -1,13 +1,16 @@
+
 <?php
 use App\Http\Controllers\ReportCtrl as Report;
+
 $user = Auth::user();
+\Illuminate\Support\Facades\Session::put('statreport_year', $year);
 ?>
 
 @extends('app')
 @section('content')
     <div class="container">
         <div class="col-md-12" style="padding-top: 15px; padding-left: 45px; padding-right: 35px">
-        <span> <b style="font-size: 18px">TARGET POPULATION</b>
+        <span> <b style="font-size: 18px">TARGET POPULATION ({{ $year }})</b>
         </span>
         </div><br><br><br>
 
@@ -28,23 +31,33 @@ $user = Auth::user();
                     @foreach($data as $row)
                         <tr>
                             <th style="padding-left: 20px">
-                                <?php $prov_total = \App\Barangay::select(DB::raw("SUM(target) as target_count"))->where('province_id',$row->id)->first()->target_count;?>
+                                <?php
+                                    $target_col = ($year == '2018') ? 'target' : 'target_2022';
+                                    $prov_total = \App\Barangay::select(DB::raw("SUM(".$target_col.") as target_count"))->where('province_id',$row->id)->first()->target_count;
+                                ?>
                                 <span style="font-size: 15px" class="text-success">{{ strtoupper($row->description) }}</span>
                             </th>
+
                             <th class="text-center text-info" style="font-size: 15px">
                                 {{ number_format($prov_total) }}
                             </th>
+
                             <th class="text-center text-info" style="font-size: 15px">
-                                <?php $profile = Report::getProfile('province',$row->id);?>
-                                {{ number_format($profile) }}
+                                <span id="prov_profile{{ $row->id }}"><i class="fa fa-refresh fa-spin"></i></span>
                             </th>
+
                             <th class="text-center text-info" style="font-size: 15px">
-                                <?php $percentage = ($profile / $prov_total) * 100;?>
-                                {{ number_format($percentage, 1) }} %
+                                <span id="prov_percentage{{ $row->id }}"><i class="fa fa-refresh fa-spin"></i></span>
                             </th>
+
                             <form action="{{ asset('target/generateDownload') }}" method="POST">
-                                <input type="hidden" value="{{ $row->id }}" name="province_id">
                                 {{ csrf_field() }}
+
+                                <input type="hidden" value="{{ $row->id }}" name="province_id">
+                                <input type="hidden" value="{{ $prov_total }}" name="prov_target">
+                                <input type="hidden" id="prov_profile2{{ $row->id }}" name="prov_profiled">
+                                <?php Session::put('statreport_year', $year)?>
+
                                 <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
                                     <select class="form-control select2 select_muncity" style="width:100%;" name="mun_id">
                                         <option value="">Select municipality...</option>
@@ -58,6 +71,7 @@ $user = Auth::user();
                                     <b style="color: darkgreen"> Profiled: </b><input type="text" id="mun_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                                     <b style="color: darkgreen"> Percentage: </b><input type="text" id="mun_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                                 </td>
+
                                 <td style="padding-left: 15px; padding-right: 15px; font-size: 12px">
                                     <select class="form-control select2" id="bar_select{{$row->id}}" name="bar_id">
                                         <option value="">Select barangay...</option>
@@ -66,6 +80,7 @@ $user = Auth::user();
                                     <b style="color: darkgreen"> Profiled: </b><input type="text" id="bar_profiled{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                                     <b style="color: darkgreen"> Percentage: </b><input type="text" id="bar_percentage{{$row->id}}" style="width:60%; border-color: transparent" disabled>
                                 </td>
+
                                 <td>
                                     <button class="btn btn-primary btn-sm">
                                         <i class="fa fa-download"></i> Download
@@ -122,7 +137,10 @@ $user = Auth::user();
                    $('#tmpMuncity'+index).val(muncity_id);
                    $('#mun_target'+index).val(numberFormat(data.mun_target));
                    $('#mun_profiled'+index).val(numberFormat(data.mun_profiled));
-                   var percent = (data.mun_profiled / data.mun_target) * 100;
+                   var percent = 0;
+                   if(data.mun_target > 0) {
+                       percent = (data.mun_profiled / data.mun_target) * 100;
+                   }
                    $('#mun_percentage'+index).val(percent.toFixed(1) + " %");
 
                    $('#bar_select'+index).empty()
@@ -153,10 +171,50 @@ $user = Auth::user();
                 success: function(data){
                     $('#bar_target'+data.prov).val(numberFormat(data.bar_target));
                     $('#bar_profiled'+data.prov).val(numberFormat(data.bar_profiled));
-                    var percent = (data.bar_profiled / data.bar_target) * 100;
+                    var percent = 0;
+                    if(data.bar_target > 0) {
+                        percent = (data.bar_profiled / data.bar_target) * 100;
+                    }
                     $('#bar_percentage'+data.prov).val(percent.toFixed(1) + " %");
                 }
             });
+        });
+
+        $.ajax({
+            url: "{{ asset('home/count/province/1/'.$year) }}",
+            type: 'GET',
+            success: function(result) {
+                $('#prov_profile1').html(result.countPopulation);
+                $('#prov_profile21').val(result.profiled);
+                $('#prov_percentage1').html(result.profilePercentage + "%");
+            }
+        });
+        $.ajax({
+            url: "{{ asset('home/count/province/2/'.$year) }}",
+            type: 'GET',
+            success: function(result) {
+                $('#prov_profile2').html(result.countPopulation);
+                $('#prov_profile22').val(result.profiled);
+                $('#prov_percentage2').html(result.profilePercentage + "%");
+            }
+        });
+        $.ajax({
+            url: "{{ asset('home/count/province/3/'.$year) }}",
+            type: 'GET',
+            success: function(result) {
+                $('#prov_profile3').html(result.countPopulation);
+                $('#prov_profile23').val(result.profiled);
+                $('#prov_percentage3').html(result.profilePercentage + "%");
+            }
+        });
+        $.ajax({
+            url: "{{ asset('home/count/province/4/'.$year) }}",
+            type: 'GET',
+            success: function(result) {
+                $('#prov_profile4').html(result.countPopulation);
+                $('#prov_profile24').val(result.profiled);
+                $('#prov_percentage4').html(result.profilePercentage + "%");
+            }
         });
 
     </script>

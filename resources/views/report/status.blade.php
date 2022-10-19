@@ -1,5 +1,6 @@
 <?php
     use App\Http\Controllers\ReportCtrl as Report;
+    use Illuminate\Support\Facades\Session;
     $totalTarget = 0;
     $totalProfile = 0;
     $totalValid = 0;
@@ -20,22 +21,35 @@
     {{--@include('report.sidebar')--}}
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
-            <div class="col-md-8">
-                <h4><b>STATUS REPORT</b></h4>
-            </div>
-            <div class="col-md-2 pull-right">
-                <span>
-                    <b>Year: &nbsp;&nbsp;</b>
-                    <select class="select2 pull-right" id="select_year">
-                        <?php
-                        $cur_year = \Carbon\Carbon::now()->format('Y');
-                        echo "<option value='' selected>Select...</option>";
-                        while($cur_year >= '2017') {
-                            echo "<option>".$cur_year--."</option>";
-                        }
-                        ?>
-                    </select>
-                </span>
+            <div class="row">
+                <div class="col-md-7">
+                    <h4><b>STATUS REPORT ({{ $year }})</b></h4>
+                </div>
+                <form method="get" action="{{ asset('/report/status') }}">
+                    <div class="col-md-3">
+                        <select class="select2" name="select_year" style="width:50%;">
+                            <option>Select year...</option>
+                            <option value="2018" <?php if($year == '2018') echo 'selected';?>>2018</option>
+                            <option value="2022" <?php if($year == '2022') echo 'selected';?>>2022</option>
+                        </select>&nbsp;
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-info btn-sm btn-flat"><i class="fa fa-filter"></i> Filter</button>
+                    </div>
+                </form>
+                {{--<span>--}}
+                    {{----}}
+                    {{--<b>Year: &nbsp;&nbsp;</b>--}}
+                    {{--<select class="select2 pull-right" id="select_year">--}}
+                        {{--<?php--}}
+                        {{--$cur_year = \Carbon\Carbon::now()->format('Y');--}}
+                        {{--echo "<option value='' selected>Select...</option>";--}}
+                        {{--while($cur_year >= '2017') {--}}
+                            {{--echo "<option>".$cur_year--."</option>";--}}
+                        {{--}--}}
+                        {{--?>--}}
+                    {{--</select>--}}
+                {{--</span>--}}
             </div>
 
             <div class="clearfix" style="margin-bottom: 5px"></div>
@@ -43,9 +57,9 @@
                 <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
                     <tr>
                         <th class="bg-primary" width="20%">{{ $title }}</th>
-                        <th class="bg-primary">Target</th>
-                        <th class="bg-primary">Population<br/>Profiled</th>
-                        <th class="bg-primary">(%)</th>
+                        <th class="bg-primary text-center">Target</th>
+                        <th class="bg-primary text-center">Population<br/>Profiled</th>
+                        <th class="bg-primary text-center">(%)</th>
                         @if($level == 'province')
                             <th class="bg-primary text-center">
                                 List of Municipalities
@@ -70,6 +84,7 @@
                         <?php
                             $c++;
                             $target = $s->target;
+                            Session::put('statreport_year', $year);
                             $profile = Report::getProfile($level,$s->id);
 
                             if($target==0){
@@ -95,45 +110,18 @@
                             }else if($a>80){
                                 $class = 'aqua';
                             }
-
                         ?>
                         <tr>
-                            <td>
-                                @if($level == 'brgy')
-                                    <div class="btn-group">
-                                        <form action="{{ asset('ExportExcelBarangay') }}" method="POST">
-                                            <input type="hidden" value="{{ $s->id }}" name="barangay_id">
-                                            <input type="hidden" value="{{ $s->province_id }}" name="province_id">
-                                            <input type="hidden" value="{{ $s->muncity_id }}" name="muncity_id">
-                                            <input type="hidden" value="{{ $s->description }}" name="barangay">
-                                            {{ csrf_field() }}
-                                            <button type="submit" class="btn-sm btn-primary">
-                                                <i class="fa fa-download"></i> {{ $s->description }}
-                                            </button>
-                                        </form>
-                                    </div>
-                                @else
-                                {{ $s->description }} {{ $level }}
-                                @endif
-                            </td>
-                            <td>{{ number_format($target) }}</td>
-                            <td>{{ number_format($profile) }}</td>
-                            <td class="bg-{{$class}}">{{ number_format($profilePercentage,1) }}%</td>
+                            <td>{{ $s->description }} {{ $level }}</td>
+
+                            <td class="text-center">{{ number_format($target) }}</td>
+
+                            <td class="text-center">{{ number_format($profile) }}</td>
+
+                            <td class="bg-{{$class}} text-center">{{ number_format($profilePercentage,1) }}%</td>
                             @if($level == 'province')
                             <form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POST">
                                 <td width="250px">
-                                {{--<div class="btn-group">--}}
-                                    {{--<form action="{{ asset('ExportExcelMunicipality') }}" method="POST">--}}
-                                        {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
-                                        {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
-                                        {{--<input type="hidden" value="{{ $s->description }}" name="province">--}}
-                                        {{--{{ csrf_field() }}--}}
-                                        {{--<button type="submit" class="btn-sm btn-primary">--}}
-                                            {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
-                                        {{--</button>--}}
-                                    {{--</form>--}}
-                                {{--</div>--}}
-
                                     {{ csrf_field() }}
                                     <input type="hidden" value="{{ $s->id }}" name="province_id">
                                     <input type="hidden" value="" name="year_selected" class="year_selected">

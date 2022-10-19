@@ -36,55 +36,82 @@ $user_priv = Auth::user()->user_priv;
                     </a>
                 </div>
             </div>
+            <div class="clearfix"></div>
 
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3 class="target"><i class="fa fa-refresh fa-spin"></i></h3>
-                        <p>Target Population</p>
+                        <h3 class="target_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <p>Target Population (2022)</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-line-chart"></i>
+                    </div>
+                    <a href="{{ asset('#') }}" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                    {{--<a href="{{ asset('#') }}" class="small-box-footer">--}}
+                        {{--Target Poor ( <font class="old_target"><i class="fa fa-refresh fa-spin"></i></font> )--}}
+                    {{--</a>--}}
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="small-box bg-green">
+                    <div class="inner">
+                        <h3 class="countPopulation_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <p>Population Profiled (2022)</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-users"></i>
                     </div>
-                    <a href="{{ asset('#') }}" class="small-box-footer">
-                        Target Poor ( <font class="old_target"><i class="fa fa-refresh fa-spin"></i></font> )
-                    </a>
+                    <div class="small-box-footer" style="text-align: left">&emsp;
+                        <span class="profilePercentage_2022"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                    </div>
                 </div>
             </div>
 
-            <div class="clearfix"></div>
-            <hr />
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-yellow">
-                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                    <span class="info-box-icon"><i class="fa fa-line-chart"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Population Profiled</span>
-                        <span class="info-box-number countPopulation"><i class="fa fa-refresh fa-spin"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar profilePercentageBar"></div>
-                        </div>
-                        <span class="progress-description">
-                            <span class="profilePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                        </span>
+                        <span class="info-box-text">TARGET POPULATION (2018)</span>
+                        <span class="info-box-number target_2018"><i class="fa fa-refresh fa-spin"></i></span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
 
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
-                    <span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>
+                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
                     <div class="info-box-content">
-                        <span class="info-box-text">Availed 3 MUST Services</span>
-                        <span class="info-box-number validServices"><i class="fa fa-refresh fa-spin"></i></span>
+                        <span class="info-box-text">POPULATION PROFILED (2018)</span>
+                        <span class="info-box-number countPopulation_2018"><i class="fa fa-refresh fa-spin"></i></span>
                         <div class="progress">
-                            <div class="progress-bar servicePercentageBar"></div>
+                            <div class="progress-bar profilePercentageBar_2018"></div>
                         </div>
-                  <span class="progress-description">
-                    <span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
+                        <span class="progress-description">
+                    <span class="profilePercentage_2018"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
                   </span>
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
+
+            {{--<div class="col-sm-6 col-xs-12">--}}
+                {{--<div class="info-box bg-green">--}}
+                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
+                    {{--<div class="info-box-content">--}}
+                        {{--<span class="info-box-text">Availed 3 MUST Services</span>--}}
+                        {{--<span class="info-box-number validServices"><i class="fa fa-refresh fa-spin"></i></span>--}}
+                        {{--<div class="progress">--}}
+                            {{--<div class="progress-bar servicePercentageBar"></div>--}}
+                        {{--</div>--}}
+                  {{--<span class="progress-description">--}}
+                    {{--<span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion--}}
+                  {{--</span>--}}
+                    {{--</div><!-- /.info-box-content -->--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
             @if($user_priv == 1)
                 <div class="clearfix"></div>
@@ -181,17 +208,26 @@ $user_priv = Auth::user()->user_priv;
             }
         });
 
-        <?php echo 'var url = "'.asset('home/count/target').'";';?>
+        <?php echo 'var url = "'.asset('home/count/target/2022').'";';?>
         $.ajax({
             url: url,
             type: 'GET',
-            success: function(jim) {
-                console.log(jim);
-                $('.old_target').html(jim.old_target);
-                $('.target').html(jim.target);
-                $('.countPopulation').html(jim.countPopulation);
-                $('.profilePercentage').html(jim.profilePercentage);
-                $('.profilePercentageBar').css({ width: jim.profilePercentage+'%' });
+            success: function(data) {
+                $('.target_2022').html(data.target);
+                $('.countPopulation_2022').html(data.countPopulation);
+                $('.profilePercentage_2022').html(data.profilePercentage);
+            }
+        });
+
+        <?php echo 'var url = "'.asset('home/count/target/2018').'";';?>
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(data) {
+                $('.target_2018').html(data.target);
+                $('.countPopulation_2018').html(data.countPopulation);
+                $('.profilePercentage_2018').html(data.profilePercentage);
+                $('.profilePercentageBar_2018').css({ width: data.profilePercentage+'%' });
             }
         });
 
@@ -298,10 +334,12 @@ $user_priv = Auth::user()->user_priv;
 
         function refreshProvince(id){
             if(id) {
+                console.log('id: ' + id);
                 $.ajax({
-                    url: 'home/count/province/'+id,
+                    url: 'home/count/province/'+id+'/2022',
                     type: 'GET',
                     success: function(result) {
+                        console.log('test: ' + result);
                         $('.countPopulationPerProvince').html(result.countPopulation);
                         $('.profilePercentagePerProvince').html(result.profilePercentage);
                         $('.profilePercentageBarPerProvince').css({ width: result.profilePercentage+'%' });
@@ -371,7 +409,7 @@ $user_priv = Auth::user()->user_priv;
         function refreshMuncity(id) {
             if(id) {
                 $.ajax({
-                    url: 'home/count/muncity/'+id,
+                    url: 'home/count/muncity/'+id+'/2022',
                     type: 'GET',
                     success: function(result) {
                         $('.countPopulationPerMuncity').html(result.countPopulation);
@@ -427,7 +465,7 @@ $user_priv = Auth::user()->user_priv;
         function refreshBarangay(id) {
             if(id) {
                 $.ajax({
-                    url: 'home/count/barangay/' + id,
+                    url: 'home/count/barangay/'+id+'/2022',
                     type: 'GET',
                     success: function (result) {
                         $('.countPopulationPerBarangay').html(result.countPopulation);

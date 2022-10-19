@@ -117,7 +117,7 @@ $total_target = $total_profiled = 0;
                             <td><b>TOTAL:</b></td>
                             <td class="text-center">{{ number_format($total_target) }}</td>
                             <td class="text-center">{{ number_format($total_profiled) }}</td>
-                            <?php $total_percentage = ($total_profiled / $total_target) * 100;?>
+                            <?php $total_percentage = ($total_target > 0) ? ($total_profiled / $total_target) * 100 : 0;?>
                             <td class="text-center">{{ number_format($total_percentage, 1) }} %</td>
                             @if($user_priv === 0 && $year == 2022)
                                 <td></td>

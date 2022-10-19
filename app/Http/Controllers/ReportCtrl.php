@@ -57,13 +57,18 @@ class ReportCtrl extends Controller
             $muncity_id = Session::get('muncity_id');
         }
 
+        $year = $req->select_year;
+        $year = isset($year) ? $year : '2022';
+        $target_col = 'target';
+        if($year == '2022')
+            $target_col = 'target_2022';
         if($muncity_id){
             $title = Muncity::find($muncity_id)->description;
             $sub = \DB::connection('mysql')->select("call getBarangay('$muncity_id')");;
             $level = 'brgy';
         }else if($province_id){
             $title = Province::find($province_id)->description;
-            $sub = Muncity::select('muncity.id','muncity.description',DB::raw("SUM(barangay.target) as target"))
+            $sub = Muncity::select('muncity.id','muncity.description',DB::raw("SUM(barangay.".$target_col.") as target"))
                 ->leftJoin('barangay','barangay.muncity_id','=','muncity.id')
                 ->orderBy('muncity.description','asc')
                 ->where('muncity.province_id',$province_id)
@@ -72,7 +77,7 @@ class ReportCtrl extends Controller
             $level = 'muncity';
         }else{
             $title = 'REGION VII';
-            $sub = Province::select('province.id','province.description',DB::raw("SUM(barangay.target) as target"))
+            $sub = Province::select('province.id','province.description',DB::raw("SUM(barangay.".$target_col.") as target"))
                 ->leftJoin('barangay','barangay.province_id','=','province.id')
                 ->orderBy('province.description','asc');
             if(Auth::user()->user_priv==3){
@@ -82,12 +87,14 @@ class ReportCtrl extends Controller
                 ->get();
             $level = 'province';
         }
+
         return view('report.status',[
             'province_id'=>$province_id,
             'muncity_id'=>$muncity_id,
             'title' => $title,
             'sub' => $sub,
             'level' => $level,
+            'year' => $year
         ]);
     }
 
@@ -109,12 +116,17 @@ class ReportCtrl extends Controller
     static function getProfile($level,$id)
     {
         if($level=='province'){
-            $profile = Profile::select(DB::raw("COUNT(id) as count"))->where('province_id',$id);
+            $profile = Profile::select('created_at',DB::raw("COUNT(id) as count"))->where('province_id',$id);
         }else if($level=='muncity'){
             $profile = Profile::select(DB::raw("COUNT(id) as count"))->where('muncity_id',$id);
         }else if($level=='brgy'){
             $profile = Profile::select(DB::raw("COUNT(id) as count"))->where('barangay_id',$id);
         }
+        $year = Session::get('statreport_year');
+        if($year == '2018')
+            $profile = $profile->where('created_at','<','2022-01-01 00:00:00');
+        else if($year == '2022')
+            $profile = $profile->where('updated_at','>=','2022-01-01 00:00:00');
         $profile = $profile->first()->count;
         return $profile;
     }
@@ -289,6 +301,7 @@ class ReportCtrl extends Controller
     }
 
     public function statusDetails($mun_id, $bar_id) {
-        return view('report.stat_details', ['muncity'=>$mun_id, 'bar_id'=>$bar_id]);
+        $year = $year = Session::get('statreport_year');
+        return view('report.stat_details', ['muncity'=>$mun_id, 'bar_id'=>$bar_id, 'year' => $year]);
     }
 }

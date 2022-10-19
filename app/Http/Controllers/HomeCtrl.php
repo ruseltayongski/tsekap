@@ -29,6 +29,35 @@ class HomeCtrl extends Controller
         return view('home');
     }
 
+    public function countTarget($year){
+        $province_id = Auth::user()->province;
+        $user_priv = Auth::user()->user_priv;
+        $target_col = ($year == '2022') ? 'target_2022' : 'target';
+        if($user_priv==1){
+            $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->first()->count;
+            if($year == '2022') {
+                $countPopulation = Profile::where('updated_at','>=','2022-01-01 00:00:00')->count();
+            } else {
+                $countPopulation= Profile::where('created_at','<','2022-01-01 00:00:00')->count();
+            }
+        }else if($user_priv==3){
+            $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->where('province_id',$province_id)->first()->count;
+            if($year == '2022') {
+                $countPopulation = Profile::where('province_id',$province_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            } else {
+                $countPopulation = Profile::where('province_id',$province_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+            }
+        }
+
+        $profilePercentage = ($target > 0 && $countPopulation > 0) ? ($countPopulation / $target) * 100 : 0;
+
+        return array(
+            'target' => number_format($target),
+            'countPopulation' => number_format($countPopulation),
+            'profilePercentage' => number_format($profilePercentage,1)
+        );
+    }
+
     public function count($type){
         $province_id = Auth::user()->province;
         $user_priv = Auth::user()->user_priv;
@@ -40,32 +69,6 @@ class HomeCtrl extends Controller
                 $countBarangay = Barangay::where('province_id',$province_id)->count();
             }
             return array('countBarangay' => number_format($countBarangay));
-        }else if($type=='target'){
-            if($user_priv==1){
-                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->first()->count;
-                $target = Barangay::select(DB::raw("SUM(target) as count"))->first()->count;
-                $countPopulation = Profile::count();
-            }else if($user_priv==3){
-                $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->where('province_id',$province_id)->first()->count;
-                $target = Barangay::select(DB::raw("SUM(target) as count"))->where('province_id',$province_id)->first()->count;
-                $countPopulation = Profile::where('province_id',$province_id)->count();
-            }
-            if($target==0){
-                $old_target=$countPopulation;
-                $target=$countPopulation;
-            }
-
-            if($countPopulation==0){
-                $profilePercentage = 0;
-            }else{
-                $profilePercentage = ($countPopulation / $target) * 100;
-            }
-            return array(
-                'countPopulation' => number_format($countPopulation),
-                'profilePercentage' => number_format($profilePercentage,1),
-                'target' => number_format($target),
-                'old_target' => number_format($old_target)
-            );
         }else if($type=='validServices'){
             if($user_priv==1){
                 $old_target = Barangay::select(DB::raw("SUM(old_target) as count"))->first()->count;
@@ -90,18 +93,22 @@ class HomeCtrl extends Controller
         return false;
     }
 
-    public function countPerProvince($id) {
-        $target = 0;
+    public function countPerProvince($id, $year) {
         $countPopulation = 0;
         $profilePercentage = 0;
+        $target_col = ($year == '2022') ? 'target_2022' : 'target';
 
         if(!$id)
             $id = Session::get('homeProvince');
 
         if($id) {
-            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('province_id',$id)->first()->count;
-            $countPopulation = Profile::where('province_id', $id)->count();
-            $profilePercentage = ($countPopulation / $target) * 100;
+            $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->where('province_id',$id)->first()->count;
+            if($year == '2022')
+                $countPopulation = Profile::where('province_id', $id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            else
+                $countPopulation = Profile::where('province_id', $id)->where('created_at','<','2022-01-01 00:00:00')->count();
+
+            $profilePercentage = ($target > 0 && $countPopulation > 0) ? ($countPopulation / $target) * 100 : 0;
         }
 
         Session::put('homeProvince', $id);
@@ -110,22 +117,27 @@ class HomeCtrl extends Controller
 
         return array(
             'countPopulation' => number_format($countPopulation),
-            'profilePercentage' => number_format($profilePercentage, 1)
+            'profilePercentage' => number_format($profilePercentage, 1),
+            'profiled' => $countPopulation
         );
     }
 
-    public function countPerMuncity($id) {
-        $target = 0;
+    public function countPerMuncity($id, $year) {
         $countPopulation = 0;
         $profilePercentage = 0;
+        $target_col = ($year == '2022') ? 'target_2022' : 'target';
 
         if(!$id)
             $id = Session::get('homeMuncity');
 
         if($id) {
-            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$id)->first()->count;
-            $countPopulation = Profile::where('muncity_id', $id)->count();
-            $profilePercentage = ($countPopulation / $target) * 100;
+            $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->where('muncity_id',$id)->first()->count;
+            if($year == '2022')
+                $countPopulation = Profile::where('muncity_id', $id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            else
+                $countPopulation = Profile::where('muncity_id', $id)->where('created_at','<','2022-01-01 00:00:00')->count();
+
+            $profilePercentage = ($target > 0 && $countPopulation > 0) ? ($countPopulation / $target) * 100 : 0;
         }
         Session::put('homeMuncity', $id);
         Session::put('homeBarangay', '');
@@ -136,18 +148,22 @@ class HomeCtrl extends Controller
         );
     }
 
-    public function countPerBarangay($id) {
-        $target = 0;
+    public function countPerBarangay($id, $year) {
         $countPopulation = 0;
         $profilePercentage = 0;
+        $target_col = ($year == '2022') ? 'target_2022' : 'target';
 
         if(!$id)
             $id = Session::get('homeBarangay');
 
         if($id) {
-            $target = Barangay::select(DB::raw("SUM(target) as count"))->where('id',$id)->first()->count;
-            $countPopulation = Profile::where('barangay_id', $id)->count();
-            $profilePercentage = ($countPopulation / $target) * 100;
+            $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->where('id',$id)->first()->count;
+            if($year == '2022')
+                $countPopulation = Profile::where('barangay_id', $id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            else
+                $countPopulation = Profile::where('barangay_id', $id)->where('created_at','<','2022-01-01 00:00:00')->count();
+
+            $profilePercentage = ($target > 0 && $countPopulation > 0) ? ($countPopulation / $target) * 100 : 0;
             Session::put('homeBarangay',$id);
         }
         return array(

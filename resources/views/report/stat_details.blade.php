@@ -2,6 +2,7 @@
 use App\Barangay;
 use App\Muncity;
 use App\Http\Controllers\ReportCtrl as Report;
+use App\Http\Controllers\TargetCtrl as Target;
 use App\UserBrgy;
 use App\User;
 use App\Profile;
@@ -12,12 +13,12 @@ if(isset($bar_id) && $bar_id != '' && $bar_id != 0) {
     $brgy = Barangay::where('id', $bar_id)->get();
 } else {
     $brgy = Barangay::where('muncity_id',$muncity)->get();
-    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$muncity)->first()->target_count;
-    $total_profiled = Profile::where('muncity_id',$muncity)->count();
+    $muncitytotal = Target::getMuncityTotal($muncity);
+    $total_target = $muncitytotal['mun_target'];
+    $total_profiled = $muncitytotal['mun_profiled'];
 }
-$total_percentage = ($total_profiled / $total_target) * 100;
+$total_percentage = ($total_target > 0) ? ($total_profiled / $total_target) * 100 : 0;
 $total_percentage = number_format($total_percentage, 1);
-
 ?>
 <style>
     .table thead tr th {
@@ -78,21 +79,10 @@ $total_percentage = number_format($total_percentage, 1);
 
                         </td>
                         <td class="text-center">
-                            {{ number_format($row->target) }}
-                        </td>
-                        <td class="text-center">
                             <?php
                             $profile = Report::getProfile('brgy',$row->id);
-                            $target = $row->target;
-                            if($target==0){
-                                $target=$profile;
-                            }
-
-                            if($profile==0){
-                                $profilePercentage = 0;
-                            }else{
-                                $profilePercentage = ($profile / $target) * 100;
-                            }
+                            $target = ($year == '2022') ? $row->target_2022 : $row->target;
+                            $profilePercentage = ($target > 0 && $profile > 0) ? ($profile / $target) * 100 : 0;
 
                             $a = $profilePercentage;
                             if($a>=0 && $a<=20){
@@ -107,11 +97,14 @@ $total_percentage = number_format($total_percentage, 1);
                                 $class = 'teal';
                             }
                             ?>
+                            {{ number_format($target) }}
+                        </td>
+                        <td class="text-center">
                             {{ number_format($profile) }}
                         </td>
                         <td class="bg-{{$class}} text-center">{{ number_format($profilePercentage,1) }}%</td>
                         <td class="text-center">
-                            <a class="btn-primary btn btn-sm" href="{{ asset('generatedownload/barangay') }}/{{ $row->id }}/{{ $muncity }}" method="POST">
+                            <a class="btn-primary btn btn-sm" href="{{ asset('generatedownload/barangay') }}/{{ $row->id }}/{{ $muncity }}/{{ $year }}" method="POST">
                                 <i class="fa fa-download"></i> Download
                             </a>
                         </td>

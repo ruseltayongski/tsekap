@@ -4,11 +4,11 @@ header("Content-Disposition: attachment; filename=".$filename.".xls");
 header("Pragma: no-cache");
 header("Expires: 0");
 
-$prov_percentage = ($prov_profiled / $prov_target) * 100;
+$prov_percentage = ($prov_target > 0 && $prov_profiled > 0) ? ($prov_profiled / $prov_target) * 100 : 0;
 
 $table_body ='
     <div class="col-md-12" style="white-space: nowrap;">
-        <h3>Summary of Target and Profiled Population</h3>
+        <h3>Summary of Target and Profiled Population ('.$year.') </h3>
     </div>
     <table cellspacing="1" cellpadding="5" border="1" width="150%">
         <tr>
@@ -38,7 +38,7 @@ foreach($muncity_list as $mun) {
             <td> '.$mun[1].'</td>
             <td> '.number_format($mun[2]).'</td>
             <td> '.number_format($mun[3]).'</td>';
-    $mun_percentage = ($mun[3] / $mun[2]) * 100;
+    $mun_percentage = ($mun[2] > 0) ? ($mun[3] / $mun[2]) * 100 : 0;
     $table_body .= '
             <td> '.number_format($mun_percentage, 1).' % </td>
         </tr>';
@@ -59,7 +59,7 @@ if(count($barangay_list) > 0) {
             <td> '.$bar[1].'</td>
             <td> '.number_format($bar[2]).'</td>
             <td> '.number_format($bar[3]).'</td>';
-        $bar_percentage = ($bar[3] / $bar[2]) * 100;
+        $bar_percentage = ($bar[2] > 0) ? ($bar[3] / $bar[2]) * 100 : 0;
         $table_body .= '
             <td> '.number_format($bar_percentage, 1).' % </td>
         </tr>';

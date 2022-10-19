@@ -270,7 +270,7 @@ use App\Province;
         <p class="pull-right">
             version 3.0
         </p>
-        <p>Copyright &copy; 2017 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2022 DOH-RO7 All rights reserved</p>
     </div>
 </footer>
 @include('modal')
