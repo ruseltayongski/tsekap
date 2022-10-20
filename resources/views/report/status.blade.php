@@ -72,31 +72,6 @@
                             $c++;
                             $target = $s->target;
                             Session::put('statreport_year', $year);
-//                            $profile = Report::getProfile($level,$s->id);
-//
-//                            if($target==0){
-//                                $target=$profile;
-//                            }
-//
-//                            if($profile==0){
-//                                $profilePercentage = 0;
-//                            }else{
-//                                $profilePercentage = ($profile / $target) * 100;
-//                            }
-//
-//                            $a = $profilePercentage;
-//                            $class = 'danger';
-//                            if($a>=0 && $a<=20){
-//                                $class = 'danger';
-//                            }else if($a>20 && $a<=40){
-//                                $class = 'warning';
-//                            }else if($a>40 && $a<=60){
-//                                $class = 'info';
-//                            }else if($a>60 && $a<=80){
-//                                $class = 'success';
-//                            }else if($a>80){
-//                                $class = 'aqua';
-//                            }
                         ?>
                         <tr>
                             <td>{{ $s->description }} {{ $level }}</td>
@@ -105,7 +80,7 @@
 
                             <td class="text-center"><span id="prov_profile{{ $s->id }}"><i class="fa fa-refresh fa-spin"></i></span></td>
 
-                            <td class="bg-{{$class}} text-center"><span id="prov_percentage{{ $s->id }}"><i class="fa fa-refresh fa-spin"></i></span></td>
+                            <td class="text-center" id="percent_class{{ $s->id }}"><span id="prov_percentage{{ $s->id }}"><i class="fa fa-refresh fa-spin"></i></span></td>
                             @if($level == 'province')
                             <form action="{{ asset('generatedownload') }}" method="POST">
                                 <td width="250px">
@@ -140,22 +115,6 @@
                                         </button>
                                     </div>
                                 </td>
-                                {{--@foreach(\App\Muncity::where('province_id','=',$s->id)->get() as $row)--}}
-                                    {{--<div class="btn-group">--}}
-                                        {{--<form action="{{ str_replace('tsekap/vii','project',asset('generatedownload')) }}" method="POSt">--}}
-                                            {{--{{ csrf_field() }}--}}
-                                            {{--<input type="hidden" value="{{ $row->province_id }}" name="province_id">--}}
-                                            {{--<input type="hidden" value="{{ $s->description }}" name="province_desc">--}}
-                                            {{--<input type="hidden" value="{{ $row->id }}" name="muncity_id">--}}
-                                            {{--<input type="hidden" value="{{ $row->description }}" name="muncity_desc">--}}
-                                            {{--<input type="hidden" value="" name="year_selected" class="year_selected">--}}
-                                            {{--<button class="btn-primary btn">--}}
-                                                {{--<i class="fa fa-download"></i> {{ $row->description }}--}}
-                                            {{--</button>--}}
-                                        {{--</form>--}}
-                                    {{--</div>--}}
-{{--                                        <a href="{{ str_replace('tsekap/vii','project',asset('download')) }}/{{ $row->province_id }}/{{ $s->description }}/{{ $row->id }}/{{ $row->description }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ $row->description }}</a>--}}
-                                {{--@endforeach--}}
                             </form>
                             @endif
                             @if($level == 'brgy')
@@ -304,12 +263,26 @@
         }
     }
 
+    function getClass(percentage) {
+        if(percentage >= 0 && percentage <= 20)
+            return 'bg-danger';
+        else if(percentage > 20 && percentage <= 40)
+            return 'bg-warning';
+        else if(percentage > 40 && percentage <= 60)
+            return 'bg-info';
+        else if(percentage > 60 && percentage <= 80)
+            return 'bg-success';
+        else if(percentage > 80)
+            return 'bg-aqua';
+    }
+
     $.ajax({
         url: "{{ asset('home/count/province/1/'.$year) }}",
         type: 'GET',
         success: function(result) {
             $('#prov_profile1').html(result.countPopulation);
             $('#prov_percentage1').html(result.profilePercentage + "%");
+            $('#percent_class1').addClass(getClass(result.profilePercentage));
         }
     });
     $.ajax({
@@ -318,6 +291,7 @@
         success: function(result) {
             $('#prov_profile2').html(result.countPopulation);
             $('#prov_percentage2').html(result.profilePercentage + "%");
+            $('#percent_class2').addClass(getClass(result.profilePercentage));
         }
     });
     $.ajax({
@@ -326,6 +300,7 @@
         success: function(result) {
             $('#prov_profile3').html(result.countPopulation);
             $('#prov_percentage3').html(result.profilePercentage + "%");
+            $('#percent_class3').addClass(getClass(result.profilePercentage));
         }
     });
     $.ajax({
@@ -334,6 +309,7 @@
         success: function(result) {
             $('#prov_profile4').html(result.countPopulation);
             $('#prov_percentage4').html(result.profilePercentage + "%");
+            $('#percent_class4').addClass(getClass(result.profilePercentage));
         }
     });
 </script>

@@ -84,15 +84,8 @@
                                         <?php
                                         $profile = Report::getProfile('brgy',$row->id);
                                         $target = ($year == '2018') ? $row->target : $row->target_2022;
-                                        if($target==0){
-                                            $target=$profile;
-                                        }
 
-                                        if($profile==0){
-                                            $profilePercentage = 0;
-                                        }else{
-                                            $profilePercentage = ($target > 0) ? ($profile / $target) * 100 : 0;
-                                        }
+                                        $profilePercentage = ($target > 0 && $profile > 0) ? ($profile / $target) * 100 : 0;
 
                                         $a = $profilePercentage;
                                         if($a>=0 && $a<=20){
