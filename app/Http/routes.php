@@ -346,7 +346,7 @@ Route::get('specialist/verify', 'SpecialistCtrl@verify');
 
 // TARGET POPULATION
 Route::get('population/target/{year}','TargetCtrl@targetPopulation');
-Route::post('population/target','TargetCtrl@targetPopulation');
+Route::post('population/target/{year}','TargetCtrl@targetPopulation');
 Route::post('population/target/update','TargetCtrl@update');
 Route::post('population/target/delete','TargetCtrl@delete');
 Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTotal');

@@ -41,7 +41,7 @@ $total_target = $total_profiled = 0;
         <div class="col-md-12" style="padding-top: 10px; padding-left: 35px; padding-right: 35px">
         <span> <b style="font-size: 20px">TARGET POPULATION ({{ $year }})</b>
             <div class="pull-right">
-                <form action="{{ asset('population/target') }}" method="POST" class="form-inline">
+                <form action="{{ asset('population/target/'.$year) }}" method="POST" class="form-inline">
                     {{ csrf_field() }}
                     <div class="form-group" style="margin-bottom: 10px;">
                         <input type="text" class="form-control" placeholder="Search..." name="keyword" value="{{ Session::get("targetKeyword") }}" >
