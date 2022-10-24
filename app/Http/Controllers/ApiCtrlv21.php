@@ -58,10 +58,9 @@ class ApiCtrlv21 extends Controller
     public function getversion()
     {
         return array(
-            'version' => '2.0',
+            'version' => '3.0',
             'description'=> '
-            \n - Dengvaxia Profiling added in profile update\n - Automatic update after upload is removed\n - Check for Update is added in drawer\n - Minor bug fixes
-            \n - NOTE: Please UNINSTALL the older version and DOWNLOAD the new VERSION thru ONLINE System.  
+            \n - NOTE: Please UNINSTALL the older version and DOWNLOAD the new VERSION throught the ONLINE System.  
             '
         );
     }
@@ -79,18 +78,18 @@ class ApiCtrlv21 extends Controller
                 $count = 0;
                 $userBrgy = array();
                 if($user->user_priv==2){
-                    $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target')
+                    $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target_2022')
                         ->where('user_id',$user->id)
                         ->leftJoin('barangay','userbrgy.barangay_id','=','barangay.id')
                         ->get();
                 }else if($user->user_priv==0){
-                    $userBrgy = Barangay::select('id as barangay_id','description','target')
+                    $userBrgy = Barangay::select('id as barangay_id','description','target_2022')
                         ->where('muncity_id',$user->muncity)
                         ->get();
                 }
                 foreach($userBrgy as $row)
                 {
-                    $count += $row->target;
+                    $count += $row->target_2022;
                 }
                 return array(
                     'data' => $user,
