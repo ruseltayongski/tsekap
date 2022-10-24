@@ -78,18 +78,18 @@ class ApiCtrlv21 extends Controller
                 $count = 0;
                 $userBrgy = array();
                 if($user->user_priv==2){
-                    $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target_2022')
+                    $userBrgy = UserBrgy::select('userbrgy.barangay_id','barangay.description','barangay.target_2022 as target')
                         ->where('user_id',$user->id)
                         ->leftJoin('barangay','userbrgy.barangay_id','=','barangay.id')
                         ->get();
                 }else if($user->user_priv==0){
-                    $userBrgy = Barangay::select('id as barangay_id','description','target_2022')
+                    $userBrgy = Barangay::select('id as barangay_id','description','target_2022 as target')
                         ->where('muncity_id',$user->muncity)
                         ->get();
                 }
                 foreach($userBrgy as $row)
                 {
-                    $count += $row->target_2022;
+                    $count += $row->target;
                 }
                 return array(
                     'data' => $user,
