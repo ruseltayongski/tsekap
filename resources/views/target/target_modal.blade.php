@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-body target_body">
-                <form action="{{ asset('population/target/update') }}" method="POST">
+                <form action="{{ asset('population/update') }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="barangay_id" id="barangay_id">
                     <fieldset>

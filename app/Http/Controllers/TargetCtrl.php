@@ -227,14 +227,14 @@ class TargetCtrl extends Controller
         ]);
     }
 
-    public function update(Request $req) {
+    public function updateTarget(Request $req) {
         $bar = Barangay::where('id',$req->barangay_id)->first();
         $bar->target_2022 = str_replace(',', '', $req->target);
         $bar->save();
 
         Session::put('target_msg','Successfully updated target population!');
         Session::put('target_notif',true);
-        return Redirect::back();
+        return self::targetPopulation($req, '2022');
     }
 
     public function getProfileCount($id, $year){
