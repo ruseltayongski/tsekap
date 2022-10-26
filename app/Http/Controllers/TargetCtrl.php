@@ -234,7 +234,7 @@ class TargetCtrl extends Controller
 
         Session::put('target_msg','Successfully updated target population!');
         Session::put('target_notif',true);
-        return self::targetPopulation($req, '2022');
+        return Redirect::back();
     }
 
     public function getProfileCount($id, $year){
