@@ -127,7 +127,7 @@ class DownloadCtrl extends Controller
                     $profile = $profile->where('created_at','<','2022-01-01 00:00:00');
                 
             }
-            $profile = $profile->orderBy('id','desc')->get();
+            $profile = $profile->orderBy('updated_at','desc')->get();
         }
         else if($user_priv == 2) {
             $filename = Barangay::find($bar_id)->description.'-'.$year;
@@ -145,7 +145,7 @@ class DownloadCtrl extends Controller
                 $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
                 $total_profiled = $profile->count();
             }
-            $profile = $profile->orderBy('id','desc')->get();
+            $profile = $profile->orderBy('updated_at','desc')->get();
         }
 
         $total_percentage = ($total_profiled / $total_target) * 100;
