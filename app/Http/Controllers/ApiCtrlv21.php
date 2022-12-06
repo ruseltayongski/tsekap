@@ -320,58 +320,29 @@ class ApiCtrlv21 extends Controller
 
             }
             $data = $req->data;
+
             $dateNow = date('Y-m-d H:i:s');
             $brgy = Barangay::find($data['barangay_id']);
             $muncity_id = $brgy->muncity_id;
             $province_id = $brgy->province_id;
-            $data2 = array(
-                'unique_id' => $data['unique_id'],
-                'familyID' => $data['familyID'],
-                'head' => $data['head'],
-                'relation' => $data['relation'],
-                'fname' => $data['fname'],
-                'mname' => $data['mname'],
-                'lname' => $data['lname'],
-                'suffix' => $data['suffix'],
-                'dob' => date('Y-m-d',strtotime($data['dob'])),
-                'sex' => $data['sex'],
-                'barangay_id' => $data['barangay_id'],
-                'muncity_id' => $muncity_id,
-                'province_id' => $province_id,
-                'phicID' => $data['phicID'],
-                'nhtsID' => isset($data['nhtsID']) ? $data['nhtsID'] : '',
-                'income' => $data['income'],
-                'unmet' => $data['unmet'],
-                'water' => $data['water'],
-                'toilet' => $data['toilet'],
-                'education' => $data['education'],
-                'pwd' => strtolower($data['pwd']),
-                'pwd_desc' => $data['pwd_desc'],
-                'pregnant' => $data['pregnant'],
-                'birth_place' => $data['birth_place'],
-                'civil_status' => $data['civil_status'],
-                'religion' => $data['religion'],
-                'other_religion' => $data['other_religion'],
-                'contact' => $data['contact'],
-                'height' => $data['height'],
-                'weight' => $data['weight'],
-                'cancer' => strtolower($data['cancer']),
-                'cancer_type' => $data['cancer_type'],
-                'covid_status' => $data['covid_status'],
-                'menarche' => strtolower($data['menarche']),
-                'menarche_age' => $data['menarche_age'],
-                'newborn_screen' => $data['newborn_screen'],
-                'newborn_text' => $data['newborn_text'],
-                'deceased' => strtolower($data['deceased']),
-                'deceased_date' => date('Y-m-d',strtotime($data['deceased_date'])),
-                'sexually_active' => strtolower($data['sexually_active']),
-                'nhts' => strtolower($data['nhts']),
-                'four_ps' => strtolower($data['four_ps']),
-                'ip' => strtolower($data['ip']),
-                'member_others' => $data['member_others'],
-                'balik_probinsya' => strtolower($data['balik_probinsya']),
-                'updated_by' => $data['user_id']
-            );
+            $data2 = $data;
+
+            $data2['dob'] = date('Y-m-d',strtotime($data['dob']));
+            $data2['nhtsID'] = isset($data['nhtsID']) ? $data['nhtsID'] : '';
+            $data2['pwd'] = strtolower($data['pwd']);
+            $data2['cancer'] = strtolower($data['cancer']);
+            $data2['menarche'] = strtolower($data['menarche']);
+            $data2['deceased'] = strtolower($data['deceased']);
+            $data2['deceased_date'] = date('Y-m-d',strtotime($data['deceased_date']));
+            $data2['sexually_active'] = strtolower($data['sexually_active']);
+            $data2['nhts'] = strtolower($data['nhts']);
+            $data2['four_ps'] = strtolower($data['four_ps']);
+            $data2['ip'] = strtolower($data['ip']);
+            $data2['member_others'] = $data['member_others'];
+            $data2['balik_probinsya'] = strtolower($data['balik_probinsya']);
+            $data2['updated_by'] = $data['user_id'];
+
+            unset($data2['muncity_id'], $data2['province_id'], $data2['user_id'], $data2['immu_stat'], $data2['nutri_stat'], $data2['medication']);
 
             $profile_id = Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2)->id;
 
