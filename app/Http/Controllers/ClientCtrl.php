@@ -684,10 +684,7 @@ class ClientCtrl extends Controller
             'id' => $id
         );
         Session::put('toDelete',$delete);
-        $info = Profile::select('id as profile_id','unique_id','familyID','head','relation','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id','relation','phicID','nhtsID','income','unmet','water','toilet','education','hypertension','diabetic','pwd','pwd_desc','pregnant','birth_place','civil_status','religion','other_religion','contact','height','weight','cancer','cancer_type','mental_med','tbdots_med','cvd_med','covid_status','menarche',
-            'menarche_age','newborn_screen','newborn_text','deceased','deceased_date','sexually_active','nhts','four_ps','ip','member_others','balik_probinsya', 'updated_by')
-            ->where('id',$id)
-            ->first();
+        $info = Profile::where('id',$id)->first();
         Session::put('profile_id',$id);
 
         $nutri_stat = NutritionStatus::select('description as nutri')->where('profile_id', $id)->get();

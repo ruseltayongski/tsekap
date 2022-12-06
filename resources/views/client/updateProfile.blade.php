@@ -54,7 +54,7 @@ $today = date('Y-m-d');
             <form method="POST" class="form-horizontal form-submit" id="form-submit" action="{{ asset('user/population/update') }}">
                 {{ csrf_field() }}
                 <table class="table table-bordered table-hover" border="1">
-                    <input type="hidden" name="currentID" value="{{ $info->profile_id }}" />
+                    <input type="hidden" name="currentID" value="{{ $info->id }}" />
                     <input type="hidden" name="unique_id" value="{{ $info->unique_id }}" />
                     <tr>
                         <td>Family Profile ID :</td>
