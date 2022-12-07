@@ -57,23 +57,32 @@ class ClientCtrl extends Controller
         $validServices = 0;
         $countPopulation_2018 = 0;
         $countPopulation_2022 = 0;
+        $notUpdated_2022 = 0;
+        $countNewProfile = 0;
         $target_2018 = 0;
         $target_2022 = 0;
+        $totalPopulation = 0;
 
         if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
+            $totalPopulation = Profile::where('muncity_id',$muncity_id)->count();
             $target_2018 = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
             $target_2022 = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('muncity_id',$muncity_id)->first()->count;
             $countPopulation_2018 = Profile::where('muncity_id',$muncity_id)->where('created_at','<','2022-01-01 00:00:00')->count();
             $countPopulation_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            $countNewProfile = Profile::where('muncity_id',$muncity_id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+            $notUpdated_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','<','2022-01-01 00:00:00')->count();
             $validServices = Param::countMustService('muncity');
         }
         if($user_priv==2 || $user_priv==4){ // 2 NDP BARANGAY LEVEL AND 4 BHERDS BARANGAY LEVEL
             $countBarangay = UserBrgy::where('user_id',Auth::user()->id)->count();
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
             foreach($tmpBrgy as $tmp){
+                $totalPopulation += Profile::where('barangay_id',$tmp->barangay_id)->count();
                 $countPopulation_2018 += Profile::where('barangay_id',$tmp->barangay_id)->where('created_at','<','2022-01-01 00:00:00')->count();
                 $countPopulation_2022 += Profile::where('barangay_id',$tmp->barangay_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                $countNewProfile += Profile::where('barangay_id',$tmp->barangay_id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+                $notUpdated_2022 += Profile::where('barangay_id',$tmp->barangay_id)->where('updated_at','<','2022-01-01 00:00:00')->count();
                 $target_2018 += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->barangay_id)->first()->count;
                 $target_2022 += Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$tmp->barangay_id)->first()->count;
             }
@@ -117,6 +126,9 @@ class ClientCtrl extends Controller
             'target_2022' => number_format($target_2022),
             'profilePercentage_2018' => number_format($profilePercentage_2018,1),
             'profilePercentage_2022' => number_format($profilePercentage_2022,1),
+            'notUpdated' => number_format($notUpdated_2022),
+            'newProfile' => number_format($countNewProfile),
+            'totalPopulation' => number_format($totalPopulation)
 //            'servicePercentage' => number_format($servicePercentage,1),
 //            'bhert_count' => $bherds_count,
         );
@@ -181,6 +193,7 @@ class ClientCtrl extends Controller
 
     public function population(){
         $temp = Session::get('profileKeyword');
+        $view_not_updated = Session::get('view_not_updated');
 
         $keyword = $temp['keyword'];
         $head = $temp['familyHead'];
@@ -228,6 +241,10 @@ class ClientCtrl extends Controller
             $data['profiles'] = $data['profiles']->where('profile.muncity_id',$user->muncity);
         }
 
+        if($view_not_updated) {
+            $data['profiles'] = $data['profiles']->where('updated_at','<','2022-01-01 00:00:00');
+        }
+
         $data['profiles'] = $data['profiles']->orderBy('profile.lname','asc');
         if($user->user_priv == 2 || $user->user_priv == 4){ //NDP = 2 and //BHERDS = 4
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
@@ -253,8 +270,12 @@ class ClientCtrl extends Controller
     }
 
     public function searchPopulation(Request $req){
-        if($req->viewAll){
+        if($req->viewNotUpdated) {
+            Session::put('view_not_updated', true);
+        }
+        if($req->viewAll) {
             Session::forget('profileKeyword');
+            Session::put('view_not_updated', false);
             return redirect()->back();
         }
         $data = array(

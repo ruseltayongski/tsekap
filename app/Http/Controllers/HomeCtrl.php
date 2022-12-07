@@ -37,6 +37,7 @@ class HomeCtrl extends Controller
             $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->first()->count;
             if($year == '2022') {
                 $countPopulation = Profile::where('updated_at','>=','2022-01-01 00:00:00')->count();
+                $countNotUpdated = Profile::where('updated_at','<','2022-01-01 00:00:00')->count();
             } else {
                 $countPopulation= Profile::where('created_at','<','2022-01-01 00:00:00')->count();
             }
@@ -44,6 +45,7 @@ class HomeCtrl extends Controller
             $target = Barangay::select(DB::raw("SUM(".$target_col.") as count"))->where('province_id',$province_id)->first()->count;
             if($year == '2022') {
                 $countPopulation = Profile::where('province_id',$province_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                $countNotUpdated = Profile::where('province_id',$province_id)->where('updated_at','<','2022-01-01 00:00:00')->count();
             } else {
                 $countPopulation = Profile::where('province_id',$province_id)->where('created_at','<','2022-01-01 00:00:00')->count();
             }
@@ -54,7 +56,8 @@ class HomeCtrl extends Controller
         return array(
             'target' => number_format($target),
             'countPopulation' => number_format($countPopulation),
-            'profilePercentage' => number_format($profilePercentage,1)
+            'profilePercentage' => number_format($profilePercentage,1),
+            'countNotUpdated' => number_format($countNotUpdated)
         );
     }
 

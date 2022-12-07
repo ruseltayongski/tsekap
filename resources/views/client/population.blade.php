@@ -1,6 +1,8 @@
 <?php
     use App\Http\Controllers\ParameterCtrl as Param;
     use App\FamilyProfile;
+
+    $not_updated = (Session::get('view_not_updated')) ? true : false;
 ?>
 @extends('client')
 @section('content')
@@ -24,7 +26,7 @@
     </style>
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header">Manage Population</h2>
+            <h2 class="page-header">Manage Population {{ $not_updated  ? '(NOT UPDATED)' : ""}}</h2>
             @if(Session::has('deng_add'))
                 <div class="alert alert-success">
                     <font class="text-success">
@@ -52,7 +54,7 @@
                             <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
                             <div class="clearfix"></div>
                         </div>
-                        @if(Session::get('profileKeyword'))
+                        @if(Session::get('profileKeyword') || Session::get('view_not_updated'))
                             <div class="form-group">
                                 <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true"><i class="fa fa-search"></i> View All</button>
                                 <div class="clearfix"></div>
@@ -66,6 +68,12 @@
                             <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
                             <div class="clearfix"></div>
                         </div>
+                        @if(!$not_updated)
+                            <div class="form-group">
+                                <button class="btn btn-warning col-xs-12" name="viewNotUpdated" value="true"><i class="fa fa-search"></i>{{ $not_updated }} View Not Updated</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>

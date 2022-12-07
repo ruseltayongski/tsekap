@@ -144,10 +144,24 @@
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <h3 class="countBarangay"><i class="fa fa-refresh fa-spin"></i></h3>
-                        <p>No. of Barangay</p>
+                        <p><small>NO. OF BARANGAY ~ TOTAL PROFILED</small></p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-building"></i>
+                    </div>
+                    <a href="{{ asset('user/population') }}" class="small-box-footer">
+                        More info <i class="fa fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3 class="countNotUpdated"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <p><small>NO. OF NOT UPDATED (PROFILES FROM 2018)</small></p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user"></i>
                     </div>
                     <a href="{{ asset('user/population') }}" class="small-box-footer">
                         More info <i class="fa fa-arrow-circle-right"></i>
@@ -335,11 +349,12 @@
             success: function(data) {
                 console.log(data);
                 console.log("hello world");
-                $('.countBarangay').html(data.countBarangay);
+                $('.countBarangay').html(data.countBarangay + " ~ " + data.totalPopulation);
+                $('.countNotUpdated').html(data.notUpdated);
                 $('.target_2018').html(data.target_2018);
                 $('.target_2022').html(data.target_2022);
                 $('.countPopulation_2018').html(data.countPopulation_2018);
-                $('.countPopulation_2022').html(data.countPopulation_2022);
+                $('.countPopulation_2022').html(data.countPopulation_2022 + "&nbsp;<span style='color: white; font-size: 12pt'>(New Profiles - " + data.newProfile + ")</span");
                 $('.validServices').html(data.validServices);
                 $('.profilePercentage_2018').html(data.profilePercentage_2018);
                 $('.profilePercentage_2022').html(data.profilePercentage_2022);

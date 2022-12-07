@@ -31,9 +31,19 @@ $user_priv = Auth::user()->user_priv;
                     <div class="icon">
                         <i class="fa fa-building"></i>
                     </div>
-                    <a href="{{ asset('#') }}" class="small-box-footer">
-                        &nbsp;
-                    </a>
+                    <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12">
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3 class="countNotUpdated"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <p>No. of Profiles NOT UPDATED</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -216,6 +226,7 @@ $user_priv = Auth::user()->user_priv;
                 $('.target_2022').html(data.target);
                 $('.countPopulation_2022').html(data.countPopulation);
                 $('.profilePercentage_2022').html(data.profilePercentage);
+                $('.countNotUpdated').html(data.countNotUpdated);
             }
         });
 
