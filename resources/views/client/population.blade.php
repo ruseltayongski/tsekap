@@ -60,6 +60,12 @@
                                 <div class="clearfix"></div>
                             </div>
                         @endif
+                        @if(!$not_updated)
+                            <div class="form-group">
+                                <button class="btn btn-warning col-xs-12" name="viewNotUpdated" value="true"><i class="fa fa-search"></i>{{ $not_updated }} View Not Updated</button>
+                                <div class="clearfix"></div>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <a class="btn btn-info col-xs-12" href="{{ asset('user/population/head') }}"><i class="fa fa-user-plus"></i> Add Family Head Profile</a>
                             <div class="clearfix"></div>
@@ -68,12 +74,6 @@
                             <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
                             <div class="clearfix"></div>
                         </div>
-                        @if(!$not_updated)
-                            <div class="form-group">
-                                <button class="btn btn-warning col-xs-12" name="viewNotUpdated" value="true"><i class="fa fa-search"></i>{{ $not_updated }} View Not Updated</button>
-                                <div class="clearfix"></div>
-                            </div>
-                        @endif
                     </form>
                 </div>
             </div>
