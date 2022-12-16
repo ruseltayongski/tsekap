@@ -65,6 +65,7 @@ class ClientCtrl extends Controller
 
         if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
+            /* NOTE: DELETE FROM HERE */
             $tmpBrgy = Barangay::where('muncity_id',$muncity_id)->get();
             foreach($tmpBrgy as $tmp){
                 $totalPopulation += Profile::where('barangay_id',$tmp->id)->count();
@@ -75,7 +76,7 @@ class ClientCtrl extends Controller
                 $target_2018 += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->id)->first()->count;
                 $target_2022 += Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$tmp->id)->first()->count;
             }
-//            $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
+            /* TO HERE IN NEXT PROFILING AND UNCOMMENT LINES BELOW */
 //            $totalPopulation = Profile::where('muncity_id',$muncity_id)->count();
 //            $target_2018 = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
 //            $target_2022 = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('muncity_id',$muncity_id)->first()->count;
@@ -2237,6 +2238,7 @@ class ClientCtrl extends Controller
             }
         } else {
             $brgy = Barangay::where('muncity_id',$user->muncity)->get();
+            /* UNCOMMENT THESE LINES BEFORE NEXT PROFILING */
 //            if($cur_year == '2018') {
 //                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
 //                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
@@ -2244,6 +2246,7 @@ class ClientCtrl extends Controller
 //                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
 //                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
 //            }
+            /* AND DELETE FROM HERE */
             $total_target = $total_profiled = 0;
             foreach($brgy as $bar) {
                 if($cur_year == '2018') {
@@ -2254,6 +2257,7 @@ class ClientCtrl extends Controller
                     $total_profiled += Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
                 }
             }
+            /* TO HERE */
         }
         Session::put('statreport_year',$cur_year);
         return view('client.status', [
