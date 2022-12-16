@@ -65,16 +65,27 @@ class ClientCtrl extends Controller
 
         if($user_priv==0){
             $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
-            $totalPopulation = Profile::where('muncity_id',$muncity_id)->count();
-            $target_2018 = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
-            $target_2022 = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('muncity_id',$muncity_id)->first()->count;
-            $countPopulation_2018 = Profile::where('muncity_id',$muncity_id)->where('created_at','<','2022-01-01 00:00:00')->count();
-            $countPopulation_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-            $countNewProfile = Profile::where('muncity_id',$muncity_id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+            $tmpBrgy = Barangay::where('muncity_id',$muncity_id)->get();
+            foreach($tmpBrgy as $tmp){
+                $totalPopulation += Profile::where('barangay_id',$tmp->id)->count();
+                $countPopulation_2018 += Profile::where('barangay_id',$tmp->id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                $countPopulation_2022 += Profile::where('barangay_id',$tmp->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                $countNewProfile += Profile::where('barangay_id',$tmp->id)->where('created_at','>=','2022-01-01 00:00:00')->count();
+                $notUpdated_2022 += Profile::where('barangay_id',$tmp->id)->where('updated_at','<','2022-01-01 00:00:00')->count();
+                $target_2018 += Barangay::select(DB::raw("SUM(target) as count"))->where('id',$tmp->id)->first()->count;
+                $target_2022 += Barangay::select(DB::raw("SUM(target_2022) as count"))->where('id',$tmp->id)->first()->count;
+            }
+//            $countBarangay = Barangay::where('muncity_id',$muncity_id)->count();
+//            $totalPopulation = Profile::where('muncity_id',$muncity_id)->count();
+//            $target_2018 = Barangay::select(DB::raw("SUM(target) as count"))->where('muncity_id',$muncity_id)->first()->count;
+//            $target_2022 = Barangay::select(DB::raw("SUM(target_2022) as count"))->where('muncity_id',$muncity_id)->first()->count;
+//            $countPopulation_2018 = Profile::where('muncity_id',$muncity_id)->where('created_at','<','2022-01-01 00:00:00')->count();
+//            $countPopulation_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+//            $countNewProfile = Profile::where('muncity_id',$muncity_id)->where('created_at','>=','2022-01-01 00:00:00')->count();
             $notUpdated_2022 = Profile::where('muncity_id',$muncity_id)->where('updated_at','<','2022-01-01 00:00:00')->count();
             $validServices = Param::countMustService('muncity');
         }
-        if($user_priv==2 || $user_priv==4){ // 2 NDP BARANGAY LEVEL AND 4 BHERDS BARANGAY LEVEL
+        else if($user_priv==2 || $user_priv==4){ // 2 NDP BARANGAY LEVEL AND 4 BHERDS BARANGAY LEVEL
             $countBarangay = UserBrgy::where('user_id',Auth::user()->id)->count();
             $tmpBrgy = UserBrgy::where('user_id',Auth::user()->id)->get();
             foreach($tmpBrgy as $tmp){

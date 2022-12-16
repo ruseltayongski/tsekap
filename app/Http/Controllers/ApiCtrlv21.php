@@ -341,8 +341,10 @@ class ApiCtrlv21 extends Controller
             $data2['member_others'] = $data['member_others'];
             $data2['balik_probinsya'] = strtolower($data['balik_probinsya']);
             $data2['updated_by'] = $data['user_id'];
+            $data2['muncity_id'] = $muncity_id;
+            $data2['province_id'] = $province_id;
 
-            unset($data2['muncity_id'], $data2['province_id'], $data2['user_id'], $data2['immu_stat'], $data2['nutri_stat'], $data2['medication']);
+            unset($data2['user_id'], $data2['immu_stat'], $data2['nutri_stat'], $data2['medication']);
 
             $profile_id = Profile::updateOrCreate(['unique_id' => $data['unique_id']],$data2)->id;
 
