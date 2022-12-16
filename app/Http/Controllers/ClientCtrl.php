@@ -2226,12 +2226,22 @@ class ClientCtrl extends Controller
             }
         } else {
             $brgy = Barangay::where('muncity_id',$user->muncity)->get();
-            if($cur_year == '2018') {
-                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
-            }else if($cur_year == '2022') {
-                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+//            if($cur_year == '2018') {
+//                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+//                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
+//            }else if($cur_year == '2022') {
+//                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+//                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+//            }
+            $total_target = $total_profiled = 0;
+            foreach($brgy as $bar) {
+                if($cur_year == '2018') {
+                    $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                }else if($cur_year == '2022') {
+                    $total_target += Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar->id)->first()->target_count;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                }
             }
         }
         Session::put('statreport_year',$cur_year);
