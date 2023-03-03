@@ -21,6 +21,7 @@ $brgy = Barangay::where('muncity_id',Auth::user()->muncity)
                             <option value="4">BHERT</option>
                             <option value="2">RHMPP</option>
                             <option value="2">BHS</option>
+                            <option value="5">BHW</option>
                         </select>
                     </div>
                     <div class="form-group">
