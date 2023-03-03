@@ -95,8 +95,8 @@ class TargetCtrl extends Controller
         return $data;
     }
 
-    public static function getMuncityTotal($mun_id) {
-        $year = Session::get('statreport_year');
+    public static function getMuncityTotal($mun_id, $year) {
+        Session::put('statreport_year', $year);
         $prov = Muncity::select('province_id')->where('id',$mun_id)->first()->province_id;
         if($year == '2022') {
             $mun_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
@@ -115,8 +115,8 @@ class TargetCtrl extends Controller
         );
     }
 
-    public static function getBrgyTotal($bar_id) {
-        $year = Session::get('statreport_year');
+    public static function getBrgyTotal($bar_id, $year) {
+        Session::put('statreport_year', $year);
         $prov = Barangay::select('province_id')->where('id',$bar_id)->first()->province_id;
         if($year == '2022') {
             $bar_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar_id)->first()->target_count;
@@ -133,11 +133,10 @@ class TargetCtrl extends Controller
         );
     }
 
-    public function generateDownload(Request $req) {
+    public function generateDownload(Request $req, $year) {
         $province = $req->province_id;
         $muncity = $req->mun_id;
         $barangay = $req->bar_id;
-        $year = Session::get('statreport_year');
 
         if(isset($req->prov_target)) {
             $prov_target = $req->prov_target;
@@ -146,7 +145,7 @@ class TargetCtrl extends Controller
             if($year == '2022') {
                 $prov_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('province_id',$province)->first()->target_count;
                 $prov_profiled = Profile::where('province_id',$province)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-            } else {
+            } else if($year == '2018') {
                 $prov_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('province_id',$province)->first()->target_count;
                 $prov_profiled = Profile::where('province_id',$province)->where('created_at','<','2022-01-01 00:00:00')->count();
             }
@@ -162,7 +161,7 @@ class TargetCtrl extends Controller
             $mun_desc = Muncity::select('description')->where('id',$muncity)->first()->description;
             $filename .= " ".$mun_desc;
 
-            $muncity_total = self::getMuncityTotal($muncity);
+            $muncity_total = self::getMuncityTotal($muncity, $year);
             $mun_target = $muncity_total['mun_target'];
             $mun_profiled = $muncity_total['mun_profiled'];
 
@@ -177,7 +176,7 @@ class TargetCtrl extends Controller
                 $bar_desc = Barangay::select('description')->where('id',$barangay)->first()->description;
                 $filename .= "-".$bar_desc;
 
-                $bar_total = self::getBrgyTotal($barangay);
+                $bar_total = self::getBrgyTotal($barangay, $year);
                 $bar_target = $bar_total['bar_target'];
                 $bar_profiled = $bar_total['bar_profiled'];
 
@@ -194,7 +193,7 @@ class TargetCtrl extends Controller
                     $tmp = array();
                     array_push($tmp, $b->id);
                     array_push($tmp, $b->description);
-                    $bar_total = self::getBrgyTotal($t->id);
+                    $bar_total = self::getBrgyTotal($t->id, $year);
                     array_push($tmp, $bar_total['bar_target']);
                     array_push($tmp, $bar_total['bar_profiled']);
                     array_push($barangay_list, $tmp);
@@ -207,7 +206,7 @@ class TargetCtrl extends Controller
                 $tmp = array();
                 array_push($tmp, $m->id);
                 array_push($tmp, $m->description);
-                $muncity_total = self::getMuncityTotal($t->id);
+                $muncity_total = self::getMuncityTotal($t->id, $year);
                 array_push($tmp, $muncity_total['mun_target']);
                 array_push($tmp, $muncity_total['mun_profiled']);
                 array_push($muncity_list, $tmp);

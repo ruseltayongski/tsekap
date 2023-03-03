@@ -10,8 +10,9 @@ $user = Auth::user();
 @section('content')
     <div class="container">
         <div class="col-md-12" style="padding-top: 15px; padding-left: 45px; padding-right: 35px">
-        <span> <b style="font-size: 18px">TARGET POPULATION ({{ $year }})</b>
-        </span>
+            <span> <b style="font-size: 18px">TARGET POPULATION ({{ $year }})</b>
+            </span><br>
+            <small>*Please wait until the numbers load before downloading.</small><br><br>
         </div><br><br><br>
 
         <div class="container">
@@ -50,7 +51,7 @@ $user = Auth::user();
                                 <span id="prov_percentage{{ $row->id }}"><i class="fa fa-refresh fa-spin"></i></span>
                             </th>
 
-                            <form action="{{ asset('target/generateDownload') }}" method="POST">
+                            <form action="{{ asset('target/generateDownload/'.$year) }}" method="POST">
                                 {{ csrf_field() }}
 
                                 <input type="hidden" value="{{ $row->id }}" name="province_id">
@@ -125,11 +126,13 @@ $user = Auth::user();
         *   |  SET BARANGAY |
         *   -----------------
         */
+        var year = "{{ $year }}";
         $('.select_muncity').on('change', function() {
+            console.log('year: ' + year);
            muncity_id = $(this).val();
            var url = "{{ asset('population/target/getMuncityTotal') }}";
            $.ajax({
-               url: url+'/'+muncity_id,
+               url: url+'/'+muncity_id+'/'+year,
                type: 'GET',
                success: function(data){
                    index = data.prov;
@@ -166,7 +169,7 @@ $user = Auth::user();
         $('#bar_select1, #bar_select2, #bar_select3, #bar_select4').on('change', function() {
             var url = "{{ asset('population/target/getBrgyTotal') }}";
             $.ajax({
-                url: url+'/'+($(this).val()),
+                url: url+'/'+($(this).val())+'/'+year,
                 type: 'GET',
                 success: function(data){
                     $('#bar_target'+data.prov).val(numberFormat(data.bar_target));

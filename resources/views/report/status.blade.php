@@ -27,7 +27,7 @@
                 </div>
                 <form method="get" action="{{ asset('/report/status') }}">
                     <div class="col-md-3">
-                        <select class="select2" name="select_year" style="width:50%;">
+                        <select class="select2" id="select_year" name="select_year" style="width:50%;">
                             <option>Select year...</option>
                             <option value="2018" <?php if($year == '2018') echo 'selected';?>>2018</option>
                             <option value="2022" <?php if($year == '2022') echo 'selected';?>>2022</option>
@@ -198,10 +198,11 @@
         muncity_id = $('#muncity_select'+prov_id).val();
         $('#municipality'+prov_id).val(muncity_id);
         $('#barangay'+prov_id).val('');
+        var year = $('#select_year').val();
         if(muncity_id !== '') {
             var url = "{{ asset('population/target/getMuncityTotal') }}";
             $.ajax({
-                url: url+'/'+muncity_id,
+                url: url+'/'+muncity_id+'/'+year,
                 type: 'GET',
                 success: function(data){
                     index = data.prov;

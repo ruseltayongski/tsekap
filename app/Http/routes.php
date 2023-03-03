@@ -349,9 +349,9 @@ Route::get('population/target/{year}','TargetCtrl@targetPopulation');
 Route::post('population/target/{year}','TargetCtrl@targetPopulation');
 Route::post('population/update','TargetCtrl@updateTarget');
 Route::post('population/target/delete','TargetCtrl@delete');
-Route::get('population/target/getMuncityTotal/{mun_id}','TargetCtrl@getMuncityTotal');
-Route::get('population/target/getBrgyTotal/{bar_id}','TargetCtrl@getBrgyTotal');
-Route::post('target/generateDownload','TargetCtrl@generateDownload');
+Route::get('population/target/getMuncityTotal/{mun_id}/{year}','TargetCtrl@getMuncityTotal');
+Route::get('population/target/getBrgyTotal/{bar_id}/{year}','TargetCtrl@getBrgyTotal');
+Route::post('target/generateDownload/{year}','TargetCtrl@generateDownload');
 Route::post('target/getProfileCount/{id}/{year}','TargetCtrl@getProfileCount');
 
 // API for Specialists and Facilities (retrieve and store)

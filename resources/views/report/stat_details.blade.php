@@ -13,7 +13,7 @@ if(isset($bar_id) && $bar_id != '' && $bar_id != 0) {
     $brgy = Barangay::where('id', $bar_id)->get();
 } else {
     $brgy = Barangay::where('muncity_id',$muncity)->get();
-    $muncitytotal = Target::getMuncityTotal($muncity);
+    $muncitytotal = Target::getMuncityTotal($muncity,$year);
     $total_target = $muncitytotal['mun_target'];
     $total_profiled = $muncitytotal['mun_profiled'];
 }

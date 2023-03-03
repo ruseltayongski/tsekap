@@ -301,7 +301,7 @@ class ReportCtrl extends Controller
     }
 
     public function statusDetails($mun_id, $bar_id) {
-        $year = $year = Session::get('statreport_year');
+       $year = Session::get('statreport_year');
         return view('report.stat_details', ['muncity'=>$mun_id, 'bar_id'=>$bar_id, 'year' => $year]);
     }
 }
