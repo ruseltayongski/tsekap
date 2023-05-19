@@ -266,7 +266,7 @@ class ApiCtrlv21 extends Controller
     {
         $brgy_id = Input::get('brgy');
         $servicegroup = new ServiceGroup();
-        $servicegroup->setConnection('db_'.date('Y'));
+        $servicegroup->setConnection('db_2022');
         $count  = $servicegroup->where('barangay_id',$brgy_id)->count();
         return array(
             'count' => $count
@@ -280,7 +280,7 @@ class ApiCtrlv21 extends Controller
         $perPage = 100;
         $year = date('Y');
         $servicegroup = new ServiceGroup();
-        $servicegroup->setConnection('db_'.$year);
+        $servicegroup->setConnection('db_2022');
         $list = $servicegroup->where('servicegroup.barangay_id',$brgy_id)
             ->skip($offset)
             ->take($perPage)
@@ -390,7 +390,7 @@ class ApiCtrlv21 extends Controller
                 '$muncity_id'
             )";
             $year = date('Y');
-            $db = 'db_'.$year;
+            $db = 'db_2022';
             DB::connection($db)->select($q);
             return array(
                 'status' => 'success'
@@ -444,7 +444,7 @@ class ApiCtrlv21 extends Controller
                     )
             ";
             $year = date('Y',strtotime($req->dateProfile));
-            $db = 'db_'.$year;
+            $db = 'db_2022';
             DB::connection($db)->select($q);
             $group = ParameterCtrl::checkGroup($service_id);
             ParameterCtrl::saveServiceGroup($req->profile_id,$req->sex,$group,$req->barangay_id,$req->muncity_id,$req->bracket_id,$req->dateProfile,$db,$year);
@@ -481,7 +481,7 @@ class ApiCtrlv21 extends Controller
                         '$dateNow',
                         '$dateNow'
                     )";
-            $db = 'db_'.$year;
+            $db = 'db_2022';
             DB::connection($db)->select($q);
         }
 
@@ -512,7 +512,7 @@ class ApiCtrlv21 extends Controller
                         '$dateNow')
                         ";
                 $year = date('Y',strtotime($req->dateProfile));
-                $db = 'db_'.$year;
+                $db = 'db_2022';
                 DB::connection($db)->select($q);
             }
         }
