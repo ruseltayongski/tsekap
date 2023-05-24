@@ -57,6 +57,21 @@ $today = date('Y-m-d');
                         <td><input type="text" name="familyProfile" readonly class="form-control" value="{{ $profileID }}" required /></td>
                     </tr>
                     <tr>
+                        <td>Household No. :</td>
+                        <td><input type="text" name="household_num" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td>PhilHealth Category :<br><small class="text-info"><i>(if applicable)</i></small></td>
+                        <td>
+                            <select class="form-control select2" name="philhealth_categ">
+                                <option value="">Select...</option>
+                                <option value="direct">Direct Contributors</option>
+                                <option value="indirect">Indirect Contributors</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>PhilHealth ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>
                         <td><input type="text" name="phicID" class="form-control" value="" /></td>
                     </tr>
@@ -64,10 +79,15 @@ $today = date('Y-m-d');
                         {{--<td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>--}}
                         {{--<td><input type="text" name="nhtsID" class="form-control" value="" /></td>--}}
                         <td>Beneficiaries :<br><small class="text-info"><em>(Check applicable)</em></small></td>
-                        <td>&emsp;
-                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
-                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
-                            <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                        <td>
+                            <div class="col-md-6">
+                                <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
+                                <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" id="4ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
+                                <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" type="text" name="4ps_num" id="4ps_num" placeholder="(4Ps number)" onchange="show4psField(this)">
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -148,22 +168,36 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Married" style="display:inline;"> Married</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Divorced" style="display:inline;"> Divorced</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" style="display:inline;"> Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Live-in" style="display:inline;"> Live-in</label>&emsp;
                             <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" style="display:inline;"> Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Annulled" style="display:inline;"> Annulled</label>
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Cohabitation" style="display:inline;"> Cohabitation</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" style="display:inline;"> Separated</label>&emsp;
                             <span class="text-red" id="cs_warning"><br>This field is required.</span>
                         </td>
                     </tr>
                     <tr>
-                        <td>Religion <span class="text-red" style="font-size: 20px"><b>*</b></span> :<br><br><br><br></td>
-                        <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Christian" > Christian</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="INC" > INC</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Islam" > Islam</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
-                            <label style="cursor: pointer;"><input type="radio" name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
+                        <td>Religion <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
+                        <td>
+                            <select name="religion" class="form-control chosen-select" id="religion" style="width: 100%">
+                                <option value="">Select...</option>
+                                <option>Roman Catholic</option>
+                                <option>Christian</option>
+                                <option value="inc">Iglesia ni Cristo</option>
+                                <option>Catholic</option>
+                                <option>Islam</option>
+                                <option>Baptist</option>
+                                <option value="born_again">Born Again Christian</option>
+                                <option>Buddhism</option>
+                                <option>Church of God</option>
+                                <option value="jehovas">Jehova's Witness</option>
+                                <option>Protestant</option>
+                                <option value="adventist">Sevent Day Adventist</option>
+                                <option value="mormons">LDS-Mormons</option>
+                                <option>Evangelical</option>
+                                <option>Pentecostal</option>
+                                <option>Unknown</option>
+                                <option value="other">Others <i>(specify)</i></option>
+                            </select>
                             <span class="other_religion"></span>
                             <span class="text-red" id="religion_warning"><br>This field is required.</span>
                         </td>
@@ -228,15 +262,20 @@ $today = date('Y-m-d');
                             <select name="education" class="form-control chosen-select" id="education" style="width: 100%">
                                 <option value="">Select...</option>
                                 <option value="non">No Education</option>
-                                <option value="elem">Elementary Level</option>
+                                <option value="preschool">Preschool</option>
+                                <option value="elem">Elementary Student</option>
+                                <option value="elem_undergrad">Elementary Undergraduate</option>
                                 <option value="elem_grad">Elementary Graduate</option>
-                                <option value="high">High School Level</option>
+                                <option value="high">High School Student</option>
+                                <option value="high_undergrad">High School Undergraduate</option>
                                 <option value="high_grad">High School Graduate</option>
-                                <option value="college">College Level</option>
+                                <option value="senior_high">Senior High School</option>
+                                <option value="als">ALS</option>
+                                <option value="college">College Student</option>
+                                <option value="college_undergrad">College Undergraduate</option>
                                 <option value="college_grad">College Graduate</option>
+                                <option value="post_grad">Post Graduate/Masteral/Doctorate Degree</option>
                                 <option value="vocational">Vocational Course</option>
-                                <option value="master">Masteral Degree</option>
-                                <option value="doctorate">Doctorate Degree</option>
                                 <option value="unable_provide">Unable to provide</option>
                             </select>
                         </td>
@@ -246,6 +285,20 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="yes" style="display:inline;"> Yes </label>&emsp;&emsp;
                             <label style="cursor: pointer;"><input type="radio" name="balik_probinsya" value="no" > No </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Classification by Age/Health Risk Group :</td>
+                        <td>
+                            <select class="form-control" name="health_group" id="health_group" disabled>
+                                <option value="N">Newborn (0-28 days)</option>
+                                <option value="I">Infant (0-1 y/0)</option>
+                                <option value="PSAC">PSAC (1-4 y/0)</option>
+                                <option value="SAC">School Age (5-9 y/o)</option>
+                                <option value="AD">Adolescent (10-19 y/0)</option>
+                                <option value="A">Adult (20-59 y/0)</option>
+                                <option value="SC">Senior Citizen</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -283,19 +336,6 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr>
-                        <td>Mental Health Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
-                        <td class="has-group">
-                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
-                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
-                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="No Medication Avail" > No Medication Avail</label><br>
-                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_mental" onclick="clearMedication('mental')" value="Clear Choice">
-                            </div>
-                            <div class="col-md-7">
-                                <span class="mental_remarks"></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>TB Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
                         <td class="has-group">
                             <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
@@ -305,6 +345,19 @@ $today = date('Y-m-d');
                             </div>
                             <div class="col-md-7">
                                 <span class="tb_remarks"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mental Health Medication : <br><small class="text-info"><em>(If applicable)</em></small></td>
+                        <td class="has-group">
+                            <div class="col-md-4" style="padding-left: 0px; margin-left: 0px;">
+                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="Medication Avail" style="display:inline;"> Medication Avail</label><br>
+                                <label style="cursor: pointer;"><input type="radio" name="mental_med" class="mental" value="No Medication Avail" > No Medication Avail</label><br>
+                                <input type="button" class="btn btn-xs btn-flat btn-warning" id="clear_mental" onclick="clearMedication('mental')" value="Clear Choice">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="mental_remarks"></span>
                             </div>
                         </td>
                     </tr>
@@ -347,6 +400,46 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="no"> No </label>
                         </td>
                     </tr>
+                    <tr class="menarcheClass hide">
+                        <td>Using Family Planning? </td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="no"> No </label>
+                        </td>
+                    </tr>
+                    <tr class="famPlanClass hide">
+                        <td>Family Planning Methods Used :</td>
+                        <td>
+                            <select class="form-control select2" style="width: 100%;" name="fam_plan_method" id="fam_plan_method">
+                                <option value="">Select...</option>
+                                <option>COC</option>
+                                <option>POP</option>
+                                <option>Injectibles</option>
+                                <option>IUD</option>
+                                <option>Condom</option>
+                                <option>LAM</option>
+                                <option>BTL</option>
+                                <option>Implant</option>
+                                <option>SDM</option>
+                                <option>DPT</option>
+                                <option>Withdrawal</option>
+                                <option value="other">Others (Specify)</option>
+                            </select><br>
+                            <input class="form-control" style="margin-top: 10px" name="fam_plan_other_method" id="fam_plan_other_method" placeholder="(Other Family Planning Method)">
+                        </td>
+                    </tr>
+                    <tr class="famPlanClass hide">
+                        <td>Family Planning Status :</td>
+                        <td class="has-group">
+                            <select class="form-control select2" style="width: 100%;" name="fam_plan_status" id="fam_plan_status">
+                                <option value="">Select...</option>
+                                <option value="withdrawal">Withdrawal</option>
+                                <option value="na">New Acceptors</option>
+                                <option value="other">Others (Specify)</option>
+                            </select><br>
+                            <input class="form-control" style="margin-top: 10px" name="fam_plan_other_status" id="fam_plan_other_status" placeholder="(Other Family Planning Status)">
+                        </td>
+                    </tr>
                     <tr class="unmetClass hide">
                         <td>Unmet Need :</td>
                         <td>
@@ -367,8 +460,8 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="has-group pregnant_lmp hide">
-                        <td>Pregnant Date LMP:</td>
-                        <td><input type="date" name="pregnant" class="form-control" /> </td>
+                        <td>Last Menstrual Period : <br><small class="text-info">(if pregnant)</small></td>
+                        <td><input type="date" name="pregnant" class="form-control" max="{{ $today }}" /> </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -440,14 +533,24 @@ $today = date('Y-m-d');
         }
 
         $('.other_religion').hide();
-        $('input[name="religion"]').on('click', function() {
-            var val = $(this).val();
+        $('#religion').on('change', function() {
+            var val = $('#religion').val();
+            console.log("religion: " +  val);
             if(val === "other") {
                 $('.other_religion').show();
-                $('.other_religion').html("<input required type='text' style='width:50%;' name='other_religion' value='{{ $info->other_religion }}' class='form-control'/>");
+                $('.other_religion').html("<br><input required type='text' style='width:75%; margin-top: 5px' name='other_religion' value='{{ $info->other_religion }}' placeholder='Specify other religion' class='form-control'/>");
             } else {
                 $('.other_religion').html("");
                 $('.other_religion').hide();
+            }
+        });
+
+        $('#4ps_num').hide();
+        $('#4ps').on('change', function() {
+            if(this.checked === true) {
+                $('#4ps_num').attr('required', true).show();
+            } else {
+                $('#4ps_num').attr('required', false).hide();
             }
         });
 

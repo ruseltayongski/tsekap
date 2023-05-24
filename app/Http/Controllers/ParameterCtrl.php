@@ -86,16 +86,18 @@ class ParameterCtrl extends Controller
     }
 
     static function getAgeDay($date){
-        $d1 = strtotime($date);
-        $d2 = strtotime(date('Y-m-d'));
-        $min_date = min($d1, $d2);
-        $max_date = max($d1, $d2);
-
-        $i = 0;
-        while (($min_date = strtotime("+1 DAY", $min_date)) <= $max_date) {
-            $i++;
-        }
-        return $i;
+        $diff = date_diff(date_create($date), date_create('now'));
+        return $diff->d;
+//        $d1 = strtotime($date);
+//        $d2 = strtotime(date('Y-m-d'));
+//        $min_date = min($d1, $d2);
+//        $max_date = max($d1, $d2);
+//
+//        $i = 0;
+//        while (($min_date = strtotime("+1 DAY", $min_date)) <= $max_date) {
+//            $i++;
+//        }
+//        return $i;
     }
 
     public function delete()

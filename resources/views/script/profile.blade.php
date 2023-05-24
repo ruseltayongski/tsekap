@@ -119,6 +119,8 @@
     $('#dob').on('keyup','keydown',function(){
         calculateAge();
     });
+    var age_year = -1;
+
     function calculateAge(){
         var dob = $('#dob').val();
         var sex = $('input[name="sex"]:checked').val();
@@ -131,7 +133,8 @@
             url : "{{ url('user/profile/age/') }}/"+dob,
             type : 'GET',
             success: function(age){
-                console.log("Age : " + age);
+                age_year = age;
+                console.log("age:" + age);
                 if(age >= 10 && age <= 49) {
                     if(sex === "Female") {
                         $('.unmetClass').removeClass('hide');
@@ -163,9 +166,67 @@
                     $('.hypertensionClass, .diabetesClass').removeClass('hide');
                     $('.nutritionClass, .immuClass, .newbornClass').addClass('hide');
                 }
+                setHealthGroup();
             }
         });
     }
+
+    function setHealthGroup(){
+        var dob = $('#dob').val();
+        $.ajax({
+            url : "{{ url('user/profile/age/day') }}/"+dob,
+            type : "GET",
+            success: function(day) {
+                var age = age_year;
+                console.log("health group: " + age + " year, " + day + " day/s");
+                if(age === 0 && day <= 28)
+                    $('#health_group').val('N');
+                else if(age <= 1)
+                    $('#health_group').val('I');
+                else if(age >= 1 && age <= 4)
+                    $('#health_group').val('PSAC');
+                else if(age >= 5 && age <= 9)
+                    $('#health_group').val('SAC');
+                else if(age >= 10 && age <= 19)
+                    $('#health_group').val('AD');
+                else if(age >= 20 && age <= 59)
+                    $('#health_group').val('A');
+                else if(age >= 60)
+                    $('#health_group').val('SC');
+                else
+                    $('#health_group').val('none');
+            }
+        });
+    }
+
+    $('#fam_plan_other_method, #fam_plan_other_status').hide();
+    showFamPlan();
+    function showFamPlan(){
+        var plan = $('input[name="fam_plan"]:checked').val();
+        if(plan === "yes") {
+            $('.famPlanClass').removeClass('hide');
+        } else {
+            $('.famPlanClass').addClass('hide');
+        }
+    }
+
+    $('#fam_plan_method').on('change', function() {
+        var method = $(this).val();
+        if(method === 'other') {
+            $('#fam_plan_other_method').show();
+        } else {
+            $('#fam_plan_other_method').hide();
+        }
+    });
+
+    $('#fam_plan_status').on('change', function() {
+        var stat = $(this).val();
+        if(stat === 'other') {
+            $('#fam_plan_other_status').show();
+        } else {
+            $('#fam_plan_other_status').hide();
+        }
+    });
 
     showMenarche();
     function showMenarche() {
