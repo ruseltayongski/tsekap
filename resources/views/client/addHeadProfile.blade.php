@@ -166,12 +166,12 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Civil Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Married" style="display:inline;"> Married</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Live-in" style="display:inline;"> Live-in</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" style="display:inline;"> Widowed</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Cohabitation" style="display:inline;"> Cohabitation</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" style="display:inline;"> Separated</label>&emsp;
                             <span class="text-red" id="cs_warning"><br>This field is required.</span>
                         </td>
                     </tr>
