@@ -166,12 +166,12 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Civil Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Married" style="display:inline;"> Married</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Live-in" style="display:inline;"> Live-in</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Widowed" style="display:inline;"> Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Cohabitation" style="display:inline;"> Cohabitation</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" name="civil_status" class="civil_status" value="Separated" style="display:inline;"> Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
+                            <label style="cursor: pointer;"><input required type="radio" name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
                             <span class="text-red" id="cs_warning"><br>This field is required.</span>
                         </td>
                     </tr>
@@ -248,9 +248,15 @@ $today = date('Y-m-d');
                         <td>
                             <select name="toilet" class="form-control chosen-select" id="toilet" style="width: 100%" required>
                                 <option value="">Select...</option>
-                                <option value="non">None</option>
-                                <option value="comm">Communal</option>
-                                <option value="indi">Individual Household</option>
+                                <option value="non">None/Without Toilet</option>
+                                {{--<option value="comm">Communal</option>--}}
+                                {{--<option value="indi">Individual Household</option>--}}
+                                <option value="flush_septic">Pour/flush toilet connected to septic tank</option>
+                                <option value="flush_sewage">Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
+                                <option value="latrine_compost">Ventilated improved pit latrine (VIP) or Composting toilet</option>
+                                <option value="open_drain">Water-sealed connected to open drain</option>
+                                <option value="overhung_latrine">Overhung Latrine</option>
+                                <option value="openpit_latrine">Open-pit Latrine</option>
                             </select>
                             <small class="text-red" id="toilet_warning"><br>This field is required.</small>
                         </td>
