@@ -52,6 +52,15 @@
         console.log("water value: " + $('#water').val());
     });
 
+    $('#4ps_num').hide();
+    $('#4ps').on('change', function() {
+        if(this.checked === true) {
+            $('#4ps_num').attr('required', true).show();
+        } else {
+            $('#4ps_num').val(null).attr('required', false).hide();
+        }
+    });
+
     function unmet_need()
     {
         $('#unmet').val(0);
@@ -206,6 +215,7 @@
         if(plan === "yes") {
             $('.famPlanClass').removeClass('hide');
         } else {
+            $('#fam_plan_method, #fam_plan_other_method, #fam_plan_status, #fam_plan_other_status').val(null);
             $('.famPlanClass').addClass('hide');
         }
     }
@@ -255,45 +265,38 @@
     $('input[name="cancer"]').on('click', function() {
         var val = $(this).val();
         if(val === 'yes') {
-            $('.cancer_type').show();
-            $('.cancer_type').html("Type: <input type='text' value='{{ $info->cancer_type }}' name='cancer_type' style='width:50%;'>");
+            $('.cancer_type').html("Type: <input type='text' value='{{ $info->cancer_type }}' name='cancer_type' style='width:50%;'>").show();
         } else {
-            $('.cancer_type').html('');
-            $('.cancer_type').hide();
+            $('.cancer_type').html('').hide();
         }
     });
 
     $('input[name="pwd"]').on('click', function() {
         var val = $(this).val();
         if(val === 'yes') {
-            $('.pwd_description').show();
-            $('.pwd_description').html("Specify: <input type='text' value='{{ $info->pwd_desc }}' name='pwd_desc' style='width:60%;'>");
+            $('.pwd_description').html("Specify: <input type='text' value='{{ $info->pwd_desc }}' name='pwd_desc' style='width:60%;'>").show();
         } else {
-            $('.pwd_description').html('');
-            $('.pwd_description').hide();
+            $('.pwd_description').html('').hide();
         }
     });
 
-    $('input[name="religion"]').on('click', function() {
-       var val = $(this).val();
-       if(val === "other") {
-           console.log("yow");
-           $('.other_religion').show();
-           $('.other_religion').html("<input type='text' style='width:50%;' name='other_religion' value='{{ $info->other_religion }}' class='form-control'/>");
-       } else {
-           $('.other_religion').html("");
-           $('.other_religion').hide();
-       }
+    $('.other_religion').hide();
+    $('#religion').on('change', function() {
+        var val = $('#religion').val();
+        console.log("religion: " +  val);
+        if(val === "other") {
+            $('.other_religion').html("<br><input required type='text' style='width:75%; margin-top: 5px' name='other_religion' value='{{ $info->other_religion }}' placeholder='Specify other religion' class='form-control'/>").show();
+        } else {
+            $('.other_religion').html("").hide();
+        }
     });
 
     $('input[name="deceased"]').on('click', function() {
         var val = $(this).val();
         if(val === 'yes') {
-            $('.deceased_date').show();
-            $('.deceased_date').html("Date of Death: <input type='date' value='{{ $info->deceased_date }}' name='deceased_date' style='width:30%;' min='1910-05-11'>");
+            $('.deceased_date').html("Date of Death: <input type='date' value='{{ $info->deceased_date }}' name='deceased_date' style='width:30%;' min='1910-05-11'>").show();
         } else {
-            $('.deceased_date').html('');
-            $('.deceased_date').hide();
+            $('.deceased_date').html('').hide();
         }
     });
 
@@ -339,7 +342,7 @@
         @endforeach
     }
 
-    var dropdown = "<option>Select...</option>\n" +
+    var dropdown = "<option value=''>Select...</option>\n" +
         "           <option value='BHS'>BHS</option>\n" +
         "           <option value='RHU'>RHU</option>\n" +
         "           <option value='Public Hospital'>Public Hospital</option>\n" +

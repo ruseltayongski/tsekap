@@ -86,7 +86,7 @@ $today = date('Y-m-d');
                                 <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
                             </div>
                             <div class="col-md-6">
-                                <input class="form-control" type="text" name="4ps_num" id="4ps_num" placeholder="(4Ps number)" onchange="show4psField(this)">
+                                <input class="form-control" type="text" name="4ps_num" id="4ps_num" placeholder="(4Ps number)">
                             </div>
                         </td>
                     </tr>
@@ -205,7 +205,7 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="brgy" style="width: 100%">
+                            <select name="barangay_id" class="form-control chosen-select" required id="brgy" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option value="{{ $row->id }}">{{ $row->description }}</option>
@@ -380,6 +380,12 @@ $today = date('Y-m-d');
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Other Medical History :<br><small class="text-info"><em>(If applicable)</em></small></td>
+                        <td>
+                            <textarea class="form-control" name="other_med_history" style="resize: none;width: 100%;" rows="2"></textarea>
+                        </td>
+                    </tr>
                     <tr class="has-group">
                         <td>Latest Covid Vaccination Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         {{--<td><input type="text" name="covid_status" class="form-control"/> </td>--}}
@@ -407,7 +413,7 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="menarcheClass hide">
-                        <td>Using Family Planning? </td>
+                        <td>Using Family Planning : </td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="yes" style="display:inline;"> Yes </label><br>
                             <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="no"> No </label>
@@ -440,7 +446,7 @@ $today = date('Y-m-d');
                             <select class="form-control select2" style="width: 100%;" name="fam_plan_status" id="fam_plan_status">
                                 <option value="">Select...</option>
                                 <option value="withdrawal">Withdrawal</option>
-                                <option value="na">New Acceptors</option>
+                                <option value="new_acceptors">New Acceptors</option>
                                 <option value="other">Others (Specify)</option>
                             </select><br>
                             <input class="form-control" style="margin-top: 10px" name="fam_plan_other_status" id="fam_plan_other_status" placeholder="(Other Family Planning Status)">
@@ -551,15 +557,6 @@ $today = date('Y-m-d');
             }
         });
 
-        $('#4ps_num').hide();
-        $('#4ps').on('change', function() {
-            if(this.checked === true) {
-                $('#4ps_num').attr('required', true).show();
-            } else {
-                $('#4ps_num').attr('required', false).hide();
-            }
-        });
-
         hideWarnings();
         function hideWarnings() {
             $('#fname_warning, #mname_warning, #lname_warning, #dob_warning, #sex_warning, #brgy_warning').hide();
@@ -624,9 +621,8 @@ $today = date('Y-m-d');
             } else
                 $('#cs_warning').hide();
 
-            religion = $('input[name="religion"]:checked').length;
-            console.log('religion : ' + religion);
-            if(religion == 0) {
+            religion = $('#religion').val();
+            if(religion === "" || religion === null) {
                 $('#religion_warning').show();
                 $('.religion').focus();
                 missing += ", <u>Religion</u>";
