@@ -53,11 +53,22 @@
     });
 
     $('#4ps_num').hide();
+    @if($info->four_ps=='yes')
+        $('#4ps_num').show();
+    @else
+        $('#4ps_num').hide();
+    @endif
+
     $('#4ps').on('change', function() {
         if(this.checked === true) {
             $('#4ps_num').attr('required', true).show();
         } else {
-            $('#4ps_num').val(null).attr('required', false).hide();
+            @if($info->four_ps == 'yes')
+                $('#4ps_num').val('{{ $info->fourps_num }}');
+            @else
+                $('#4ps_num').val(null);
+            @endif
+            $('#4ps_num').attr('required', false).hide();
         }
     });
 
@@ -163,9 +174,9 @@
                 }
 
                 if(age >= 6 && sex === "Female") {
-                    $('.menarcheClass').removeClass('hide');
+                    $('.menarcheClass, .famPlan').removeClass('hide');
                 } else {
-                    $('.menarcheClass').addClass('hide');
+                    $('.menarcheClass, .famPlan').addClass('hide');
                 }
 
                 if(age < 5) {
@@ -189,21 +200,21 @@
                 var age = age_year;
                 console.log("health group: " + age + " year, " + day + " day/s");
                 if(age === 0 && day <= 28)
-                    $('#health_group').val('N');
-                else if(age <= 1)
-                    $('#health_group').val('I');
+                    $('#health_group, #hg').val('N');
+                else if(age <= 1 && day > 28)
+                    $('#health_group, #hg').val('I');
                 else if(age >= 1 && age <= 4)
-                    $('#health_group').val('PSAC');
+                    $('#health_group, #hg').val('PSAC');
                 else if(age >= 5 && age <= 9)
-                    $('#health_group').val('SAC');
+                    $('#health_group, #hg').val('SAC');
                 else if(age >= 10 && age <= 19)
-                    $('#health_group').val('AD');
+                    $('#health_group, #hg').val('AD');
                 else if(age >= 20 && age <= 59)
-                    $('#health_group').val('A');
+                    $('#health_group, #hg').val('A');
                 else if(age >= 60)
-                    $('#health_group').val('SC');
+                    $('#health_group, #hg').val('SC');
                 else
-                    $('#health_group').val('none');
+                    $('#health_group, #hg').val('none');
             }
         });
     }
@@ -220,6 +231,10 @@
         }
     }
 
+    @if($info->fam_plan_method == 'other')
+        $('#fam_plan_other_method').show();
+    @endif
+
     $('#fam_plan_method').on('change', function() {
         var method = $(this).val();
         if(method === 'other') {
@@ -229,6 +244,9 @@
         }
     });
 
+    @if($info->fam_plan_status == 'other')
+        $('#fam_plan_other_status').show();
+    @endif
     $('#fam_plan_status').on('change', function() {
         var stat = $(this).val();
         if(stat === 'other') {
@@ -281,6 +299,11 @@
     });
 
     $('.other_religion').hide();
+    @if($info->religion == 'other')
+        $('.other_religion').html("<br><input required type='text' style='width:75%; margin-top: 5px' name='other_religion' value='{{ $info->other_religion }}' placeholder='Specify other religion' class='form-control'/>").show();
+    @else
+        $('.other_religion').html("").hide();
+    @endif
     $('#religion').on('change', function() {
         var val = $('#religion').val();
         console.log("religion: " +  val);

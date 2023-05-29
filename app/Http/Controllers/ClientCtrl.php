@@ -590,36 +590,55 @@ class ClientCtrl extends Controller
 
     public function saveHeadProfile(Request $req)
     {
-        $con=aphrodite_conn::AphroditeConn();
-        $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
-        $fname = mysqli_real_escape_string($con,($req->fname));
-        $mname = mysqli_real_escape_string($con,($req->mname));
-        $lname = mysqli_real_escape_string($con,($req->lname));
-        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT IGNORE profile(
-                unique_id, familyID, head, relation, 
-                fname,mname,lname,suffix,dob,sex,
-                barangay_id,muncity_id,province_id,
-                created_at,updated_at,
-                phicID, nhtsID, income, unmet, water, toilet, education,
-                pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,
-                cancer,cancer_type,covid_status,menarche,menarche_age,
-                newborn_screen,newborn_text,
-                deceased,deceased_date,sexually_active,
-                nhts,four_ps,ip,member_others,balik_probinsya,updated_by)
-                VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
-                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID', 
-                '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->pwd', '$req->pwd_desc', '$req->pregnant', 
-                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date', '$req->sexually_active',
-                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya',$user->id)
-            ";
-        //echo $q;
-        DB::select($q); //saving profile
 
-        $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
+//        $con=aphrodite_conn::AphroditeConn();
+//        $dateNow = date('Y-m-d H:i:s');
+//        $fname = mysqli_real_escape_string($con,($req->fname));
+//        $mname = mysqli_real_escape_string($con,($req->mname));
+//        $lname = mysqli_real_escape_string($con,($req->lname));
+//        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
+//        $unique_id = mysqli_real_escape_string($con,$unique_id);
+//        $q = "INSERT IGNORE profile(
+//                unique_id, familyID, head, relation,
+//                fname,mname,lname,suffix,dob,sex,
+//                barangay_id,muncity_id,province_id,
+//                created_at,updated_at,
+//                phicID, nhtsID, income, unmet, water, toilet, education,
+//                pwd,pwd_desc,pregnant,birth_place,civil_status,religion, other_religion,contact,height,weight,
+//                cancer,cancer_type,covid_status,menarche,menarche_age,
+//                newborn_screen,newborn_text,
+//                deceased,deceased_date,sexually_active,
+//                nhts,four_ps,ip,member_others,balik_probinsya,updated_by)
+//                VALUES('$unique_id', '$req->familyProfile', 'YES', 'Head', '".$fname."',
+//                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex',
+//                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID', '$req->nhtsID',
+//                '$req->income', '$req->unmet', '$req->water', '$req->toilet', '$req->education', '$req->pwd', '$req->pwd_desc', '$req->pregnant',
+//                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date', '$req->sexually_active',
+//                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya',$user->id)
+//            ";
+//        //echo $q;
+//        DB::select($q); //saving profile
+
+        $unique_id = $req->fname.''.$req->mname.''.$req->lname.''.$req->suffix.''.$req->barangay_id.''.$user->muncity;
+        $data = $req->all();
+        $data['unique_id'] = $unique_id;
+        $data['familyID'] = $req->familyProfile;
+        $data['head'] = 'YES';
+        $data['relation'] = 'Head';
+        $data['dob'] = date('Y-m-d', strtotime($req->dob));
+        $data['muncity_id'] = $user->muncity;
+        $data['province_id'] = $user->province;
+        $data['updated_by'] = $user->id;
+        unset(
+            $data['_token'], $data['familyProfile'],
+            $data['hypertension'], $data['hyper_remarks'], $data['diabetic'], $data['diabetic_remarks'],
+            $data['mental_med'], $data['mental_remarks'], $data['tbdots_med'], $data['tb_remarks'],
+            $data['cvd_med'], $data['cvd_remarks'], $data['nutri_stat'], $data['immunization']
+        );
+
+        Profile::create($data);
+        $profile_id = Profile::where('unique_id',$unique_id)->first()->id;
 
         if(isset($req->hypertension)) {
             $hyper = new Medication();
@@ -775,6 +794,7 @@ class ClientCtrl extends Controller
         $muncity_id = Auth::user()->muncity;
         Session::put('deleteProfile',$req->currentID);
         if($req->update){
+
             if($req->head=='YES'){
                 $relation = 'Head';
             }else{

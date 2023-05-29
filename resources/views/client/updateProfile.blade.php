@@ -62,6 +62,21 @@ $today = date('Y-m-d');
                         <td><input type="text" value="{{ $info->familyID }}" class="form-control" readonly /> </td>
                     </tr>
                     <tr>
+                        <td>Household No. :</td>
+                        <td><input type="text" name="household_num" class="form-control" value="{{ $info->household_num }}"></td>
+                    </tr>
+                    <tr>
+                        <td>PhilHealth Category :<br><small class="text-info"><i>(if applicable)</i></small></td>
+                        <td>
+                            <select class="form-control select2" name="philhealth_categ">
+                                <option value="">Select...</option>
+                                <option value="direct" @if($info->philhealth_categ == 'direct') selected @endif >Direct Contributors</option>
+                                <option value="indirect" @if($info->philhealth_categ == 'indirect') selected @endif >Indirect Contributors</option>
+                                <option value="unknown" @if($info->philhealth_categ == 'unknown') selected @endif >Unknown</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>PhilHealth ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>
                         <td><input type="text" value="{{ $info->phicID }}" name="phicID" class="form-control" value="" /></td>
                     </tr>
@@ -69,10 +84,15 @@ $today = date('Y-m-d');
                         {{--<td>NHTS ID :<br/> <small class="text-info"><em>(If applicable)</em></small></td>--}}
                         {{--<td><input type="text" value="{{ $info->nhtsID }}" name="nhtsID" class="form-control" value="" /></td>--}}
                         <td>Beneficiaries:<br><small class="text-info"><em>(Check applicable)</em></small></td>
-                        <td>&emsp;
-                            <label style="font-size: 110%"><input <?php if($info->nhts=='yes') echo 'checked';?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
-                            <label style="font-size: 110%"><input <?php if($info->four_ps=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
-                            <label style="font-size: 110%"><input <?php if($info->ip=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                        <td>
+                            <div class="col-md-6">
+                                <label style="font-size: 110%"><input <?php if($info->nhts=='yes') echo 'checked';?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="nhts" value="yes">&nbsp; NHTS  </label>&emsp;&emsp;
+                                <label style="font-size: 110%"><input <?php if($info->four_ps=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="four_ps" id="4ps" value="yes">&nbsp; 4Ps</label>&emsp;&emsp;
+                                <label style="font-size: 110%"><input <?php if($info->ip=='yes') echo "checked"?> class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input class="form-control" type="text" name="fourps_num" id="4ps_num" placeholder="(4Ps number)" value="{{ $info->fourps_num }}">
+                            </div>
                         </td>
                     </tr>
                     <tr class="has-group">
@@ -91,28 +111,37 @@ $today = date('Y-m-d');
                             <div class="col-md-8">
                                 <select name="relation" onchange="changeGender($(this))" required id="relation" class="form-control chosen-select" style="width: 100%">
                                     <option value="">Select...</option>
+                                    <option <?php if($info->relation=='Spouse') echo 'selected'; ?>>Spouse</option>
                                     <option <?php if($info->relation=='Son') echo 'selected'; ?>>Son</option>
                                     <option <?php if($info->relation=='Daughter') echo 'selected'; ?>>Daughter</option>
                                     <option <?php if($info->relation=='Wife') echo 'selected'; ?>>Wife</option>
                                     <option <?php if($info->relation=='Husband') echo 'selected'; ?>>Husband</option>
+                                    <option <?php if($info->relation=='Sister') echo 'selected'; ?>>Sister</option>
+                                    <option <?php if($info->relation=='Brother') echo 'selected'; ?>>Brother</option>
                                     <option <?php if($info->relation=='Father') echo 'selected'; ?>>Father</option>
                                     <option <?php if($info->relation=='Mother') echo 'selected'; ?>>Mother</option>
-                                    <option <?php if($info->relation=='Brother') echo 'selected'; ?>>Brother</option>
-                                    <option <?php if($info->relation=='Sister') echo 'selected'; ?>>Sister</option>
-                                    <option <?php if($info->relation=='Nephew') echo 'selected'; ?>>Nephew</option>
-                                    <option <?php if($info->relation=='Niece') echo 'selected'; ?>>Niece</option>
                                     <option <?php if($info->relation=='Grandfather') echo 'selected'; ?>>Grandfather</option>
                                     <option <?php if($info->relation=='Grandmother') echo 'selected'; ?>>Grandmother</option>
+                                    <option <?php if($info->relation=='Auntie') echo 'selected'; ?>>Auntie</option>
+                                    <option <?php if($info->relation=='Uncle') echo 'selected'; ?>>Uncle</option>
+                                    <option <?php if($info->relation=='Brother in Law') echo 'selected'; ?>>Brother in Law</option>
+                                    <option <?php if($info->relation=='Sister in Law') echo 'selected'; ?>>Sister in Law</option>
+                                    <option <?php if($info->relation=='Father in Law') echo 'selected'; ?>>Father in Law</option>
+                                    <option <?php if($info->relation=='Mother in Law') echo 'selected'; ?>>Mother in Law</option>
                                     <option <?php if($info->relation=='Grandson') echo 'selected'; ?>>Grandson</option>
                                     <option <?php if($info->relation=='Granddaughter') echo 'selected'; ?>>Granddaughter</option>
                                     <option <?php if($info->relation=='Cousin') echo 'selected'; ?>>Cousin</option>
-                                    <option <?php if($info->relation=='Relative') echo 'selected'; ?>>Relative</option>
                                     <option <?php if($info->relation=='Daughter in Law') echo 'selected'; ?>>Daughter in Law</option>
                                     <option <?php if($info->relation=='Son in Law') echo 'selected'; ?>>Son in Law</option>
-                                    <option <?php if($info->relation=='Sister in Law') echo 'selected'; ?>>Sister in Law</option>
-                                    <option <?php if($info->relation=='Brother in Law') echo 'selected'; ?>>Brother in Law</option>
-                                    <option <?php if($info->relation=='Father in Law') echo 'selected'; ?>>Father in Law</option>
-                                    <option <?php if($info->relation=='Mother in Law') echo 'selected'; ?>>Mother in Law</option>
+                                    <option <?php if($info->relation=='Step-son') echo 'selected'; ?>>Step-son</option>
+                                    <option <?php if($info->relation=='Step-daughter') echo 'selected'; ?>>Step-daughter</option>
+                                    <option <?php if($info->relation=='Step-father') echo 'selected'; ?>>Step-father</option>
+                                    <option <?php if($info->relation=='Step-mother') echo 'selected'; ?>>Step-mother</option>
+                                    <option <?php if($info->relation=='Step-sister') echo 'selected'; ?>>Step-sister</option>
+                                    <option <?php if($info->relation=='Step-brother') echo 'selected'; ?>>Step-brother</option>
+                                    <option <?php if($info->relation=='Nephew') echo 'selected'; ?>>Nephew</option>
+                                    <option <?php if($info->relation=='Niece') echo 'selected'; ?>>Niece</option>
+                                    <option <?php if($info->relation=='Relative') echo 'selected'; ?>>Relative</option>
                                     <option <?php if($info->relation=='partner') echo 'selected'; ?>>Live-in Partner</option>
                                     <option <?php if($info->relation=='Deceased') echo 'selected'; ?>>Deceased</option>
                                     <option <?php if($info->relation=='Others') echo 'selected'; ?> value="Others">Others (Specify)</option>
@@ -200,22 +229,37 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Single') echo 'checked'; ?> name="civil_status" class="civil_status" value="Single" style="display:inline;"> Single</label> &emsp;
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Married') echo 'checked'; ?> name="civil_status" class="civil_status" value="Married" > Married</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Divorced') echo 'checked'; ?> name="civil_status" class="civil_status" value="Divorced" > Divorced</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Live-in') echo 'checked'; ?> name="civil_status" class="civil_status" value="Live-in" > Live-in</label>&emsp;
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Widowed') echo 'checked'; ?> name="civil_status" class="civil_status" value="Widowed" > Widowed</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Annulled') echo 'checked'; ?> name="civil_status" class="civil_status" value="Annulled" > Annulled</label>
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Cohabitation') echo 'checked'; ?> name="civil_status" class="civil_status" value="Cohabitation" > Cohabitation</label>&emsp;
+                            <label style="cursor: pointer;"><input type="radio" <?php if($info->civil_status=='Separated') echo 'checked'; ?> name="civil_status" class="civil_status" value="Separated" > Separated</label>
                             <small class="text-red" id="cs_warning"><br>This field is required.</small>
                         </td>
                     </tr>
                     <tr>
                         <td>Religion <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='RC') echo 'checked'; ?> name="religion" class="religion" value="RC" style="display:inline;"> RC</label> &emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Christian') echo 'checked'; ?> name="religion" class="religion" value="Christian" > Christian</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='INC') echo 'checked'; ?> name="religion" class="religion" value="INC" > INC</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Islam') echo 'checked'; ?> name="religion" class="religion" value="Islam" > Islam</label>&emsp;
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='Jehovah') echo 'checked'; ?> name="religion" class="religion" value="Jehovah" > Jehovah</label><br/>
-                            <label style="cursor: pointer;"><input type="radio" <?php if($info->religion=='other') echo 'checked'; ?> name="religion" class="religion" value="other" > Others: <i>(specify)</i></label><br/>
+                            <select name="religion" class="form-control chosen-select" id="religion" style="width: 100%">
+                                <option value="">Select...</option>
+                                <option @if($info->religion == 'RC') selected @endif>Roman Catholic</option>
+                                <option @if($info->religion == 'Christian') selected @endif>Christian</option>
+                                <option @if($info->religion == 'inc') selected @endif value="inc">Iglesia ni Cristo</option>
+                                <option @if($info->religion == 'Catholic') selected @endif>Catholic</option>
+                                <option @if($info->religion == 'Islam') selected @endif>Islam</option>
+                                <option @if($info->religion == 'Baptist') selected @endif>Baptist</option>
+                                <option @if($info->religion == 'born_again') selected @endif value="born_again">Born Again Christian</option>
+                                <option @if($info->religion == 'Buddhism') selected @endif>Buddhism</option>
+                                <option @if($info->religion == 'cog') selected @endif>Church of God</option>
+                                <option @if($info->religion == 'jehovas') selected @endif value="jehovas">Jehova's Witness</option>
+                                <option @if($info->religion == 'Protestant') selected @endif>Protestant</option>
+                                <option @if($info->religion == 'adventist') selected @endif value="adventist">Sevent Day Adventist</option>
+                                <option @if($info->religion == 'mormons') selected @endif value="mormons">LDS-Mormons</option>
+                                <option @if($info->religion == 'Evangelical') selected @endif>Evangelical</option>
+                                <option @if($info->religion == 'Pentecostal') selected @endif>Pentecostal</option>
+                                <option @if($info->religion == 'Unknown') selected @endif>Unknown</option>
+                                <option @if($info->religion == 'other') selected @endif value="other">Others <i>(specify)</i></option>
+                            </select>
+                            <span class="other_religion"></span>
                             <span class="other_religion"><?php if($info->religion=='other') echo "<input type='text' style='width:50%;' name='other_religion' value='$info->other_religion' class='form-control'/>";?> </span>
                             <small class="text-red" id="religion_warning"><br>This field is required.</small>
                         </td>
@@ -279,8 +323,14 @@ $today = date('Y-m-d');
                             <select name="toilet" class="form-control chosen-select" id="toilet" style="width: 100%">
                                 <option value="">Select...</option>
                                 <option value="non" {{ ($info->toilet=='non') ? 'selected':null }}>None</option>
-                                <option value="comm" {{ ($info->toilet=='comm') ? 'selected':null }}>Communal</option>
-                                <option value="indi" {{ ($info->toilet=='indi') ? 'selected':null }}>Individual Household</option>
+                                {{--<option value="comm" {{ ($info->toilet=='comm') ? 'selected':null }}>Communal</option>--}}
+                                {{--<option value="indi" {{ ($info->toilet=='indi') ? 'selected':null }}>Individual Household</option>--}}
+                                <option value="flush_septic" {{ ($info->toilet=='flush_septic') ? 'selected':null }}>Pour/flush toilet connected to septic tank</option>
+                                <option value="flush_sewage" {{ ($info->toilet=='flush_sewage') ? 'selected':null }}>Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
+                                <option value="latrine_compost" {{ ($info->toilet=='latrine_compost') ? 'selected':null }}>Ventilated improved pit latrine (VIP) or Composting toilet</option>
+                                <option value="open_drain" {{ ($info->toilet=='open_drain') ? 'selected':null }}>Water-sealed connected to open drain</option>
+                                <option value="overhung_latrine" {{ ($info->toilet=='overhung_latrine') ? 'selected':null }}>Overhung Latrine</option>
+                                <option value="openpit_latrine" {{ ($info->toilet=='openpit_latrine') ? 'selected':null }}>Open-pit Latrine</option>
                             </select>
                             <small class="text-red" id="toilet_warning"><br>This field is required.</small>
                         </td>
@@ -292,15 +342,20 @@ $today = date('Y-m-d');
                             <select name="education" class="form-control chosen-select" id="education" style="width: 100%">
                                 <option value="">Select...</option>
                                 <option value="non" {{ ($info->education=='non') ? 'selected':null }}>No Education</option>
-                                <option value="elem" {{ ($info->education=='elem') ? 'selected':null }}>Elementary Level</option>
+                                <option value="preschool" {{ ($info->education=='preschool') ? 'selected':null }}>Preschool</option>
+                                <option value="elem" {{ ($info->education=='elem') ? 'selected':null }}>Elementary Student</option>
+                                <option value="elem_undergrad" {{ ($info->education=='elem_undergrad') ? 'selected':null }}>Elementary Undergraduate</option>
                                 <option value="elem_grad" {{ ($info->education=='elem_grad') ? 'selected':null }}>Elementary Graduate</option>
-                                <option value="high" {{ ($info->education=='high') ? 'selected':null }}>High School Level</option>
+                                <option value="high" {{ ($info->education=='high') ? 'selected':null }}>High School Student</option>
+                                <option value="high_undergrad" {{ ($info->education=='high_undergrad') ? 'selected':null }}>High School Undergraduate</option>
                                 <option value="high_grad" {{ ($info->education=='high_grad') ? 'selected':null }}>High School Graduate</option>
-                                <option value="college" {{ ($info->education=='college') ? 'selected':null }}>College Level</option>
+                                <option value="senior_high" {{ ($info->education=='senior_high') ? 'selected':null }}>Senior High School</option>
+                                <option value="als" {{ ($info->education=='als') ? 'selected':null }}>ALS</option>
+                                <option value="college" {{ ($info->education=='college') ? 'selected':null }}>College Student</option>
+                                <option value="college_undergrad" {{ ($info->education=='college_undergrad') ? 'selected':null }}>College Undergraduate</option>
                                 <option value="college_grad" {{ ($info->education=='college_grad') ? 'selected':null }}>College Graduate</option>
+                                <option value="post_grad" {{ ($info->education=='post_grad') ? 'selected':null }}>Post Graduate/Masteral/Doctorate Degree</option>
                                 <option value="vocational" {{ ($info->education=='vocational') ? 'selected':null }}>Vocational Course</option>
-                                <option value="master" {{ ($info->education=='master') ? 'selected':null }}>Masteral Degree</option>
-                                <option value="doctorate" {{ ($info->education=='doctorate') ? 'selected':null }}>Doctorate Degree</option>
                                 <option value="unable_provide" {{ ($info->education=='unable_provide') ? 'selected':null }}>Unable to provide</option>
                             </select>
                         </td>
@@ -310,6 +365,21 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'yes') echo "checked" ?> type="radio" name="balik_probinsya" value="yes" style="display:inline;"> Yes </label>&emsp;&emsp;
                             <label style="cursor: pointer;"><input <?php if($info->balik_probinsya === 'no') echo "checked" ?> type="radio" name="balik_probinsya" value="no" style="display:inline;"> No </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Classification by Age/Health Risk Group :</td>
+                        <td>
+                            <input type="hidden" name="health_group" id="hg">
+                            <select class="form-control" id="health_group" disabled>
+                                <option value="N" {{ ($info->health_group=='N') ? 'selected':null }}>Newborn (0-28 days)</option>
+                                <option value="I" {{ ($info->health_group=='I') ? 'selected':null }}>Infant (0-1 y/0)</option>
+                                <option value="PSAC" {{ ($info->health_group=='PSAC') ? 'selected':null }}>PSAC (1-4 y/0)</option>
+                                <option value="SAC" {{ ($info->health_group=='SAC') ? 'selected':null }}>School Age (5-9 y/o)</option>
+                                <option value="AD" {{ ($info->health_group=='AD') ? 'selected':null }}>Adolescent (10-19 y/0)</option>
+                                <option value="A" {{ ($info->health_group=='A') ? 'selected':null }}>Adult (20-59 y/0)</option>
+                                <option value="SC" {{ ($info->health_group=='SC') ? 'selected':null }}>Senior Citizen</option>
+                            </select>
                         </td>
                     </tr>
                     <tr>
@@ -385,6 +455,12 @@ $today = date('Y-m-d');
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>Other Medical History :<br><small class="text-info"><em>(If applicable)</em></small></td>
+                        <td>
+                            <textarea class="form-control" name="other_med_history" style="resize: none;width: 100%;" rows="2">{{ $info->other_med_history }}</textarea>
+                        </td>
+                    </tr>
                     <tr class="has-group">
                         <td>Latest Covid Vaccination Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         {{--<td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>--}}
@@ -410,6 +486,46 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='yes') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
                             <label style="cursor: pointer;"><input type="radio" <?php if($info->sexually_active=='no') echo 'checked'; ?> name="sexually_active" class="sexually_active" value="no"> No </label>
+                        </td>
+                    </tr>
+                    <tr class="famPlan hide">
+                        <td>Using Family Planning : </td>
+                        <td class="has-group">
+                            <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" {{ ($info->fam_plan=='yes') ? 'checked':null }} name="fam_plan" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" {{ ($info->fam_plan=='no') ? 'checked':null }} name="fam_plan" value="no"> No </label>
+                        </td>
+                    </tr>
+                    <tr class="famPlanClass hide">
+                        <td>Family Planning Methods Used :</td>
+                        <td>
+                            <select class="form-control select2" style="width: 100%;" name="fam_plan_method" id="fam_plan_method">
+                                <option value="">Select...</option>
+                                <option {{ ($info->fam_plan_method=='COC') ? 'selected':null }}>COC</option>
+                                <option {{ ($info->fam_plan_method=='POP') ? 'selected':null }}>POP</option>
+                                <option {{ ($info->fam_plan_method=='Injectibles') ? 'selected':null }}>Injectibles</option>
+                                <option {{ ($info->fam_plan_method=='IUD') ? 'selected':null }}>IUD</option>
+                                <option {{ ($info->fam_plan_method=='Condom') ? 'selected':null }}>Condom</option>
+                                <option {{ ($info->fam_plan_method=='LAM') ? 'selected':null }}>LAM</option>
+                                <option {{ ($info->fam_plan_method=='BTL') ? 'selected':null }}>BTL</option>
+                                <option {{ ($info->fam_plan_method=='Implant') ? 'selected':null }}>Implant</option>
+                                <option {{ ($info->fam_plan_method=='SDM') ? 'selected':null }}>SDM</option>
+                                <option {{ ($info->fam_plan_method=='DPT') ? 'selected':null }}>DPT</option>
+                                <option {{ ($info->fam_plan_method=='Withdrawal') ? 'selected':null }}>Withdrawal</option>
+                                <option {{ ($info->fam_plan_method=='other') ? 'selected':null }} value="other">Others (Specify)</option>
+                            </select><br>
+                            <input class="form-control" style="margin-top: 10px" name="fam_plan_other_method" id="fam_plan_other_method" value="{{ $info->fam_plan_other_method }}" placeholder="(Other Family Planning Method)">
+                        </td>
+                    </tr>
+                    <tr class="famPlanClass hide">
+                        <td>Family Planning Status :</td>
+                        <td class="has-group">
+                            <select class="form-control select2" style="width: 100%;" name="fam_plan_status" id="fam_plan_status">
+                                <option value="">Select...</option>
+                                <option value="withdrawal" {{ ($info->fam_plan_status=='withdrawal') ? 'selected':null }} >Withdrawal</option>
+                                <option value="new_acceptors" {{ ($info->fam_plan_status=='new_acceptors') ? 'selected':null }} >New Acceptors</option>
+                                <option value="other" {{ ($info->fam_plan_status=='other') ? 'selected':null }} >Others (Specify)</option>
+                            </select><br>
+                            <input class="form-control" style="margin-top: 10px" name="fam_plan_other_status" id="fam_plan_other_status" value="{{ $info->fam_plan_other_status }}" placeholder="(Other Family Planning Status)">
                         </td>
                     </tr>
                     <tr class="has-group unmetClass hide">
@@ -533,8 +649,7 @@ $today = date('Y-m-d');
                 $('.head').removeClass('hide');
             }
         }
-    </script>
-    <script>
+
         var member_others = '<?php echo $info->member_others;?>';
         if(member_others === '') {
             $('#member_others').hide();

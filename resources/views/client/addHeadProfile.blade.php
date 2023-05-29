@@ -86,7 +86,7 @@ $today = date('Y-m-d');
                                 <label style="font-size: 110%"><input class="form-check-input" style="height: 20px;width: 20px;cursor: pointer;" type="checkbox" name="ip" value="yes">&nbsp; IP</label>
                             </div>
                             <div class="col-md-6">
-                                <input class="form-control" type="text" name="4ps_num" id="4ps_num" placeholder="(4Ps number)">
+                                <input class="form-control" type="text" name="fourps_num" id="4ps_num" placeholder="(4Ps number)">
                             </div>
                         </td>
                     </tr>
@@ -180,7 +180,7 @@ $today = date('Y-m-d');
                         <td>
                             <select name="religion" class="form-control chosen-select" id="religion" style="width: 100%">
                                 <option value="">Select...</option>
-                                <option>Roman Catholic</option>
+                                <option value="RC">Roman Catholic</option>
                                 <option>Christian</option>
                                 <option value="inc">Iglesia ni Cristo</option>
                                 <option>Catholic</option>
@@ -188,7 +188,7 @@ $today = date('Y-m-d');
                                 <option>Baptist</option>
                                 <option value="born_again">Born Again Christian</option>
                                 <option>Buddhism</option>
-                                <option>Church of God</option>
+                                <option value="cog">Church of God</option>
                                 <option value="jehovas">Jehova's Witness</option>
                                 <option>Protestant</option>
                                 <option value="adventist">Sevent Day Adventist</option>
@@ -296,7 +296,8 @@ $today = date('Y-m-d');
                     <tr>
                         <td>Classification by Age/Health Risk Group :</td>
                         <td>
-                            <select class="form-control" name="health_group" id="health_group" disabled>
+                            <input type="hidden" name="health_group" id="hg">
+                            <select class="form-control" id="health_group" disabled>
                                 <option value="N">Newborn (0-28 days)</option>
                                 <option value="I">Infant (0-1 y/0)</option>
                                 <option value="PSAC">PSAC (1-4 y/0)</option>
@@ -412,7 +413,7 @@ $today = date('Y-m-d');
                             <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="no"> No </label>
                         </td>
                     </tr>
-                    <tr class="menarcheClass hide">
+                    <tr class="famPlan hide">
                         <td>Using Family Planning : </td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="yes" style="display:inline;"> Yes </label><br>
@@ -518,15 +519,9 @@ $today = date('Y-m-d');
             var sex = $('input[name="sex"]:checked').val();
             console.log(sex);
             if (sex === 'Female') {
-                $('.unmetClass').removeClass('hide');
-                $('.menarcheClass').removeClass('hide');
-                $('.pregnant_lmp').removeClass('hide');
-                $('.sexuallyActiveClass').removeClass('hide');
+                $('.unmetClass, .menarcheClass, .pregnant_lmp, .sexuallyActiveClass, .famPlan').removeClass('hide');
             } else {
-                $('.unmetClass').addClass('hide');
-                $('.menarcheClass').addClass('hide');
-                $('.pregnant_lmp').addClass('hide');
-                $('.sexuallyActiveClass').addClass('hide');
+                $('.unmetClass, .menarcheClass, .pregnant_lmp, .sexually_active, .famPlan').addClass('hide');
                 $('#unmet').val('0');
                 $('#unmet2').val('Not set');
             }
