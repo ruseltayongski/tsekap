@@ -258,7 +258,7 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="suffix" style="width: 100%">
+                            <select name="barangay_id" class="form-control chosen-select" required id="suffix" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option <?php if($brgy_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
@@ -411,7 +411,7 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <tr class="famPlan hide">
-                        <td>Using Family Planning? </td>
+                        <td>Using Family Planning :</td>
                         <td class="has-group">
                             <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="yes" style="display:inline;"> Yes </label><br>
                             <label style="cursor: pointer;"><input type="radio" onclick="showFamPlan()" name="fam_plan" value="no"> No </label>
@@ -701,9 +701,8 @@ $today = date('Y-m-d');
             } else
                 $('#cs_warning').hide();
 
-            religion = $('input[name="religion"]:checked').length;
-            console.log('religion : ' + religion);
-            if(religion == 0) {
+            religion = $('#religion').val();
+            if(religion === "" || religion === null) {
                 $('#religion_warning').show();
                 $('.religion').focus();
                 missing += ", <u>Religion</u>";

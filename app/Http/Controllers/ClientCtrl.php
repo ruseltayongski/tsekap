@@ -626,7 +626,6 @@ class ClientCtrl extends Controller
         $data['familyID'] = $req->familyProfile;
         $data['head'] = 'YES';
         $data['relation'] = 'Head';
-        $data['dob'] = date('Y-m-d', strtotime($req->dob));
         $data['muncity_id'] = $user->muncity;
         $data['province_id'] = $user->province;
         $data['updated_by'] = $user->id;
@@ -794,63 +793,73 @@ class ClientCtrl extends Controller
         $muncity_id = Auth::user()->muncity;
         Session::put('deleteProfile',$req->currentID);
         if($req->update){
+            $update = $req->all();
+            $relation = ($req->head=='YES') ? 'Head' : $req->relation;
+            $update['relation'] = $relation;
+            $update['updated_by'] = $user->id;
 
-            if($req->head=='YES'){
-                $relation = 'Head';
-            }else{
-                $relation = $req->relation;
+            unset($update['_token'], $update['currentID'], $update['unique_id'], $update['update']);
+
+            if($relation !=  'Head') {
+                unset($update['income'], $update['water'], $update['toilet']);
             }
-            $fname = ($req->fname);
-            $mname = ($req->mname);
-            $lname = ($req->lname);
-            $update = array(
-                'familyID' => $req->familyName,
-                'phicID' => $req->phicID,
-                'nhtsID' => $req->nhtsID,
-                'head' => $req->head,
-                'relation' => $relation,
-                'fname' => $fname,
-                'mname' => $mname,
-                'lname' => $lname,
-                'suffix' => $req->suffix,
-                'dob' => $req->dob,
-                'sex' => $req->sex,
-                'unmet' => $req->unmet,
-                'barangay_id' => $req->barangay,
-                'education' => $req->education,
-                'pwd' => $req->pwd,
-                'pwd_desc' => $req->pwd_desc,
-                'pregnant' => $req->pregnant,
-                'birth_place' => $req->birth_place,
-                'civil_status' => $req->civil_status,
-                'religion' => $req->religion,
-                'other_religion' => $req->other_religion,
-                'contact' => $req->contact,
-                'height' => $req->height,
-                'weight' => $req->weight,
-                'cancer' => $req->cancer,
-                'cancer_type' => $req->cancer_type,
-                'covid_status' => $req->covid_status,
-                'menarche' => $req->menarche,
-                'menarche_age' => $req->menarche_age,
-                'newborn_screen' => $req->newborn_screen,
-                'newborn_text' => $req->newborn_text,
-                'deceased' => $req->deceased,
-                'deceased_date' => $req->deceased_date,
-                'nhts' => $req->nhts,
-                'four_ps' => $req->four_ps,
-                'ip' => $req->ip,
-                'member_others' => $req->member_others,
-                'balik_probinsya' => $req->balik_probinsya,
-                'sexually_active' => $req->sexually_active,
-                'updated_by' => $user->id
-            );
-            if($relation=='Head')
-            {
-                $update['income'] = $req->income;
-                $update['water'] = $req->water;
-                $update['toilet'] = $req->toilet;
-            }
+
+//            if($req->head=='YES'){
+//                $relation = 'Head';
+//            }else{
+//                $relation = $req->relation;
+//            }
+//            $fname = ($req->fname);
+//            $mname = ($req->mname);
+//            $lname = ($req->lname);
+//            $update = array(
+//                'familyID' => $req->familyName,
+//                'phicID' => $req->phicID,
+//                'nhtsID' => $req->nhtsID,
+//                'head' => $req->head,
+//                'relation' => $relation,
+//                'fname' => $fname,
+//                'mname' => $mname,
+//                'lname' => $lname,
+//                'suffix' => $req->suffix,
+//                'dob' => $req->dob,
+//                'sex' => $req->sex,
+//                'unmet' => $req->unmet,
+//                'barangay_id' => $req->barangay,
+//                'education' => $req->education,
+//                'pwd' => $req->pwd,
+//                'pwd_desc' => $req->pwd_desc,
+//                'pregnant' => $req->pregnant,
+//                'birth_place' => $req->birth_place,
+//                'civil_status' => $req->civil_status,
+//                'religion' => $req->religion,
+//                'other_religion' => $req->other_religion,
+//                'contact' => $req->contact,
+//                'height' => $req->height,
+//                'weight' => $req->weight,
+//                'cancer' => $req->cancer,
+//                'cancer_type' => $req->cancer_type,
+//                'covid_status' => $req->covid_status,
+//                'menarche' => $req->menarche,
+//                'menarche_age' => $req->menarche_age,
+//                'newborn_screen' => $req->newborn_screen,
+//                'newborn_text' => $req->newborn_text,
+//                'deceased' => $req->deceased,
+//                'deceased_date' => $req->deceased_date,
+//                'nhts' => $req->nhts,
+//                'four_ps' => $req->four_ps,
+//                'ip' => $req->ip,
+//                'member_others' => $req->member_others,
+//                'balik_probinsya' => $req->balik_probinsya,
+//                'sexually_active' => $req->sexually_active,
+//                'updated_by' => $user->id
+//            );
+//            if($relation=='Head')
+//            {
+//                $update['income'] = $req->income;
+//                $update['water'] = $req->water;
+//                $update['toilet'] = $req->toilet;
+//            }
             //$unique_id =$fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$muncity_id;
             $unique_id = $req->unique_id;
 

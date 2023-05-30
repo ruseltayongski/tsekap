@@ -251,12 +251,12 @@ $today = date('Y-m-d');
                                 <option value="non">None/Without Toilet</option>
                                 {{--<option value="comm">Communal</option>--}}
                                 {{--<option value="indi">Individual Household</option>--}}
-                                <option value="flush_septic">Pour/flush toilet connected to septic tank</option>
-                                <option value="flush_sewage">Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
-                                <option value="latrine_compost">Ventilated improved pit latrine (VIP) or Composting toilet</option>
+                                <option value="septic">Pour/flush toilet connected to septic tank</option>
+                                <option value="sewage">Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
+                                <option value="compost">Ventilated improved pit latrine (VIP) or Composting toilet</option>
                                 <option value="open_drain">Water-sealed connected to open drain</option>
-                                <option value="overhung_latrine">Overhung Latrine</option>
-                                <option value="openpit_latrine">Open-pit Latrine</option>
+                                <option value="overhung_l">Overhung Latrine</option>
+                                <option value="openpit_l">Open-pit Latrine</option>
                             </select>
                             <small class="text-red" id="toilet_warning"><br>This field is required.</small>
                         </td>
@@ -521,7 +521,7 @@ $today = date('Y-m-d');
             if (sex === 'Female') {
                 $('.unmetClass, .menarcheClass, .pregnant_lmp, .sexuallyActiveClass, .famPlan').removeClass('hide');
             } else {
-                $('.unmetClass, .menarcheClass, .pregnant_lmp, .sexually_active, .famPlan').addClass('hide');
+                $('.unmetClass, .menarcheClass, .pregnant_lmp, .sexuallyActiveClass, .famPlan').addClass('hide');
                 $('#unmet').val('0');
                 $('#unmet2').val('Not set');
             }
