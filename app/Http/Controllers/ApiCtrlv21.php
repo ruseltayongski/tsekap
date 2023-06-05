@@ -148,14 +148,19 @@ class ApiCtrlv21 extends Controller
             $medication = Medication::where('profile_id',$p->id)->get();
             $immu_data = $nutri_data = "";
             $immu_count = $nutri_count = 0;
-            foreach($immu as $i) {
-                $immu_count++;
-                $immu_data .= $immu_count == 1 ? $i->description : ",".$i->description;
+            if(count($immu) > 0) {
+                foreach($immu as $i) {
+                    $immu_count++;
+                    $immu_data .= $immu_count == 1 ? $i->description : ",".$i->description;
+                }
             }
-            foreach($nutri as $n) {
-                $nutri_count++;
-                $nutri_data .= $nutri_count == 1 ? $n->description : ",".$n->description;
+            if(count($nutri) > 0) {
+                foreach($nutri as $n) {
+                    $nutri_count++;
+                    $nutri_data .= $nutri_count == 1 ? $n->description : ",".$n->description;
+                }
             }
+
             $med_availment = array();
             if(count($medication) > 0) {
                 foreach($medication as $med) {
@@ -252,7 +257,17 @@ class ApiCtrlv21 extends Controller
                 'member_others' => isset($p->member_others) ? $p->member_others : '',
                 'balik_probinsya' => isset($p->balik_probinsya) ? $p->balik_probinsya : '',
                 'updated_by' => $p->updated_by,
-                'medication' => $med_availment
+                'medication' => $med_availment,
+                'household_num' => $p->household_num,
+                "philhealth_categ" => $p->philhealth_categ,
+                "fourps_num" => $p->fourps_num,
+                "health_group" => $p->health_group,
+                "fam_plan" => $p->fam_plan,
+                "fam_plan_method" => $p->fam_plan_method,
+                "fam_plan_other_method" => $p->fam_plan_other_method,
+                "fam_plan_status" => $p->fam_plan_status,
+                "fam_plan_other_status" => $p->fam_plan_other_status,
+                "other_med_history" => $p->other_med_history
             );
             array_push($data, $res);
         }
@@ -390,7 +405,7 @@ class ApiCtrlv21 extends Controller
                 '$muncity_id'
             )";
             $year = date('Y');
-            $db = 'db_2022';
+            $db = 'db_'.$year;
             DB::connection($db)->select($q);
             return array(
                 'status' => 'success'

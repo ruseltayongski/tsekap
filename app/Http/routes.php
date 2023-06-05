@@ -39,8 +39,7 @@ Route::get('dengvaxia/finish/{id}','DengvaxiaCtrl@finish');
 //End Dengvaxia
 
 //REPORT
-Route::get('report/status','ReportCtrl@status');
-Route::post('report/status','ReportCtrl@status');
+Route::match(['GET','POST'],'report/status','ReportCtrl@status');
 Route::get('report/monthly','ReportCtrl@monthly');
 Route::post('report/monthly','ReportCtrl@monthly');
 Route::get('report/online','ReportCtrl@online');
@@ -59,6 +58,7 @@ Route::get('change/password',function(){
 //DOWNLOAD
 Route::get('download','DownloadCtrl@index');
 Route::post('download','DownloadCtrl@index');
+Route::post('download/iclinicsys','DownloadCtrl@downloadClinicSys');
 //Route::get('download/{id}/{prov_desc}/{mun_id}/{mun_desc}','DownloadCtrl@generateDownload');
 Route::get('download/user/{id}','DownloadCtrl@generateUserDownload');
 Route::post('generatedownload', 'DownloadCtrl@generateDownload');
@@ -157,6 +157,8 @@ Route::get('/user/report/health','ClientCtrl@health');
 Route::get('/user/report/health/data','ClientCtrl@healthData');
 
 Route::get('user/report/status','ClientCtrl@statusReport');
+Route::get('user/report/iclinicsys','ClientCtrl@iclinicSys');
+Route::get('admin/report/iclinicsys','ReportCtrl@iclinicSys');
 Route::get('admin/report/statdetails/{mun_id}/{bar_id}','ReportCtrl@statusDetails');
 //upload report
 Route::get('user/upload/temp',function(){
