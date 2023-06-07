@@ -342,13 +342,15 @@ class ApiCtrlv21 extends Controller
             $province_id = $brgy->province_id;
             $data2 = $data;
 
+            $deceased_date = $data['deceased_date'];
+
             $data2['dob'] = date('Y-m-d',strtotime($data['dob']));
             $data2['nhtsID'] = isset($data['nhtsID']) ? $data['nhtsID'] : '';
             $data2['pwd'] = strtolower($data['pwd']);
             $data2['cancer'] = strtolower($data['cancer']);
             $data2['menarche'] = strtolower($data['menarche']);
             $data2['deceased'] = strtolower($data['deceased']);
-            $data2['deceased_date'] = date('Y-m-d',strtotime($data['deceased_date']));
+            $data2['deceased_date'] = (isset($deceased_date) && $deceased_date != '') ? date('Y-m-d',strtotime($deceased_date)):'0000-00-00';
             $data2['sexually_active'] = strtolower($data['sexually_active']);
             $data2['nhts'] = strtolower($data['nhts']);
             $data2['four_ps'] = strtolower($data['four_ps']);
