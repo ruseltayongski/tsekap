@@ -7,9 +7,9 @@ $faci_count = 0;
 {{--BUG:
 
     When this modal is shown, there will be a space incurred in the right side of the UI, it will stay there unless
-    the page is refreshed and if this modal is shown continuously WITHOUT refreshing the page, that space will grow.
+    the page is refreshed and if this modal is incurred continuously WITHOUT refreshing the page, that space will grow.
 
-    - Christine 05/24/2022 4:32 pm
+    - 05/24/2022 4:32 pm
 --}}
 
 <style>

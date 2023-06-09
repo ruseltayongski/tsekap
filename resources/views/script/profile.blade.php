@@ -136,10 +136,9 @@
         });
     });
     calculateAge();
-    $('#dob').on('keyup','keydown',function(){
+    $('#dob').on('change',function(){
         calculateAge();
     });
-    var age_year = -1;
 
     function calculateAge(){
         var dob = $('#dob').val();
@@ -148,22 +147,19 @@
             dob = "{{ date('Y-m-d') }}";
         }
         console.log(dob);
+        <?php \Illuminate\Support\Facades\Session::put('getDay', true);?>
 
         $.ajax({
             url : "{{ url('user/profile/age/') }}/"+dob,
             type : 'GET',
-            success: function(age){
-                age_year = age;
+            success: function(res){
+                var age = res.year;
                 console.log("age:" + age);
                 if(age >= 10 && age <= 49) {
                     if(sex === "Female") {
-                        $('.unmetClass').removeClass('hide');
-                        $('.sexuallyActiveClass').removeClass('hide');
-                        $('.pregnant_lmp').removeClass('hide');
+                        $('.unmetClass, .sexuallyActiveClass, .pregnant_lmp, .famPlan').removeClass('hide');
                     } else if(sex === 'Male') {
-                        $('.unmetClass').addClass('hide');
-                        $('.sexuallyActiveClass').addClass('hide');
-                        $('.pregnant_lmp').addClass('hide');
+                        $('.unmetClass, .sexuallyActiveClass, .pregnant_lmp, .famPlan').addClass('hide');
                         $('#unmet').val('0');
                         $('#unmet2').val('Not set');
                     }
@@ -186,37 +182,34 @@
                     $('.hypertensionClass, .diabetesClass').removeClass('hide');
                     $('.nutritionClass, .immuClass, .newbornClass').addClass('hide');
                 }
-                setHealthGroup();
+                setHealthGroup(age, res.month, res.day);
             }
         });
     }
 
-    function setHealthGroup(){
-        var dob = $('#dob').val();
-        $.ajax({
-            url : "{{ url('user/profile/age/day') }}/"+dob,
-            type : "GET",
-            success: function(day) {
-                var age = age_year;
-                console.log("health group: " + age + " year, " + day + " day/s");
-                if(age === 0 && day <= 28)
+    function setHealthGroup(age, month, day){
+        console.log("health group: " + age + " year, " + month + " month, " + day + " day/s");
+        if(age === 0){
+            if(month === 0) {
+                if(day <= 28) {
                     $('#health_group, #hg').val('N');
-                else if(age <= 1 && day > 28)
+                } else if(day > 28) {
                     $('#health_group, #hg').val('I');
-                else if(age >= 1 && age <= 4)
-                    $('#health_group, #hg').val('PSAC');
-                else if(age >= 5 && age <= 9)
-                    $('#health_group, #hg').val('SAC');
-                else if(age >= 10 && age <= 19)
-                    $('#health_group, #hg').val('AD');
-                else if(age >= 20 && age <= 59)
-                    $('#health_group, #hg').val('A');
-                else if(age >= 60)
-                    $('#health_group, #hg').val('SC');
-                else
-                    $('#health_group, #hg').val('none');
+                }
+            }else {
+                $('#health_group, #hg').val('I');
             }
-        });
+        } else if(age >= 1 && age <= 4) {
+            $('#health_group, #hg').val('PSAC');
+        } else if(age >= 5 && age <= 9) {
+            $('#health_group, #hg').val('SAC');
+        } else if(age >= 10 && age <= 19) {
+            $('#health_group, #hg').val('AD');
+        } else if(age >= 20 && age <= 59) {
+            $('#health_group, #hg').val('A');
+        } else if(age >= 60) {
+            $('#health_group, #hg').val('SC');
+        }
     }
 
     $('#fam_plan_other_method, #fam_plan_other_status').hide();

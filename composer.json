@@ -11,7 +11,8 @@
         "codedge/laravel-fpdf": "^1.2",
         "doctrine/inflector": "1.1.0",
         "maatwebsite/excel": "~2.1.0",
-        "barryvdh/laravel-dompdf": "^0.7.0"
+        "barryvdh/laravel-dompdf": "^0.7.0",
+        "doctrine/dbal": "^2.13"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

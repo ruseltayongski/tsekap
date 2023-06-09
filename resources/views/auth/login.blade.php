@@ -19,7 +19,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background-color:#E8F5FD;">
 @if(Session::has('ok'))
     <div class="row">
         <div class="alert alert-success text-center">
@@ -73,15 +73,18 @@
 
 <div class="login-box">
     <div class="login-logo">
-        <img src="{{ asset('resources/img/logo.png') }}" />
+        <img style="height: 100px;" class=logo-login" src="{{ asset('resources/img/doh logo.png') }}" />
+        <img style="height: 95px;" src="{{ asset('resources/img/tsekap-logo.png') }}" />
         <br />
-        <a href="#"><b>PHA</b> CHECK-UP</a>
+        <h3><b>PHILIPPINE HEALTH AGENDA</b></h3>
+        <h4><b>CHECK-UP SYSTEM</b></h4>
+        {{--<a href="#"><b>PHA</b> CHECK-UP</a>--}}
     </div><!-- /.login-logo -->
 
     <form role="form" method="POST" action="{{ url('/login') }}">
         {{ csrf_field() }}
         <div class="login-box-body">
-            <p class="login-box-msg">Sign in to start your session</p>
+            {{--<p class="login-box-msg">Sign in to start your session</p>--}}
             <div class="form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
                 <input id="username" type="text" placeholder="Login ID" class="form-control" name="username" value="{{ old('username') }}">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -107,7 +110,7 @@
                             <input type="checkbox" name="remember"> Remember Me
                         </label><br><br>
                         <a href="{{ asset("resources/apk/PHA-Check-Appv3.0.apk") }}" type="button" class="btn btn-success">
-                            <i class="fa fa-mobile"></i> <small> Mobile Check-Up (apk) </small>
+                            <i class="fa fa-mobile"></i> <small> Mobile Check-Up (.apk) </small>
                         </a>
                     </div>
                 </div><!-- /.col -->

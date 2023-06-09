@@ -128,6 +128,12 @@ class SpecialistCtrl extends Controller
     }
 
     public function addSpecialist(Request $req){
+        /*
+         *
+         * TODO: change data saved to reflect changes that MAY have been made in facility_assignment (Referral Side)
+         *
+         * */
+
         $username = $req->username;
         $today = Carbon::now()->format('ymdhi');
 

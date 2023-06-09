@@ -6,4 +6,8 @@ Homestead.json
 .env
 /config/database.php
 /app/Http/Controllers/AphroditeConnCtrl.php
-
+.idea/encodings.xml
+.idea/modules.xml
+.idea/tsekap2018.iml
+.idea/workspace.xml
+config/database.php

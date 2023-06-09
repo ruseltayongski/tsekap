@@ -13,16 +13,16 @@ class AddToProfileIclinicsys extends Migration
     public function up()
     {
         Schema::table('profile', function (Blueprint $table) {
-            $table->string('household_num');
-            $table->string('philhealth_categ');
-            $table->string('4ps_num');
-            $table->string('health_group');
-            $table->string('fam_plan');
-            $table->string('fam_plan_method');
+            $table->string('household_num',30);
+            $table->string('philhealth_categ', 15);
+            $table->string('fourps_num', 30);
+            $table->string('health_group', 20);
+            $table->string('fam_plan', 10);
+            $table->string('fam_plan_method', 20);
             $table->string('fam_plan_other_method');
-            $table->string('fam_plan_status');
+            $table->string('fam_plan_status', 25);
             $table->string('fam_plan_other_status');
-            $table->string('other_med_history');
+            $table->text('other_med_history');
         });
     }
 

@@ -131,7 +131,7 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Birth Date <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <input type="date" name="dob" onkeyup="calculateAge()" onkeypress="calculateAge()" onblur="calculateAge()" id="dob" max="{{ $today }}" class="form-control" required />
+                            <input type="date" name="dob" onchange="calculateAge()" id="dob" max="{{ $today }}" class="form-control" required />
                             <small class="text-red" id="dob_warning">This field is required.</small>
                         </td>
                     </tr>
@@ -191,7 +191,7 @@ $today = date('Y-m-d');
                                 <option value="cog">Church of God</option>
                                 <option value="jehovas">Jehova's Witness</option>
                                 <option>Protestant</option>
-                                <option value="adventist">Sevent Day Adventist</option>
+                                <option value="adventist">Seventh Day Adventist</option>
                                 <option value="mormons">LDS-Mormons</option>
                                 <option>Evangelical</option>
                                 <option>Pentecostal</option>
@@ -409,8 +409,8 @@ $today = date('Y-m-d');
                     <tr class="sexuallyActiveClass hide">
                         <td>Sexually Active :</td>
                         <td class="has-group">
-                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
-                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" class="sexually_active" value="no"> No </label>
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" id="sexually_active" value="yes" style="display:inline;"> Yes </label><br>
+                            <label style="cursor: pointer;"><input type="radio" name="sexually_active" id="sexually_active" value="no"> No </label>
                         </td>
                     </tr>
                     <tr class="famPlan hide">
@@ -516,6 +516,7 @@ $today = date('Y-m-d');
     <script>
         showUnmet();
         function showUnmet() {
+            setHealthGroup();
             var sex = $('input[name="sex"]:checked').val();
             console.log(sex);
             if (sex === 'Female') {

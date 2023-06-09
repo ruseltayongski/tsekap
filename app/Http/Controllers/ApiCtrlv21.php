@@ -258,16 +258,16 @@ class ApiCtrlv21 extends Controller
                 'balik_probinsya' => isset($p->balik_probinsya) ? $p->balik_probinsya : '',
                 'updated_by' => $p->updated_by,
                 'medication' => $med_availment,
-                'household_num' => $p->household_num,
-                "philhealth_categ" => $p->philhealth_categ,
-                "fourps_num" => $p->fourps_num,
-                "health_group" => $p->health_group,
-                "fam_plan" => $p->fam_plan,
-                "fam_plan_method" => $p->fam_plan_method,
-                "fam_plan_other_method" => $p->fam_plan_other_method,
-                "fam_plan_status" => $p->fam_plan_status,
-                "fam_plan_other_status" => $p->fam_plan_other_status,
-                "other_med_history" => $p->other_med_history
+                'household_num' => isset($p->household_num) ? $p->household_num : '',
+                "philhealth_categ" => isset($p->philhealth_categ) ? $p->philhealth_categ : '',
+                "fourps_num" => isset($p->fourps_num) ? $p->fourps_num : '',
+                "health_group" => isset($p->health_group) ? $p->health_group : '',
+                "fam_plan" => isset($p->fam_plan) ? $p->fam_plan : '',
+                "fam_plan_method" => isset($p->fam_plan_method) ? $p->fam_plan_method : '',
+                "fam_plan_other_method" => isset($p->fam_plan_other_method) ? $p->fam_plan_other_method : '',
+                "fam_plan_status" => isset($p->fam_plan_status) ? $p->fam_plan_status : '',
+                "fam_plan_other_status" => isset($p->fam_plan_other_status) ? $p->fam_plan_other_status : '',
+                "other_med_history" => isset($p->other_med_history) ? $p->other_med_history : ''
             );
             array_push($data, $res);
         }

@@ -473,36 +473,51 @@ class ClientCtrl extends Controller
 
     public function savePopulation(Request $req)
     {
-        $con=aphrodite_conn::AphroditeConn();
-        $dateNow = date('Y-m-d H:i:s');
         $user = Auth::user();
-        $fname = mysqli_real_escape_string($con,($req->fname));
-        $mname = mysqli_real_escape_string($con,($req->mname));
-        $lname = mysqli_real_escape_string($con,($req->lname));
-        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
-        $unique_id = mysqli_real_escape_string($con,$unique_id);
-        $q = "INSERT INTO profile(
-                unique_id, familyID, head, relation, 
-                fname,mname,lname,suffix,dob,sex,unmet,
-                barangay_id,muncity_id,province_id, created_at, updated_at, 
-                phicID, nhtsID, education,
-                pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,
-                cancer,cancer_type,covid_status,menarche,menarche_age,
-                newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya,sexually_active,updated_by)
-                VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
-                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
-                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->pwd','$req->pwd_desc','$req->pregnant',
-                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date',
-                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya', '$req->sexually_active', '$user->id')
-            ON DUPLICATE KEY UPDATE
-                familyID = '$req->familyID',
-                sex = '$req->sex',
-                relation = '$req->relation',
-                education = '$req->education',
-                unmet = '$req->unmet'
-            ";
-        DB::select($q);
+//        $con=aphrodite_conn::AphroditeConn();
+//        $dateNow = date('Y-m-d H:i:s');
+//        $fname = mysqli_real_escape_string($con,($req->fname));
+//        $mname = mysqli_real_escape_string($con,($req->mname));
+//        $lname = mysqli_real_escape_string($con,($req->lname));
+//        $unique_id = $fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$user->muncity;
+//        $unique_id = mysqli_real_escape_string($con,$unique_id);
+//        $q = "INSERT INTO profile(
+//                unique_id, familyID, head, relation,
+//                fname,mname,lname,suffix,dob,sex,unmet,
+//                barangay_id,muncity_id,province_id, created_at, updated_at,
+//                phicID, nhtsID, education,
+//                pwd,pwd_desc,pregnant,birth_place,civil_status,religion,other_religion,contact,height,weight,
+//                cancer,cancer_type,covid_status,menarche,menarche_age,
+//                newborn_screen,newborn_text,deceased,deceased_date,nhts,four_ps,ip,member_others,balik_probinsya,sexually_active,updated_by)
+//                VALUES('$unique_id', '$req->familyID', 'NO', '$req->relation', '".$fname."',
+//                '".$mname."','".$lname."','$req->suffix','".date('Y-m-d',strtotime($req->dob))."','$req->sex','$req->unmet',
+//                '$req->barangay','$user->muncity','$user->province','$dateNow','$dateNow','$req->phicID','$req->nhtsID','$req->education','$req->pwd','$req->pwd_desc','$req->pregnant',
+//                '$req->birth_place', '$req->civil_status', '$req->religion', '$req->other_religion', '$req->contact', '$req->height', '$req->weight', '$req->cancer', '$req->cancer_type', '$req->covid_status', '$req->menarche', '$req->menarche_age', '$req->newborn_screen', '$req->newborn_text', '$req->deceased', '$req->deceased_date',
+//                '$req->nhts', '$req->four_ps', '$req->ip', '$req->member_others', '$req->balik_probinsya', '$req->sexually_active', '$user->id')
+//            ON DUPLICATE KEY UPDATE
+//                familyID = '$req->familyID',
+//                sex = '$req->sex',
+//                relation = '$req->relation',
+//                education = '$req->education',
+//                unmet = '$req->unmet'
+//            ";
+//        DB::select($q);
 
+        $unique_id = $req->fname.''.$req->mname.''.$req->lname.''.$req->suffix.''.$req->barangay_id.''.$user->muncity;
+        $data = $req->all();
+        $data['unique_id'] = $unique_id;
+        $data['head'] = 'NO';
+        $data['muncity_id'] = $user->muncity;
+        $data['province_id'] = $user->province;
+        $data['updated_by'] = $user->id;
+        unset(
+            $data['_token'], $data['familyProfile'],
+            $data['hypertension'], $data['hyper_remarks'], $data['diabetic'], $data['diabetic_remarks'],
+            $data['mental_med'], $data['mental_remarks'], $data['tbdots_med'], $data['tb_remarks'],
+            $data['cvd_med'], $data['cvd_remarks'], $data['nutri_stat'], $data['immunization']
+        );
+
+        Profile::create($data);
         $profile_id = Profile::where("unique_id",$unique_id)->first()->id;
 
         if(isset($req->hypertension)) {
@@ -550,18 +565,22 @@ class ClientCtrl extends Controller
             $cvd->save();
         }
 
-        foreach($req->nutri_stat as $nutri) {
-            $nstat = new NutritionStatus();
-            $nstat->profile_id = $profile_id;
-            $nstat->description = $nutri;
-            $nstat->save();
+        if(count($req->nutri_stat) > 0) {
+            foreach($req->nutri_stat as $nutri) {
+                $nstat = new NutritionStatus();
+                $nstat->profile_id = $profile_id;
+                $nstat->description = $nutri;
+                $nstat->save();
+            }
         }
 
-        foreach($req->immunization as $immu) {
-            $i = new Immunization();
-            $i->profile_id = $profile_id;
-            $i->description = $immu;
-            $i->save();
+        if(count($req->immunization) > 0) {
+            foreach($req->immunization as $immu) {
+                $i = new Immunization();
+                $i->profile_id = $profile_id;
+                $i->description = $immu;
+                $i->save();
+            }
         }
 
         $q = "INSERT IGNORE profile_device(profile_id,device) values(
@@ -798,68 +817,21 @@ class ClientCtrl extends Controller
             $update['relation'] = $relation;
             $update['updated_by'] = $user->id;
 
-            unset($update['_token'], $update['currentID'], $update['unique_id'], $update['update']);
+            unset(
+                $update['_token'], $update['currentID'], $update['unique_id'], $update['update'],
+                $update['hypertension'], $update['hyper_remarks'], $update['diabetic'], $update['diabetic_remarks'],
+                $update['mental_med'], $update['mental_remarks'], $update['tbdots_med'], $update['tb_remarks'],
+                $update['cvd_med'], $update['cvd_remarks'], $update['nutri_stat'], $update['immunization']
+            );
+
+            $update['nhts'] = $req->nhts=='yes' ? 'yes':'';
+            $update['four_ps'] = $req->four_ps=='yes' ? 'yes':'';
+            $update['ip'] = $req->ip=='yes' ? 'yes':'';
 
             if($relation !=  'Head') {
                 unset($update['income'], $update['water'], $update['toilet']);
             }
 
-//            if($req->head=='YES'){
-//                $relation = 'Head';
-//            }else{
-//                $relation = $req->relation;
-//            }
-//            $fname = ($req->fname);
-//            $mname = ($req->mname);
-//            $lname = ($req->lname);
-//            $update = array(
-//                'familyID' => $req->familyName,
-//                'phicID' => $req->phicID,
-//                'nhtsID' => $req->nhtsID,
-//                'head' => $req->head,
-//                'relation' => $relation,
-//                'fname' => $fname,
-//                'mname' => $mname,
-//                'lname' => $lname,
-//                'suffix' => $req->suffix,
-//                'dob' => $req->dob,
-//                'sex' => $req->sex,
-//                'unmet' => $req->unmet,
-//                'barangay_id' => $req->barangay,
-//                'education' => $req->education,
-//                'pwd' => $req->pwd,
-//                'pwd_desc' => $req->pwd_desc,
-//                'pregnant' => $req->pregnant,
-//                'birth_place' => $req->birth_place,
-//                'civil_status' => $req->civil_status,
-//                'religion' => $req->religion,
-//                'other_religion' => $req->other_religion,
-//                'contact' => $req->contact,
-//                'height' => $req->height,
-//                'weight' => $req->weight,
-//                'cancer' => $req->cancer,
-//                'cancer_type' => $req->cancer_type,
-//                'covid_status' => $req->covid_status,
-//                'menarche' => $req->menarche,
-//                'menarche_age' => $req->menarche_age,
-//                'newborn_screen' => $req->newborn_screen,
-//                'newborn_text' => $req->newborn_text,
-//                'deceased' => $req->deceased,
-//                'deceased_date' => $req->deceased_date,
-//                'nhts' => $req->nhts,
-//                'four_ps' => $req->four_ps,
-//                'ip' => $req->ip,
-//                'member_others' => $req->member_others,
-//                'balik_probinsya' => $req->balik_probinsya,
-//                'sexually_active' => $req->sexually_active,
-//                'updated_by' => $user->id
-//            );
-//            if($relation=='Head')
-//            {
-//                $update['income'] = $req->income;
-//                $update['water'] = $req->water;
-//                $update['toilet'] = $req->toilet;
-//            }
             //$unique_id =$fname.''.$mname.''.$lname.''.$req->suffix.''.$req->barangay.''.$muncity_id;
             $unique_id = $req->unique_id;
 
@@ -2228,7 +2200,7 @@ class ClientCtrl extends Controller
         if($priv!=0 && $priv!=2){
             return redirect('/');
         }
-        $cur_year = (isset($req->select_year)) ? $req->select_year : '2022';
+        $cur_year = (isset($req->select_year) && $req->select_year != '') ? $req->select_year : '2022';
 
         $user = Auth::user();
         if($user->user_priv == 2) {
@@ -2255,26 +2227,13 @@ class ClientCtrl extends Controller
             }
         } else {
             $brgy = Barangay::where('muncity_id',$user->muncity)->get();
-            /* UNCOMMENT THESE LINES BEFORE NEXT PROFILING */
-//            if($cur_year == '2018') {
-//                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-//                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
-//            }else if($cur_year == '2022') {
-//                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
-//                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-//            }
-            /* AND DELETE FROM HERE */
-            $total_target = $total_profiled = 0;
-            foreach($brgy as $bar) {
-                if($cur_year == '2018') {
-                    $total_target += Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar->id)->first()->target_count;
-                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('created_at','<','2022-01-01 00:00:00')->count();
-                }else if($cur_year == '2022') {
-                    $total_target += Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar->id)->first()->target_count;
-                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-                }
+            if($cur_year == '2018') {
+                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
+            }else if($cur_year == '2022') {
+                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
             }
-            /* TO HERE */
         }
         Session::put('statreport_year',$cur_year);
         return view('client.status', [
@@ -2425,4 +2384,56 @@ class ClientCtrl extends Controller
         ]);
     }
 
+    public function iclinicSys(Request $req) {
+        $priv = Auth::user()->user_priv;
+        $cur_year = (isset($req->select_year) && $req->select_year != '') ? $req->select_year : '2022';
+        if($priv!=0 && $priv!=2){
+            return redirect('/');
+        }
+
+        $user = Auth::user();
+        if($priv == 2) { /* barangay */
+            $brgy = UserBrgy::select(
+                'barangay.id',
+                'barangay.description',
+                'barangay.province_id',
+                'barangay.muncity_id',
+                'barangay.target',
+                'barangay.target_2022'
+            )
+                ->where('userbrgy.user_id',$user->id)
+                ->leftJoin('barangay','barangay.id','=','userbrgy.barangay_id')
+                ->get();
+            $total_target = $total_profiled = 0;
+            foreach($brgy as $bar) {
+                if($cur_year == '2018') {
+                    $total_target += $bar->target;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('created_at','<','2022-01-01 00:00:00')->count();
+                }else if($cur_year == '2022') {
+                    $total_target += $bar->target_2022;
+                    $total_profiled += Profile::where('barangay_id',$bar->id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+                }
+            }
+        } else if($priv == 0) { /* municipality/city */
+            $brgy = Barangay::where('muncity_id',$user->muncity)->get();
+            $total_target = 0;
+            if($cur_year == '2018') {
+//                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$user->muncity)->first()->target_count;
+                foreach($brgy as $bar)
+                    $total_target += $bar->target;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('created_at','<','2022-01-01 00:00:00')->count();
+            }else if($cur_year == '2022') {
+                foreach($brgy as $bar)
+                    $total_target += $bar->target;
+                $total_profiled = Profile::where('muncity_id',$user->muncity)->where('updated_at','>=','2022-01-01 00:00:00')->count();
+            }
+        }
+        Session::put('statreport_year',$cur_year);
+        return view('client.iclinicsys', [
+            'brgy' => $brgy,
+            'total_target' => $total_target,
+            'total_profiled' => $total_profiled,
+            'year' => $cur_year
+        ]);
+    }
 }

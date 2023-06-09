@@ -69,35 +69,47 @@ class ParameterCtrl extends Controller
         $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
             ? ((date("Y") - $birthDate[2]) - 1)
             : (date("Y") - $birthDate[2]));
-        return $age;
+
+        if(Session::get('getDay')) {
+            return array(
+                'year' => $age,
+                'month' => self::getAgeMonth($date),
+                'day' => self::getAgeDay($date)
+            );
+        } else
+            return $age;
     }
 
     static function getAgeMonth($date){
-        $d1 = strtotime($date);
-        $d2 = strtotime(date('Y-m-d'));
-        $min_date = min($d1, $d2);
-        $max_date = max($d1, $d2);
-
-        $i = 0;
-        while (($min_date = strtotime("+1 MONTH", $min_date)) <= $max_date) {
-            $i++;
-        }
-        return $i;
-    }
-
-    static function getAgeDay($date){
-        $diff = date_diff(date_create($date), date_create('now'));
-        return $diff->d;
 //        $d1 = strtotime($date);
 //        $d2 = strtotime(date('Y-m-d'));
 //        $min_date = min($d1, $d2);
 //        $max_date = max($d1, $d2);
 //
 //        $i = 0;
+//        while (($min_date = strtotime("+1 MONTH", $min_date)) <= $max_date) {
+//            $i++;
+//        }
+//        return $i;
+        $diff = date_diff(date_create($date), date_create('now'));
+        return $diff->m;
+    }
+
+    static function getAgeDay($date){
+//        $d1 = strtotime($date);
+//        $d2 = strtotime(date('Y-m-d'));
+//        $min_date = min($d1, $d2);
+//        $max_date = max($d1, $d2);
+//        $min_date = strtotime($date);
+//        $max_date = strtotime(date('Y-m-d'));
+//
+//        $i = 0;
 //        while (($min_date = strtotime("+1 DAY", $min_date)) <= $max_date) {
 //            $i++;
 //        }
 //        return $i;
+        $diff = date_diff(date_create($date), date_create('now'));
+        return $diff->d;
     }
 
     public function delete()
@@ -825,6 +837,169 @@ class ParameterCtrl extends Controller
             default:
                 return 'None';
         }
+    }
+
+    static function getCivilStatus($cs) {
+        if($cs == 'Married')
+            return 'M - Married';
+        else if($cs == 'Single')
+            return "S - Single";
+        else if($cs == 'Live-in')
+            return "L - Live in";
+        else if($cs == 'Widowed')
+            return "W - Widow/er";
+        else if($cs == 'Separated')
+            return "SP - Separated";
+        else if($cs == 'Cohabitation')
+            return "C - Cohabitation";
+        else
+            return '';
+    }
+
+    static function getEducation($educ) {
+        if($educ == 'non')
+            return 'No Education';
+        else if($educ == 'preschool')
+            return 'Preschool';
+        else if($educ == 'elem')
+            return 'Elementary Student';
+        else if($educ == 'elem_undergrad')
+            return 'Elementary Undergraduate';
+        else if($educ == 'elem_grad')
+            return 'Elementary Graduate';
+        else if($educ == 'high')
+            return 'High School Student';
+        else if($educ == 'high_undergrad')
+            return "High School Undergraduate";
+        else if($educ == 'high_grad')
+            return "High School Graduate";
+        else if($educ == 'senior_high')
+            return 'Senior High School';
+        else if($educ == 'als')
+            return 'ALS';
+        else if($educ == 'college')
+            return 'College Student';
+        else if($educ == 'college_undergrad')
+            return 'College Undergraduate';
+        else if($educ == 'college_grad')
+            return 'College Graduate';
+        else if($educ == 'post_grad')
+            return 'Post Graduate/Masteral/Doctorate Degree';
+        else if($educ == 'vocational')
+            return 'Vocational Course';
+        else if($educ == 'unable_provide')
+            return 'Unable to Provide';
+        else
+            return '';
+    }
+
+    static function getReligion($rel, $other) {
+        if(isset($rel) && $rel != '') {
+            if($rel == 'RC')
+                return 'Roman Catholic';
+            else if($rel == 'inc')
+                return 'Iglesia ni Cristo';
+            else if($rel == 'born_again')
+                return 'Born Again Chrisian';
+            else if($rel == 'jehovas')
+                return "Jehova's Witness";
+            else if($rel == 'adventist')
+                return "Seventh Day Adventist";
+            else if($rel == 'mormons')
+                return 'LDS-Mormons';
+            else if($rel == 'other')
+                return $other;
+            else
+                return $rel;
+        }else
+            return "";
+    }
+
+    static function getPhilhealthCateg($categ) {
+        if($categ == 'direct')
+            return 'Direct Contributors';
+        else if($categ == 'indirect')
+            return 'Indirect Contributors';
+        else if($categ == 'unknown')
+            return 'Unknown';
+        else
+            return "";
+    }
+
+    static function getHealthRisk($risk) {
+        if($risk == 'N')
+            return "N - Newborn (0-28 days)";
+        else if($risk == 'I')
+            return "I - Infant (0-1 y/o)";
+        else if($risk == 'PSAC')
+            return "PSAC 1-4 Y/0)";
+        else if($risk == 'SAC')
+            return "SAC - School Age (5-9 y/o)";
+        else if($risk == 'AD')
+            return "AD - Adolescent (10-19 y/o)";
+        else if($risk == 'A')
+            return "A - Adult (20-59 y/o";
+        else if($risk == 'SC')
+            return "SC - Senior Citizen";
+        else
+            return "";
+    }
+
+    static function getRelation($rel, $other) {
+        if($rel == 'Head')
+            $rel = "1 - Head";
+        else if($rel == 'Spouse')
+            $rel = "2 - Spouse";
+        else if($rel == 'Son')
+            $rel = "3 - Son";
+        else if($rel == 'Daughter')
+            $rel = "4 - Daughter";
+        else {
+            if($rel == 'Others')
+                $rel = "5 - Others";
+            else {
+                $other = $rel;
+                $rel = "5 - Others";
+            }
+        }
+        return array(
+            'relation' => $rel,
+            'other' => $other
+        );
+    }
+
+    static function getWaterAndToilet($id) {
+        $result = Profile::select('water','toilet')->where('familyID',$id)->where('head','YES')->first();
+        $water = $result->water;
+        if($water != 0 && $water != 4)
+            $water = "Level " . $water;
+        else if($water == 4)
+            $water = "None of the above";
+        else
+            $water = 'Unknown';
+
+        $toilet = $result->toilet;
+        if($toilet == 'non')
+            $toilet = 'None';
+        else if($toilet == 'septic')
+            $toilet = "Pour/flush toilet connected to septic tank.";
+        else if($toilet == 'sewage')
+            $toilet = "Pour/flush toilet connected to septic tank AND to sewarage system.";
+        else if($toilet == 'compost')
+            $toilet = "Ventilated improved pit latrine (VIP) or Composting toilet";
+        else if($toilet == 'open_drain')
+            $toilet = "Water-sealed connected to open drain.";
+        else if($toilet == 'overhung_l')
+            $toilet = "Overhung Latrine";
+        else if($toilet == 'open_l')
+            $toilet = 'Open-pit Latrine';
+        else
+            $toilet = '';
+
+        return array(
+            'water' => $water,
+            'toilet' => $toilet
+        );
     }
 
 }

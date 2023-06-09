@@ -24,10 +24,10 @@ class DownloadCtrl extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
         $this->middleware('auth');
     }
     public function index(Request $req){
+        $this->middleware('admin');
         $province_id = $req->province_id;
         $muncity_id = $req->muncity_id;
         $data = Barangay::where('province_id',$province_id)
@@ -40,126 +40,79 @@ class DownloadCtrl extends Controller
         ]);
     }
 
+    public function downloadClinicSys(Request $req) {
+        $prov_id = (isset($req->province_id)) ? $req->province_id:Auth::user()->province;
+        $mun_id = $req->muncity_id;
+        $bar_id = $req->bar_id;
+        $year = Session::get('statreport_year');
+        Session::put('clinicsys', true);
+
+        return self::generate($prov_id, $mun_id, $bar_id, $year);
+    }
+
     public function generateDownload(Request $req){
-        $id = $req->province_id;
+        $prov_id = $req->province_id;
         $mun_id = $req->muncity_id;
         $bar_id = $req->bar_id;
         $year = Session::get('statreport_year');
 
-        return self::generate($id, $mun_id, $bar_id, $year);
+        return self::generate($prov_id, $mun_id, $bar_id, $year);
     }
-    public static function generate($id, $mun_id, $bar_id, $year) {
-        $withyear = (isset($year) && $year != '') ? true : false;
-        $year = (isset($year) && $year != '') ? $year : Carbon::now()->format('Y');
-
-        $start = $year.'-01-01';
-        $end = $year.'-12-31';
-        $connection = 'db_'.$year;
-
-        $profileservices = ProfileServices::on($connection)->select('profileservices.dateProfile','profileservices.service_id','profileservices.bracket_id','profileservices.barangay_id','profileservices.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','profileservices.profile_id','=','profile.unique_id')
-            ->where('profileservices.dateProfile','>=',$start)
-            ->where('profileservices.dateProfile','<=',$end);
-
-        $profilecases = ProfileCases::on($connection)->select('profilecases.dateProfile','profilecases.case_id','profilecases.bracket_id','profilecases.barangay_id','profilecases.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','profilecases.profile_id','=','profile.unique_id')
-            ->where('profilecases.dateProfile','>=',$start)
-            ->where('profilecases.dateProfile','<=',$end);
-
-        $femalestatus = FemaleStatus::on($connection)->select('femalestatus.dateProfile','femalestatus.status','femalestatus.code','femalestatus.barangay_id','femalestatus.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','femalestatus.profile_id','=','profile.unique_id')
-            ->where('femalestatus.dateProfile','>=',$start)
-            ->where('femalestatus.dateProfile','<=',$end);
-
-        $serviceoption = ServiceOption::on($connection)->select('serviceoption.dateProfile','serviceoption.option','serviceoption.status','serviceoption.barangay_id','serviceoption.muncity_id','profile.fname','profile.mname','profile.lname','profile.suffix')
-            ->leftJoin('tsekap_main.profile','serviceoption.profile_id','=','profile.unique_id')
-            ->where('serviceoption.dateProfile','>=',$start)
-            ->where('serviceoption.dateProfile','<=',$end);
-
-        $user = Auth::user();
-        $user_priv = $user->user_priv;
+    public static function generate($prov_id, $mun_id, $bar_id, $year) {
+        $year = (isset($year) && $year != '') ? $year : '2022';
         $total_target = $total_profiled = 0;
+        $target_col = ($year == '2022') ? 'target_2022':'target';
 
-        if($user_priv == 3 || $user_priv == 1 || $user_priv == 0) {
-            $profile = Profile::select(
-                'familyID', 'head', 'relation',
-                'fname', 'mname', 'lname', 'suffix',
-                'dob', 'sex',
-                'barangay_id', 'muncity_id', 'province_id', 'created_at', 'updated_at',
-                'updated_by'
-            )->where('province_id',$id)->where('muncity_id',$mun_id);
+        $profile = Profile::where('profile.province_id', $prov_id)->where('profile.muncity_id',$mun_id);
+        $muncity = Muncity::where('id',$mun_id)->first();
 
-            if(isset($bar_id) && $bar_id != '') {
-                $filename = Muncity::find($mun_id)->description.' ('.Barangay::find($bar_id)->description.')-'.$year;
-                $profile = $profile->where('barangay_id',$bar_id);
-                $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id);
-                $profilecases = $profilecases->where('profilecases.barangay_id', $bar_id);
-                $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id);
-                if($year == '2022') {
-                    $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar_id)->first()->target_count;
-                    $total_profiled = Profile::where('barangay_id',$bar_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-                } else {
-                    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
-                    $total_profiled = Profile::where('barangay_id',$bar_id)->where('created_at','<','2022-01-01 00:00:00')->count();
-                }
-            } else {
-                $filename = Muncity::find($mun_id)->description.' - '.$year;
-                $profileservices = $profileservices->where('profileservices.muncity_id',$mun_id);
-                $profilecases = $profilecases->where('profilecases.muncity_id',$mun_id);
-                $serviceoption = $serviceoption->where('serviceoption.muncity_id',$mun_id);
-                if($year == '2022') {
-                    $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
-                    $total_profiled = Profile::where('muncity_id',$mun_id)->where('updated_at','>=','2022-01-01 00:00:00')->count();
-                } else {
-                    $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
-                    $total_profiled = Profile::where('muncity_id',$mun_id)->where('created_at','<','2022-01-01 00:00:00')->count();
-                }
-            }
-
-            $profileservices = $profileservices->get();
-            $profilecases = $profilecases->get();
-            $serviceoption = $serviceoption->get();
-
-            if($withyear == true) {
-                if($year == '2022')
-                    $profile = $profile->where('updated_at','>=',$start);
-                else
-                    $profile = $profile->where('created_at','<','2022-01-01 00:00:00');
-                
-            }
-            $profile = $profile->orderBy('updated_at','desc')->get();
+        if(isset($bar_id) && $bar_id != '') { // barangay data will be downloaded
+            $barangay = Barangay::where('id',$bar_id)->first();
+            $profile = $profile->where('profile.barangay_id',$bar_id);
+            $filename = $muncity->description.' ('.$barangay->description.')-'.$year;
+            if($year = '2022')
+                $total_target = $barangay->target_2022;
+            else
+                $total_target = $barangay->target;
         }
-        else if($user_priv == 2) {
-            $filename = Barangay::find($bar_id)->description.'-'.$year;
-            $profileservices = $profileservices->where('profileservices.barangay_id',$bar_id)->get();
-            $profilecases = $profilecases->where('profilecases.barangay_id',$bar_id)->get();
-            $serviceoption = $serviceoption->where('serviceoption.barangay_id',$bar_id)->get();
-
-            $profile = Profile::where('barangay_id',$bar_id);
-            if($year == '2022') {
-                $profile = $profile->where('updated_at','>=','2022-01-01 00:00:00');
-                $total_target = Barangay::select(DB::raw("SUM(target_2022) as target_count"))->where('id',$bar_id)->first()->target_count;
-                $total_profiled = $profile->count();
-            } else {
-                $profile = $profile->where('updated_at','<','2022-01-01 00:00:00');
-                $total_target = Barangay::select(DB::raw("SUM(target) as target_count"))->where('id',$bar_id)->first()->target_count;
-                $total_profiled = $profile->count();
-            }
-            $profile = $profile->orderBy('updated_at','desc')->get();
+        else { // whole muncity will be downloaded
+            $filename = $muncity->description.' - '.$year;
+            $total_target = Barangay::select(DB::raw("SUM(".$target_col.") as target_count"))->where('muncity_id',$mun_id)->first()->target_count;
         }
 
+        if($year == '2022')
+            $profile = $profile->where('profile.updated_at','>=','2022-01-01 00:00:00');
+        else
+            $profile = $profile->where('profile.updated_at','<','2022-01-01 00:00:00');
+
+        $clinicsys = Session::get('clinicsys');
+        if($clinicsys) {
+            $profile = $profile
+                ->select('profile.*','bar.description as barangay','med.*', \DB::raw("DATE_FORMAT(profile.dob,'%Y / %m / %d ') as birthdate"))
+                ->leftJoin('barangay as bar','bar.id','=','profile.barangay_id')
+                ->leftJoin('medication as med','med.profile_id','=','profile.id')
+                ->orderBy('profile.familyID','asc')->get();
+            $filename .= '(ICLINICSYS)';
+        } else {
+            $profile = $profile->orderBy('profile.updated_at','desc')->get();
+        }
+
+        $total_profiled = count($profile);
         $total_percentage = ($total_profiled / $total_target) * 100;
 
-        return view('report.data',[
+        $return_data = [
             'filename' => $filename,
             'profile' => $profile,
-            'profileservices' => $profileservices,
-            'profilecases' => $profilecases,
-            'femalestatus' => $femalestatus,
-            'serviceoption' => $serviceoption,
             'total_target' => $total_target,
             'total_profiled' => $total_profiled,
             'total_percentage' => ($total_target > 0) ? number_format($total_percentage, 1) : 0
-        ]);
+        ];
+
+        if($clinicsys) {
+            Session::put('clinicsys',false);
+            return view('report.clinicsys_data',$return_data);
+        } else {
+            return view('report.data',$return_data);
+        }
     }
 }

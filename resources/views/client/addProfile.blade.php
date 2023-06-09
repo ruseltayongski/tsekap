@@ -233,7 +233,7 @@ $today = date('Y-m-d');
                         <td>
                             <select name="religion" class="form-control chosen-select" id="religion" style="width: 100%">
                                 <option value="">Select...</option>
-                                <option>Roman Catholic</option>
+                                <option value="RC">Roman Catholic</option>
                                 <option>Christian</option>
                                 <option value="inc">Iglesia ni Cristo</option>
                                 <option>Catholic</option>
@@ -244,7 +244,7 @@ $today = date('Y-m-d');
                                 <option>Church of God</option>
                                 <option value="jehovas">Jehova's Witness</option>
                                 <option>Protestant</option>
-                                <option value="adventist">Sevent Day Adventist</option>
+                                <option value="adventist">Seventh Day Adventist</option>
                                 <option value="mormons">LDS-Mormons</option>
                                 <option>Evangelical</option>
                                 <option>Pentecostal</option>

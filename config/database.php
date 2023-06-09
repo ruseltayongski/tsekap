@@ -1,7 +1,18 @@
 <?php
-$host = "192.168.81.5";
-$username = "rtayong_2020";
-$password = "rtayong_2020";
+// live
+//$host = "49.157.74.6";
+//$username = "rtayong_2020";
+//$password = "rtayong_2020";
+
+// local
+//$host = "localhost";
+//$username = "root";
+//$password = "adm1n";
+
+// dummy
+$host = "192.168.110.50";
+$username = "rtayong_dummy50";
+$password = "rtayong_dummy50";
 
 return [
 
@@ -144,6 +155,20 @@ return [
             'host' => $host,
             'port' => '3306',
             'database' => 'tsekap_2022',
+            'username' => $username,
+            'password' => $password,
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'db_2023' => [
+            'driver' => 'mysql',
+            'host' => $host,
+            'port' => '3306',
+            'database' => 'tsekap_2023',
             'username' => $username,
             'password' => $password,
             'charset' => 'utf8',

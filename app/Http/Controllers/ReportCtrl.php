@@ -304,4 +304,28 @@ class ReportCtrl extends Controller
        $year = Session::get('statreport_year');
         return view('report.stat_details', ['muncity'=>$mun_id, 'bar_id'=>$bar_id, 'year' => $year]);
     }
+
+    public function iclinicSys(Request $req) {
+        $priv = Auth::user()->user_priv;
+        $cur_year = (isset($req->select_year) && $req->select_year != '') ? $req->select_year : '2022';
+        $target = ($cur_year == '2022') ? 'target_2022' : 'target';
+
+        $user = Auth::user();
+        $title = ($priv == 3) ? strtoupper(Province::find($user->province)->description)." PROVINCE":'REGION VII';
+        $sub = Province::select('province.id','province.description', DB::raw("SUM(barangay.".$target.") as target"))
+            ->leftJoin('barangay','barangay.province_id','=','province.id')
+            ->orderBy('province.description','asc');
+
+        if($priv==3){
+            $sub = $sub->where('province.id',$user->province);
+        }
+        $sub = $sub->groupBy('province.id')
+            ->get();
+
+        return view('report.iclinicsys', [
+            'province' => $sub,
+            'year' => $cur_year,
+            'title' => $title
+        ]);
+    }
 }

@@ -203,8 +203,9 @@ use App\Province;
                         {{--<li><a href="{{ asset('/user/report/health') }}"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp; --}}{{--Environmental Health Graph Statistical Data</a></li>--}}
                         @endif
 {{--                        <li><a href="{{ asset('/user/report/monthly') }}"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp; Monthly Report</a></li>--}}
-                        @if(Auth::user()->user_priv==0 || Auth::user()->user_priv =2)
+                        @if(Auth::user()->user_priv==0 || Auth::user()->user_priv ==2)
                         <li><a href="{{ asset('/user/report/status') }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        <li><a href="{{ asset('/user/report/iclinicsys')  }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; IClinicSys Report</a></li>
                         {{--<li><a href="{{ asset('/report/onboard/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Onboard Users</a></li>--}}
                         {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
                         @endif
@@ -268,9 +269,9 @@ use App\Province;
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            version 3.0
+            version 3.1
         </p>
-        <p>Copyright &copy; 2022 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2023 DOH-RO7 All rights reserved</p>
     </div>
 </footer>
 @include('modal')

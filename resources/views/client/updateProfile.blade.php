@@ -58,7 +58,7 @@ $today = date('Y-m-d');
                     <input type="hidden" name="unique_id" value="{{ $info->unique_id }}" />
                     <tr>
                         <td>Family Profile ID :</td>
-                        <input type="hidden" name="familyName" value="{{ $info->familyID }}" />
+                        <input type="hidden" name="familyID" value="{{ $info->familyID }}" />
                         <td><input type="text" value="{{ $info->familyID }}" class="form-control" readonly /> </td>
                     </tr>
                     <tr>
@@ -241,7 +241,7 @@ $today = date('Y-m-d');
                         <td class="has-group">
                             <select name="religion" class="form-control chosen-select" id="religion" style="width: 100%">
                                 <option value="">Select...</option>
-                                <option @if($info->religion == 'RC') selected @endif>Roman Catholic</option>
+                                <option @if($info->religion == 'RC') selected @endif value="RC">Roman Catholic</option>
                                 <option @if($info->religion == 'Christian') selected @endif>Christian</option>
                                 <option @if($info->religion == 'inc') selected @endif value="inc">Iglesia ni Cristo</option>
                                 <option @if($info->religion == 'Catholic') selected @endif>Catholic</option>
@@ -252,7 +252,7 @@ $today = date('Y-m-d');
                                 <option @if($info->religion == 'cog') selected @endif>Church of God</option>
                                 <option @if($info->religion == 'jehovas') selected @endif value="jehovas">Jehova's Witness</option>
                                 <option @if($info->religion == 'Protestant') selected @endif>Protestant</option>
-                                <option @if($info->religion == 'adventist') selected @endif value="adventist">Sevent Day Adventist</option>
+                                <option @if($info->religion == 'adventist') selected @endif value="adventist">Seventh Day Adventist</option>
                                 <option @if($info->religion == 'mormons') selected @endif value="mormons">LDS-Mormons</option>
                                 <option @if($info->religion == 'Evangelical') selected @endif>Evangelical</option>
                                 <option @if($info->religion == 'Pentecostal') selected @endif>Pentecostal</option>
@@ -267,7 +267,7 @@ $today = date('Y-m-d');
                     <tr class="has-group">
                         <td>Barangay <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
                         <td>
-                            <select name="barangay" class="form-control chosen-select" required id="brgy" style="width: 100%">
+                            <select name="barangay_id" class="form-control chosen-select" required id="brgy" style="width: 100%">
                                 <option value="">Select...</option>
                                 @foreach($brgy as $row)
                                 <option <?php if($info->barangay_id==$row->id) echo 'selected'; ?> value="{{ $row->id }}">{{ $row->description }}</option>
@@ -295,10 +295,10 @@ $today = date('Y-m-d');
                         </td>
                     </tr>
                     <?php
-                    $age = \App\Http\Controllers\ParameterCtrl::getAge($info->dob);
-                    $class = 'hide';
-                    if($age>13 && $age<50){
-                        $class = '';
+                        $age = \App\Http\Controllers\ParameterCtrl::getAge($info->dob);
+                        $class = 'hide';
+                        if($age>13 && $age<50){
+                            $class = '';
                         }
                         ?>
                         <tr class="head">
@@ -309,7 +309,7 @@ $today = date('Y-m-d');
                                     <?php
                                         $water_value = ($info->water!=0) ? 'Level '.$info->water : 'Not set';
                                         if($info->water == 4)
-                                            $water_value = "None of the above"
+                                            $water_value = "None of the above";
                                     ?>
                                     <input type="text" id="water2" class="form-control" readonly value="{{ $water_value }}" data-toggle="modal" data-target="#waterLvl" />
                                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#waterLvl">Select...</button>
@@ -323,14 +323,12 @@ $today = date('Y-m-d');
                             <select name="toilet" class="form-control chosen-select" id="toilet" style="width: 100%">
                                 <option value="">Select...</option>
                                 <option value="non" {{ ($info->toilet=='non') ? 'selected':null }}>None</option>
-                                {{--<option value="comm" {{ ($info->toilet=='comm') ? 'selected':null }}>Communal</option>--}}
-                                {{--<option value="indi" {{ ($info->toilet=='indi') ? 'selected':null }}>Individual Household</option>--}}
-                                <option value="flush_septic" {{ ($info->toilet=='flush_septic') ? 'selected':null }}>Pour/flush toilet connected to septic tank</option>
-                                <option value="flush_sewage" {{ ($info->toilet=='flush_sewage') ? 'selected':null }}>Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
-                                <option value="latrine_compost" {{ ($info->toilet=='latrine_compost') ? 'selected':null }}>Ventilated improved pit latrine (VIP) or Composting toilet</option>
+                                <option value="septic" {{ ($info->toilet=='septic') ? 'selected':null }}>Pour/flush toilet connected to septic tank</option>
+                                <option value="sewage" {{ ($info->toilet=='sewage') ? 'selected':null }}>Pour/flush toilet connected to connected to septic tank AND to sewerage system</option>
+                                <option value="compost" {{ ($info->toilet=='compost') ? 'selected':null }}>Ventilated improved pit latrine (VIP) or Composting toilet</option>
                                 <option value="open_drain" {{ ($info->toilet=='open_drain') ? 'selected':null }}>Water-sealed connected to open drain</option>
-                                <option value="overhung_latrine" {{ ($info->toilet=='overhung_latrine') ? 'selected':null }}>Overhung Latrine</option>
-                                <option value="openpit_latrine" {{ ($info->toilet=='openpit_latrine') ? 'selected':null }}>Open-pit Latrine</option>
+                                <option value="overhung_l" {{ ($info->toilet=='overhung_l') ? 'selected':null }}>Overhung Latrine</option>
+                                <option value="open_l" {{ ($info->toilet=='open_l') ? 'selected':null }}>Open-pit Latrine</option>
                             </select>
                             <small class="text-red" id="toilet_warning"><br>This field is required.</small>
                         </td>
@@ -463,7 +461,6 @@ $today = date('Y-m-d');
                     </tr>
                     <tr class="has-group">
                         <td>Latest Covid Vaccination Status <span class="text-red" style="font-size: 20px"><b>*</b></span> :</td>
-                        {{--<td><input type="text" name="covid_status" value="{{ $info->covid_status }}" class="form-control"/> </td>--}}
                         <td>
                             <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Primary Dose') echo "checked" ?> type="radio" name="covid_status" value="Primary Dose" style="display:inline;"> Primary Dose </label>&emsp;
                             <label style="cursor: pointer;"><input <?php if($info->covid_status === 'Second Dose') echo "checked" ?> type="radio" name="covid_status" value="Second Dose" style="display:inline;"> Second Dose </label>&emsp;
@@ -761,8 +758,8 @@ $today = date('Y-m-d');
             } else
                 $('#cs_warning').hide();
 
-            religion = $('input[name="religion"]:checked').length;
-            if(religion == 0) {
+            religion = $('#religion').val();
+            if(religion === "" || religion === null) {
                 $('#religion_warning').show();
                 $('.religion').focus();
                 missing += ", <u>Religion</u>";
@@ -791,8 +788,7 @@ $today = date('Y-m-d');
                     $('#water_warning').hide();
 
                 toilet = $('#toilet').val();
-                console.log('toilet : ' + toilet);
-                if (toilet === "undefined" || toilet === "") {
+                if(toilet === "undefined" || toilet === "") {
                     $('#toilet_warning').show();
                     $('#toilet').focus();
                     missing += ", <u>Sanitary Toilet</u>";

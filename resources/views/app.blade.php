@@ -141,6 +141,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/report/status')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        <li><a href="{{ asset('/admin/report/iclinicsys')  }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; IClinicSys Report</a></li>
                         {{--<li><a href="{{ asset('/report/onboard/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Onboard Users</a></li>--}}
                         {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
                         {{--<!----}}
@@ -199,9 +200,9 @@
 <footer class="footer">
     <div class="container">
         <p class="pull-right">
-            version 3.0
+            version 3.1
         </p>
-        <p>Copyright &copy; 2022 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2023 DOH-RO7 All rights reserved</p>
 
     </div>
 </footer>

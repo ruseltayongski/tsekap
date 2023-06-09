@@ -27,7 +27,7 @@
                 <div class="col-md-5">
                     <form method="get" action="{{ asset('/user/report/status') }}"><br>
                         <select class="form-control select2" name="select_year" id="select_year" style="width:75%;">
-                            <option>Select year...</option>
+                            <option value="">Select year...</option>
                             <option value="2018">2018</option>
                             <option value="2022">2022</option>
                         </select>&nbsp;
