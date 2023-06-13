@@ -13,7 +13,7 @@ use App\Http\Controllers\ReportCtrl as Report;
         <div class="alert alert-jim">
             <div class="row">
                 <div class="col-md-8">
-                    <h3><b>REPORT FOR ICLINICSYS ({{ $year }})</b></h3>
+                    <h3><b>REPORT FOR ICLINICSYS ({{ $year }})</b></h3><small class="text-red">*Wait for data to load before downloading.</small>
                 </div>
                 <form method="get" action="{{ asset('/admin/report/iclinicsys') }}"><br>
                     <div class="col-md-3">

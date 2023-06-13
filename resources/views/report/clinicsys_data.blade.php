@@ -66,9 +66,9 @@ foreach($profile as $row) {
             <td>'.$row->fname.'</td>
             <td>'.$row->mname.'</td>
             <td>'.$rel['relation'].'</td>
-            <td>'.$rel['other'].'</td>
-            <td>'.$row->birthdate.'</td>
-            <td>'.$age.' Years, '.$month.' Months</td>
+            <td>'.$rel['other']."</td>
+            <td>'".$row->birthdate."</td>
+            <td>".$age.' Years, '.$month.' Months</td>
             <td>'.$row->sex.'</td>';
 
     $ip = (isset($rel->ip) && $rel->ip=='yes')?'IP':"Non-IP";

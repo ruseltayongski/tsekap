@@ -70,7 +70,7 @@ class DownloadCtrl extends Controller
             $barangay = Barangay::where('id',$bar_id)->first();
             $profile = $profile->where('profile.barangay_id',$bar_id);
             $filename = $muncity->description.' ('.$barangay->description.')-'.$year;
-            if($year = '2022')
+            if($year == '2022')
                 $total_target = $barangay->target_2022;
             else
                 $total_target = $barangay->target;
@@ -88,7 +88,7 @@ class DownloadCtrl extends Controller
         $clinicsys = Session::get('clinicsys');
         if($clinicsys) {
             $profile = $profile
-                ->select('profile.*','bar.description as barangay','med.*', \DB::raw("DATE_FORMAT(profile.dob,'%Y / %m / %d ') as birthdate"))
+                ->select('profile.*','bar.description as barangay','med.*', \DB::raw("DATE_FORMAT(profile.dob,'%Y-%m-%d') as birthdate"))
                 ->leftJoin('barangay as bar','bar.id','=','profile.barangay_id')
                 ->leftJoin('medication as med','med.profile_id','=','profile.id')
                 ->orderBy('profile.familyID','asc')->get();

@@ -42,7 +42,7 @@
                         <i class="fa fa-phone"></i> <b class="text-warning">Main Contact Person:</b>
                         <ul>
                             <li style="font-size: 0.95em;">
-                                <span style="color: darkslategray">Amalio Enero Jr. - SMU Office 260-9740 local 104 / amaliojrenero@gmail.com</span>
+                                {{--<span style="color: darkslategray">Amalio Enero Jr. - SMU Office 260-9740 local 104 / amaliojrenero@gmail.com</span>--}}
                             </li>
                         </ul><br>
 

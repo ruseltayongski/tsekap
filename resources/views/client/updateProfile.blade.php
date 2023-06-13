@@ -341,17 +341,17 @@ $today = date('Y-m-d');
                                 <option value="">Select...</option>
                                 <option value="non" {{ ($info->education=='non') ? 'selected':null }}>No Education</option>
                                 <option value="preschool" {{ ($info->education=='preschool') ? 'selected':null }}>Preschool</option>
-                                <option value="elem" {{ ($info->education=='elem') ? 'selected':null }}>Elementary Student</option>
+                                <option value="elem_stud" {{ ($info->education=='elem_stud') ? 'selected':null }}>Elementary Student</option>
                                 <option value="elem_undergrad" {{ ($info->education=='elem_undergrad') ? 'selected':null }}>Elementary Undergraduate</option>
-                                <option value="elem_grad" {{ ($info->education=='elem_grad') ? 'selected':null }}>Elementary Graduate</option>
-                                <option value="high" {{ ($info->education=='high') ? 'selected':null }}>High School Student</option>
+                                <option value="elem" {{ ($info->education=='elem') ? 'selected':null }}>Elementary Graduate</option>
+                                <option value="high_stud" {{ ($info->education=='high_stud') ? 'selected':null }}>High School Student</option>
                                 <option value="high_undergrad" {{ ($info->education=='high_undergrad') ? 'selected':null }}>High School Undergraduate</option>
-                                <option value="high_grad" {{ ($info->education=='high_grad') ? 'selected':null }}>High School Graduate</option>
+                                <option value="high" {{ ($info->education=='high') ? 'selected':null }}>High School Graduate</option>
                                 <option value="senior_high" {{ ($info->education=='senior_high') ? 'selected':null }}>Senior High School</option>
                                 <option value="als" {{ ($info->education=='als') ? 'selected':null }}>ALS</option>
-                                <option value="college" {{ ($info->education=='college') ? 'selected':null }}>College Student</option>
+                                <option value="college_stud" {{ ($info->education=='college_stud') ? 'selected':null }}>College Student</option>
                                 <option value="college_undergrad" {{ ($info->education=='college_undergrad') ? 'selected':null }}>College Undergraduate</option>
-                                <option value="college_grad" {{ ($info->education=='college_grad') ? 'selected':null }}>College Graduate</option>
+                                <option value="college" {{ ($info->education=='college') ? 'selected':null }}>College Graduate</option>
                                 <option value="post_grad" {{ ($info->education=='post_grad') ? 'selected':null }}>Post Graduate/Masteral/Doctorate Degree</option>
                                 <option value="vocational" {{ ($info->education=='vocational') ? 'selected':null }}>Vocational Course</option>
                                 <option value="unable_provide" {{ ($info->education=='unable_provide') ? 'selected':null }}>Unable to provide</option>

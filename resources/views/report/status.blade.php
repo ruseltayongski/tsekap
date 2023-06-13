@@ -23,7 +23,7 @@
         <div class="alert alert-jim">
             <div class="row">
                 <div class="col-md-7">
-                    <h4><b>STATUS REPORT ({{ $year }})</b></h4>
+                    <h4><b>STATUS REPORT ({{ $year }})</b></h4><small class="text-red">*Wait for data to load before downloading.</small>
                 </div>
                 <form method="get" action="{{ asset('/report/status') }}">
                     <div class="col-md-3">

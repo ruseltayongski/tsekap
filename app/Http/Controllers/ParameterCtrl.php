@@ -71,6 +71,7 @@ class ParameterCtrl extends Controller
             : (date("Y") - $birthDate[2]));
 
         if(Session::get('getDay')) {
+            Session::forget('getDay');
             return array(
                 'year' => $age,
                 'month' => self::getAgeMonth($date),
@@ -861,27 +862,27 @@ class ParameterCtrl extends Controller
             return 'No Education';
         else if($educ == 'preschool')
             return 'Preschool';
-        else if($educ == 'elem')
+        else if($educ == 'elem_stud')
             return 'Elementary Student';
         else if($educ == 'elem_undergrad')
             return 'Elementary Undergraduate';
-        else if($educ == 'elem_grad')
+        else if($educ == 'elem')
             return 'Elementary Graduate';
-        else if($educ == 'high')
+        else if($educ == 'high_stud')
             return 'High School Student';
         else if($educ == 'high_undergrad')
             return "High School Undergraduate";
-        else if($educ == 'high_grad')
+        else if($educ == 'high')
             return "High School Graduate";
         else if($educ == 'senior_high')
             return 'Senior High School';
         else if($educ == 'als')
             return 'ALS';
-        else if($educ == 'college')
+        else if($educ == 'college_stud')
             return 'College Student';
         else if($educ == 'college_undergrad')
             return 'College Undergraduate';
-        else if($educ == 'college_grad')
+        else if($educ == 'college')
             return 'College Graduate';
         else if($educ == 'post_grad')
             return 'Post Graduate/Masteral/Doctorate Degree';

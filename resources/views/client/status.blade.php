@@ -28,8 +28,8 @@
                     <form method="get" action="{{ asset('/user/report/status') }}"><br>
                         <select class="form-control select2" name="select_year" id="select_year" style="width:75%;">
                             <option value="">Select year...</option>
-                            <option value="2018">2018</option>
-                            <option value="2022">2022</option>
+                            <option value="2018" <?php if($year == '2018') echo 'selected';?>>2018</option>
+                            <option value="2022" <?php if($year == '2022') echo 'selected';?>>2022</option>
                         </select>&nbsp;
                         <button type="submit" class="btn btn-info btn-sm btn-flat"><i class="fa fa-filter"></i> Filter</button>
                     </form>
