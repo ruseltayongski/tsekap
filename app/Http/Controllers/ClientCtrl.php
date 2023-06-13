@@ -2364,6 +2364,11 @@ class ClientCtrl extends Controller
         return $age;
     }
 
+    public function calculateAgeWithDay($dob)
+    {
+        return ParameterCtrl::getAgeWithDay($dob);
+    }
+
     public function profilePending(){
         $userid = Auth::user()->id;
         $tmpBrgy = UserBrgy::where('user_id',$userid)->get();

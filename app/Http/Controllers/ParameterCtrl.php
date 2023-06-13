@@ -69,16 +69,15 @@ class ParameterCtrl extends Controller
         $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
             ? ((date("Y") - $birthDate[2]) - 1)
             : (date("Y") - $birthDate[2]));
+        return $age;
+    }
 
-        if(Session::get('getDay')) {
-            Session::forget('getDay');
-            return array(
-                'year' => $age,
-                'month' => self::getAgeMonth($date),
-                'day' => self::getAgeDay($date)
-            );
-        } else
-            return $age;
+    static function getAgeWithDay($date) {
+        return array(
+            'year' => self::getAge($date),
+            'month' => self::getAgeMonth($date),
+            'day' => self::getAgeDay($date)
+        );
     }
 
     static function getAgeMonth($date){

@@ -107,6 +107,7 @@ Route::post('user/population','ClientCtrl@searchPopulation');
 Route::post('user/profile/verify','ClientCtrl@verifyProfile');
 Route::get('user/profile/age/{dob}','ClientCtrl@calculateAge');
 Route::get('user/profile/age/day/{dob}','ParameterCtrl@getAgeDay');
+Route::get('user/profile/age/withDay/{dob}','ClientCtrl@calculateAgeWithDay');
 
 Route::get('user/population/add/{id}','ClientCtrl@addPopulation');
 Route::post('user/population/save','ClientCtrl@savePopulation');

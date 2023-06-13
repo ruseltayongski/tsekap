@@ -147,10 +147,9 @@
             dob = "{{ date('Y-m-d') }}";
         }
         console.log(dob);
-        <?php \Illuminate\Support\Facades\Session::put('getDay', true);?>
 
         $.ajax({
-            url : "{{ url('user/profile/age/') }}/"+dob,
+            url : "{{ url('user/profile/age/withDay') }}/"+dob,
             type : 'GET',
             success: function(res){
                 var age = res.year;
