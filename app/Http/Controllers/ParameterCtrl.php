@@ -1010,15 +1010,15 @@ class ParameterCtrl extends Controller
 
         if(count($medication) > 0) {
             foreach($medication as $medi) {
-                if($medi->description == 'Hypertension')
+                if($medi->type == 'Hypertension')
                     $med .= "HPN ";
-                else if($medi->description == 'Diabetic')
+                else if($medi->type == 'Diabetic')
                     $med .= "DM ";
-                else if($medi->description == 'TB Medication')
+                else if($medi->type == 'TB Medication')
                     $med .= 'TB ';
                 else {
                     $med .= 'Others, Pls Specify';
-                    $other_med .= $medi->description.", ";
+                    $other_med .= $medi->type.", ";
                 }
             }
         }
