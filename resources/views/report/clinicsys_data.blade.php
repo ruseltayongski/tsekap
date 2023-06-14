@@ -71,8 +71,8 @@ foreach($profile as $row) {
             <td>".$age.' Years, '.$month.' Months</td>
             <td>'.$row->sex.'</td>';
 
-    $ip = (isset($rel->ip) && $rel->ip=='yes')?'IP':"Non-IP";
-    $four_ps = (isset($rel->ip) && $rel->ip=='yes')?'Yes':'No';
+    $ip = (isset($row->ip) && $row->ip=='yes')?'IP':"Non-IP";
+    $four_ps = (isset($row->four_ps) && $row->four_ps=='yes')?'Yes':'No';
     $fourps_num = ($four_ps == 'Yes') ? $row->fourps_num : '';
     $phil_num = (isset($row->phicID)) ? $row->phicID : "";
 
@@ -86,23 +86,8 @@ foreach($profile as $row) {
             <td>'.ParameterCtrl::getPhilhealthCateg($row->philhealth_categ).'</td>
             <td>'.$phil_num.'</td>';
 
-    $med = '';
-    $other_medi = "";
+    $med = ParameterCtrl::getMedication($row->id);
     $other_med = isset($row->other_med_history) ? $row->other_med_history : '';
-    if(count($row->medication) > 0) {
-        foreach($row->medication as $medi) {
-            if($medi->description == 'Hypertension')
-                $med .= "HPN ";
-            else if($medi->description == 'Diabetic')
-                $med .= "DM ";
-            else if($medi->description == 'TB Medication')
-                $med .= 'TB ';
-            else {
-                $med .= 'Others, Pls Specify';
-                $other_med .= $medi->description.", ";
-            }
-        }
-    }
 
     $pregnant = (isset($row->pregnant) && $row->pregnant != '0000-00-00') ? $row->pregnant : '';
     $fp_method = ($row->fam_plan_method == 'other') ? "Others (Pls. Specify)" : $row->fam_plan_method;
@@ -110,8 +95,8 @@ foreach($profile as $row) {
     $wt = ParameterCtrl::getWaterAndToilet($row->familyID);
 
     $table_body .= '
-            <td>'.$med.'</td>
-            <td>'.$other_medi." ".$other_med.'</td>
+            <td>'.$med->med.'</td>
+            <td>'.$med->other_medi." ".$other_med.'</td>
             <td>'.ParameterCtrl::getHealthRisk($row->health_group).'</td>
             <td>'.$pregnant.'</td>
             <td>'.ucfirst($row->fam_plan).'</td>

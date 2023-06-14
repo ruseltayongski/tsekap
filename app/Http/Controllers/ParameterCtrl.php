@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Medication;
 use App\ProfileCases;
 use App\ServiceGroup;
 use Carbon\Carbon;
@@ -999,6 +1000,31 @@ class ParameterCtrl extends Controller
         return array(
             'water' => $water,
             'toilet' => $toilet
+        );
+    }
+
+    static function getMedication($id) {
+        $medication = Medication::select('type')->where('profile_id',$id)->get();
+        $med = '';
+        $other_med = "";
+
+        if(count($medication) > 0) {
+            foreach($medication as $medi) {
+                if($medi->description == 'Hypertension')
+                    $med .= "HPN ";
+                else if($medi->description == 'Diabetic')
+                    $med .= "DM ";
+                else if($medi->description == 'TB Medication')
+                    $med .= 'TB ';
+                else {
+                    $med .= 'Others, Pls Specify';
+                    $other_med .= $medi->description.", ";
+                }
+            }
+        }
+        return array(
+            'med' => $med,
+            'other_med' => $other_med
         );
     }
 

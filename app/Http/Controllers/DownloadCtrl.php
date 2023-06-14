@@ -62,8 +62,67 @@ class DownloadCtrl extends Controller
         $year = (isset($year) && $year != '') ? $year : '2022';
         $total_target = $total_profiled = 0;
         $target_col = ($year == '2022') ? 'target_2022':'target';
+        $clinicsys = Session::get('clinicsys');
 
-        $profile = Profile::where('profile.province_id', $prov_id)->where('profile.muncity_id',$mun_id);
+        if($clinicsys) {
+            $profile = Profile::select(
+                'profile.id',
+                'profile.familyID',
+                'profile.head',
+                'profile.relation',
+                'profile.fname',
+                'profile.mname',
+                'profile.lname',
+                'profile.suffix',
+                'profile.dob',
+                'profile.sex',
+                'profile.barangay_id',
+                'profile.muncity_id',
+                'profile.province_id',
+                'profile.updated_by',
+                'profile.created_at',
+                'profile.updated_at',
+                'profile.household_num',
+                'profile.member_others',
+                \DB::raw("DATE_FORMAT(profile.dob,'%Y-%m-%d') as birthdate"),
+                'profile.ip',
+                'profile.four_ps',
+                'profile.fourps_num',
+                'profile.philhealth_categ',
+                'profile.phicID',
+                'profile.civil_status',
+                'profile.education',
+                'profile.religion',
+                'profile.other_religion',
+                'profile.pregnant',
+                'profile.fam_plan',
+                'profile.fam_plan_method',
+                'profile.fam_plan_other_method',
+                'profile.fam_plan_status',
+                'profile.fam_plan_other_status',
+                'bar.description as barangay'
+            );
+        } else {
+            $profile = Profile::select(
+                'profile.familyID',
+                'profile.head',
+                'profile.relation',
+                'profile.fname',
+                'profile.mname',
+                'profile.lname',
+                'profile.suffix',
+                'profile.dob',
+                'profile.sex',
+                'profile.barangay_id',
+                'profile.muncity_id',
+                'profile.province_id',
+                'profile.updated_by',
+                'profile.created_at',
+                'profile.updated_at'
+            );
+        }
+
+        $profile = $profile->where('profile.province_id', $prov_id)->where('profile.muncity_id',$mun_id);
         $muncity = Muncity::where('id',$mun_id)->first();
 
         if(isset($bar_id) && $bar_id != '') { // barangay data will be downloaded
@@ -85,12 +144,9 @@ class DownloadCtrl extends Controller
         else
             $profile = $profile->where('profile.updated_at','<','2022-01-01 00:00:00');
 
-        $clinicsys = Session::get('clinicsys');
         if($clinicsys) {
             $profile = $profile
-                ->select('profile.*','bar.description as barangay','med.*', \DB::raw("DATE_FORMAT(profile.dob,'%Y-%m-%d') as birthdate"))
                 ->leftJoin('barangay as bar','bar.id','=','profile.barangay_id')
-                ->leftJoin('medication as med','med.profile_id','=','profile.id')
                 ->orderBy('profile.familyID','asc')->get();
             $filename .= '(ICLINICSYS)';
         } else {
@@ -98,7 +154,6 @@ class DownloadCtrl extends Controller
         }
 
         $total_profiled = count($profile);
-        $total_percentage = ($total_profiled / $total_target) * 100;
 
         $return_data = [
             'filename' => $filename,
