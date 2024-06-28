@@ -230,14 +230,6 @@ Route::get('user/info/{id}','ClientCtrl@infoUser');
 Route::post('feedback/send','ParameterCtrl@sendFeedback');
 //end client
 
-Route::get('user/change/password','ParameterCtrl@password');
-Route::post('user/change/password','ParameterCtrl@changePassword');
-
-Route::get('change/password','UserCtrl@password');
-Route::post('change/password','UserCtrl@changePassword');
-
-
-
 Route::get('accounts',function(){
     return view('system.account');
 });
@@ -367,6 +359,13 @@ Route::get('report/onboard/users','OnboardCtrl@users');
 Route::get('report/onboard/facility','OnboardCtrl@facility');
 });
 
+//change Password
+
+Route::get('user/change/password','ParameterCtrl@password');
+Route::post('user/change/password','ParameterCtrl@changePassword');
+
+Route::get('change/password','UserCtrl@password');
+Route::post('change/password','UserCtrl@changePassword');
 
 //LOGOUT
 Route::get('logout',function(){
@@ -379,3 +378,8 @@ Route::get('logout',function(){
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
 
 Route::get('survelance', 'resu\IndexController@index')->name('survelance');
+Route::get('listinjury', 'resu\InjuryController@index');
+Route::get('bodyparts', 'resu\InjuryController@bodypart');
+
+Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
+Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-bodypart');

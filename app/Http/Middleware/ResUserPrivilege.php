@@ -17,7 +17,7 @@ class ResUserPrivilege
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->user_priv == 10) {
+        if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11) {
             $allowedRoute = [
                 'survelance',
                 'survelance/*'
