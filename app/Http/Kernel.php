@@ -53,5 +53,6 @@ class Kernel extends HttpKernel
         'user_priv' =>  \App\Http\Middleware\UserPriv::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'client' => \App\Http\Middleware\Client::class,
+        'checkUserPrivilege' => \App\Http\Middleware\ResUserPrivilege::class, // I add this for not access resu
     ];
 }

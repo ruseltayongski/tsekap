@@ -97,7 +97,7 @@
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="header" style="background-color:#028482;padding:15px;">
+    <div class="header" style="background-color:#727DAB;padding:15px;">
         <div class="container">
             <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" />
         </div>

@@ -68,6 +68,7 @@
                             <option value="6">Hospital</option>
                             <option value="0">BHS Head</option>
                             <option value="2">BHS</option>
+                           <option value="10">DSO</option>  <!-- I add this for the user of Survellance -->
                         </select>
                     </div>
                     <div class="form-group">

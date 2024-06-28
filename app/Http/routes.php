@@ -4,7 +4,7 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 
 Route::auth();
-
+Route::group(['middleware' => 'checkUserPrivilege'], function(){
 Route::get('/', 'HomeCtrl@index');
 Route::get('home', 'HomeCtrl@index');
 Route::get('home/chart','HomeCtrl@chart');
@@ -230,13 +230,6 @@ Route::get('user/info/{id}','ClientCtrl@infoUser');
 Route::post('feedback/send','ParameterCtrl@sendFeedback');
 //end client
 
-//LOGOUT
-Route::get('logout',function(){
-    Auth::logout();
-    \Illuminate\Support\Facades\Session::flush();
-    return redirect('login');
-});
-
 Route::get('user/change/password','ParameterCtrl@password');
 Route::post('user/change/password','ParameterCtrl@changePassword');
 
@@ -372,3 +365,17 @@ Route::get('apiv21/getBarangays','ApiCtrlv21@getBarangays');
 // onboard users
 Route::get('report/onboard/users','OnboardCtrl@users');
 Route::get('report/onboard/facility','OnboardCtrl@facility');
+});
+
+
+//LOGOUT
+Route::get('logout',function(){
+    Auth::logout();
+    \Illuminate\Support\Facades\Session::flush();
+    return redirect('login');
+});
+
+//for resu 
+Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
+
+Route::get('survelance', 'resu\IndexController@index')->name('survelance');
