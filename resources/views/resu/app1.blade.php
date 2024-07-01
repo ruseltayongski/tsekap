@@ -120,7 +120,10 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Injury<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url('listinjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; List Nature Injury</a></li>
+                        <li><a href="{{ url('listinjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp;Nature Injury</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="{{url('external-injury') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; External Injury</a>
+                        </li>
                         <li class="dropdown-submenu">
                             <a href="{{url('bodyparts') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp; Body Parts</a>
                         </li>
@@ -130,7 +133,7 @@
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url('listinjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Manage Patient Injury</a></li>
+                        <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Manage Patient Injury</a></li>
                         <!-- <li class="dropdown-submenu">
                             <a href="{{url('bodyparts') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp; Body Parts</a>
                         </li> -->
@@ -140,9 +143,9 @@
                 
 
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a>
+                    <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a> -->
                     <ul class="dropdown-menu">
-                        <li><a href="{{ asset('/report/status')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li>
+                        <!-- <li><a href="{{ asset('/report/status')  }}"><i class="fa fa-table"></i>&nbsp;&nbsp; Status Report</a></li> -->
                         <li><a href="{{ asset('/admin/report/iclinicsys')  }}"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp; IClinicSys Report</a></li>
                         {{--<li><a href="{{ asset('/report/onboard/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Onboard Users</a></li>--}}
                         {{--<li><a href="{{ asset('/report/onboard/facility')  }}"><i class="fa fa-hospital-o"></i>&nbsp;&nbsp; Onboard Facilities</a></li>--}}
@@ -161,22 +164,6 @@
                     </ul>
                 </li>
                 @endif
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ asset('/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Users</a></li>
-                        @if(Auth::user()->user_priv==1)
-                        <li><a href="{{ url('/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;&nbsp;  Services</a></li>
-                        <li><a href="{{ url('/bracket') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;  Age Bracket</a></li>
-                        @endif
-                        @if(Auth::user()->user_priv==1)
-                        <li class="divider"></li>
-                        <li class="hide"><a href="{{ asset('/download')  }}"><i class="fa fa-download"></i>&nbsp;&nbsp; Download Data</a></li>
-                        <li><a href="{{ asset('/feedback')  }}"><i class="fa fa-envelope"></i>&nbsp;&nbsp; User's Feedback <span class="badge">{{ App\Feedback::where('status','!=','1')->count() }}</span></a></li>
-                        @endif
-
-                    </ul>
-                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -288,3 +275,23 @@
 @yield('js')
 </body>
 </html>
+
+
+
+<!-- 
+<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ asset('/users')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Users</a></li>
+                        @if(Auth::user()->user_priv==1)
+                        <li><a href="{{ url('/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;&nbsp;  Services</a></li>
+                        <li><a href="{{ url('/bracket') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;  Age Bracket</a></li>
+                        @endif
+                        @if(Auth::user()->user_priv==1)
+                        <li class="divider"></li>
+                        <li class="hide"><a href="{{ asset('/download')  }}"><i class="fa fa-download"></i>&nbsp;&nbsp; Download Data</a></li>
+                        <li><a href="{{ asset('/feedback')  }}"><i class="fa fa-envelope"></i>&nbsp;&nbsp; User's Feedback <span class="badge">{{ App\Feedback::where('status','!=','1')->count() }}</span></a></li>
+                        @endif
+
+                    </ul>
+                </li> -->

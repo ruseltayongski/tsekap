@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\ResuNatureInjury;
 use App\ResuBodyParts;
+use App\ResuExternalInjury;
 
 use Illuminate\Support\Facades\Redirect; // Import Redirect facade
 
@@ -18,7 +19,7 @@ class InjuryController extends Controller
     public function index(){
         $user = Auth::user();
 
-        $injured = ResuNatureInjury::all();
+        $injured = ResuNatureInjury::paginate(13);
 
         return view('resu.injury.nature_injury', [
             'injured' =>  $injured,
@@ -52,6 +53,25 @@ class InjuryController extends Controller
 
         $b_part->name = $r->name;
         $b_part->save();
+
+        return Redirect::back();
+    }
+
+    public function listExternal(){
+
+        $external = ResuExternalInjury::paginate(13);
+    
+        return view('resu.injury.external_injury', [
+            'external' => $external
+        ]);
+     }
+
+    public function addExternal(Request $r){
+       
+        $external = new ResuExternalInjury();
+
+        $external->name = $r->name;
+        $external->save();
 
         return Redirect::back();
     }

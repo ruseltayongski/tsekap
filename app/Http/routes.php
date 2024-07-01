@@ -383,3 +383,8 @@ Route::get('bodyparts', 'resu\InjuryController@bodypart');
 
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
 Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-bodypart');
+Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
+Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
+
+Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured');
+Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
