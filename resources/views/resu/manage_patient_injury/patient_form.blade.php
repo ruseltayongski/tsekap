@@ -1,13 +1,15 @@
 @extends('resu/app1')
 @section('content')
+<?php
+ use App\ResuNatureInjury;
+ $nature_injury = ResuNatureInjury::all();
 
-
+?>
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header">
             <i class="fa fa-user-plus"></i>&nbsp; Patient Injury Form</h2>
             <div class="page-divider"></div>
-            
             <form method="POST" class="form-horizontal form-submit" id="form-submit" action="">
                 {{ csrf_field() }}
                 <div class="row">
@@ -184,10 +186,10 @@
                                 <input type="checkbox" id="patientType1" value="Yes"> Yes
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="dru" id="dru" placeholder="What">
+                                <input type="text" class="form-control" name="dru" id="dru" placeholder="What:">
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="dru" id="dru" placeholder="By whom">
+                                <input type="text" class="form-control" name="dru" id="dru" placeholder="By whom:">
                             </div>
                             <div class="col-md-3">
                                 <input type="checkbox" id="patientType1" value="No"> No
@@ -198,7 +200,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple Injuries?</p>
                             </div>
                             <div class="col-md-3">
@@ -206,7 +208,107 @@
                                 <input type="checkbox" id="patientType2" value="No"> No
                             </div>
                             <div class="col-md-12">
-                             
+                                <p class="underline-text text-center">Check all applicable, indicate in the blank space opposite each type of injury the body location [site] and affected and other details</p>
+                            </div>
+                            <div class="col-md-12">
+                                @foreach($nature_injury as $injured)
+                                        <div>
+                                            @if($injured->id == 5)
+                                            <input type="checkbox" id="Abrasion" name="{{$injured->name}}" value="{{$injured->id}}"> {{$injured->name}}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            [Degree 
+                                            <input type="radio" id="degree1" name="burnDegree" value="Degree1"> 1 
+                                            <input type="radio" id="degree2" name="burnDegree" value="Degree2"> 2 
+                                            <input type="radio" id="degree3" name="burnDegree" value="Degree3"> 3 
+                                            <input type="radio" id="degree4" name="burnDegree" value="Degree4"> 4]
+                                            &nbsp;<input type="text" name="BurnDetail" placeholder="Burn Detail">
+
+                                            @elseif($injured->id == 8)
+
+                                            <div>
+                                                <input type="checkbox" id="injury5" value="Fracture"> Fracture
+                                                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" id="close_type" name="close_type" value="Close Type"> Close Type<strong>:</strong>&nbsp;<input type="text" name="closetype_details" placeholder="Close Type Detail">
+                                                    <p class="ex_type">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                                                    (ex. Comminuted, depressed fracture)</p>
+                                                <div class="col-md-12">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <input type="checkbox" id="open_type" name="Open_type" value="Open Type"> Open Type<strong>:</strong>&nbsp;<input type="text" name="opentype_details" placeholder="Open Type Detail">
+                                                    <p class="ex_type">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                                                    (ex. Compound, infected fracture)</p>
+                                                </div>
+
+                                            </div>
+                                            @elseif($injured->id == 11)
+                                                <div>
+                                                    <input type="checkbox" id="injury5" value="Others"> Others: Please Specify injury and the body parts affected:&nbsp;<input type="text" name="OthersDetail" placeholder="Others Detail">
+                                                </div> 
+                                            @elseif($injured->id !=5 && $injured->id != 8 &&  $injured->id != 11)
+                                            <input type="checkbox" id="Abrasion" name="Abrasion" value="{{$injured->id}}"> {{$injured->name}}
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="AbrasionDetail" placeholder="{{$injured->name}} details">
+                                            @endif
+                                        </div>
+                                @endforeach
+
+                                <!-- <div>
+                                            <input type="checkbox" id="Abrasion" name="Abrasion" value="">Abrasion
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="AbrasionDetail" placeholder="Abration Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="Avulsion" name="Avulsion" value="Avulsion"> Avulsion
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="AvulsionDetail" placeholder="Avulsion Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury3" value="Burn"> Burn
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            [Degree 
+                                            <input type="radio" id="degree1" name="burnDegree" value="Degree1"> 1 
+                                            <input type="radio" id="degree2" name="burnDegree" value="Degree2"> 2 
+                                            <input type="radio" id="degree3" name="burnDegree" value="Degree3"> 3 
+                                            <input type="radio" id="degree4" name="burnDegree" value="Degree4"> 4]
+                                            &nbsp;<input type="text" name="BurnDetail" placeholder="Burn Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury4" value="Concussion"> Concussion
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="ConcussionDetail" placeholder="Concussion Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury5" value="Contusion"> Contusion
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="ContusionDetail" placeholder="Contusion Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury5" value="Fracture"> Fracture
+                                            &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="checkbox" id="close_type" name="close_type" value="Close Type"> Close Type<strong>:</strong>&nbsp;<input type="text" name="closetype_details" placeholder="Close Type Detail">
+                                                <p class="ex_type">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                                                (ex. Comminuted, depressed fracture)</p>
+                                            <div class="col-md-12">
+                                                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" id="open_type" name="Open_type" value="Open Type"> Open Type<strong>:</strong>&nbsp;<input type="text" name="opentype_details" placeholder="Open Type Detail">
+                                                <p class="ex_type">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+                                                (ex. Compound, infected fracture)</p>
+                                            </div>
+
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury5" value="Open Wound"> Open Wound
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="OpenWoundDetail" placeholder="Open wound Detail">
+                                            <p class="ex_type">&nbsp;&nbsp;&nbsp;&nbsp;
+                                                (ex. Hacking, gunshot, stabbing, animal(dog,cat,rat,snake, etc) bites,  human bites, insects bites, punctured wound laceration,etc)</p>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury5" value="Traumatic Amputation"> Traumatic Amputation
+                                            &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="TraumaticAmputationDetail" placeholder="Traumatic Amputation Detail">
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="injury5" value="Others"> Others: Please Specify injury and the body parts affected:&nbsp;<input type="text" name="OthersDetail" placeholder="Others Detail">
+                                        </div> -->
                             </div>
                         </div>
 
@@ -232,5 +334,12 @@
     .col-md-6 .mt-4 {
             margin-top: 10px; /* Adjust this value as needed */
         }
+    .col-md-6 .underline-text{
+        text-decoration: underline;
+
+    }
+    .ex_type{
+        font-size: 12px;
+    }
 </style>
 
