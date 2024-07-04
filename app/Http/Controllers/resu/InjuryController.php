@@ -57,6 +57,13 @@ class InjuryController extends Controller
         return Redirect::back();
     }
 
+    public function Listbodyparts(){
+
+        $b_part = ResuBodyParts::all();
+
+        return response()->json($b_part);
+    }
+
     public function listExternal(){
 
         $external = ResuExternalInjury::paginate(13);

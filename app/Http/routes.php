@@ -388,3 +388,5 @@ Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-exte
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
+
+Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
