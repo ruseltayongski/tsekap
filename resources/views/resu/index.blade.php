@@ -1,6 +1,5 @@
 @extends('resu/app1')
 @section('content')
-
 <div class="col-md-9 wrapper">
         <div class="alert alert-jim">
             <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
@@ -113,5 +112,5 @@
             <canvas id="montlyProgress" width="400" height="200"></canvas>
         </div>
     </div>
-    @include('sidebar')
+    @include(sidebar)
 @endsection
