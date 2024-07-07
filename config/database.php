@@ -10,9 +10,15 @@
 //$password = "adm1n";
 
 // dummy
-$host = "192.168.110.50";
-$username = "rtayong_dummy50";
-$password = "rtayong_dummy50";
+// $host = "192.168.110.50";
+// $username = "rtayong_dummy50";
+// $password = "rtayong_dummy50";
+
+//localhost
+
+$host = "localhost";
+$username = "root";
+$password = "";
 
 return [
 
