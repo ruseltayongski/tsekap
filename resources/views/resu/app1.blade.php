@@ -218,6 +218,7 @@
 <!-- FIXED HEADER FOR TABLES -->
 <script src="{{ asset('resources/plugin/table-fixed-header/table-fixed-header.js?version=1') }}"></script>
 
+<script src="{{ asset('resources/views/resu/js/script.js') }}"></script> <!-----custom script----->
 <script>
 
     $(document).ready(function(){

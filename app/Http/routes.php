@@ -390,3 +390,7 @@ Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
+
+//get municipal && province
+Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
+Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
