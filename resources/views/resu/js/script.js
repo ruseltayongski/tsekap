@@ -22,8 +22,9 @@ function showPreviousStep() {
   }
 }
 
-function submitForm() {
+function submitPatientForm() {
   document.getElementById("form-submit").submit();
+  console.log("it works..!");
 }
 //first aid given
 $(document).ready(function () {
@@ -44,6 +45,7 @@ $(document).ready(function () {
   });
   //for Transport hide condition
   $("#Transport").change(function () {
+    console.log("works");
     $(".Transport-group").hide();
 
     if ($(this).is(":checked")) {
