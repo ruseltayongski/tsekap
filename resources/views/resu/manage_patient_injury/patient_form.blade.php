@@ -24,6 +24,7 @@
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
                             <div class="col-md-6">
+                            <input type="hidden" class="form-control" name="facility_id" id="facility_id" value="1">
                                 <label for="facility-name">Name of Reporting Facility</label>
                                 <select class="form-control chosen-select" name="facilityname" id="facility">
                                     <option value="">Select Reporting Facility</option>
@@ -44,25 +45,26 @@
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="ER name="ER" value="ER"> ER
+                                        <input type="checkbox" id="ER" name="typePatient" value="ER"> ER
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="OPD" name="OPD" value="OPD"> OPD
+                                        <input type="checkbox" id="OPD" name="typePatient" value="OPD"> OPD
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="In_Patient" name="In_Patient" value="In-Patient"> In-Patient
+                                        <input type="checkbox" id="In_Patient" name="typePatient" value="In-Patient"> In-Patient
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="BHS" name="BHS" value="BHS"> BHS
+                                        <input type="checkbox" id="BHS" name="typePatient" value="BHS"> BHS
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="RHU" name="RHU" value="RHU"> RHU
+                                        <input type="checkbox" id="RHU" name="typePatient" value="RHU"> RHU
                                     </label>
                                 </div><br>
                             </div>
                         </div>
                         <h4 class="patient-font mt-4">General Data</h4>
                         <div class="row">
+                            <input type="hidden" name="patient" id="patient_id" value="3">
                             <div class="col-md-3">
                                 <label for="hospital_no">Hospital Case No.</label>
                                 <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
@@ -81,7 +83,7 @@
                             </div>
                             <div class="col-md-1">
                                 <label for="sex">Sex</label>
-                                <select class="form-control chosen-select" name="facilityname" id="facility">
+                                <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="male">male</option>
                                     <option value="female">female</option>
@@ -176,23 +178,23 @@
                     </div>
                     <div class="col-md-4 col-md-offset-1">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Accidental" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
+                            <input type="checkbox" name="injury_intent" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="Selfinflicted" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
-                        </label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="Violence" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="Undetermined" id="Undetermined" value="Undetermined"> Undetermined
+                            <input type="checkbox" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
                         </label>
                     </div>
                     <div class="col-md-3">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="VAWCPatient" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
+                            <input type="checkbox" name="injury_intent" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="injury_intent" id="Undetermined" value="Undetermined"> Undetermined
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="injury_intent" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
                         </label>
                     </div>
                   
@@ -201,9 +203,7 @@
                     </div>
 
                     <div class="col-md-1 col-md-offset-2">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="firstAidYes" id="firstAidYes" value="Yes"> Yes
-                        </label>
+                        <input type="checkbox" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
                     </div>
                     <div class="col-md-2">
                         <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
@@ -212,7 +212,7 @@
                         <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
                     </div>
                     <div class="col-md-2">
-                        <input type="checkbox" name="firstAidNo" id="firstAidNo" value="No"> No
+                        <input type="checkbox" name="firstAidGive" id="firstAidNo" value="No"> No
                     </div>
 
 
@@ -225,7 +225,7 @@
                     <div class="col-md-3 col-md-offset-1">
                         <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="checkbox" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="single_injured" name="single_injured" value="No"> No</p>
+                        <input type="checkbox" id="single_injured" name="multiple_injured" value="No"> No</p>
                     </div>
                     <div class="col-md-12 col-md-offset-.05">
                         <p class="underline-text text-center" id="underline-text">
@@ -272,10 +272,10 @@
                                         <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
                                     </label><br>
                                     <div class="col-md-offset-5">
-                                        <input type="checkbox" id="clostype" name="closetype" value="close type"> Close Type
+                                        <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type
                                     </div>
                                     <div class="col-md-offset-5"><br>
-                                        <input type="checkbox" id="opentype" name="opentype" value="opentype"> Open Type
+                                        <input type="checkbox" id="opentype" name="fracttype" value="open type"> Open Type
                                     </div>
                                 </div>  
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
@@ -319,7 +319,7 @@
                                 </select>
                             @else
                                 <label>Select side</label>
-                                <select class="form-control" name="side{{$counter}}" id="side{{$counter}}">
+                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
                                     <option value="">Select Side for {{$injured->name}}</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -343,12 +343,12 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 <label>Select side</label>
-                                <select class="form-control" name="opentype_side" id="opentype_side" value="">
+                                <select class="form-control" name="closetype_side" id="closetype_side" value="">
                                     <option value="">Select side close type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
                                 </select>
-                                <select class="form-control" name="closetype_side" id="closetype_side" value="">
+                                <select class="form-control" name="opentype_side" id="opentype_side" value=""> 
                                     <option value="">Select side open type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -364,7 +364,7 @@
                                 </select>
                             @else
                                 <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts{{counter}}" id="body_parts{{counter}}" value="">
+                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}" id="body_parts_injured{{$counter}}">
                                     <option value="">Select body parts for {{$injured->name}}</option>
                                     @foreach($body_part as $body_parts)
                                         <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -388,13 +388,13 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burnOpen_bodyparts" id="burnOpen_bodyparts" value="">
+                                <select class="form-control chosen-select" name="burnclose_bodyparts" id="burnclose_bodyparts">
                                     <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
-                                <select class="form-control chosen-select" name="burnclose_bodyparts" id="burnclose_bodyparts" value="">
+                                <select class="form-control chosen-select" name="burnOpen_bodyparts" id="burnOpen_bodyparts">
                                     <option value="">Select body parts for Open type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -426,6 +426,7 @@
                             $cleaned_external = preg_replace('/[\/,]/', ' ', $exInjury->name);              
                             $externalSingle = explode(' ', trim($cleaned_external))[0];
                         @endphp
+                        <input type="hidden" name="external_id" id="external_id" value="{{$exInjury->id}}">
                         @if($externalSingle == 'Burns' || $externalSingle == 'Burn')     
                             <div class="col-md-12">
                                 <label>
@@ -435,19 +436,19 @@
                                 
                                     <div class="checkbox">
                                         <label>
-                                            <input type="radio" name="heat" id="heat" value="heat">
+                                            <input type="radio" name="burn_type" id="heat" value="heat">
                                             Heat
                                         </label>
                                         <label>
-                                            <input type="radio" name="fire" id="fire" value="fire">
+                                            <input type="radio" name="burn_type" id="fire" value="fire">
                                             fire
                                         </label>
                                         <label>
-                                            <input type="radio" name="electricity" id="electricity" value="Electricity">
+                                            <input type="radio" name="burn_type" id="electricity" value="Electricity">
                                             Electricity
                                         </label>
                                         <label>
-                                            <input type="radio" name="Oil" id="oil" value="Oil">
+                                            <input type="radio" name="burn_type" id="oil" value="Oil">
                                             Oil
                                         </label>
                                         <label>
@@ -470,23 +471,23 @@
                                     
                                         <div class="checkbox">
                                             <label>
-                                                <input type="radio" name="Sea" id="Sea" value="Sea">
+                                                <input type="radio" name="drowningType" id="Sea" value="Sea">
                                                 Sea
                                             </label>
                                             <label>
-                                                <input type="radio" name="River" id="River" value="River">
+                                                <input type="radio" name="drowningType" id="River" value="River">
                                                 River
                                             </label>
                                             <label>
-                                                <input type="radio" name="Lake" id="Lake" value="Lake">
+                                                <input type="radio" name="drowningType" id="Lake" value="Lake">
                                                 Lake
                                             </label>
                                             <label>
-                                                <input type="radio" name="Pool" id="Pool" value="Pool">
+                                                <input type="radio" name="drowningType" id="Pool" value="Pool">
                                                 Pool
                                             </label>
                                             <label>
-                                                <input type="radio" name="BathTub" id="bath_tub" value="Bath Tub">
+                                                <input type="radio" name="drowningType" id="bath_tub" value="Bath Tub">
                                                 Bath Tub
                                             </label>
                                         </div>
@@ -506,14 +507,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="external_details{{$counter}}" id="Transport_details" placeholder="Enter details">
                                 </div>
                         @else
                             <div class="col-md-12"></div>
                             <div class="col-md-3">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="{{$externalSingle}}" name="external{{$counter}}" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
+                                        <input type="hidden" name="external_id" id="external_id{{$counter}}" value="{{$exInjury->id}}">
+                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
                                     </label>
                                 </div>
                             </div>
@@ -543,42 +545,42 @@
                         <label>For Transport Vehicular Accident Only:</label>
                     </div>
                     <div class="col-md-3 transport-related">&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="land" name="land" value="land"> Land
+                        <input type="checkbox" id="Land" name="transport_vehic" value="land"> Land
                     </div>
                     <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="water" name="water" value="water"> Water
+                        <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
                     </div>
                     <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="air" name="air" value="Air"> Air
+                        <input type="checkbox" id="air" name="transport_vehic" value="Air"> Air
                     </div>
                     <div class="col-md-3 transport-related"> 
-                        <input type="checkbox" id="collision" name="collision" value="Collision"> Collision&nbsp;&nbsp;&nbsp;
+                        <input type="checkbox" id="Collision" name="transport_vehic" value="Collision"> Collision&nbsp;&nbsp;&nbsp;
                     </div>
                     <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="non_collision" name="none-collision" value="Non-Collision"> Non-Collision
+                        <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
                     </div>
                     <div class="col-md-6 transport-related"><hr>
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
                         <div class="col-md-4">&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="none_pedes" name="none_pedes" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_motorcycle" name="patient_motorcycle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_truck" name="patient_truck" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_bus" name="patient_bus" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_jeepney" name="patient_jeepney" value="Jeepney"> Jeepney
+                            <input type="checkbox" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
                         </div>
                         <div class="col-md-4">
-                            <input type="checkbox" id="patient_car" name="patient_car" value="Car"> Car<br>
-                            <input type="checkbox" id="patient_bicycle" name="patient_bicycle" value="Bicycle"> Bicycle<br>
-                            <input type="checkbox" id="patient_van" name="patient_van" value="Van"> Van<br>
-                            <input type="checkbox" id="patient_tricycle" name="patient_tricycle" value="Tricycle"> Tricycle
+                            <input type="checkbox" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
+                            <input type="checkbox" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
+                            <input type="checkbox" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
+                            <input type="checkbox" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
                         </div>
                         <div class="col-md-4">
-                            <input type="checkbox" id="patient_unknown" name="patient_unknown" value="Unknown"> Unknown<br>
-                            <input type="checkbox" id="patient_others" name="patient_others" value="others"> Others<br>
-                            <input type="text" class="form-control" name="patient_other_details" placeholder="others details">
+                            <input type="checkbox" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
+                            <input type="checkbox" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
+                            <input type="text" class="form-control" name="Patient_vehicle" placeholder="others details">
                         </div>
-                        <div class="col-md-12"><br>
+                        <div class="col-md-12 collision_group" style="display:none"><br>
                             <p>Other Vehicle/Object Involved (for Collision accident only)</p>
                             <div class="col-md-3">
                                 <input type="checkbox" id="objectNone" name="objectNone" value="None"> None<br>
@@ -602,63 +604,63 @@
                     </div>
                     <div class="col-md-3 transport-related"><hr><br>
                         <p>Position of Patient</p>
-                        <input type="checkbox" id="position_pedes" name="position_pedes" value="Pedestrian"> Pedestrian<br>
-                        <input type="checkbox" id="position_driver" name="position_driver" value="Driver"> Driver<br>
-                        <input type="checkbox" id="position_captain" name="position_captain" value="Captain"> Captain<br>
-                        <input type="checkbox" id="position_pilot" name="position_pilot" value="Pilot"> Pilot
-                        <input type="checkbox" id="position_passenger" name="position_passenger" value="Font Passenger"> Front Passenger<br>
-                        <input type="checkbox" id="position_rear_passenger" name="position_rear_passenger" value="Rear Passenger"> Rear Passenger<br>
-                        <input type="checkbox" id="position_others" name="position_others" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="position_other_details" name="position_other_details" placeholder="others details">
-                        <input type="checkbox" id="position_unknown" name="position_unknown" value="Unknown"> Unknown
+                        <input type="checkbox" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
+                        <input type="checkbox" id="position_driver" name="position_patient" value="Driver"> Driver<br>
+                        <input type="checkbox" id="position_captain" name="position_patient" value="Captain"> Captain<br>
+                        <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot
+                        <input type="checkbox" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
+                        <input type="checkbox" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
+                        <input type="checkbox" id="position_others" name="position_patient" value="Others"> Others:<br>
+                        <input type="text" class="form-control" id="position_patient" name="position_other_details" placeholder="others details">
+                        <input type="checkbox" id="position_unknown" name="position_patient" value="Unknown"> Unknown
 
                     </div>
                     <div class="col-md-3 transport-related"><hr><br>
                         <p>Place of Occurrence</p>
-                        <input type="checkbox" id="place_home" name="place_home" value="Home"> Home<br>
-                        <input type="checkbox" id="place_school" name="place_school" value="School"> School<br>
-                        <input type="checkbox" id="place_Road" name="place_Road" value="Road"> Road<br>
-                        <input type="checkbox" id="place_Bars" name="place_Bars" value="School"> Videoke Bars<br>
-                        <input type="checkbox" id="place_workplace" name="place_workplace" value="workplace"> Workplace, specify:<br>
-                        <input type="text" class="form-control" id="place_workplace_details" name="place_workplace_details" placeholder="specify here">
-                        <input type="checkbox" id="place_others" name="place_others" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="place_other_details" name="place_other_details" placeholder="others details">
-                        <input type="checkbox" id="place_unknown" name="place_unknown" value="Unknown"> Unknown
+                        <input type="checkbox" id="place_home" name="Occurrence" value="Home"> Home<br>
+                        <input type="checkbox" id="place_school" name="Occurrence" value="School"> School<br>
+                        <input type="checkbox" id="place_Road" name="Occurrence" value="Road"> Road<br>
+                        <input type="checkbox" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
+                        <input type="checkbox" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
+                        <input type="text" class="form-control" id="place_workplace_details" name="Occurrence" placeholder="specify here">
+                        <input type="checkbox" id="place_others" name="place_others" value="Occurrence"> Others:<br>
+                        <input type="text" class="form-control" id="place_other_details" name="Occurrence" placeholder="others details">
+                        <input type="checkbox" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
                     </div>
                     <div class="col-md-12 transport-related">
                         <div class="col-md-4"><hr>
                             <label>Activity of the patient at the of incident</label><br>
-                            <input type="checkbox" id="activity_sports" name="activity_sports" value="Sports"> Sports<br>
-                            <input type="checkbox" id="activity_leisure" name="activity_leisure" value="leisure"> Leisure<br>
-                            <input type="checkbox" id="activity_school" name="activity_school" value="School"> Work Related<br>
-                            <input type="checkbox" id="activity_others" name="activity_others" value="Others"> Others:
-                            <input type="text" class="form-control" id="activity_other_details" name="activity_other_details" placeholder="others details">
-                            <input type="checkbox" id="activity_unknown" name="activity_unknown" value="unknown"> Unknown
+                            <input type="checkbox" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
+                            <input type="checkbox" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
+                            <input type="checkbox" id="activity_school" name="activity_patient" value="School"> Work Related<br>
+                            <input type="checkbox" id="activity_others" name="activity_patient" value="Others"> Others:
+                            <input type="text" class="form-control" id="activity_other_details" name="activity_patient" placeholder="others details">
+                            <input type="checkbox" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Other Risk Factors at the time of the incident:</label><br>
-                            <input type="checkbox" id="risk_liquor" name="risk_liquor" value="Alcohol/liquor"> Alcohol/liquor<br>
-                            <input type="checkbox" id="risk_mobilephone" name="risk_mobilephone" value="Using Mobile Phone"> Using Mobile Phone<br>
-                            <input type="checkbox" id="risk_sleepy" name="risk_sleepy" value="Sleepy"> Sleepy<br>
-                            <input type="checkbox" id="risk_smooking" name="risk_smooking" value="smooking"> Smooking<br>
-                            <input type="checkbox" id="risk_others" name="risk_others" value="Others"> Others specify:
-                            <input type="text" class="form-control" id="risk_others_details" name="risk_others_details" placeholder="others specify here">
+                            <input type="checkbox" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
+                            <input type="checkbox" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
+                            <input type="checkbox" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
+                            <input type="checkbox" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
+                            <input type="checkbox" id="risk_others" name="risk_factors" value="Others"> Others specify:
+                            <input type="text" class="form-control" id="risk_others_details" name="risk_factors" placeholder="others specify here">
                             <p>(eg. Suspected under the influence of substance used)</p>
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Safety: (check all that apply)</label>
                             <div class="col-md-6">
-                                <input type="checkbox" id="safe_none" name="safe_none" value="None"> None<br>
-                                <input type="checkbox" id="safe_childseat" name="safe_childseat" value="Childseat"> Childseat<br>
-                                <input type="checkbox" id="safe_Airbag" name="safe_Airbag" value="Airbag"> Airbag<br>
-                                <input type="checkbox" id="safe_smooking" name="safe_smooking" value="smooking"> Lifevest/Lifejacket/flotation device<br>
-                                <input type="checkbox" id="safe_others" name="safe_others" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                                <input type="checkbox" id="safe_none" name="safe[]" value="None"> None<br>
+                                <input type="checkbox" id="safe_childseat" name="safe[]" value="Childseat"> Childseat<br>
+                                <input type="checkbox" id="safe_Airbag" name="safe[]" value="Airbag"> Airbag<br>
+                                <input type="checkbox" id="safe_smooking" name="safe[]" value="smooking"> Lifevest/Lifejacket/flotation device<br>
+                                <input type="checkbox" id="safe_others" name="safe[]" value="Others"> Others specify:
+                                <input type="text" class="form-control" id="safeothers_details" name="safe" placeholder="others specify here">
                             </div>
                             <div class="col-md-6">
-                                <input type="checkbox" id="safeunknown" name="safeunknown" value="unknown"> Unknown<br>
-                                <input type="checkbox" id="safehelmet" name="safehelmet" value="Helmet"> Helmet<br>
-                                <input type="checkbox" id="safeSeatbelt" name="safeSeatbelt" value="Seatbelt"> Seatbelt<br>
+                                <input type="checkbox" id="safeunknown" name="safe[]" value="unknown"> Unknown<br>
+                                <input type="checkbox" id="safehelmet" name="safe[]" value="Helmet"> Helmet<br>
+                                <input type="checkbox" id="safeSeatbelt" name="safe[]" value="Seatbelt"> Seatbelt<br>
                             </div>
 
                         </div>
@@ -670,7 +672,7 @@
                         <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
                         <div class="A_ErOpdGroup">
                             <h6 class="A_Hospital mt-5"> 
-                            <input type="checkbox" id="A_ErOpd" name="A_ErOpd" value="A. ER/OPD/BHS/RHU">
+                            <input type="checkbox" id="A_ErOpd" name="hospital_data" value="A. ER/OPD/BHS/RHU">
                             A. ER/OPD/BHS/RHU</h6>
                             <div class="col-md-12">
                                 <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -690,35 +692,35 @@
                                 <label for="">Status upon reashing the Facility</label>
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="deadonarrive" name="deadonarrive" value=" Dead on Arrival"> Dead on Arrival
+                                <input type="checkbox" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
                             </div>
                             <div class="col-md-1">
-                                <input type="checkbox" id="alive" name="alive" value="Alive"> Alive
+                                <input type="checkbox" id="alive" name="reashingFact" value="Alive"> Alive
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="ifalive" name="ifalive" value="If Alive"> If Alive
+                                <input type="checkbox" id="ifalive" name="reashingFact" value="If Alive"> If Alive
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="conscious" name="conscious" value="conscious"> conscious
+                                <input type="checkbox" id="conscious" name="reashingFact" value="conscious"> conscious
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="Unconscious" name="Unconscious" value="Unconscious"> Unconscious
+                                <input type="checkbox" id="Unconscious" name="reashingFact" value="Unconscious"> Unconscious
                             </div>
                             <div class="col-md-12"></div>
                             <div class="col-md-3">
                                 <label for="">Mode of Transport to the Hospital/Facility</label>
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="ambulance" name="ambulance" value="Ambulance"> Ambulance
+                                <input type="checkbox" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="police_vehicle" name="police_vehicle" value="Police Vehicle"> Police Vehicle
+                                <input type="checkbox" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
                             </div>
                             <div class="col-md-2">
-                                <input type="checkbox" id="private_vehicle" name="private_vehicle" value="Private Vehicle"> Private Vehicle
+                                <input type="checkbox" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
                             </div>
                             <div class="col-md-1">
-                                <input type="checkbox" id="ModeOthers" name="ModeOthers" value="Others"> Others
+                                <input type="checkbox" id="ModeOthers" name="mode_transport" value="Others"> Others
                             </div>
                             <div class="col-md-2">
                                 <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
@@ -740,20 +742,20 @@
                                     <label for="Disposition">Disposition:</label>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="checkbox" id="admitted" name="admitted" value="Admitted"> Admitted <br>
-                                    <input type="checkbox" id="hama" name="hama" value="HAMA"> HAMA
+                                    <input type="checkbox" id="admitted" name="disposition" value="Admitted"> Admitted <br>
+                                    <input type="checkbox" id="hama" name="disposition" value="HAMA"> HAMA
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="checkbox" id="treated_sent" name="treated_sent" value="Treated and Sent Home"> Treated and Sent Home <br>
-                                    <input type="checkbox" id="Absconded" name="Absconded" value="Absconded"> Absconded
+                                    <input type="checkbox" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
+                                    <input type="checkbox" id="Absconded" name="disposition" value="Absconded"> Absconded
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="checkbox" id="trans_facility_hos" name="trans_facility_hos" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
+                                    <input type="checkbox" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
                                     <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="refused_admiss" name="refused_admiss" value="Refused Admission"> Refused Admission <br>
-                                    <input type="checkbox" id="died" name="died" value="died"> Died
+                                    <input type="checkbox" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
+                                    <input type="checkbox" id="died" name="disposition" value="died"> Died
                                 </div>
                             </div>
                             <div class="col-md-12"><hr>
@@ -761,13 +763,13 @@
                                     <label for="Outcome">Outcome</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="Improved" name="Improved" value="Improved"> Improved
+                                    <input type="checkbox" id="Improved" name="outcome" value="Improved"> Improved
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="Unimproved" name="Unimproved" value="Unimproved"> Unimproved
+                                    <input type="checkbox" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="Died1" name="Died1" value="died"> Died
+                                    <input type="checkbox" id="Died1" name="outcome" value="died"> Died
                                 </div>
                             </div>
                         </div>
@@ -776,7 +778,7 @@
                     <div class="B_InpatientGroup">
                         <div class="col-md-12"><hr class="Inpatient_linehr">
                             <h6 class="A_Hospital mt-5"> 
-                            <input type="checkbox" id="B_InPatient" name="In-Patient" value="In-Patient(for admitted hospital cases only)">
+                            <input type="checkbox" id="B_InPatient" name="hospital_data" value="In-Patient(for admitted hospital cases only)">
                             B. In-Patient(for admitted hospital cases only)</h6>
                             <div class="col-md-12">
                                 <label for="complete_final">Complete Final Diagnosis</label>
@@ -786,33 +788,33 @@
 
                                 <label for="Disposition">Disposition:</label><br>
                                 <div class="col-md-3 col-md-offset-1">
-                                    <input type="checkbox" id="discharged" name="discharged" value="discharged"> Discharged <br>
+                                    <input type="checkbox" id="discharged" name="disposition1" value="discharged"> Discharged <br>
                                     <input type="checkbox" id="refused_admiss1" name="refused_admiss1" value="Refused Admission"> Refused Admission
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="HAMA1" name="HAMA1" value="HAMA"> HAMA <br>
-                                    <input type="checkbox" id="died2" name="died2" value="died"> Died
+                                    <input type="checkbox" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
+                                    <input type="checkbox" id="died2" name="disposition1" value="died"> Died
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="checkbox" id="trans_facility_hos2" name="trans_facility_hos2" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
+                                    <input type="checkbox" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
                                     <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="checkbox" id="absconded1" name="absconded1" value="Absconded"> Absconded <br>
-                                    <input type="checkbox" id="disposition_others" name="disposition_others" value="Others"> Others 
-                                    <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="others specify here">
+                                    <input type="checkbox" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
+                                    <input type="checkbox" id="disposition_others" name="disposition1" value="Others"> Others 
+                                    <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="">
                                 </div>
                             </div>
                             <div class="col-md-12"><hr>
                                 <label for="Outcome">Outcome</label><br>
                                 <div class="col-md-2 col-md-offset-1">
-                                    <input type="checkbox" id="Improved1" name="Improved1" value="Improved"> Improved
+                                    <input type="checkbox" id="Improved1" name="Outcome1" value="Improved"> Improved
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="Unimproved1" name="Unimproved1" value="Unimproved"> Unimproved
+                                    <input type="checkbox" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="died1" name="died1" value="died"> Died
+                                    <input type="checkbox" id="died1" name="Outcome1" value="died"> Died
                                 </div>
                             </div>
                             <div class="col-md-6"><br>
@@ -827,10 +829,15 @@
                     </div>
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-primary mx-2" onclick="submitPatientForm()">Submit</button>
+                        <button type="submit" class="btn btn-primary mx-2" onclick="submitPatientForm({{ json_encode($nature_injury)}}, {{json_encode($ex_injury)}})">Submit</button>
                     </div>
             </div>
         </form>
+
+
+        <h3>JSON Payload:</h3>
+        <pre id="json-display" class="json-display-style"></pre> <!-- Area to display the JSON payload -->
+
     </div>
 </div>
 
@@ -838,6 +845,13 @@
 
 
 <style>
+.json-display-style {
+      background-color: black;
+      color: yellow;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
     .col-divider { 
         border-right: 1px solid #ddd;
     }

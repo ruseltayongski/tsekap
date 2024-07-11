@@ -48,4 +48,13 @@ class PatientInjuryController extends Controller
         $barangay = Barangay::where('muncity_id',$muncity_id)->get();
         return response()->json($barangay);
     }
+
+    // public function submitPatientInjury(Request $request){
+    //     $data = $request->json()->all();
+
+    //     return response()->json([
+    //         'message' => 'Form data received successfully',
+    //         'data' => $data
+    //     ]);
+    // }
 }
