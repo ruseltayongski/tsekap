@@ -129,6 +129,19 @@
                         </li>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-building"></i>Hospital<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('accidentType') }}"><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Accident Type</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; External Injury</a>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp; Body Parts</a>
+                        </li>
+                    </ul>
+                </li>
+
             @elseif($priv==11)
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>

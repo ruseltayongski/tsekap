@@ -10,7 +10,8 @@ use App\Facility;
 use App\Barangay;
 use App\Muncity;
 use App\Province;
-
+use App\ResuReportFacility;
+use App\Profile;
 
 class PatientInjuryController extends Controller
 {
@@ -49,12 +50,20 @@ class PatientInjuryController extends Controller
         return response()->json($barangay);
     }
 
-    // public function submitPatientInjury(Request $request){
-    //     $data = $request->json()->all();
+    public function SubmitPatientInjury(Request $request){
+       
+       $facility = new ResuReportFacility();
 
-    //     return response()->json([
-    //         'message' => 'Form data received successfully',
-    //         'data' => $data
-    //     ]);
-    // }
+       $facility->reportfacility = $request->facilityname;
+       $facility->typeOfdru = $request->typedru;
+       $facility->Addressfacility = $request->addressfacility;
+       $facility->typeofpatient = $request->typePatient;
+       $facility->save();
+
+       $profile = new Profile();
+
+       $profile->Hospital_caseno = $request->hospital_no
+
+
+    }
 }

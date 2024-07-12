@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ResuNatureInjury;
 use App\ResuBodyParts;
 use App\ResuExternalInjury;
+use App\ResuTransportAccident;
 
 use Illuminate\Support\Facades\Redirect; // Import Redirect facade
 
@@ -81,5 +82,24 @@ class InjuryController extends Controller
         $external->save();
 
         return Redirect::back();
+    }
+
+    public function viewAccident(){
+        $rtaccident = ResuTransportAccident::paginate(13);
+
+        return view('resu.accident.accident', [
+            'accidentType' => $rtaccident
+        ]);
+    }
+
+    public function AddAccidenttype(Request $req){
+
+        $rtaccident = new ResuTransportAccident();
+
+        $rtaccident->description = $req->Description;
+        $rtaccident->save();
+
+        return Redirect::back();
+
     }
 }

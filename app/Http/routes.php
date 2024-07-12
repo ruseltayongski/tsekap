@@ -394,5 +394,9 @@ Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-par
 //get municipal && province
 Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
+//add patient injury
+Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+//accident type
 
-Route::post('submit-patient-form', 'resu\PatientInjuryController@submitPatientInjury');
+Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
+Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");

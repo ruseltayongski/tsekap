@@ -6,10 +6,12 @@
  use App\ResuNatureInjury;
  use App\ResuBodyParts;
  use App\ResuExternalInjury;
+ use App\ResuTransportAccident;
 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
  $ex_injury = ResuExternalInjury::all();
+ $rtacident = ResuTransportAccident::all();
 ?>
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
@@ -17,14 +19,14 @@
             <i class="fa fa-user-plus"></i>&nbsp; Patient Injury Form
         </h2>
         <div class="page-divider"></div>
-        <form class="form-horizontal form-submit" id="form-submit" action="">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
+            {{ csrf_field() }}
             <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
                             <div class="col-md-6">
-                            <input type="hidden" class="form-control" name="facility_id" id="facility_id" value="1">
                                 <label for="facility-name">Name of Reporting Facility</label>
                                 <select class="form-control chosen-select" name="facilityname" id="facility">
                                     <option value="">Select Reporting Facility</option>
@@ -64,7 +66,6 @@
                         </div>
                         <h4 class="patient-font mt-4">General Data</h4>
                         <div class="row">
-                            <input type="hidden" name="patient" id="patient_id" value="3">
                             <div class="col-md-3">
                                 <label for="hospital_no">Hospital Case No.</label>
                                 <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
@@ -272,10 +273,10 @@
                                         <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
                                     </label><br>
                                     <div class="col-md-offset-5">
-                                        <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type
+                                        <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type <!--close type details-->
                                     </div>
                                     <div class="col-md-offset-5"><br>
-                                        <input type="checkbox" id="opentype" name="fracttype" value="open type"> Open Type
+                                        <input type="checkbox" id="opentype" name="fracttype" value="open type"> Open Type <!--open type details-->
                                     </div>
                                 </div>  
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
@@ -343,12 +344,12 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 <label>Select side</label>
-                                <select class="form-control" name="closetype_side" id="closetype_side" value="">
+                                <select class="form-control" name="closetype_side" id="closetype_side">
                                     <option value="">Select side close type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
                                 </select>
-                                <select class="form-control" name="opentype_side" id="opentype_side" value=""> 
+                                <select class="form-control" name="opentype_side" id="opentype_side"> 
                                     <option value="">Select side open type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -356,7 +357,7 @@
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br><br>
                                 <label>Select Body parts</label>
-                                <select class="form-control chosen-select" name="body_parts_others" id="body_parts_others" value="">
+                                <select class="form-control chosen-select" name="body_parts_others" id="body_parts_others" multiple>
                                     <option value="">Select body parts for Others</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -364,7 +365,7 @@
                                 </select>
                             @else
                                 <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}" id="body_parts_injured{{$counter}}">
+                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}" id="body_parts_injured{{$counter}}" multiple>
                                     <option value="">Select body parts for {{$injured->name}}</option>
                                     @foreach($body_part as $body_parts)
                                         <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -380,7 +381,7 @@
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burn_body_parts" id="burn_body_parts" value="">
+                                <select class="form-control chosen-select" name="burn_body_parts" id="burn_body_parts" multiple>
                                     <option value="">Select body parts for burn</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -388,13 +389,13 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burnclose_bodyparts" id="burnclose_bodyparts">
+                                <select class="form-control chosen-select" name="burnclose_bodyparts" id="burnclose_bodyparts" multiple>
                                     <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
-                                <select class="form-control chosen-select" name="burnOpen_bodyparts" id="burnOpen_bodyparts">
+                                <select class="form-control chosen-select" name="burnOpen_bodyparts" id="burnOpen_bodyparts" multiple>
                                     <option value="">Select body parts for Open type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -544,10 +545,18 @@
                     <div class="col-md-12 transport-related">
                         <label>For Transport Vehicular Accident Only:</label>
                     </div>
-                    <div class="col-md-3 transport-related">&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="Land" name="transport_vehic" value="land"> Land
-                    </div>
-                    <div class="col-md-2 transport-related">
+                    @foreach($rtacident as $rtAct)
+                        @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
+                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="Collision" name="transport_vehic" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                        </div>
+                        @else
+                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" id="Land" name="transport_vehic" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                        </div>
+                        @endif
+                   
+                    <!-- <div class="col-md-2 transport-related">
                         <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
                     </div>
                     <div class="col-md-2 transport-related">
@@ -558,7 +567,8 @@
                     </div>
                     <div class="col-md-2 transport-related">
                         <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
-                    </div>
+                    </div> -->
+                    @endforeach
                     <div class="col-md-6 transport-related"><hr>
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
@@ -607,7 +617,7 @@
                         <input type="checkbox" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
                         <input type="checkbox" id="position_driver" name="position_patient" value="Driver"> Driver<br>
                         <input type="checkbox" id="position_captain" name="position_patient" value="Captain"> Captain<br>
-                        <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot
+                        <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
                         <input type="checkbox" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
                         <input type="checkbox" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
                         <input type="checkbox" id="position_others" name="position_patient" value="Others"> Others:<br>
@@ -829,7 +839,7 @@
                     </div>
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-primary mx-2" onclick="submitPatientForm({{ json_encode($nature_injury)}}, {{json_encode($ex_injury)}})">Submit</button>
+                        <button type="submit" class="btn btn-primary mx-2">Submit</button>
                     </div>
             </div>
         </form>
