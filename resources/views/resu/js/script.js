@@ -24,6 +24,14 @@ function showPreviousStep() {
 
 //first aid given
 $(document).ready(function () {
+  $("#checkProfile").modal({
+    backdrop: "static",
+    keyboard: false,
+  });
+
+  var checkmodal = $("#checkProfile").modal("show");
+  console.log("modal", checkmodal);
+
   $("#firstAidYes, #firstAidNo").change(function () {
     console.log("it works");
     if ($("#firstAidYes").is(":checked")) {
@@ -171,5 +179,35 @@ $(document).ready(function () {
   $("#municipal_injury").change(function () {
     var muncityId = $(this).val();
     BarangayData(muncityId, "#barangay_injury");
+  });
+
+  //display age base the birth date
+  function calculateAge(dateOfBirth) {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // If the birth month is in future compared to current month
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+
+  $("#dateofbirth").on("change", function () {
+    const dob = $(this).val();
+    const ageField = $("#age");
+
+    if (dob) {
+      const age = calculateAge(dob);
+      ageField.val(age);
+    } else {
+      ageField.val("");
+    }
   });
 });

@@ -92,11 +92,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date Of Birth</label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" value="">
+                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" >
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age</label>
-                                <input type="text" class="form-control" id="age" name="age" value="">
+                                <input type="text" class="form-control" id="age" name="age" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province</label>
@@ -850,7 +850,8 @@
 
     </div>
 </div>
-
+@include('../modal.profile')
+@include('../modal.checkProfile')
 @endsection
 
 

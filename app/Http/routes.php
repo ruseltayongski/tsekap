@@ -112,7 +112,7 @@ Route::get('user/profile/age/withDay/{dob}','ClientCtrl@calculateAgeWithDay');
 Route::get('user/population/add/{id}','ClientCtrl@addPopulation');
 Route::post('user/population/save','ClientCtrl@savePopulation');
 
-Route::get('user/population/head','ClientCtrl@addHeadProfile');
+// I move this route
 Route::post('user/population/head/save','ClientCtrl@saveHeadProfile');
 
 Route::get('user/population/info/{id}','ClientCtrl@infoPopulation');
@@ -374,6 +374,7 @@ Route::get('logout',function(){
     return redirect('login');
 });
 
+
 //for resu 
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
 
@@ -400,3 +401,6 @@ Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientIn
 
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
 Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");
+
+//for tsekap route
+Route::get('user/population/head','ClientCtrl@addHeadProfile');

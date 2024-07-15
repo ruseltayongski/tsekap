@@ -51,19 +51,30 @@ class PatientInjuryController extends Controller
     }
 
     public function SubmitPatientInjury(Request $request){
+        $user = Auth::user();
+        $facility = new ResuReportFacility();
+
+        $facility->reportfacility = $request->facilityname;
+        $facility->typeOfdru = $request->typedru;
+        $facility->Addressfacility = $request->addressfacility;
+        $facility->typeofpatient = $request->typePatient;
+        $facility->save();
+
+        $profile = new Profile();
+        $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
+        $profile->unique_id = $unique_id;
+        $profile->Hospital_caseno = $request->hospital_no;
+        $profile->report_facilityId = $facility->id;
+        $profile->fname = $request->fname;
+        $profile->mname = $request->mname;
+        $profile->lname = $request->lname;
+        $profile->sex = $request->sex;
+        $profile->dob = $request->dateBirth;
+        $profile->province_id = $request->province;
+        $profile->muncity_id = $request->municipal;
+        $profile->barangay_id = $request->barangay;
+        $profile->phicID = $request->phil_no;
+        $profile->save();
        
-       $facility = new ResuReportFacility();
-
-       $facility->reportfacility = $request->facilityname;
-       $facility->typeOfdru = $request->typedru;
-       $facility->Addressfacility = $request->addressfacility;
-       $facility->typeofpatient = $request->typePatient;
-       $facility->save();
-
-       $profile = new Profile();
-
-       $profile->Hospital_caseno = $request->hospital_no
-
-
     }
 }
