@@ -157,8 +157,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label>Date and Time Consultation:</label>
-                                <input type="date" class="form-control" name="date_consultation" id="date_consultation" value="">
-                                <input type="time" class="form-control" name="time_consultation" id="time_consultation" value="">
+                                <input type="date" class="form-control" name="date_consult" id="date_consultation" value="">
+                                <input type="time" class="form-control" name="time_consult" id="time_consultation" value="">
                             </div>
                         </div>
                     </div>
@@ -247,23 +247,23 @@
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="InjuredBurn" name="InjuredBurn" value="{{$injured->id}}"> {{$injured->name}}
+                                        <input type="checkbox" id="InjuredBurn" name="InjuredBurn" value="{{ $injured->id }}"> {{$injured->name}}
                                     </label><br>
 
                                     [ Degree:<label>
-                                        <input type="radio" id="Degree1" name="Degree1" value="Degree 1">
+                                        <input type="radio" id="Degree1" name="Degree" value="Degree 1">
                                         1
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree2" name="Degree2" value="Degree 2">
+                                        <input type="radio" id="Degree2" name="Degree" value="Degree 2">
                                         2
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree3" name="Degree3" value="Degree 3">
+                                        <input type="radio" id="Degree3" name="Degree" value="Degree 3">
                                         3
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree4" name="Degree4" value="Degree 4">
+                                        <input type="radio" id="Degree4" name="Degree" value="Degree 4">
                                         4
                                     </label> ]
                                 </div>
@@ -272,6 +272,7 @@
                                     <label>
                                         <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
                                     </label><br>
+
                                     <div class="col-md-offset-5">
                                         <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type <!--close type details-->
                                     </div>
@@ -291,7 +292,7 @@
                                     <label>
                                         <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
                                     </label>
-                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="nature_details{{$counter}}[details]" id="nature_details{{$counter}}" placeholder="Enter details">
                                 </div>
                             @endif
                             @php
@@ -308,8 +309,8 @@
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 
                                 <label>fracture details</label>
-                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details">
-                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details">
+                                <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder=" fracture close type details">
+                                <input type="text" class="form-control" name="fracture_detail" id="fracture_open_detail" placeholder=" fracture open type details">
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br>
                                 <label>Select side</label>
@@ -853,8 +854,9 @@
 @include('../modal.profile')
 @include('../modal.checkProfile')
 @endsection
-
-
+@section('js')
+    @include('script.profile')
+@endsection
 <style>
 .json-display-style {
       background-color: black;

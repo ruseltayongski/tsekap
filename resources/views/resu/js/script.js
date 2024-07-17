@@ -24,13 +24,13 @@ function showPreviousStep() {
 
 //first aid given
 $(document).ready(function () {
-  $("#checkProfile").modal({
-    backdrop: "static",
-    keyboard: false,
-  });
+  // $("#checkProfile").modal({
+  //   backdrop: "static",
+  //   keyboard: false,
+  // });
 
-  var checkmodal = $("#checkProfile").modal("show");
-  console.log("modal", checkmodal);
+  // var checkmodal = $("#checkProfile").modal("show");
+  // console.log("modal", checkmodal);
 
   $("#firstAidYes, #firstAidNo").change(function () {
     console.log("it works");
