@@ -288,11 +288,12 @@
                                     <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury">
                                 </div>
                             @else
+                            <input type="hidden" name="injured_count" class="injured_count" value="1">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
+                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}[id]" value="{{ $injured->id}} "> {{$injured->name}}
                                     </label>
-                                    <input type="text" class="form-control" name="nature_details{{$counter}}[details]" id="nature_details{{$counter}}" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="nature{{$counter}}[details]" id="nature_details{{$counter}}" placeholder="Enter details">
                                 </div>
                             @endif
                             @php
@@ -309,8 +310,8 @@
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 
                                 <label>fracture details</label>
-                                <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder=" fracture close type details">
-                                <input type="text" class="form-control" name="fracture_detail" id="fracture_open_detail" placeholder=" fracture open type details">
+                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details">
+                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details">
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br>
                                 <label>Select side</label>
@@ -321,7 +322,7 @@
                                 </select>
                             @else
                                 <label>Select side</label>
-                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
+                                <select class="form-control" name="sideInjured{{$counter}}[id]" id="sideInjured{{$counter}}">
                                     <option value="">Select Side for {{$injured->name}}</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>

@@ -5,9 +5,9 @@
 //$password = "rtayong_2020";
 
 // local
-//$host = "localhost";
-//$username = "root";
-//$password = "adm1n";
+// $host = "localhost";
+// $username = "root";
+// $password = "Admin1";
 
 // dummy
 $host = "192.168.110.50";

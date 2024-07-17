@@ -95,32 +95,98 @@ class PatientInjuryController extends Controller
 
         // $pre_admission->save();
 
-        $nature = new ResuNature_Preadmission();
-        $nature->Pre_admission_id = 1;
-        $nature->natureInjury_id = $request->InjuredBurn;
-        $nature->subtype = $request->Degree; 
-        $nature->details = $request->burnDetail;
+        // $nature = new ResuNature_Preadmission();
+        // if($nature->natureInjury_id == $request->InjuredBurn){
+        //     $nature->Pre_admission_id = 1;
+        //     $nature->natureInjury_id = $request->InjuredBurn;
+        //     $nature->subtype = $request->Degree; 
+        //     $nature->details = $request->burnDetail;
+        //     $nature->side = $request->burnside;
+        //     $nature->save();
+        // }elseif($nature->natureInjury_id == $request->fractureNature){
+        //     $nature->Pre_admission_id = 1;
+        //     $nature->natureInjury_id = $request->fractureNature;
+        //     $nature->subtype = $request->fracttype;
+        //     if($request->fracture_open_detail){
+        //         $nature->details = $request->fracture_open_detail;
+        //         $nature->side = $request->opentype_side;
+        //     }else{
+        //         $nature->details = $request->fracture_close_detail;
+        //         $nature->side = $request->closetype_side;
+        //     }
+        //     $nature->save();
+        // }elseif($nature->natureInjury_id == $request->Others_nature_injured){
+        //         $nature->Pre_admission_id = 1;
+        //         $nature->natureInjury_id = $request->Others_nature_injured;
+        //         $nature->details = $request->other_nature_datails;
+        //         $nature->side = $request->side_others;
+        //         $nature->save();
+        // }else{
+        //     foreach($request->nature as $natures){
+        //         $nature->Pre_admission_id = 1;
+        //         $nature->natureInjury_id = $natures['id'];
+        //         $nature->details = $natures['details'];
+        //         $nature->save();
+        //     }
+        //     foreach($request->sideInjured as $side){
+        //         $nature->side = $side['id'];
+        //         $nature->save();
+        //     }
+        // }
+       
+        //  return $request->all();
 
-        $nature->natureInjury_id = $request->fractureNature;
-        $nature->subtype = $request->fracttype;
-        $nature->details = $request->fracture_detail;
-
-        $nature->natureInjury_id = $request->Others_nature_injured;
-        $nature->details = $request->other_nature_datails;
-        $nature->side = $request->side_others;
-        
-        $naturesCount = $request->input('natures');
-        
-        foreach($naturesCount as $nature){
-           
-            if(!empty($nature['id'])){
+        if($request->InjuredBurn || $request->burnside) {
+            $nature = new ResuNature_Preadmission();
+            $nature->Pre_admission_id = 1;
+            $nature->natureInjury_id = $request->InjuredBurn;
+            $nature->subtype = $request->Degree; 
+            $nature->details = $request->burnDetail;
+            $nature->side = $request->burnside;
+            $nature->save();
+        }
+    
+        if($request->fractureNature) {
+            $nature = new ResuNature_Preadmission();
+            $nature->Pre_admission_id = 1;
+            $nature->natureInjury_id = $request->fractureNature;
+            $nature->subtype = $request->fracttype;
+            if($request->fracture_open_detail){
+                $nature->details = $request->fracture_open_detail;
+                $nature->side = $request->opentype_side;
+            }else{
+                $nature->details = $request->fracture_close_detail;
+                $nature->side = $request->closetype_side;
+            }
+            $nature->save();
+        }
+    
+        if($request->Others_nature_injured) {
+            $nature = new ResuNature_Preadmission();
+            $nature->Pre_admission_id = 1;
+            $nature->natureInjury_id = $request->Others_nature_injured;
+            $nature->details = $request->other_nature_datails;
+            $nature->side = $request->side_others;
+            $nature->save();
+        }
+   
+        if($request->nature) {
+            foreach($request->nature as $key => $natures){
+                $nature = new ResuNature_Preadmission();
                 $nature->Pre_admission_id = 1;
-                $nature->natureInjury_id = $nature['id'];
-                $nature->details = $nature['details'] ?? null;
-
+                $nature->natureInjury_id = $natures['id'];
+                $nature->details = $natures['details'];
+    
+                // Use dynamic key to access corresponding side
+                $sideKey = 'sideInjured' . $key;
+                if(isset($request->$sideKey)){
+                    $nature->side = $request->$sideKey['id'];
+                }else{
+                    $nature->side = null;
+                }
+                $nature->save();
             }
         }
-
        
         
     }   
