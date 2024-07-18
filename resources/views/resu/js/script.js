@@ -54,6 +54,19 @@ $(document).ready(function () {
 
     if ($(this).is(":checked")) {
       $(".Transport-group").show();
+
+      Lobibox.alert("info", {
+        msg: "Transport/Vehicular Accident is checked. Please fill up the other fields in the <strong>Next option!</strong>",
+        buttons: {
+          ok: {
+            class: "btn btn-info",
+            text: "OK",
+            closeOnClick: true,
+          },
+        },
+        modal: true,
+        centered: true,
+      });
     } else {
       $(".Transport-group").hide();
       $('.Transport-group input[type="checkbox"]').prop("checked", false);

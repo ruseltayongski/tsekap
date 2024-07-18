@@ -235,8 +235,9 @@
                     </div>
                     <div class="col-md-3">
                         @php
-                            $counter = 0;
+                            $counter = 1;
                         @endphp
+                    
                         @foreach($nature_injury as $injured)
 
                             @php
@@ -288,21 +289,23 @@
                                     <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury">
                                 </div>
                             @else
-                            <input type="hidden" name="injured_count" class="injured_count" value="1">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}[id]" value="{{ $injured->id}} "> {{$injured->name}}
+                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
                                     </label>
-                                    <input type="text" class="form-control" name="nature{{$counter}}[details]" id="nature_details{{$counter}}" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details">
                                 </div>
+                                
                             @endif
                             @php
                                 $counter++;
                             @endphp
                         @endforeach
                     </div>
-
                     <div class="col-md-3">
+                        @php
+                            $counter = 1;
+                        @endphp
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br>
@@ -319,22 +322,29 @@
                                     <option value="">Select Side for Others</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
+                                    <option value="Both left and Right">Both Left & right</option>
                                 </select>
                             @else
                                 <label>Select side</label>
-                                <select class="form-control" name="sideInjured{{$counter}}[id]" id="sideInjured{{$counter}}">
+                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
                                     <option value="">Select Side for {{$injured->name}}</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
+                                    <option value="Both left and Right">Both Left & right</option>
                                 </select>
                             @endif
                             @php
                                 $counter++;
                             @endphp
                         @endforeach
+                        
                         <!----------------------------- Nature of Injury ------------------------------>
                     </div>
+                    <input type="hidden" name="injured_count" class="injured_count" value="{{ $counter }}">
                     <div class="col-md-3">
+                        @php
+                            $counter = 1;
+                        @endphp
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br>
@@ -343,6 +353,7 @@
                                     <option value="">Select Side for burn</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
+                                    <option value="Both left and Right">Both Left & right</option>
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 <label>Select side</label>
@@ -350,16 +361,18 @@
                                     <option value="">Select side close type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
+                                    <option value="Both left and Right">Both Left & right</option>
                                 </select>
                                 <select class="form-control" name="opentype_side" id="opentype_side"> 
                                     <option value="">Select side open type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
+                                    <option value="Both left and Right">Both Left & right</option>
                                 </select>
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br><br>
                                 <label>Select Body parts</label>
-                                <select class="form-control chosen-select" name="body_parts_others" id="body_parts_others" multiple>
+                                <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
                                     <option value="">Select body parts for Others</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -367,7 +380,7 @@
                                 </select>
                             @else
                                 <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}" id="body_parts_injured{{$counter}}" multiple>
+                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple>
                                     <option value="">Select body parts for {{$injured->name}}</option>
                                     @foreach($body_part as $body_parts)
                                         <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -380,10 +393,13 @@
                         @endforeach
                     </div>
                     <div class="col-md-3">
+                         @php
+                            $counter = 1;
+                        @endphp
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burn_body_parts" id="burn_body_parts" multiple>
+                                <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
                                     <option value="">Select body parts for burn</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -391,13 +407,13 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burnclose_bodyparts" id="burnclose_bodyparts" multiple>
+                                <select class="form-control chosen-select" name="fractureclose_bodyparts[]" id="fractureclose_bodyparts" multiple>
                                     <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
-                                <select class="form-control chosen-select" name="burnOpen_bodyparts" id="burnOpen_bodyparts" multiple>
+                                <select class="form-control chosen-select" name="fracture_Open_bodyparts[]" id="fracture_Open_bodyparts" multiple>
                                     <option value="">Select body parts for Open type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
@@ -422,7 +438,7 @@
                         </div>
                     </div>
                     @php
-                        $counter = 0;
+                        $counter = 1;
                     @endphp
                     @foreach($ex_injury as $exInjury)
                         @php
@@ -510,14 +526,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="external_details{{$counter}}" id="Transport_details" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" placeholder="Enter details">
                                 </div>
                         @else
                             <div class="col-md-12"></div>
                             <div class="col-md-3">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="hidden" name="external_id" id="external_id{{$counter}}" value="{{$exInjury->id}}">
                                         <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
                                     </label>
                                 </div>
@@ -530,6 +545,7 @@
                             @endphp
                         @endif
                     @endforeach
+                    <input type="hidden" name="external_count" class="external_count" value="{{ $counter }}">
                 </div>
 
 
