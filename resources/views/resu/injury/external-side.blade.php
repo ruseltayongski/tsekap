@@ -12,7 +12,7 @@
                 </div>
         
                 <div class="form-group">
-                    <button type="submit" style="margin-top:10px;" class="col-xs-12 btn btn-success"><i class="fa fa-paper-plane"></i> Submit</button>
+                    <button type="submit" style="margin-top:10px;  background-color:#727DAB; color:#ffff" class="col-xs-12 btn"><i class="fa fa-paper-plane"></i> Submit</button>
                 </div>
             </form>
         </div>

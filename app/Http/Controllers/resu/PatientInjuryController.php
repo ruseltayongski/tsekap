@@ -16,8 +16,9 @@ use App\ResuPreadmission;
 use App\ResuNature_Preadmission;
 use App\Resunature_injury_bodyparts;
 use App\Resuexternal_injury_preAdmission;
-
-
+use App\ResuTransport;
+use App\ResuSafetyTransport;
+use App\ResuSafety;
 class PatientInjuryController extends Controller
 {
     //
@@ -34,12 +35,13 @@ class PatientInjuryController extends Controller
         $facility = Facility::all();
         $province = Province::all();
         $barangay = Barangay::all();
-     
+        $safety = ResuSafety::all();
         return view('resu.manage_patient_injury.patient_form',[
             'facility' => $facility,
             'province' => $province,
             'muncity' => $muncity,
-            'barangay' => $barangay
+            'barangay' => $barangay,
+            'safety' => $safety,
         ]);
     }
 
@@ -155,7 +157,30 @@ class PatientInjuryController extends Controller
         //     }
         // }
 
-        //save external Injuries
+        //save selected external Injuries
+        $this->SelectedExternalSaveInjury($request);
+    //-------------------------------------------------------------------------//
+    //for Transport form 
+        $this->TransportVehicle($request);
+
+    }   
+
+    //sub sub category bodyparts
+    private function SaveBodyParts($natureId,$pre_admiss_id,$bodyParts)
+    {
+        $bodyPartsData = [];
+        foreach($bodyParts as $bodypart){
+            $bodyPartsData[] = [
+                'preadmission_id' => $pre_admiss_id,
+                'nature_injury_id' => $natureId,
+                'bodyparts_id' => $bodypart
+            ];
+        }
+        Resunature_injury_bodyparts::insert($bodyPartsData);
+    }
+
+    private function SelectedExternalSaveInjury($request){
+
         if($request->ex_burn){
             $external = new Resuexternal_injury_preAdmission();
             $external->Pre_admission_id = 1;
@@ -193,19 +218,64 @@ class PatientInjuryController extends Controller
                 $external->save();
             }
         }
-    }   
+    }
 
-    //sub sub category bodyparts
-    private function SaveBodyParts($natureId,$pre_admiss_id,$bodyParts)
-    {
-        $bodyPartsData = [];
-        foreach($bodyParts as $bodypart){
-            $bodyPartsData[] = [
-                'preadmission_id' => $pre_admiss_id,
-                'nature_injury_id' => $natureId,
-                'bodyparts_id' => $bodypart
-            ];
+    //saving for transport vehicle
+    private function TransportVehicle($request){
+
+        $external_injury_pread_id = $request->externalTransport;
+        if($external_injury_pread_id){
+            $transport = new ResuTransport();
+            $transport->Pre_admission_id = 1;
+            if($request->transport_accident_id){
+                $transport->transport_accident_id = $request->transport_accident_id;
+            }else{
+                $transport->transport_accident_id = $request->transport_collision_id;
+                $transport->other_collision = $request->Othercollision;
+                $transport->other_collision_details = $request->other_collision_details;
+            }
+            $transport->xternal_injury_pread_id = $external_injury_pread_id;
+
+            $transport->PatientVehicle = $request->Patient_vehicle;
+            $transport->Pvother_detail = $request->Patient_vehicle_others;
+
+            $transport->positionPatient = $request->position_patient;
+            $transport->ppother_detail = $request->position_other_details;
+
+            $transport->pofOccurence = $request->Occurrence;
+            $transport->workplace_occurence_specify = $request->workplace_occ_specify;
+            $transport->pofOccurence_others = $request->Occurrence_others;
+    
+            $transport->activity_patient = $request->activity_patient;
+            $transport->AP_others = $request->activity_patient_other;
+
+            $transport->risk_factors = $request->risk_factors;
+            $transport->rf_others = $request->rf_others;
+            $transport->save(); 
+            if($request->safeOthers){
+                $transport->safety = $request->safeOthers;
+                $transport->safety_others = $request->safeothers_details;
+            }else{
+                $transport->safety = $transport->id;
+            }
+            $transport->save(); 
+
+            if($request->has('safe')){
+                $safet_values = $request->input('safe');
+                
+                foreach($safet_values as $safety_value){
+                    $safety = new ResuSafetyTransport();
+                    $safety->Transport_safety_id = $transport->id;
+                    $safety->safety_id = $safety_value;
+                    $safety->save();
+                }
+               
+            } 
+            
+      
+        }else{
+            return "Invalid Transport Id";
         }
-        Resunature_injury_bodyparts::insert($bodyPartsData);
+
     }
 }

@@ -28,9 +28,16 @@
                 <label>Province</label>
                 <input type="text" readonly class="form-control" value="{{ Province::find($user->province)->description }}" />
             </div>
+
+            <!-- <div class="form-group">
+                <a href="{{ asset('logout') }}" class="btn col-xs-12" style="background-color:727DAB; color:#ffff"><i class="fa fa-sign-out"></i> Logout</a>
+            </div> -->
+   
             <div class="form-group">
                 <a href="{{ asset('logout') }}" class="btn btn-success col-xs-12"><i class="fa fa-sign-out"></i> Logout</a>
             </div>
+     
+           
         </div>
     </div>
 

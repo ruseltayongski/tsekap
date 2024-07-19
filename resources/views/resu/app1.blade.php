@@ -134,10 +134,10 @@
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('accidentType') }}"><i class="fa fa-exclamation-circle"></i>&nbsp;&nbsp;Accident Type</a></li>
                         <li class="dropdown-submenu">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; External Injury</a>
+                            <a href="{{ url('viewSafety') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; Safety Type</a>
                         </li>
                         <li class="dropdown-submenu">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp; Body Parts</a>
+                            <a href="{{ url('hospital') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp; Hospital Type</a>
                         </li>
                     </ul>
                 </li>

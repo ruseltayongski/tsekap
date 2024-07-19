@@ -11,7 +11,7 @@ use App\ResuNatureInjury;
 use App\ResuBodyParts;
 use App\ResuExternalInjury;
 use App\ResuTransportAccident;
-
+use App\ResuSafety;
 use Illuminate\Support\Facades\Redirect; // Import Redirect facade
 
 class InjuryController extends Controller
@@ -101,5 +101,23 @@ class InjuryController extends Controller
 
         return Redirect::back();
 
+    }
+
+    public function safetyView(){
+        $saftey = ResuSafety::paginate(13);
+        return view('resu.accident.safety', [
+            'safetytype' => $saftey 
+        ]);
+    }
+
+    public function Savesafety(Request $req){
+
+       $safety = new ResuSafety();
+
+       $safety->name = $req->name;
+
+       $safety->save();
+
+       return Redirect::back();
     }
 }

@@ -1,14 +1,14 @@
 <div class="col-md-3 wrapper">
     <div class="panel panel-jim">
         <div class="panel-heading">
-            <h3 class="panel-title">Add Accident Type</h3>
+            <h3 class="panel-title">Add Safety Type</h3>
         </div>
         <div class="panel-body">
-            <form method="POST" action="{{ route('add-accident-type') }}">
+            <form method="POST" action="{{ route('addSafety') }}">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label>Description</label>
-                    <input type="text" style="width: 100%;" class="form-control" placeholder="Input name..." name="Description" required>
+                    <input type="text" style="width: 100%;" class="form-control" placeholder="Input name..." name="name" required>
                 </div>
         
                 <div class="form-group">

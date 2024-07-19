@@ -1,19 +1,10 @@
-<?php
-// use App\Province;
-// $provinces = Province::orderBy('description','asc');
-// $user= Auth::user();
-// if($user->user_priv==3){
-//     $provinces = $provinces->where('id',$user->province);
-// }
-// $provinces = $provinces->get();
-?>
 <div class="col-md-3 wrapper">
     <div class="panel panel-jim">
         <div class="panel-heading">
-            <h3 class="panel-title">Add Nature Injury</h3>
+            <h3 class="panel-title">Add Hospital facility Category</h3>
         </div>
         <div class="panel-body">
-            <form method="POST" action="{{ route('add-nature-injury') }}">
+            <form method="POST" action="{{ route('add-hospital') }}">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label>Name</label>

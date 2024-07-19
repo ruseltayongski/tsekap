@@ -402,5 +402,10 @@ Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientIn
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
 Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");
 
+Route::get('hospital', 'resu\HospitalController@index')->name('hospital');
+Route::post('add-hospital', 'resu\HospitalController@SaveHospital')->name('add-hospital');
+
+Route::get('viewSafety', 'resu\InjuryController@safetyView')->name("viewSafety");
+Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 //for tsekap route
 Route::get('user/population/head','ClientCtrl@addHeadProfile');

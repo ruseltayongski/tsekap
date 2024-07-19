@@ -7,11 +7,20 @@
  use App\ResuBodyParts;
  use App\ResuExternalInjury;
  use App\ResuTransportAccident;
-
+ use App\ResuHospitalFacility;
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
  $ex_injury = ResuExternalInjury::all();
  $rtacident = ResuTransportAccident::all();
+
+ $hospital_type = ResuHospitalFacility::all();
+
+ 
+ function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
+     similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
+     return $percent >= 80; // You can adjust the threshold as needed
+ }
+
 ?>
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
@@ -566,11 +575,11 @@
                     @foreach($rtacident as $rtAct)
                         @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
                         <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Collision" name="transport_vehic" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                            <input type="checkbox" id="Collision" name="transport_collision_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
                         </div>
                         @else
                         <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Land" name="transport_vehic" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                            <input type="checkbox" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
                         </div>
                         @endif
                    
@@ -606,27 +615,27 @@
                         <div class="col-md-4">
                             <input type="checkbox" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
                             <input type="checkbox" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
-                            <input type="text" class="form-control" name="Patient_vehicle" placeholder="others details">
+                            <input type="text" class="form-control" name="Patient_vehicle_others" placeholder="others details">
                         </div>
                         <div class="col-md-12 collision_group" style="display:none"><br>
                             <p>Other Vehicle/Object Involved (for Collision accident only)</p>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectNone" name="objectNone" value="None"> None<br>
-                                <input type="checkbox" id="objectbicycle" name="objectbicycle" value="Bicycle"> Bicycle<br>
-                                <input type="checkbox" id="objectcar" name="objectcar" value="Car"> Car<br>
-                                <input type="checkbox" id="objectjeepney" name="objectjeepney" value="Jeepney"> Jeepney
+                                <input type="checkbox" id="objectNone" name="Othercollision" value="None"> None<br>
+                                <input type="checkbox" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
+                                <input type="checkbox" id="objectcar" name="Othercollision" value="Car"> Car<br>
+                                <input type="checkbox" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
                             </div>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectvan" name="objectvan" value="Van"> Van<br>
-                                <input type="checkbox" id="objectbus" name="objectbus" value="Bus"> Bus<br>
-                                <input type="checkbox" id="objecttruck" name="objecttruck" value="truck"> truck<br>
-                                <input type="checkbox" id="objectothers" name="objectothers" value="Others"> Others:
-                                <input type="text" class="form-control" id="object_other_details" name="object_other_details" placeholder="others details">
+                                <input type="checkbox" id="objectvan" name="Othercollision" value="Van"> Van<br>
+                                <input type="checkbox" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
+                                <input type="checkbox" id="objecttruck" name="Othercollision" value="truck"> truck<br>
+                                <input type="checkbox" id="objectothers" name="Othercollision" value="Others"> Others:
+                                <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" placeholder="others details">
                             </div>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectmotorcycle" name="objectmotorcycle" value="Motorcycle"> Motorcycle<br>
-                                <input type="checkbox" id="objectTricycle" name="objectTricycle" value="Tricycle"> Tricycle<br>
-                                <input type="checkbox" id="objectunknown" name="objectunknown" value="unknown"> Unknown
+                                <input type="checkbox" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
+                                <input type="checkbox" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
+                                <input type="checkbox" id="objectunknown" name="Othercollision" value="unknown"> Unknown
                             </div>
                         </div>
                     </div>
@@ -650,9 +659,9 @@
                         <input type="checkbox" id="place_Road" name="Occurrence" value="Road"> Road<br>
                         <input type="checkbox" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
                         <input type="checkbox" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
-                        <input type="text" class="form-control" id="place_workplace_details" name="Occurrence" placeholder="specify here">
-                        <input type="checkbox" id="place_others" name="place_others" value="Occurrence"> Others:<br>
-                        <input type="text" class="form-control" id="place_other_details" name="Occurrence" placeholder="others details">
+                        <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here">
+                        <input type="checkbox" id="place_others" name="Occurrence" value="Others"> Others:<br>
+                        <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details">
                         <input type="checkbox" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
                     </div>
                     <div class="col-md-12 transport-related">
@@ -662,7 +671,7 @@
                             <input type="checkbox" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
                             <input type="checkbox" id="activity_school" name="activity_patient" value="School"> Work Related<br>
                             <input type="checkbox" id="activity_others" name="activity_patient" value="Others"> Others:
-                            <input type="text" class="form-control" id="activity_other_details" name="activity_patient" placeholder="others details">
+                            <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details">
                             <input type="checkbox" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
                         </div>
                         <div class="col-md-4"><hr>
@@ -672,189 +681,204 @@
                             <input type="checkbox" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
                             <input type="checkbox" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
                             <input type="checkbox" id="risk_others" name="risk_factors" value="Others"> Others specify:
-                            <input type="text" class="form-control" id="risk_others_details" name="risk_factors" placeholder="others specify here">
+                            <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
                             <p>(eg. Suspected under the influence of substance used)</p>
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Safety: (check all that apply)</label>
-                            <div class="col-md-6">
-                                <input type="checkbox" id="safe_none" name="safe[]" value="None"> None<br>
-                                <input type="checkbox" id="safe_childseat" name="safe[]" value="Childseat"> Childseat<br>
-                                <input type="checkbox" id="safe_Airbag" name="safe[]" value="Airbag"> Airbag<br>
-                                <input type="checkbox" id="safe_smooking" name="safe[]" value="smooking"> Lifevest/Lifejacket/flotation device<br>
-                                <input type="checkbox" id="safe_others" name="safe[]" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safe" placeholder="others specify here">
+                            <!-- <div class="col-md-6">
+                                <input type="checkbox" id="safe_none" name="safe[]" value="1"> None<br>
+                                <input type="checkbox" id="safe_childseat" name="safe[]" value="2"> Childseat<br>
+                                <input type="checkbox" id="safe_Airbag" name="safe[]" value="3"> Airbag<br>
+                                <input type="checkbox" id="safe_smooking" name="safe[]" value="4"> Lifevest/Lifejacket/flotation device<br>
+                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
+                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
                             </div>
                             <div class="col-md-6">
-                                <input type="checkbox" id="safeunknown" name="safe[]" value="unknown"> Unknown<br>
-                                <input type="checkbox" id="safehelmet" name="safe[]" value="Helmet"> Helmet<br>
-                                <input type="checkbox" id="safeSeatbelt" name="safe[]" value="Seatbelt"> Seatbelt<br>
+                                <input type="checkbox" id="safeunknown" name="safe[]" value="5"> Unknown<br>
+                                <input type="checkbox" id="safehelmet" name="safe[]" value="6"> Helmet<br>
+                                <input type="checkbox" id="safeSeatbelt" name="safe[]" value="7"> Seatbelt<br>
+                            </div> -->
+                            @foreach($safety as $safe)
+                            <div class="col-md-6">
+                                    <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
                             </div>
-
+                            @endforeach
+                            <div class="col-md-6">
+                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
+                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- end of transport-group -->
-                    
+          
                     <div class="col-md-12"><hr>
                         <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
-                        <div class="A_ErOpdGroup">
-                            <h6 class="A_Hospital mt-5"> 
-                            <input type="checkbox" id="A_ErOpd" name="hospital_data" value="A. ER/OPD/BHS/RHU">
-                            A. ER/OPD/BHS/RHU</h6>
-                            <div class="col-md-12">
-                                <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="YesTransferred" name="YesTransferred" value="Yes"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="NoTransferred" name="NoTransferred" value="No"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="ReferredYes" name="ReferredYes" value="Yes"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="Referredno" name="Referredno" value="No"> No <br><hr>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
-                                <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician">
-                            </div>
-                            <div class="col-md-12"><hr></div>
-                            <div class="col-md-3">
-                                <label for="">Status upon reashing the Facility</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
-                            </div>
-                            <div class="col-md-1">
-                                <input type="checkbox" id="alive" name="reashingFact" value="Alive"> Alive
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="ifalive" name="reashingFact" value="If Alive"> If Alive
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="conscious" name="reashingFact" value="conscious"> conscious
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="Unconscious" name="reashingFact" value="Unconscious"> Unconscious
-                            </div>
-                            <div class="col-md-12"></div>
-                            <div class="col-md-3">
-                                <label for="">Mode of Transport to the Hospital/Facility</label>
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
-                            </div>
-                            <div class="col-md-2">
-                                <input type="checkbox" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
-                            </div>
-                            <div class="col-md-1">
-                                <input type="checkbox" id="ModeOthers" name="mode_transport" value="Others"> Others
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
-                            </div>
-                            <div class="col-md-12"><hr>
-                            <label for="initial_imp">Initial Impression</label>
-                                <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" > <br>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="">ICD-10 Code/s: Nature of imjury</label>
-                                <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature">    
-                            </div>
-                            <div class="col-md-6">
-                                <label for="">ICD-10 Code/s: External Cause injury</label>
-                                <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external">
-                            </div>
-                            <div class="col-md-12"><hr>
+                        @foreach($hospital_type as $hos)
+                            @if(isSimilar($hos->category_name, "A. ER/OPD/BHS/RHU"))
+                            <div class="A_ErOpdGroup">
+                                <h6 class="A_Hospital mt-5"> 
+                                <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}">
+                                {{$hos->category_name}}</h6>
+                                <div class="col-md-12">
+                                    <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" id="YesTransferred" name="YesTransferred" value="Yes"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" id="NoTransferred" name="NoTransferred" value="No"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" id="ReferredYes" name="ReferredYes" value="Yes"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" id="Referredno" name="Referredno" value="No"> No <br><hr>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
+                                    <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician">
+                                </div>
+                                <div class="col-md-12"><hr></div>
+                                <div class="col-md-3">
+                                    <label for="">Status upon reashing the Facility</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
+                                </div>
                                 <div class="col-md-1">
-                                    <label for="Disposition">Disposition:</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="checkbox" id="admitted" name="disposition" value="Admitted"> Admitted <br>
-                                    <input type="checkbox" id="hama" name="disposition" value="HAMA"> HAMA
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="checkbox" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
-                                    <input type="checkbox" id="Absconded" name="disposition" value="Absconded"> Absconded
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="checkbox" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
-                                    <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
+                                    <input type="checkbox" id="alive" name="reashingFact" value="Alive"> Alive
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
-                                    <input type="checkbox" id="died" name="disposition" value="died"> Died
+                                    <input type="checkbox" id="ifalive" name="reashingFact" value="If Alive"> If Alive
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="conscious" name="reashingFact" value="conscious"> conscious
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="Unconscious" name="reashingFact" value="Unconscious"> Unconscious
+                                </div>
+                                <div class="col-md-12"></div>
+                                <div class="col-md-3">
+                                    <label for="">Mode of Transport to the Hospital/Facility</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="checkbox" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
+                                </div>
+                                <div class="col-md-1">
+                                    <input type="checkbox" id="ModeOthers" name="mode_transport" value="Others"> Others
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
+                                </div>
+                                <div class="col-md-12"><hr>
+                                <label for="initial_imp">Initial Impression</label>
+                                    <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" > <br>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">ICD-10 Code/s: Nature of imjury</label>
+                                    <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature">    
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="">ICD-10 Code/s: External Cause injury</label>
+                                    <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external">
+                                </div>
+                                <div class="col-md-12"><hr>
+                                    <div class="col-md-1">
+                                        <label for="Disposition">Disposition:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" id="admitted" name="disposition" value="Admitted"> Admitted <br>
+                                        <input type="checkbox" id="hama" name="disposition" value="HAMA"> HAMA
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
+                                        <input type="checkbox" id="Absconded" name="disposition" value="Absconded"> Absconded
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="checkbox" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
+                                        <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
+                                        <input type="checkbox" id="died" name="disposition" value="died"> Died
+                                    </div>
+                                </div>
+                                <div class="col-md-12"><hr>
+                                    <div class="col-md-2">
+                                        <label for="Outcome">Outcome</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" id="Improved" name="outcome" value="Improved"> Improved
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="checkbox" id="Died1" name="outcome" value="died"> Died
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12"><hr>
-                                <div class="col-md-2">
-                                    <label for="Outcome">Outcome</label>
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="Improved" name="outcome" value="Improved"> Improved
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="Died1" name="outcome" value="died"> Died
-                                </div>
-                            </div>
-                        </div>
+                            @endif
+                        @endforeach
                     </div>
-                    
-                    <div class="B_InpatientGroup">
-                        <div class="col-md-12"><hr class="Inpatient_linehr">
-                            <h6 class="A_Hospital mt-5"> 
-                            <input type="checkbox" id="B_InPatient" name="hospital_data" value="In-Patient(for admitted hospital cases only)">
-                            B. In-Patient(for admitted hospital cases only)</h6>
-                            <div class="col-md-12">
-                                <label for="complete_final">Complete Final Diagnosis</label>
-                                <input type="text" class="form-control" id="complete_final" name="complete_final" id="" value="">
-                            </div>
-                            <div class="col-md-12"><hr>
+                    @foreach($hospital_type as $hos)
+                        @if(isSimilar($hos->category_name, "B. In-Patient(for admitted hospital cases only)"))
+                            <div class="B_InpatientGroup">
+                                <div class="col-md-12"><hr class="Inpatient_linehr">
+                                    <h6 class="A_Hospital mt-5"> 
+                                    <input type="checkbox" id="B_InPatient" name="hospital_data" value="{{$hos->id}}">
+                                    {{$hos->category_name}}</h6>
+                                    <div class="col-md-12">
+                                        <label for="complete_final">Complete Final Diagnosis</label>
+                                        <input type="text" class="form-control" id="complete_final" name="complete_final" id="" value="">
+                                    </div>
+                                    <div class="col-md-12"><hr>
 
-                                <label for="Disposition">Disposition:</label><br>
-                                <div class="col-md-3 col-md-offset-1">
-                                    <input type="checkbox" id="discharged" name="disposition1" value="discharged"> Discharged <br>
-                                    <input type="checkbox" id="refused_admiss1" name="refused_admiss1" value="Refused Admission"> Refused Admission
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
-                                    <input type="checkbox" id="died2" name="disposition1" value="died"> Died
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="checkbox" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
-                                    <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="checkbox" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
-                                    <input type="checkbox" id="disposition_others" name="disposition1" value="Others"> Others 
-                                    <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="">
+                                        <label for="Disposition">Disposition:</label><br>
+                                        <div class="col-md-3 col-md-offset-1">
+                                            <input type="checkbox" id="discharged" name="disposition1" value="discharged"> Discharged <br>
+                                            <input type="checkbox" id="refused_admiss1" name="refused_admiss1" value="Refused Admission"> Refused Admission
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
+                                            <input type="checkbox" id="died2" name="disposition1" value="died"> Died
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
+                                            <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="checkbox" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
+                                            <input type="checkbox" id="disposition_others" name="disposition1" value="Others"> Others 
+                                            <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12"><hr>
+                                        <label for="Outcome">Outcome</label><br>
+                                        <div class="col-md-2 col-md-offset-1">
+                                            <input type="checkbox" id="Improved1" name="Outcome1" value="Improved"> Improved
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="died1" name="Outcome1" value="died"> Died
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"><br>
+                                        <label for="">ICD-10 Code/s: Nature of injury</label>
+                                        <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
+                                    </div>
+                                    <div class="col-md-6"><br>
+                                        <label for="">ICD-10 Code/s: External Cause injury</label>
+                                        <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-12"><hr>
-                                <label for="Outcome">Outcome</label><br>
-                                <div class="col-md-2 col-md-offset-1">
-                                    <input type="checkbox" id="Improved1" name="Outcome1" value="Improved"> Improved
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="died1" name="Outcome1" value="died"> Died
-                                </div>
-                            </div>
-                            <div class="col-md-6"><br>
-                                <label for="">ICD-10 Code/s: Nature of imjury</label>
-                                <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
-                            </div>
-                            <div class="col-md-6"><br>
-                                <label for="">ICD-10 Code/s: External Cause injury</label>
-                                <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
-                            </div>
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
                         <button type="submit" class="btn btn-primary mx-2">Submit</button>
