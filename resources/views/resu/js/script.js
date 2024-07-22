@@ -114,9 +114,9 @@ $(document).ready(function () {
   });
 
   //display municipal
-  function MunicipalData(provinceId, muncity) {
+  function MunicipalData(provinceId, muncity, muncity_id = null) {
     $(muncity).empty().append('<option value="">Select Municipal</option>'); // Reset municipal dropdown
-
+    
     if (provinceId) {
       $.ajax({
         url: "get/municipal/" + provinceId,
@@ -135,7 +135,15 @@ $(document).ready(function () {
                 );
               }
             });
-            $(muncity).trigger("chosen:updated");
+            if(muncity_id){
+              $(muncity).val(muncity_id);
+              $(muncity).trigger("chosen:updated");
+              console.log( 'chosen',$(muncity).trigger("chosen:updated"));
+            }else{
+              $(muncity).trigger("chosen:updated");
+              console.log( 'chosen',$(muncity).trigger("chosen:updated"));
+            }
+            
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -145,19 +153,6 @@ $(document).ready(function () {
       });
     }
   }
-
-  var provinceId = $("#province").val();
-  var municipalId = $("#municipal").data("selected");
-  var barangayId = $("#barangay").data("selected");
-
-  if (provinceId) {
-    MunicipalData(provinceId, "#municipal", municipalId);
-  }
-
-  if (municipalId) {
-    BarangayData(municipalId, "#barangay", barangayId);
-  }
-
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();
@@ -170,9 +165,9 @@ $(document).ready(function () {
   });
 
   // display Barangay
-  function BarangayData(muncityId, barangay) {
+  function BarangayData(muncityId, barangay, barangay_id = null) {
     $(barangay).empty().append("<option>Select Barangay</option>");
-
+   
     $.ajax({
       url: "get/barangay/" + muncityId,
       type: "GET",
@@ -187,7 +182,13 @@ $(document).ready(function () {
               "</option>"
           );
         });
-        $(barangay).trigger("chosen:updated");
+        if(barangay_id){
+          $(barangay).val(barangay_id);
+          $(barangay).trigger("chosen:updated");
+        }else{
+          $(barangay).trigger("chosen:updated");
+        }
+       
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(JSON.stringify(jqXHR));
@@ -195,6 +196,20 @@ $(document).ready(function () {
       },
     });
   }
+
+  //this is upate portion 
+  var provinceId = $("#update-province").val();
+  var municipalId = $("#update-municipal").data("selected");
+  var barangayId = $("#update-barangay").data("selected");
+  
+  if (provinceId) {
+    MunicipalData(provinceId, "#update-municipal", municipalId);
+  }
+  
+  if (municipalId) {
+    BarangayData(municipalId, "#update-barangay", barangayId);
+  }
+  // end of update portion
 
   $("#municipal").change(function () {
     var muncityId = $(this).val();

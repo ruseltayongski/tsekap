@@ -46,6 +46,7 @@ class PatientInjuryController extends Controller
         $safety = ResuSafety::all();
 
         $profile = Profile::with('reportfacility')->find($profile_id);
+        
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,

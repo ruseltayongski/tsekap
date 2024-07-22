@@ -120,3 +120,13 @@
     @endif
 
 @endsection
+
+@if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Lobibox.notify('success', {
+                msg: "{{ session('success') }}"
+            });
+        });
+    </script>
+@endif

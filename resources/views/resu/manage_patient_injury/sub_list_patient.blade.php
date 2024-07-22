@@ -29,10 +29,10 @@
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
         <h2 class="page-header">
-            <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.' '.$profile->lname.' '.$profile->suffix }}
+            <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.'. '.$profile->lname.' '.$profile->suffix }}
         </h2>
         <div class="page-divider"></div>
-        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="">
             {{ csrf_field() }}
             <div class="form-step" id="form-step-1">
                 <div class="row">
@@ -117,7 +117,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province</label>
-                                <select class="form-control chosen-select" name="province" id="province">
+                                <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}">
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}" {{ $profile->province_id == $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
@@ -126,12 +126,12 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal</label>
-                                <select class="form-control chosen-select" name="municipal" id="municipal" data-selected="{{ $profile->muncity_id }}">
+                                <select class="form-control chosen-select" name="municipal" id="update-municipal" data-selected="{{ $profile->muncity_id }}">
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Barangay</label>
-                                <select class="form-control chosen-select" name="barangay" id="barangay" data-selected="{{ $profile->barangay_id }}">
+                                <select class="form-control chosen-select" name="barangay" id="update-barangay" data-selected="{{ $profile->barangay_id }}">
                                 </select>
                             </div>
                             <div class="col-md-9">
