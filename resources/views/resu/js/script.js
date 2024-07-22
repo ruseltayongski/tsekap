@@ -145,6 +145,19 @@ $(document).ready(function () {
       });
     }
   }
+
+  var provinceId = $("#province").val();
+  var municipalId = $("#municipal").data("selected");
+  var barangayId = $("#barangay").data("selected");
+
+  if (provinceId) {
+    MunicipalData(provinceId, "#municipal", municipalId);
+  }
+
+  if (municipalId) {
+    BarangayData(municipalId, "#barangay", barangayId);
+  }
+
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();

@@ -1,3 +1,7 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 @extends('resu/app1')
 @section('content')
 
@@ -68,39 +72,42 @@
                                <th>Full Name<br>&nbsp;</th>
                                <th>Age<br>&nbsp;</th>
                                <th>Sex<br>&nbsp;</th>
+                               <th>province<br>&nbsp;</th>
+                               <th>Municipal<br>&nbsp;</th>
                                <th>Barangay<br>&nbsp;</th>
-                               {{--<th class="text-center">--}}
-                                   {{--Sitio<br>--}}
-                                   {{--<small class="text-info">(Update by family)</small>--}}
-                               {{--</th>--}}
-                               {{--<th class="text-center">--}}
-                                   {{--Purok<br>--}}
-                                   {{--<small class="text-warning">(Update by family)</small>--}}
-                               {{--</th>--}}
-                               {{--<th class="text-center">Harmonized<br>&nbsp;</th>--}}
+                               <th>Hospital Case No.<br>&nbsp;</th>
+                               <th>PhilHealth No.<br>&nbsp;</th>
                            </tr>
                        </thead>
                        <tbody>
                         
+                        @foreach($profile as $p)
                            <tr>
                                <td nowrap="TRUE">
-                                   <a href="{{ asset('user/population/info/'.$p->id) }}" class="btn btn-xs btn-success">
+                                   <a href="{{ asset('sublist-patient/'.$p->id) }}" class="btn btn-xs btn-success">
                                        <i class="fa fa-eye"></i> View
                                    </a>
                                </td>
-                               <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">jondy D. Magsayon jr. {{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
+                               <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
                                <td>
-                                   28
+                                @php
+                                    $dob = Carbon::parse($p->dob);
+                                    $age = $dob->diffInYears(Carbon::now());
+                                @endphp
+                                    {{ $age }}
                                </td>
-                               <td>male</td>
-                               <?php $bar_desc = \App\Http\Controllers\LocationCtrl::getBarangay($p->barangay_id);?>
-                               <td>Sambag 1</td>
+                               <td>{{$p->sex}}</td>
+                               <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
+                               <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
+                               <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
+                               <td>{{ $p->Hospital_caseno }}</td>
+                               <td>{{ $p->phicID }}</td>
                            </tr>
-                   
+                        @endforeach
                        </tbody>
                    </table>
                    <div class="text-center">
-                       <!-- set the pagination here -->
+                     {{ $profile->links() }}
                    </div>
                  
                    <!-- <div class="alert alert-info">

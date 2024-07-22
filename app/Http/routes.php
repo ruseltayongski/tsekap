@@ -387,7 +387,8 @@ Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-body
 Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
 
-Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured');
+Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
+Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');

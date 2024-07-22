@@ -19,6 +19,7 @@ class CreateResuInpatientTable extends Migration
             $table->integer('profile_id')->nullable();
             $table->string('complete_Diagnose')->nullable();
             $table->string('Disposition')->nullable();
+            $table->string('details')->nullable();
             $table->string('Outcome')->nullable();
             $table->string('icd10Code_nature')->nullable();
             $table->string('icd10Code_external')->nullable();

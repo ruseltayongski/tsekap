@@ -15,6 +15,10 @@
 
  $hospital_type = ResuHospitalFacility::all();
 
+ use Carbon\Carbon;
+
+ $dob = Carbon::parse($profile->dob);
+ $age = $dob->diffInYears(Carbon::now());
 
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
@@ -25,7 +29,7 @@
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
         <h2 class="page-header">
-            <i class="fa fa-user-plus"></i>&nbsp; Patient Injury Form
+            <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.' '.$profile->lname.' '.$profile->suffix }}
         </h2>
         <div class="page-divider"></div>
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
@@ -40,35 +44,39 @@
                                 <select class="form-control chosen-select" name="facilityname" id="facility">
                                     <option value="">Select Reporting Facility</option>
                                     @foreach($facility as $fact)
-                                    <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}">{{ $fact->name }}</option>
+                                    <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}"
+                                        {{$profile->reportfacility && $profile->reportfacility->reportfacility == $fact->id ? 'selected' : ''}}>{{ $fact->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
-                                <input type="text" class="form-control" name="typedru" id="typedru" readonly>
+                                <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $profile->reportfacility->typeOfdru }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="address-facility">Address of Reporting Facility</label>
-                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly>
+                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $profile->reportfacility->Addressfacility }}">
                             </div>
                             <div class="col-md-6">
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
+                                        @php
+                                            $typePatients = explode(',', $profile->reportFacility->typeofpatient ?? '')
+                                        @endphp
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="ER" name="typePatient" value="ER"> ER
+                                        <input type="checkbox" id="ER" name="typePatient" value="ER" {{ in_array('ER', $typePatients) ? 'checked' : ''}}> ER
+                                    </label> 
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" id="OPD" name="typePatient" value="OPD" {{ in_array('OPD', $typePatients) ? 'checked' : ''}}> OPD
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="OPD" name="typePatient" value="OPD"> OPD
+                                        <input type="checkbox" id="In_Patient" name="typePatient" value="In-Patient" {{ in_array('In-Patient', $typePatients) ? 'checked' : '' }}> In-Patient
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="In_Patient" name="typePatient" value="In-Patient"> In-Patient
+                                        <input type="checkbox" id="BHS" name="typePatient" value="BHS" {{ in_array('BHS', $typePatients)? 'checked' : '' }}> BHS
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="BHS" name="typePatient" value="BHS"> BHS
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="RHU" name="typePatient" value="RHU"> RHU
+                                        <input type="checkbox" id="RHU" name="typePatient" value="RHU" {{ in_array('RHU', $typePatients)? 'checked' : ''}}> RHU
                                     </label>
                                 </div><br>
                             </div>
@@ -77,58 +85,58 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="hospital_no">Hospital Case No.</label>
-                                <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
+                                <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="{{$profile->Hospital_caseno}}">
                             </div>
                             <div class="col-md-3">
                                 <label for="lname">Last Name</label>
-                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                                <input type="text" class="form-control" name="lname" id="lname" value="{{ $profile->lname }}">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="fname">First Name</label>
-                                <input type="text" class="form-control" name="fname" id="fname" value="">
+                                <input type="text" class="form-control" name="fname" id="fname" value="{{ $profile->fname}}">
                             </div>
                             <div class="col-md-2">
                                 <label for="mname">Middle Name</label>
-                                <input type="text" class="form-control" name="mname" id="mname" value="">
+                                <input type="text" class="form-control" name="mname" id="mname" value="{{ $profile->mname}}">
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label for="sex">Sex</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
-                                    <option value="male">male</option>
-                                    <option value="female">female</option>
+                                    <option value="male" {{ $profile->sex == 'male' ? 'selectd' : ''}}>male</option>
+                                    <option value="female" {{$profile->sex == 'female' ? 'selected' : ''}}>female</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date Of Birth</label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" >
+                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" value="{{ $profile->dob }}">
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age</label>
-                                <input type="text" class="form-control" id="age" name="age" readonly>
+                                <input type="text" class="form-control" id="age" name="age" readonly value="{{$age}}">
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province</label>
                                 <select class="form-control chosen-select" name="province" id="province">
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
-                                    <option value="{{ $prov->id }}">{{ $prov->description }}</option>
+                                    <option value="{{ $prov->id }}" {{ $profile->province_id == $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal</label>
-                                <select class="form-control chosen-select" name="municipal" id="municipal">
+                                <select class="form-control chosen-select" name="municipal" id="municipal" data-selected="{{ $profile->muncity_id }}">
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Barangay</label>
-                                <select class="form-control chosen-select" name="barangay" id="barangay">
+                                <select class="form-control chosen-select" name="barangay" id="barangay" data-selected="{{ $profile->barangay_id }}">
                                 </select>
                             </div>
                             <div class="col-md-9">
                                 <label for="phil_no">PhilHealth No.</label>
-                                <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
+                                <input type="text" class="form-control" name="phil_no" id="phil_no" value="{{$profile->phicID}}"><br>
                             </div>
                         </div>
                         <h4 class="patient-font mt-4">Pre-admission Data</h4>
@@ -882,22 +890,15 @@
                     @endforeach
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                        <button type="submit" class="btn btn-warning mx-2">update</button>
                     </div>
             </div>
         </form>
-
-
         <h3>JSON Payload:</h3>
         <pre id="json-display" class="json-display-style"></pre> <!-- Area to display the JSON payload -->
 
     </div>
 </div>
-@include('../modal.profile')
-@include('../modal.checkProfile')
-@endsection
-@section('js')
-    @include('script.profile')
 @endsection
 <style>
 .json-display-style {
