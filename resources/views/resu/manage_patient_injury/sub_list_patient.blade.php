@@ -146,36 +146,36 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province</label>
-                                <select class="form-control chosen-select" name="provinceInjury" id="provinceId">
+                                <select class="form-control chosen-select" name="provinceInjury" id="update_provinceId">
                                     <option value="">Select Province Injury</option>
                                     @foreach($province as $prov)
-                                    <option value="{{ $prov->id }}">{{ $prov->description }}</option>
+                                    <option value="{{ $prov->id }}" {{ $profile->preadmission && $profile->preadmission->POIProvince_id ==  $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal</label>
-                                <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury">
+                                <select class="form-control chosen-select" name="municipal_injury" id="update_municipal_injury" data-selected="{{ $profile->preadmission->POImuncity_id }}">
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Barangay</label>
-                                <select class="form-control chosen-select" name="barangay_injury" id="barangay_injury">
+                                <select class="form-control chosen-select" name="barangay_injury" id="update_barangay_injury" data-selected="{{ $profile->preadmission->POIBarangay_id}}">
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Purok/Sitio</label>
-                                <input type="text" class="form-control" name="purok_injury" id="purok_injury" value="" placeholder="Enter purok/Sitio">
+                                <input type="text" class="form-control" name="purok_injury" id="purok_injury" value="{{ $profile->preadmission->POIPurok }}" placeholder="Enter purok/Sitio">
                             </div>
                             <div class="col-md-6">
                                 <label>Date and Time Injury:</label>
-                                <input type="date" class="form-control" name="date_injury" id="date_injury" value="">
-                                <input type="time" class="form-control" name="time_injury" id="time_injury" value="">
+                                <input type="date" class="form-control" name="date_injury" id="date_injury" value="{{ $profile->preadmission->dateInjury}}">
+                                <input type="time" class="form-control" name="time_injury" id="time_injury" value="{{ $profile->preadmission->timeInjury}}">
                             </div>
                             <div class="col-md-6">
                                 <label>Date and Time Consultation:</label>
-                                <input type="date" class="form-control" name="date_consult" id="date_consultation" value="">
-                                <input type="time" class="form-control" name="time_consult" id="time_consultation" value="">
+                                <input type="date" class="form-control" name="date_consult" id="date_consultation" value="{{$profile->preadmission->dateConsult}}">
+                                <input type="time" class="form-control" name="time_consult" id="time_consultation" value="{{$profile->preadmission->timeConsult}}">
                             </div>
                         </div>
                     </div>
@@ -194,43 +194,48 @@
                             <label>Injury Intent:</label>
                         </div>
                     </div>
+                    @php
+                        $intent = $profile->preadmission->injury_intent ? explode(',', $profile->preadmission->injury_intent) : [];
+                    @endphp
                     <div class="col-md-4 col-md-offset-1">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
+                            <input type="radio" name="injury_intent" id="Accidental" value="Unintentional/Accidental" {{ in_array('Unintentional/Accidental', $intent) ? 'checked' : '' }}> Unintentional/Accidental
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
-                        </label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Undetermined" value="Undetermined"> Undetermined
+                            <input type="radio" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)" {{ in_array('Intentional (Self-inflicted)', $intent) ? 'checked' : '' }}> Intentional (Self-inflicted)
                         </label>
                     </div>
                     <div class="col-md-3">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
+                            <input type="radio" name="injury_intent" id="Violence" value="Intentional/(Violence)" {{ in_array('Intentional/(Violence)', $intent) ? 'checked' : '' }}> Intentional/(Violence)
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="injury_intent" id="Undetermined" value="Undetermined" {{ in_array('Undetermined', $intent) ? 'checked' : '' }}> Undetermined
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="injury_intent" id="VAWCPatient" value="VAWC Patient" {{ in_array('VAWC Patient', $intent) ? 'checked' : '' }}> VAWC Patient
                         </label>
                     </div>
                   
                     <div class="col-md-12">  <hr>
                         <label>First Aid Given:</label>
                     </div>
-
+                    @php
+                        $firstaid = $profile->preadmission->first_aid ? explode(',', $profile->preadmission->first_aid) : [];
+                    @endphp
                     <div class="col-md-1 col-md-offset-2">
-                        <input type="checkbox" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
+                        <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes" {{ in_array('Yes', $firstaid) ? 'checked' : '' }}> Yes
                     </div>
                     <div class="col-md-2">
-                        <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
+                        <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;" value="{{ $profile->preadmission->what}}">
                     </div>
                     <div class="col-md-2">
-                        <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
+                        <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;" value="{{ $profile->preadmission->bywhom }}">
                     </div>
                     <div class="col-md-2">
-                        <input type="checkbox" name="firstAidGive" id="firstAidNo" value="No"> No
+                        <input type="radio" name="firstAidGive" id="firstAidNo" value="No" {{ in_array('No', $firstaid) ? 'checked' : '' }}> No
                     </div>
 
 
@@ -239,11 +244,13 @@
                         <hr>
                         <label>Nature of Injuries:</label>
                     </div>
-
+                    @php
+                        $minjuries = explode(',', $profile->preadmission->multipleInjury);
+                    @endphp
                     <div class="col-md-3 col-md-offset-1">
                         <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="single_injured" name="multiple_injured" value="No"> No</p>
+                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" {{ in_array('Yes', $minjuries) ? 'checked' : '' }}> Yes &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="single_injured" name="multiple_injured" value="No" {{ in_array('No', $minjuries) ? 'checked' : '' }}> No</p>
                     </div>
                     <div class="col-md-12 col-md-offset-.05">
                         <p class="underline-text text-center" id="underline-text">
@@ -253,80 +260,81 @@
                     <div class="col-md-3">
                         @php
                             $counter = 1;
+                            $renderedInjuredIds = [];
+                            $natureInjury_id_array = $profile->preadmission->natureInjuryPreadmissions->pluck('natureInjury_id')->toArray();
+                            $natureDetails = [];
+
+                            foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem){
+                                $natureDetails[$natureItem->natureInjury_id] = $natureItem->details;
+                            }
                         @endphp
-                    
-                        @foreach($nature_injury as $injured)
-
-                            @php
-                                $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);              
-                                $natureSingle = explode(' ', trim($cleaned_naturel))[0];
+                       
+                        @foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem)
+                            
+                            @php 
+                                $natureArray = explode(',', $natureItem->natureInjury_id); 
                             @endphp
-
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="InjuredBurn" name="InjuredBurn" value="{{ $injured->id }}"> {{$injured->name}}
-                                    </label><br>
-
-                                    [ Degree:<label>
-                                        <input type="radio" id="Degree1" name="Degree" value="Degree 1">
-                                        1
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree2" name="Degree" value="Degree 2">
-                                        2
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree3" name="Degree" value="Degree 3">
-                                        3
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree4" name="Degree" value="Degree 4">
-                                        4
-                                    </label> ]
-                                </div>
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
-                                    </label><br>
-
-                                    <div class="col-md-offset-5">
-                                        <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type <!--close type details-->
+                            @foreach($nature_injury as $injured)
+                                @php
+                                    $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);
+                                    $checkIdInjured = 'injured_' . $injured->id;
+                                @endphp
+                               
+                                @if(!in_array($checkIdInjured, $renderedInjuredIds))
+                                    @php
+                                        $renderedInjuredIds[] = $checkIdInjured;
+                                        $injuryDatails = $natureDetails[$injured->id] ?? '';
+                                    @endphp
+                                    <div class="checkbox">
+                                        @if(strtolower($injured->name) == "burn")
+                                            <label>
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                            </label><br>
+                                            Degree:
+                                            @foreach([1, 2, 3, 4] as $degree)
+                                                <label>
+                                                    <input type="radio" id="Degree{{$degree}}_{{$checkIdInjured}}" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
+                                                    {{$degree}}
+                                                </label>
+                                            @endforeach
+                                        @elseif(strtolower($injured->name) == "fracture")
+                                            <label>
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="fractureNature" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                            </label><br>
+                                            <div class="col-md-offset-5">
+                                                <input type="radio" id="clostype_{{$checkIdInjured}}" name="fracttype" value="close type"> Close Type
+                                            </div>
+                                            <div class="col-md-offset-5">
+                                                <input type="radio" id="opentype_{{$checkIdInjured}}" name="fracttype" value="open type"> Open Type
+                                            </div>
+                                        @elseif(in_array(strtolower($injured->name), ['others', 'other', 'Other', 'Others']))
+                                            <label>
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="Others_nature_injured" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}: Please specify injury and the body parts affected:
+                                            </label>
+                                            <input type="text" class="form-control" id="natureDetails" name="other_nature_details" placeholder="Specify details"  value="{{ $injuryDatails }}">
+                                        @else
+                                            <label> 
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
+                                            </label>
+                                            <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}">
+                                        @endif
                                     </div>
-                                    <div class="col-md-offset-5"><br>
-                                        <input type="checkbox" id="opentype" name="fracttype" value="open type"> Open Type <!--open type details-->
-                                    </div>
-                                </div>  
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="Others_nature_injured" name="Others_nature_injured" value="{{$injured->id}}"> {{$injured->name}}: Please specify injury and the body parts affected: 
-                                    </label>
-                                    <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury">
-                                </div>
-                            @else
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
-                                    </label>
-                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details">
-                                </div>
-                                
-                            @endif
-                            @php
-                                $counter++;
-                            @endphp
+                                    @php
+                                        $counter++;
+                                    @endphp
+                                @endif
+                            @endforeach
                         @endforeach
                     </div>
                     <div class="col-md-3">
                         @php
                             $counter = 1;
                         @endphp
+
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br>
-                                <input type="text" class="form-control" id="burnDetail" name="burnDetail" id="burn" placeholder="burn details">
+                                <input type="text" class="form-control" id="nature_details" name="burnDetail" id="burn"  value="" placeholder="burn details">
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 
                                 <label>fracture details</label>

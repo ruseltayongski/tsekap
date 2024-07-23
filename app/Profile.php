@@ -7,6 +7,7 @@ use App\Province;
 use App\Muncity;
 use App\Barangay;
 use App\ResuReportFacility;
+use App\ResuPreadmission;
 
 class Profile extends Model
 {
@@ -28,5 +29,9 @@ class Profile extends Model
 
     public function reportfacility(){
         return $this->belongsTo(ResuReportFacility::class, 'report_facilityId');
+    }
+
+    public function preadmission(){
+        return $this->hasOne(ResuPreadmission::class);
     }
 }

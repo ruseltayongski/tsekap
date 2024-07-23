@@ -32,8 +32,23 @@ $(document).ready(function () {
   // var checkmodal = $("#checkProfile").modal("show");
   // console.log("modal", checkmodal);
 
-  $("#firstAidYes, #firstAidNo").change(function () {
-    console.log("it works");
+  // $("#firstAidYes, #firstAidNo").change(function () {
+  //   console.log("it works");
+  //   if ($("#firstAidYes").is(":checked")) {
+  //     $("#druWhat").show();
+  //     $("#druByWhom").show();
+  //     $("#firstAidNo").prop("checked", false);
+  //   } else {
+  //     $("#druWhat").hide();
+  //     $("#druByWhom").hide();
+  //   }
+
+  //   if ($("#firstAidNo").is(":checked")) {
+  //     $("#firstAidYes").prop("checked", false);
+  //   }
+  // });
+
+  function firstAidfields() {
     if ($("#firstAidYes").is(":checked")) {
       $("#druWhat").show();
       $("#druByWhom").show();
@@ -46,6 +61,13 @@ $(document).ready(function () {
     if ($("#firstAidNo").is(":checked")) {
       $("#firstAidYes").prop("checked", false);
     }
+  }
+
+  firstAidfields();
+
+  $("#firstAidYes, #firstAidNo").change(function () {
+    console.log("it works");
+    firstAidfields();
   });
   //for Transport hide condition
   $("#Transport").change(function () {
@@ -116,7 +138,7 @@ $(document).ready(function () {
   //display municipal
   function MunicipalData(provinceId, muncity, muncity_id = null) {
     $(muncity).empty().append('<option value="">Select Municipal</option>'); // Reset municipal dropdown
-    
+
     if (provinceId) {
       $.ajax({
         url: "get/municipal/" + provinceId,
@@ -135,15 +157,14 @@ $(document).ready(function () {
                 );
               }
             });
-            if(muncity_id){
+            if (muncity_id) {
               $(muncity).val(muncity_id);
               $(muncity).trigger("chosen:updated");
-              console.log( 'chosen',$(muncity).trigger("chosen:updated"));
-            }else{
+              console.log("chosen", $(muncity).trigger("chosen:updated"));
+            } else {
               $(muncity).trigger("chosen:updated");
-              console.log( 'chosen',$(muncity).trigger("chosen:updated"));
+              console.log("chosen", $(muncity).trigger("chosen:updated"));
             }
-            
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -167,7 +188,7 @@ $(document).ready(function () {
   // display Barangay
   function BarangayData(muncityId, barangay, barangay_id = null) {
     $(barangay).empty().append("<option>Select Barangay</option>");
-   
+
     $.ajax({
       url: "get/barangay/" + muncityId,
       type: "GET",
@@ -182,13 +203,12 @@ $(document).ready(function () {
               "</option>"
           );
         });
-        if(barangay_id){
+        if (barangay_id) {
           $(barangay).val(barangay_id);
           $(barangay).trigger("chosen:updated");
-        }else{
+        } else {
           $(barangay).trigger("chosen:updated");
         }
-       
       },
       error: function (jqXHR, textStatus, errorThrown) {
         console.log(JSON.stringify(jqXHR));
@@ -197,19 +217,36 @@ $(document).ready(function () {
     });
   }
 
-  //this is upate portion 
+  //this is upate portion permanent Address
   var provinceId = $("#update-province").val();
   var municipalId = $("#update-municipal").data("selected");
   var barangayId = $("#update-barangay").data("selected");
-  
+
   if (provinceId) {
     MunicipalData(provinceId, "#update-municipal", municipalId);
   }
-  
+
   if (municipalId) {
     BarangayData(municipalId, "#update-barangay", barangayId);
   }
   // end of update portion
+
+  //Address place injury
+  var placeprovinceId = $("#update_provinceId").val();
+  var placemunicipalId = $("#update_municipal_injury").data("selected");
+  var placebarangayId = $("#update_barangay_injury").data("selected");
+
+  if (placeprovinceId) {
+    MunicipalData(
+      placeprovinceId,
+      "#update_municipal_injury",
+      placemunicipalId
+    );
+  }
+
+  if (placemunicipalId) {
+    BarangayData(placemunicipalId, "#update_barangay_injury", placebarangayId);
+  }
 
   $("#municipal").change(function () {
     var muncityId = $(this).val();
