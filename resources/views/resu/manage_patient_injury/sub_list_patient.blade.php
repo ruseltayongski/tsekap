@@ -36,6 +36,7 @@
             {{ csrf_field() }}
             <div class="form-step" id="form-step-1">
                 <div class="row">
+             
                     <div class="col-md-12 col-divider">
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
@@ -263,6 +264,8 @@
                             $renderedInjuredIds = [];
                             $natureInjury_id_array = $profile->preadmission->natureInjuryPreadmissions->pluck('natureInjury_id')->toArray();
                             $natureDetails = [];
+                            $subtype_nature = array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('subtype')->toArray());
+                            $side_nature = array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('side')->toArray());
 
                             foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem){
                                 $natureDetails[$natureItem->natureInjury_id] = $natureItem->details;
@@ -302,10 +305,10 @@
                                                 <input type="checkbox" id="{{$checkIdInjured}}" name="fractureNature" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             <div class="col-md-offset-5">
-                                                <input type="radio" id="clostype_{{$checkIdInjured}}" name="fracttype" value="close type"> Close Type
+                                                <input type="radio" id="clostype_{{$checkIdInjured}}" name="fracttype" value="close type" {{ in_array('close type', $subtype_nature) ? 'checked' : '' }}> Close Type
                                             </div>
                                             <div class="col-md-offset-5">
-                                                <input type="radio" id="opentype_{{$checkIdInjured}}" name="fracttype" value="open type"> Open Type
+                                                <input type="radio" id="opentype_{{$checkIdInjured}}" name="fracttype" value="open type" {{ in_array('open type', $subtype_nature) ? 'checked' : '' }}> Open Type
                                             </div>
                                         @elseif(in_array(strtolower($injured->name), ['others', 'other', 'Other', 'Others']))
                                             <label>
@@ -329,38 +332,58 @@
                     <div class="col-md-3">
                         @php
                             $counter = 1;
+                            $renderedInjuredIds = [];
                         @endphp
+                        @foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem)
+                            @foreach($nature_injury as $injured)
+                                @php
+                                    $checkIdInjured = 'injured_' . $injured->id;
+                                @endphp
 
-                        @foreach($nature_injury as $injured)
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br>
-                                <input type="text" class="form-control" id="nature_details" name="burnDetail" id="burn"  value="" placeholder="burn details">
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
+                                @if(!in_array($checkIdInjured, $renderedInjuredIds))
                                 
-                                <label>fracture details</label>
-                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details">
-                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details">
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <br>
-                                <label>Select side</label>
-                                <select class="form-control" name="side_others" id="side_others">
-                                    <option value="">Select Side for Others</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @else
-                                <label>Select side</label>
-                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
-                                    <option value="">Select Side for {{$injured->name}}</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @endif
-                            @php
-                                $counter++;
-                            @endphp
+                                     @php
+                                        $renderedInjuredIds[] = $checkIdInjured;
+                                        $injuryDatails = $natureDetails[$injured->id] ?? '';
+                                        $nature_subtype = $nature_subtypes[$natureItem->id] ?? '';
+                                       
+                                    @endphp
+
+                                    @if($injured->name == "Burn" || $injured->name == "burn")
+                                        <br>
+                                        <input type="text" class="form-control" id="nature_details" name="burnDetail" id="burn"  value="{{$injuryDatails}}" placeholder="burn details">
+                                    @elseif($injured->name == "Fracture" || $injured->name == "fracture")
+                                        <label>fracture details</label>
+                                        @if(in_array('close type', $subtype_nature))
+                                        <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" value="{{$injuryDatails}}" placeholder=" fracture close type details">
+                                        <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" value="" placeholder=" fracture open type details">
+                                        @else
+                                        <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" value="" placeholder=" fracture close type details">
+                                        <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" value="{{$injuryDatails}}" placeholder=" fracture open type details">
+                                        @endif
+                                    @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
+                                        <br>
+                                        <label>Select side</label>
+                                        <select class="form-control" name="side_others" id="side_others">
+                                            <option value="">Select Side for Others</option>
+                                            <option value="right">right</option>
+                                            <option value="left">left</option>
+                                            <option value="Both left and Right">Both Left & right</option>
+                                        </select>
+                                    @else
+                                        <label>Select side</label>
+                                        <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
+                                            <option value="">Select Side for {{$injured->name}}</option>
+                                            <option value="right">right</option>
+                                            <option value="left">left</option>
+                                            <option value="Both left and Right">Both Left & right</option>
+                                        </select>
+                                    @endif
+                                    @php
+                                        $counter++;
+                                    @endphp
+                                @endif
+                            @endforeach
                         @endforeach
                         
                         <!----------------------------- Nature of Injury ------------------------------>
