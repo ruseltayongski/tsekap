@@ -42,22 +42,19 @@ class PatientInjuryController extends Controller
     public function SublistPatient($profile_id){
         $facility = Facility::all();
         $province = Province::all();
-        $barangay = Barangay::all();
         $safety = ResuSafety::all();
 
         // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
 
         $profile = Profile::with(['reportfacility', 
-        'preadmission.natureInjuryPreadmissions.natureInjury'
-        
+        'preadmission.natureInjuryPreadmissions.bodyParts',
+        'preadmission.externalPreadmissions'
         ])->find($profile_id);
     
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
             'province' => $province,
-            'muncity' => $muncity,
-            'barangay' => $barangay,
             'safety' => $safety,
         ]);
     }

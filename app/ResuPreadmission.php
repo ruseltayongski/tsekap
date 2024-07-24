@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Profile;
 use App\ResuNature_Preadmission;
+use App\Resuexternal_injury_preAdmission;
+
 class ResuPreadmission extends Model
 {
     //
@@ -17,5 +19,9 @@ class ResuPreadmission extends Model
     
     public function natureInjuryPreadmissions(){
         return $this->hasMany(ResuNature_Preadmission::class, 'Pre_admission_id');
+    }
+    
+    public function externalPreadmissions(){
+        return $this->hasMany(Resuexternal_injury_preAdmission::class, 'Pre_admission_id');
     }
 }

@@ -24,30 +24,6 @@ function showPreviousStep() {
 
 //first aid given
 $(document).ready(function () {
-  // $("#checkProfile").modal({
-  //   backdrop: "static",
-  //   keyboard: false,
-  // });
-
-  // var checkmodal = $("#checkProfile").modal("show");
-  // console.log("modal", checkmodal);
-
-  // $("#firstAidYes, #firstAidNo").change(function () {
-  //   console.log("it works");
-  //   if ($("#firstAidYes").is(":checked")) {
-  //     $("#druWhat").show();
-  //     $("#druByWhom").show();
-  //     $("#firstAidNo").prop("checked", false);
-  //   } else {
-  //     $("#druWhat").hide();
-  //     $("#druByWhom").hide();
-  //   }
-
-  //   if ($("#firstAidNo").is(":checked")) {
-  //     $("#firstAidYes").prop("checked", false);
-  //   }
-  // });
-
   function firstAidfields() {
     if ($("#firstAidYes").is(":checked")) {
       $("#druWhat").show();
@@ -69,11 +45,16 @@ $(document).ready(function () {
     console.log("it works");
     firstAidfields();
   });
-  //for Transport hide condition
-  $("#Transport").change(function () {
-    console.log("works");
-    $(".Transport-group").hide();
 
+  if ($("#Transport").is(":checked")) {
+    $(".Transport-group").show();
+  } else {
+    $(".Transport-group").hide();
+    $('.Transport-group input[type="checkbox"]').prop("checked", false);
+    $('.Transport-group input[type="text"]').val("");
+  }
+
+  $("#Transport").change(function () {
     if ($(this).is(":checked")) {
       $(".Transport-group").show();
 

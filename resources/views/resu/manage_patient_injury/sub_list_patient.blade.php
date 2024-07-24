@@ -36,7 +36,7 @@
             {{ csrf_field() }}
             <div class="form-step" id="form-step-1">
                 <div class="row">
-             
+
                     <div class="col-md-12 col-divider">
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
@@ -264,11 +264,12 @@
                             $renderedInjuredIds = [];
                             $natureInjury_id_array = $profile->preadmission->natureInjuryPreadmissions->pluck('natureInjury_id')->toArray();
                             $natureDetails = [];
+                            $natureside = [];
                             $subtype_nature = array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('subtype')->toArray());
-                            $side_nature = array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('side')->toArray());
 
                             foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem){
                                 $natureDetails[$natureItem->natureInjury_id] = $natureItem->details;
+                                $natureside[$natureItem->natureInjury_id] = $natureItem->side;
                             }
                         @endphp
                        
@@ -345,38 +346,33 @@
                                      @php
                                         $renderedInjuredIds[] = $checkIdInjured;
                                         $injuryDatails = $natureDetails[$injured->id] ?? '';
-                                        $nature_subtype = $nature_subtypes[$natureItem->id] ?? '';
-                                       
+                                        $sides = $natureside[$injured->id] ?? '';
                                     @endphp
 
                                     @if($injured->name == "Burn" || $injured->name == "burn")
                                         <br>
                                         <input type="text" class="form-control" id="nature_details" name="burnDetail" id="burn"  value="{{$injuryDatails}}" placeholder="burn details">
                                     @elseif($injured->name == "Fracture" || $injured->name == "fracture")
+                                        <br>
                                         <label>fracture details</label>
-                                        @if(in_array('close type', $subtype_nature))
                                         <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" value="{{$injuryDatails}}" placeholder=" fracture close type details">
-                                        <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" value="" placeholder=" fracture open type details">
-                                        @else
-                                        <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" value="" placeholder=" fracture close type details">
-                                        <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" value="{{$injuryDatails}}" placeholder=" fracture open type details">
-                                        @endif
+                                       
                                     @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                         <br>
                                         <label>Select side</label>
                                         <select class="form-control" name="side_others" id="side_others">
                                             <option value="">Select Side for Others</option>
-                                            <option value="right">right</option>
-                                            <option value="left">left</option>
-                                            <option value="Both left and Right">Both Left & right</option>
+                                            <option value="right" {{ $sides == 'right' ? 'selected' : '' }}>right</option>
+                                            <option value="left" {{ $sides == 'left' ? 'selected' : '' }}>left</option>
+                                            <option value="Both left and Right" {{ $sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
                                         </select>
                                     @else
-                                        <label>Select side</label>
+                                        <label>Select side </label>
                                         <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
                                             <option value="">Select Side for {{$injured->name}}</option>
-                                            <option value="right">right</option>
-                                            <option value="left">left</option>
-                                            <option value="Both left and Right">Both Left & right</option>
+                                            <option value="right" {{ $sides == 'right' ? 'selected' : '' }}>right</option>
+                                            <option value="left" {{ $sides == 'left' ? 'selected' : '' }}>left</option>
+                                            <option value="Both left and Right" {{ $sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
                                         </select>
                                     @endif
                                     @php
@@ -392,48 +388,67 @@
                     <div class="col-md-3">
                         @php
                             $counter = 1;
+                            $renderedInjuredIds = [];
+                            $body_parts_id = [];
                         @endphp
+                        @foreach($profile->preadmission->natureInjuryPreadmissions as $natureadmission)
+                            @foreach($natureadmission->bodyParts as $bodyPart)
+                                @if($bodyPart->nature_injury_id == $natureadmission->natureInjury_id)
+                                    @php
+                                        $body_parts_id[$bodyPart->nature_injury_id][] = $bodyPart->bodyparts_id;
+                                    @endphp
+                                @endif
+                            @endforeach
+                        @endforeach
                         @foreach($nature_injury as $injured)
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br>
-                                <label>Select Side</label>
-                                <select class="form-control" name="burnside" id="burnside">
-                                    <option value="">Select Side for burn</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
-                                <label>Select side</label>
-                                <select class="form-control" name="closetype_side" id="closetype_side">
-                                    <option value="">Select side close type</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                                <select class="form-control" name="opentype_side" id="opentype_side"> 
-                                    <option value="">Select side open type</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <br><br>
-                                <label>Select Body parts</label>
-                                <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
-                                    <option value="">Select body parts for Others</option>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                            @else
-                                <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple>
-                                    <option value="">Select body parts for {{$injured->name}}</option>
-                                    @foreach($body_part as $body_parts)
-                                        <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
+                            @php
+                                $checkIdInjured = 'injured_' . $injured->id;
+                                $sides = $natureside[$injured->id] ?? '';
+                                $body_parts_ids = $body_parts_id[$injured->id] ?? [];
+                            @endphp
+                            
+                            @if(!in_array($checkIdInjured, $renderedInjuredIds))
+                        
+                                @if($injured->name == "Burn" || $injured->name == "burn")
+                                    <br>
+                                    <label>Select Side</label>
+                                    <select class="form-control" name="burnside" id="burnside">
+                                        <option value="">Select Side for burn</option>
+                                        <option value="right" {{$sides == 'right' ? 'selected' : '' }}>right</option>
+                                        <option value="left" {{$sides == 'left' ? 'selected' : '' }}>left</option>
+                                        <option value="Both left and Right" {{$sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
+                                    </select>
+                                @elseif($injured->name == "Fracture" || $injured->name == "fracture")
+                                    <br><br>
+                                    <label>Select side</label>
+                                        <select class="form-control" name="closetype_side" id="closetype_side">
+                                            <option value="">Select side close type</option>
+                                                <option value="right" {{ $sides == 'right' ? 'selected' : '' }}>right</option>
+                                                <option value="left"  {{ $sides == 'left' ? 'selected' : '' }}>left</option>
+                                                <option value="Both left and Right" {{ $sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
+                                        </select>
+                                
+                                @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
+                                    <br><br>
+                                    <label>Select Body parts</label>
+                                    <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
+                                        <option value="">Select body parts for Others</option>
+                                        @foreach($body_part as $body_parts)
+                                        <option value="{{ $body_parts->id }}"  {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                    <label>Select Body Parts</label>
+                                    <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple>
+                                        <option value="">Select body parts for {{$injured->name}}</option>
+                                        @foreach($body_part as $body_parts)
+                                            <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @php
+                                    $renderedInjuredIds[] = $checkIdInjured;
+                                @endphp
                             @endif
                             @php
                                 $counter++;
@@ -445,26 +460,24 @@
                             $counter = 1;
                         @endphp
                         @foreach($nature_injury as $injured)
+                            @php 
+                                $body_parts_ids = $body_parts_id[$injured->id] ?? [];
+                            @endphp                            
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
                                 <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
                                     <option value="">Select body parts for burn</option>
                                     @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
+                                    <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
+                                <label for="bodyparts">Body parts</label>
                                 <select class="form-control chosen-select" name="fractureclose_bodyparts[]" id="fractureclose_bodyparts" multiple>
                                     <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                                <select class="form-control chosen-select" name="fracture_Open_bodyparts[]" id="fracture_Open_bodyparts" multiple>
-                                    <option value="">Select body parts for Open type fracture</option>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
+                                    <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
                             @endif
@@ -486,82 +499,91 @@
                         </div>
                     </div>
                     @php
-                        $counter = 1;
+                        $counter = 1; 
+                        $externaldetails = [];
+                        $exInjury_id = array_filter($profile->preadmission->externalPreadmissions->pluck('externalinjury_id')->toArray());
+                        $subtype_external = array_filter($profile->preadmission->externalPreadmissions->pluck('subtype')->toArray());
+
+                        foreach($profile->preadmission->externalPreadmissions as $externalItem){
+                                $externaldetails[$externalItem->externalinjury_id] = $externalItem->details;
+                            }  
                     @endphp
+                     
                     @foreach($ex_injury as $exInjury)
                         @php
                             $cleaned_external = preg_replace('/[\/,]/', ' ', $exInjury->name);              
                             $externalSingle = explode(' ', trim($cleaned_external))[0];
+                            $ex_details = $externaldetails[$exInjury->id] ?? '';
                         @endphp
                         <input type="hidden" name="external_id" id="external_id" value="{{$exInjury->id}}">
                         @if($externalSingle == 'Burns' || $externalSingle == 'Burn')     
                             <div class="col-md-12">
                                 <label>
-                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}"> {{$exInjury->name}}
+                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}
                                 </label><br>
                                 <div class="col-md-5">
                                 
                                     <div class="checkbox">
                                         <label>
-                                            <input type="radio" name="burn_type" id="heat" value="heat">
+                                            <input type="radio" name="burn_type" id="heat" value="heat" {{in_array('heat', $subtype_external) ? 'checked' : '' }}>
                                             Heat
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="fire" value="fire">
+                                            <input type="radio" name="burn_type" id="fire" value="fire" {{in_array('fire', $subtype_external) ? 'checked' : '' }}>
                                             fire
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="electricity" value="Electricity">
+                                            <input type="radio" name="burn_type" id="electricity" value="Electricity" {{in_array('Electricity', $subtype_external) ? 'checked' : '' }}>
                                             Electricity
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="oil" value="Oil">
+                                            <input type="radio" name="burn_type" id="oil" value="Oil" {{in_array('Oil', $subtype_external) ? 'checked' : '' }}>
                                             Oil
                                         </label>
                                         <label>
-                                            <input type="radio" name="friction" id="friction" value="friction">
+                                            <input type="radio" name="friction" id="friction" value="friction" {{in_array('friction', $subtype_external) ? 'checked' : '' }}>
                                             friction
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here"><br>
+                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" value="{{$ex_details}}" placeholder="specify here"><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
                             <div class="col-md-12">
                                 <div class="d-flex align-items-center">
                                     <label>
-                                        <input type="checkbox" id="exDrowning" name="exDrowning" value="{{ $exInjury->id }}"> {{$exInjury->name}}: Type/Body of Water:
+                                        <input type="checkbox" id="exDrowning" name="exDrowning" value="{{ $exInjury->id }}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}: Type/Body of Water:
                                     </label><br>
                                     <div class="col-md-5">
                                     
                                         <div class="checkbox">
                                             <label>
-                                                <input type="radio" name="drowningType" id="Sea" value="Sea">
+                                                <input type="radio" name="drowningType" id="Sea" value="Sea" {{in_array('Sea', $subtype_external) ? 'checked' : '' }}>
                                                 Sea
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="River" value="River">
+                                                <input type="radio" name="drowningType" id="River" value="River" {{in_array('River', $subtype_external) ? 'checked' : '' }}>
                                                 River
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="Lake" value="Lake">
+                                                <input type="radio" name="drowningType" id="Lake" value="Lake" {{in_array('Lake', $subtype_external) ? 'checked' : '' }}>
                                                 Lake
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="Pool" value="Pool">
+                                                <input type="radio" name="drowningType" id="Pool" value="Pool" {{in_array('Pool', $subtype_external) ? 'checked' : '' }}>
                                                 Pool
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="bath_tub" value="Bath Tub">
+                                                <input type="radio" name="drowningType" id="bath_tub" value="Bath Tub" {{in_array('Bath Tub', $subtype_external) ? 'checked' : '' }}>
                                                 Bath Tub
                                             </label>
                                         </div>
                                     </div> 
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exdrowning_Details" id="exdrowningDetails" placeholder="specify here"><br>
+                                    <input type="text" class="form-control inline-input2" name="exdrowning_Details" id="exdrowningDetails" value="{{$ex_details}}" placeholder="specify here"><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Transport")
@@ -569,24 +591,24 @@
                                 <div class="col-md-3">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
+                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" value="{{$ex_details}}" placeholder="Enter details">
                                 </div>
                         @else
                             <div class="col-md-12"></div>
                             <div class="col-md-3">
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
+                                    <label> 
+                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" placeholder="Enter details">
+                                <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" value="{{$ex_details}}" placeholder="Enter details">
                             </div>
                             @php    
                             $counter++;
@@ -921,7 +943,7 @@
                     @endforeach
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-warning mx-2">update</button>
+                        <button type="submit" class="btn btn-success mx-2">update</button>
                     </div>
             </div>
         </form>
