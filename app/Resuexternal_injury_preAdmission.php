@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\ResuPreadmission;
-
+use App\ResuTransport;
 class Resuexternal_injury_preAdmission extends Model
 {
     //
@@ -13,5 +13,9 @@ class Resuexternal_injury_preAdmission extends Model
 
     public function preadmission(){
         return $this->belongsTo(ResuPreadmission::class, 'id');
+    }
+
+    public function transport(){
+        return $this->hasMany(ResuTransport::class, 'Pre_admission_id', 'Pre_admission_id');
     }
 }

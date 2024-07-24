@@ -36,7 +36,6 @@
             {{ csrf_field() }}
             <div class="form-step" id="form-step-1">
                 <div class="row">
-
                     <div class="col-md-12 col-divider">
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
@@ -629,148 +628,151 @@
             <div class="form-step" id="form-step-4" style="display: none;">
                <div class="row">
                 <!-- for Transport Group -->
-                <div class="Transport-group" style="display: none;">        
-                    <div class="col-md-12 transport-related">
-                        <label>For Transport Vehicular Accident Only:</label>
-                    </div>
-                    @foreach($rtacident as $rtAct)
-                        @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
-                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Collision" name="transport_collision_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                 @foreach($tranportData->transport as $trans)
+                    <div class="Transport-group" style="display: none;">        
+                        <div class="col-md-12 transport-related">
+                            <label>For Transport Vehicular Accident Only:</label>
                         </div>
-                        @else
-                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
-                        </div>
-                        @endif
-                   
-                    <!-- <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
-                    </div>
-                    <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="air" name="transport_vehic" value="Air"> Air
-                    </div>
-                    <div class="col-md-3 transport-related"> 
-                        <input type="checkbox" id="Collision" name="transport_vehic" value="Collision"> Collision&nbsp;&nbsp;&nbsp;
-                    </div>
-                    <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
-                    </div> -->
-                    @endforeach
-                    <div class="col-md-6 transport-related"><hr>
-                        <label>Vehicles Involved:</label>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
-                        <div class="col-md-4">&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
-                        </div>
-                        <div class="col-md-4">
-                            <input type="checkbox" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
-                            <input type="checkbox" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
-                            <input type="checkbox" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
-                            <input type="checkbox" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
-                        </div>
-                        <div class="col-md-4">
-                            <input type="checkbox" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
-                            <input type="checkbox" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
-                            <input type="text" class="form-control" name="Patient_vehicle_others" placeholder="others details">
-                        </div>
-                        <div class="col-md-12 collision_group" style="display:none"><br>
-                            <p>Other Vehicle/Object Involved (for Collision accident only)</p>
-                            <div class="col-md-3">
-                                <input type="checkbox" id="objectNone" name="Othercollision" value="None"> None<br>
-                                <input type="checkbox" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
-                                <input type="checkbox" id="objectcar" name="Othercollision" value="Car"> Car<br>
-                                <input type="checkbox" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
+                        
+                        @foreach($rtacident as $rtAct)
+                            @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
+                            <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="Collision" name="transport_collision_id" value="{{$rtAct->id}}" {{in_array($rtAct->id, $trans->transport_accident_id) ? 'checked' : '' }}> {{$rtAct->description}}
                             </div>
-                            <div class="col-md-3">
-                                <input type="checkbox" id="objectvan" name="Othercollision" value="Van"> Van<br>
-                                <input type="checkbox" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
-                                <input type="checkbox" id="objecttruck" name="Othercollision" value="truck"> truck<br>
-                                <input type="checkbox" id="objectothers" name="Othercollision" value="Others"> Others:
-                                <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" placeholder="others details">
+                            @else
+                            <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"  {{in_array($rtAct->id, $trans->transport_accident_id) ? 'checked' : '' }}> {{$rtAct->description}}
                             </div>
-                            <div class="col-md-3">
-                                <input type="checkbox" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
-                                <input type="checkbox" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
-                                <input type="checkbox" id="objectunknown" name="Othercollision" value="unknown"> Unknown
+                            @endif
+                    
+                        <!-- <div class="col-md-2 transport-related">
+                            <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
+                        </div>
+                        <div class="col-md-2 transport-related">
+                            <input type="checkbox" id="air" name="transport_vehic" value="Air"> Air
+                        </div>
+                        <div class="col-md-3 transport-related"> 
+                            <input type="checkbox" id="Collision" name="transport_vehic" value="Collision"> Collision&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="col-md-2 transport-related">
+                            <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
+                        </div> -->
+                        @endforeach
+                        <div class="col-md-6 transport-related"><hr>
+                            <label>Vehicles Involved:</label>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
+                            <div class="col-md-4">&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
+                                <input type="checkbox" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
+                            </div>
+                            <div class="col-md-4">
+                                <input type="checkbox" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
+                                <input type="checkbox" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
+                                <input type="checkbox" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
+                                <input type="checkbox" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
+                            </div>
+                            <div class="col-md-4">
+                                <input type="checkbox" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
+                                <input type="checkbox" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
+                                <input type="text" class="form-control" name="Patient_vehicle_others" placeholder="others details">
+                            </div>
+                            <div class="col-md-12 collision_group" style="display:none"><br>
+                                <p>Other Vehicle/Object Involved (for Collision accident only)</p>
+                                <div class="col-md-3">
+                                    <input type="checkbox" id="objectNone" name="Othercollision" value="None"> None<br>
+                                    <input type="checkbox" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
+                                    <input type="checkbox" id="objectcar" name="Othercollision" value="Car"> Car<br>
+                                    <input type="checkbox" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="checkbox" id="objectvan" name="Othercollision" value="Van"> Van<br>
+                                    <input type="checkbox" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
+                                    <input type="checkbox" id="objecttruck" name="Othercollision" value="truck"> truck<br>
+                                    <input type="checkbox" id="objectothers" name="Othercollision" value="Others"> Others:
+                                    <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" placeholder="others details">
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="checkbox" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
+                                    <input type="checkbox" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
+                                    <input type="checkbox" id="objectunknown" name="Othercollision" value="unknown"> Unknown
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 transport-related"><hr><br>
-                        <p>Position of Patient</p>
-                        <input type="checkbox" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
-                        <input type="checkbox" id="position_driver" name="position_patient" value="Driver"> Driver<br>
-                        <input type="checkbox" id="position_captain" name="position_patient" value="Captain"> Captain<br>
-                        <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
-                        <input type="checkbox" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
-                        <input type="checkbox" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
-                        <input type="checkbox" id="position_others" name="position_patient" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="position_patient" name="position_other_details" placeholder="others details">
-                        <input type="checkbox" id="position_unknown" name="position_patient" value="Unknown"> Unknown
+                        <div class="col-md-3 transport-related"><hr><br>
+                            <p>Position of Patient</p>
+                            <input type="checkbox" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
+                            <input type="checkbox" id="position_driver" name="position_patient" value="Driver"> Driver<br>
+                            <input type="checkbox" id="position_captain" name="position_patient" value="Captain"> Captain<br>
+                            <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
+                            <input type="checkbox" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
+                            <input type="checkbox" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
+                            <input type="checkbox" id="position_others" name="position_patient" value="Others"> Others:<br>
+                            <input type="text" class="form-control" id="position_patient" name="position_other_details" placeholder="others details">
+                            <input type="checkbox" id="position_unknown" name="position_patient" value="Unknown"> Unknown
 
-                    </div>
-                    <div class="col-md-3 transport-related"><hr><br>
-                        <p>Place of Occurrence</p>
-                        <input type="checkbox" id="place_home" name="Occurrence" value="Home"> Home<br>
-                        <input type="checkbox" id="place_school" name="Occurrence" value="School"> School<br>
-                        <input type="checkbox" id="place_Road" name="Occurrence" value="Road"> Road<br>
-                        <input type="checkbox" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
-                        <input type="checkbox" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
-                        <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here">
-                        <input type="checkbox" id="place_others" name="Occurrence" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details">
-                        <input type="checkbox" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
-                    </div>
-                    <div class="col-md-12 transport-related">
-                        <div class="col-md-4"><hr>
-                            <label>Activity of the patient at the of incident</label><br>
-                            <input type="checkbox" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
-                            <input type="checkbox" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
-                            <input type="checkbox" id="activity_school" name="activity_patient" value="School"> Work Related<br>
-                            <input type="checkbox" id="activity_others" name="activity_patient" value="Others"> Others:
-                            <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details">
-                            <input type="checkbox" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
                         </div>
-                        <div class="col-md-4"><hr>
-                            <label>Other Risk Factors at the time of the incident:</label><br>
-                            <input type="checkbox" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
-                            <input type="checkbox" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
-                            <input type="checkbox" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
-                            <input type="checkbox" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
-                            <input type="checkbox" id="risk_others" name="risk_factors" value="Others"> Others specify:
-                            <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
-                            <p>(eg. Suspected under the influence of substance used)</p>
+                        <div class="col-md-3 transport-related"><hr><br>
+                            <p>Place of Occurrence</p>
+                            <input type="checkbox" id="place_home" name="Occurrence" value="Home"> Home<br>
+                            <input type="checkbox" id="place_school" name="Occurrence" value="School"> School<br>
+                            <input type="checkbox" id="place_Road" name="Occurrence" value="Road"> Road<br>
+                            <input type="checkbox" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
+                            <input type="checkbox" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
+                            <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here">
+                            <input type="checkbox" id="place_others" name="Occurrence" value="Others"> Others:<br>
+                            <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details">
+                            <input type="checkbox" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
                         </div>
-                        <div class="col-md-4"><hr>
-                            <label>Safety: (check all that apply)</label>
-                            <!-- <div class="col-md-6">
-                                <input type="checkbox" id="safe_none" name="safe[]" value="1"> None<br>
-                                <input type="checkbox" id="safe_childseat" name="safe[]" value="2"> Childseat<br>
-                                <input type="checkbox" id="safe_Airbag" name="safe[]" value="3"> Airbag<br>
-                                <input type="checkbox" id="safe_smooking" name="safe[]" value="4"> Lifevest/Lifejacket/flotation device<br>
-                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                        <div class="col-md-12 transport-related">
+                            <div class="col-md-4"><hr>
+                                <label>Activity of the patient at the of incident</label><br>
+                                <input type="checkbox" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
+                                <input type="checkbox" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
+                                <input type="checkbox" id="activity_school" name="activity_patient" value="School"> Work Related<br>
+                                <input type="checkbox" id="activity_others" name="activity_patient" value="Others"> Others:
+                                <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details">
+                                <input type="checkbox" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
                             </div>
-                            <div class="col-md-6">
-                                <input type="checkbox" id="safeunknown" name="safe[]" value="5"> Unknown<br>
-                                <input type="checkbox" id="safehelmet" name="safe[]" value="6"> Helmet<br>
-                                <input type="checkbox" id="safeSeatbelt" name="safe[]" value="7"> Seatbelt<br>
-                            </div> -->
-                            @foreach($safety as $safe)
-                            <div class="col-md-6">
-                                    <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
+                            <div class="col-md-4"><hr>
+                                <label>Other Risk Factors at the time of the incident:</label><br>
+                                <input type="checkbox" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
+                                <input type="checkbox" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
+                                <input type="checkbox" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
+                                <input type="checkbox" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
+                                <input type="checkbox" id="risk_others" name="risk_factors" value="Others"> Others specify:
+                                <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
+                                <p>(eg. Suspected under the influence of substance used)</p>
                             </div>
-                            @endforeach
-                            <div class="col-md-6">
-                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                            <div class="col-md-4"><hr>
+                                <label>Safety: (check all that apply)</label>
+                                <!-- <div class="col-md-6">
+                                    <input type="checkbox" id="safe_none" name="safe[]" value="1"> None<br>
+                                    <input type="checkbox" id="safe_childseat" name="safe[]" value="2"> Childseat<br>
+                                    <input type="checkbox" id="safe_Airbag" name="safe[]" value="3"> Airbag<br>
+                                    <input type="checkbox" id="safe_smooking" name="safe[]" value="4"> Lifevest/Lifejacket/flotation device<br>
+                                    <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
+                                    <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="safeunknown" name="safe[]" value="5"> Unknown<br>
+                                    <input type="checkbox" id="safehelmet" name="safe[]" value="6"> Helmet<br>
+                                    <input type="checkbox" id="safeSeatbelt" name="safe[]" value="7"> Seatbelt<br>
+                                </div> -->
+                                @foreach($safety as $safe)
+                                <div class="col-md-6">
+                                        <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
+                                </div>
+                                @endforeach
+                                <div class="col-md-6">
+                                    <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
+                                    <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!-- end of transport-group -->
           

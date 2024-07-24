@@ -48,14 +48,20 @@ class PatientInjuryController extends Controller
 
         $profile = Profile::with(['reportfacility', 
         'preadmission.natureInjuryPreadmissions.bodyParts',
-        'preadmission.externalPreadmissions'
+        'preadmission.externalPreadmissions.transport'
         ])->find($profile_id);
-    
+        
+        $transportData = [];
+        foreach($profile->preadmission->externalPreadmissions as $transport){
+            $transportData = $transport;
+        }
+        
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
             'province' => $province,
             'safety' => $safety,
+            'tranportData' => $transportData
         ]);
     }
 
