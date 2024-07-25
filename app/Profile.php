@@ -8,6 +8,8 @@ use App\Muncity;
 use App\Barangay;
 use App\ResuReportFacility;
 use App\ResuPreadmission;
+use App\ResuInpatient;
+use App\ResuErOpdBhsRhu;
 
 class Profile extends Model
 {
@@ -33,5 +35,13 @@ class Profile extends Model
 
     public function preadmission(){
         return $this->hasOne(ResuPreadmission::class);
+    }
+
+    public function resuInpatient(){
+        return $this->hasOne(ResuInpatient::class, 'profile_id');
+    }
+
+    public function resuEropdbhsrhu(){
+        return $this->hasOne(ResuErOpdBhsRhu::class, 'profile_id');
     }
 }

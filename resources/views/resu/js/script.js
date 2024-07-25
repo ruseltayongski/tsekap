@@ -77,6 +77,12 @@ $(document).ready(function () {
     }
   });
 
+  if ($("#Collision").is(":checked")) {
+    $(".collision_group").show();
+  } else {
+    $(".collision_group").hide();
+  }
+
   $("#Collision").change(function () {
     console.log("works");
     $(".collision_group").hide();
@@ -119,7 +125,7 @@ $(document).ready(function () {
   //display municipal
   function MunicipalData(provinceId, muncity, muncity_id = null) {
     $(muncity).empty().append('<option value="">Select Municipal</option>'); // Reset municipal dropdown
-
+    console.log("update province Id", provinceId);
     if (provinceId) {
       $.ajax({
         url: "get/municipal/" + provinceId,
@@ -202,12 +208,19 @@ $(document).ready(function () {
   var provinceId = $("#update-province").val();
   var municipalId = $("#update-municipal").data("selected");
   var barangayId = $("#update-barangay").data("selected");
-
   if (provinceId) {
+    $("#update-province").change(function () {
+      var provinceId = $(this).val();
+      MunicipalData(provinceId, "#update-municipal");
+    });
     MunicipalData(provinceId, "#update-municipal", municipalId);
   }
 
   if (municipalId) {
+    $("#update-municipal").change(function () {
+      var muncityId = $(this).val();
+      BarangayData(muncityId, "#update-barangay");
+    });
     BarangayData(municipalId, "#update-barangay", barangayId);
   }
   // end of update portion
@@ -218,6 +231,10 @@ $(document).ready(function () {
   var placebarangayId = $("#update_barangay_injury").data("selected");
 
   if (placeprovinceId) {
+    $("#update_provinceId").change(function () {
+      var PprovinceId = $(this).val();
+      MunicipalData(PprovinceId, "#update_municipal_injury");
+    });
     MunicipalData(
       placeprovinceId,
       "#update_municipal_injury",
@@ -226,6 +243,11 @@ $(document).ready(function () {
   }
 
   if (placemunicipalId) {
+    $("#update_municipal_injury").change(function () {
+      var pmuncity_id = $(this).val();
+      console.log("pmunicity", pmuncity_id);
+      BarangayData(pmuncity_id, "#update_barangay_injury");
+    });
     BarangayData(placemunicipalId, "#update_barangay_injury", placebarangayId);
   }
 

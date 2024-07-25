@@ -39,32 +39,6 @@ class PatientInjuryController extends Controller
         ]);
     }
 
-    public function SublistPatient($profile_id){
-        $facility = Facility::all();
-        $province = Province::all();
-        $safety = ResuSafety::all();
-
-        // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
-
-        $profile = Profile::with(['reportfacility', 
-        'preadmission.natureInjuryPreadmissions.bodyParts',
-        'preadmission.externalPreadmissions.transport'
-        ])->find($profile_id);
-        
-        $transportData = [];
-        foreach($profile->preadmission->externalPreadmissions as $transport){
-            $transportData = $transport;
-        }
-        
-        return view('resu.manage_patient_injury.sub_list_patient',[
-            'profile' => $profile,
-            'facility' => $facility,
-            'province' => $province,
-            'safety' => $safety,
-            'tranportData' => $transportData
-        ]);
-    }
-
     public function PatientForm(){
 
         $facility = Facility::all();
@@ -356,6 +330,165 @@ class PatientInjuryController extends Controller
       
         }else{
             return "Invalid Transport Id";
+        }
+
+    }
+
+    public function SublistPatient($profile_id){
+        $facility = Facility::all();
+        $province = Province::all();
+        $safety = ResuSafety::all();
+
+        // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
+
+        $profile = Profile::with(['reportfacility', 
+        'preadmission.natureInjuryPreadmissions.bodyParts',
+        'preadmission.externalPreadmissions.transport.Allsafety',
+        'resuInpatient',
+        'resuEropdbhsrhu'
+        ])->find($profile_id);
+        // $profile = Profile::with([
+        //     'reportfacility',
+        //     'preadmission' => function ($query) {
+        //         $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
+        //         'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
+        //     },
+        //     'preadmission.natureInjuryPreadmissions' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id'); // Limit columns
+        //     },
+        //     'preadmission.natureInjuryPreadmissions.bodyParts' => function ($query) {
+        //         $query->select('id', 'preadmission_id'); // Limit columns
+        //     },
+        //     'preadmission.externalPreadmissions' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id'); // Limit columns
+        //     },
+        //     'preadmission.externalPreadmissions.transport' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id'); // Limit columns
+        //     },
+        //     'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
+        //         $query->select('id', 'Transport_safety_id'); // Limit columns
+        //     }
+        // ])->find($profile_id);
+
+        $transportData = [];
+        $safetyCateg = [];
+        foreach($profile->preadmission->externalPreadmissions as $transport){
+            foreach($transport->transport as $trans){
+                $transportData = $trans;
+
+                foreach($trans->Allsafety as $safe){
+                    $safetyCateg[] = $safe;
+                }
+            }
+        }
+        $hospitalData = [];
+        $inpatient = $profile->resuInpatient;
+        if($inpatient){
+            $hospitalData = $inpatient;
+        }else{
+            $hospitalData = $profile->resuEropdbhsrhu;
+        }
+
+        $get_allSafety = $transportData->Allsafety->pluck('safety_id');
+        return view('resu.manage_patient_injury.sub_list_patient',[
+            'profile' => $profile,
+            'facility' => $facility,
+            'province' => $province,
+            'list_safety' => $safety,
+            'trans' => $transportData,
+            'get_allsafety' => $get_allSafety,
+            'hospitalData' => $hospitalData
+        ]);
+    }
+
+    public function UpdatePatientInjury(Request $request){
+  
+        $facility = ResuReportFacility::find($request->reportfacility_id);
+        if($facility){
+            $facility->reportfacility = $request->facilityname;
+            $facility->typeOfdru = $request->typedru;
+            $facility->Addressfacility = $request->addressfacility;
+            $facility->typeofpatient = $request->typePatient;
+            $facility->save();
+        }
+        
+        $profile = Profile::find($request->profile_id);
+        if($profile){
+            $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
+            $profile->unique_id = $unique_id;
+            $profile->Hospital_caseno = $request->hospital_no;
+            $profile->report_facilityId = $facility->id;
+            $profile->fname = $request->fname;
+            $profile->mname = $request->mname;
+            $profile->lname = $request->lname;
+            $profile->sex = $request->sex;
+            $profile->dob = $request->dateBirth;
+            $profile->province_id = $request->province;
+            $profile->muncity_id = $request->municipal;
+            $profile->barangay_id = $request->barangay;
+            $profile->phicID = $request->phil_no;
+            $profile->save();
+        }
+
+        $pre_admission = ResuPreadmission::find($request->preadmission_id);
+        if($pre_admission){
+            $pre_admission->POIProvince_id = $request->provinceInjury;
+            $pre_admission->POImuncity_id = $request->municipal_injury;
+            $pre_admission->POIBarangay_id = $request->barangay_injury;
+            $pre_admission->POIPurok = $request->purok_injury;
+            $pre_admission->dateInjury = $request->date_injury;
+            $pre_admission->timeInjury = $request->time_injury;
+            $pre_admission->dateConsult = $request->date_consult;
+            $pre_admission->timeConsult = $request->time_consult;
+            $pre_admission->injury_intent = $request->injury_intent;
+            $pre_admission->first_aid = $request->firstAidGive;
+            $pre_admission->what = $request->druWhat;
+            $pre_admission->bywhom = $request->druByWhom;
+            $pre_admission->multipleInjury = $request->multiple_injured;
+            $pre_admission->save();
+        }else{
+            return "No preadmission id";
+        }
+        //nature injury update
+        if($request->InjuredBurn || $request->burnside) {
+            $nature = ResuNature_Preadmission::find($request->nature_id);
+            $nature->natureInjury_id = $request->InjuredBurn;
+            $nature->subtype = $request->Degree; 
+            $nature->details = $request->burnDetail;
+            $nature->side = $request->burnside;
+            $nature->save();
+
+        }
+    
+        if($request->fractureNature) {
+            $nature = ResuNature_Preadmission::find($request->nature_id);
+            $nature->natureInjury_id = $request->fractureNature;
+            $nature->subtype = $request->fracttype;
+            $nature->details = $request->fracture_detail;
+            $nature->side = $request->fracture_side;
+            $nature->save();
+
+        }
+    
+        if($request->Others_nature_injured) {
+            $nature = ResuNature_Preadmission::find($request->nature_id);
+            $nature->natureInjury_id = $request->Others_nature_injured;
+            $nature->details = $request->other_nature_datails;
+            $nature->side = $request->side_others;
+            $nature->save();
+
+        }
+
+        $injuredcount = $request->input('injured_count');
+        for($i = 1; $i <= $injuredcount; $i++){
+            if($request->has('nature' . $i) || $request->has('nature_details' . $i) || $request->has('sideInjured' . $i)){
+                $nature = ResuNature_Preadmission::findOrNew($request->input('nature_id' . $i));
+                $nature->natureInjury_id = $request->input('nature' . $i);
+                $nature->details = $request->input('nature_details' . $i);
+                $nature->side = $request->input('sideInjured' . $i); // Save side directly here
+                $nature->save();
+
+            }
         }
 
     }

@@ -401,6 +401,8 @@ Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 //add patient injury
 Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+
 //accident type
 
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
