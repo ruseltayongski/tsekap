@@ -278,7 +278,8 @@
                         @endphp
                        
                         @foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem)
-                            
+                        <input type="hidden" name="Pre_admission_id" value="{{ $natureItem->Pre_admission_id }}">
+                        <input type="hidden" name="nature_Pread_id{{$counter}}" value="{{ $natureItem->id }}">
                             @php 
                                 $natureArray = explode(',', $natureItem->natureInjury_id); 
                             @endphp
@@ -293,28 +294,28 @@
                                         $renderedInjuredIds[] = $checkIdInjured;
                                         $injuryDatails = $natureDetails[$injured->id] ?? '';
                                     @endphp
-                                    <input type="hidden" name="nature_id" value="{{$injured->id}}">
+                                    
                                     <div class="checkbox">
                                         @if(strtolower($injured->name) == "burn")
                                             <label>
-                                                <input type="checkbox" id="{{$checkIdInjured}}" name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                                <input type="checkbox"  name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             Degree:
                                             @foreach([1, 2, 3, 4] as $degree)
                                                 <label>
-                                                    <input type="radio" id="Degree{{$degree}}_{{$checkIdInjured}}" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
+                                                    <input type="radio" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
                                                     {{$degree}}
                                                 </label>
                                             @endforeach
                                         @elseif(strtolower($injured->name) == "fracture")
                                             <label>
-                                                <input type="checkbox" id="{{$checkIdInjured}}" name="fractureNature" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                                <input type="checkbox" name="fractureNature" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             <div class="col-md-offset-5">
-                                                <input type="radio" id="clostype_{{$checkIdInjured}}" name="fracttype" value="close type" {{ in_array('close type', $subtype_nature) ? 'checked' : '' }}> Close Type
+                                                <input type="radio" name="fracttype" value="close type" {{ in_array('close type', $subtype_nature) ? 'checked' : '' }}> Close Type
                                             </div>
                                             <div class="col-md-offset-5">
-                                                <input type="radio" id="opentype_{{$checkIdInjured}}" name="fracttype" value="open type" {{ in_array('open type', $subtype_nature) ? 'checked' : '' }}> Open Type
+                                                <input type="radio" name="fracttype" value="open type" {{ in_array('open type', $subtype_nature) ? 'checked' : '' }}> Open Type
                                             </div>
                                         @elseif(in_array(strtolower($injured->name), ['others', 'other', 'Other', 'Others']))
                                             <label>
@@ -325,7 +326,7 @@
                                             <label> 
                                                 <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
                                             </label>
-                                            <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}">
+                                            <input type="text" class="form-control" name="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}">
                                         @endif
                                     </div>
                                     @php
@@ -356,7 +357,7 @@
 
                                     @if($injured->name == "Burn" || $injured->name == "burn")
                                         <br>
-                                        <input type="text" class="form-control" id="nature_details" name="burnDetail" id="burn"  value="{{$injuryDatails}}" placeholder="burn details">
+                                        <input type="text" class="form-control" name="burnDetail" id="burn"  value="{{$injuryDatails}}" placeholder="burn details">
                                     @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                         <br>
                                         <label>fracture details</label>
@@ -479,7 +480,7 @@
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
                                 <label for="bodyparts">Body parts</label>
-                                <select class="form-control chosen-select" name="fractureclose_bodyparts[]" id="fractureclose_bodyparts" multiple>
+                                <select class="form-control chosen-select" name="fracture_bodyparts[]" id="fractureclose_bodyparts" multiple>
                                     <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
@@ -693,7 +694,7 @@
                                     <input type="radio" id="objectbus" name="Othercollision" value="Bus" {{isChecked('Bus', $trans->other_collision)}}> Bus<br>
                                     <input type="radio" id="objecttruck" name="Othercollision" value="truck" {{isChecked('truck', $trans->other_collision)}}> truck<br>
                                     <input type="radio" id="objectothers" name="Othercollision" value="Others" {{isChecked('Others', $trans->other_collision)}}> Others:
-                                    <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" value="{{$trans->other_collision_details}}" placeholder="others details">
+                                    <input type="text" class="form-control" name="other_collision_details" value="{{$trans->other_collision_details}}" placeholder="others details">
                                 </div>
                                 <div class="col-md-3">
                                     <input type="radio" id="objectmotorcycle" name="Othercollision" value="Motorcycle" {{isChecked('Motorcycle', $trans->other_collision)}}> Motorcycle<br>

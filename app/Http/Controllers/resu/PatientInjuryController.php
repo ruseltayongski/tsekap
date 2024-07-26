@@ -450,46 +450,194 @@ class PatientInjuryController extends Controller
             return "No preadmission id";
         }
         //nature injury update
-        if($request->InjuredBurn || $request->burnside) {
-            $nature = ResuNature_Preadmission::find($request->nature_id);
-            $nature->natureInjury_id = $request->InjuredBurn;
-            $nature->subtype = $request->Degree; 
+        if($request->InjuredBurn){
+            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->Pre_admission_id)
+                    ->where('natureInjury_id', $request->InjuredBurn)
+                    ->first();
+           
+            if(!$nature){
+                $nature = new ResuNature_Preadmission();
+                $nature->Pre_admission_id = $request->Pre_admission_id;
+                $nature->natureInjury_id = $request->InjuredBurn;
+            }
+
+            $nature->subtype = $request->Degree;
             $nature->details = $request->burnDetail;
             $nature->side = $request->burnside;
-            $nature->save();
 
+            $nature->save();
+            
+            $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('burn_body_parts', []));
         }
-    
+
         if($request->fractureNature) {
-            $nature = ResuNature_Preadmission::find($request->nature_id);
-            $nature->natureInjury_id = $request->fractureNature;
+            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->Pre_admission_id)
+                    ->where('natureInjury_id', $request->fractureNature)
+                    ->first();
+            if(!$nature){
+                $nature = new ResuNature_Preadmission();
+                $nature->Pre_admission_id = $request->Pre_admission_id;
+                $nature->natureInjury_id = $request->fractureNature;
+            }
             $nature->subtype = $request->fracttype;
-            $nature->details = $request->fracture_detail;
-            $nature->side = $request->fracture_side;
+            if($request->fracture_detail || $request->fracture_side){
+                $nature->details = $request->fracture_detail;
+                $nature->side = $request->fracture_side;
+            }
             $nature->save();
-
+            $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('fracture_bodyparts', []));
         }
-    
-        if($request->Others_nature_injured) {
-            $nature = ResuNature_Preadmission::find($request->nature_id);
-            $nature->natureInjury_id = $request->Others_nature_injured;
-            $nature->details = $request->other_nature_datails;
-            $nature->side = $request->side_others;
-            $nature->save();
 
+        if($request->Others_nature_injured){
+            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->Pre_admission_id)
+                ->where('natureInjury_id', $request->Others_nature_injured)
+                ->first();
+
+            if(!$nature){
+                $nature = new ResuNature_Preadmission();
+                $nature->Pre_admission_id = $request->Pre_admission_id;
+                $nature->natureInjury_id = $request->Others_nature_injured;
+            }
+                $nature->details = $request->other_nature_details;
+                $nature->side = $request->side_others;
+                $nature->save();
+
+                $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('body_parts_others', []));
         }
 
         $injuredcount = $request->input('injured_count');
+
         for($i = 1; $i <= $injuredcount; $i++){
             if($request->has('nature' . $i) || $request->has('nature_details' . $i) || $request->has('sideInjured' . $i)){
-                $nature = ResuNature_Preadmission::findOrNew($request->input('nature_id' . $i));
-                $nature->natureInjury_id = $request->input('nature' . $i);
+                $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->Pre_admission_id)
+                    ->where('natureInjury_id', $request->input('nature', $i))
+                    ->first();
+
+                if(!$nature){
+                    $nature = new ResuNature_Preadmission();
+                    $nature->Pre_admission_id = $request->Pre_admission_id;
+                    $nature->natureInjury_id = $request->input('nature' . $i);
+                }
                 $nature->details = $request->input('nature_details' . $i);
-                $nature->side = $request->input('sideInjured' . $i); // Save side directly here
+                $nature->side = $request->input('sideInjured' . $i);
                 $nature->save();
 
+                $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('body_parts_injured' . $i, []));
             }
         }
+        //end of nature Injury update
 
+        //external update
+        if($request->ex_burn){
+            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $request->Pre_admission_id)
+                ->where('externalinjury_id', $request->ex_burn)
+                ->first();
+            if(!$external){
+                $external = new Resuexternal_injury_preAdmission();
+                $external->Pre_admission_id = $request->Pre_admission_id;
+                $external->externalinjury_id = $request->ex_burn;
+            }
+            $external->subtype = $request->burn_type;
+            $external->details = $request->exburnDetails;
+            $external->save();
+        }
+
+        if($request->exDrowning){
+            $external =  Resuexternal_injury_preAdmission::where('Pre_admission_id', $request->Pre_admission_id)
+                ->where('externalinjury_id', $request->exDrowning)
+                ->first();
+            if(!$external){
+                $external = new Resuexternal_injury_preAdmission();
+                $external->Pre_admission_id = $request->Pre_admission_id;
+                $external->externalinjury_id = $request->exDrowning;
+            }
+            $external->subtype = $request->drowningType;
+            $external->details = $request->exdrowning_Details;
+            $external->save();
+        }
+
+        if($request->externalTransport){
+            $external =  Resuexternal_injury_preAdmission::where('Pre_admission_id', $request->Pre_admission_id)
+                ->where('externalinjury_id', $request->externalTransport)
+                ->first();
+            
+            if(!$external){
+                $external = new Resuexternal_injury_preAdmission();
+                $external->Pre_admission_id = $request->Pre_admission_id;
+                $external->externalinjury_id = $request->$request->externalTransport;
+            }
+            $external->details = $request->transport_details;
+            $external->save();
+        }
+
+        $external_count = $request->external_count;
+        for($i = 1; $i <= $external_count; $i++){
+            if($request->has('external' . $i) || $request->has('external_details' . $i)){
+                $externals = Resuexternal_injury_preAdmission::where('Pre_admission_id', $request->Pre_admission_id)
+                    ->where('externalinjury_id', $request->input('external' . $i))
+                    ->first();
+                if(!$externals){
+                    $externals = new Resuexternal_injury_preAdmission();
+                    $externals->Pre_admission_id = $request->Pre_admission_id;
+                    $externals->externalinjury_id = $request->input('external' . $i); 
+                }
+                $externals->details = $request->input('external_details' . $i);
+                $externals->save();
+            }
+        }
+        //end update if external
+        //for Transpart
+         if($request->externalTransport){
+            $transport = ResuTransport::where('Pre_admission_id', $request->Pre_admission_id)
+                ->where('xternal_injury_pread_id', $request->externalTransport)
+                ->first();
+            
+            if($transport){
+                if($request->transport_collision_id){
+                    $request->transport_accident_id = $request->transport_collision_id;
+                    $request->other_collision = $request->transport_collision_id;
+                    $request->other_collision_details = $request->other_collision_details;
+                }else{
+                    $request->transport_accident_id = $request->transport_accident_id;
+                }
+
+            }else{  
+                return "No transport Id";
+            }
+         }
+
+         return redirect()->back();
     }
+
+    private function UpdateBodyParts($natureInjury_id, $pre_admission_id, $Allbodyparts){
+        $existing_bodyparts = Resunature_injury_bodyparts::where('preadmission_id', $pre_admission_id)
+                ->where('nature_injury_id', $natureInjury_id)
+                ->pluck('bodyparts_id')
+                ->toArray();
+        //dd($natureInjury_id,$pre_admission_id,  $Allbodyparts);
+        $bodyPartsData = [];
+        $processBodyParts = [];
+
+        foreach($Allbodyparts as $bodyparts){
+            if(!in_array($bodyparts, $existing_bodyparts)){
+                $bodyPartsData[] = [
+                'preadmission_id' => $pre_admission_id,
+                'nature_injury_id' => $natureInjury_id,
+                'bodyparts_id' => $bodyparts
+                ];
+            }
+            $processedBodyParts[] = $bodyparts;
+        }
+            // Insert new body parts
+            if (!empty($bodyPartsData)) {
+                Resunature_injury_bodyparts::insert($bodyPartsData);
+            }
+
+            // Delete body parts that are no longer associated
+            Resunature_injury_bodyparts::where('preadmission_id', $pre_admission_id)
+            ->where('nature_injury_id', $natureInjury_id)
+            ->whereNotIn('bodyparts_id', $processedBodyParts)
+            ->delete();
+    }
+    
 }
