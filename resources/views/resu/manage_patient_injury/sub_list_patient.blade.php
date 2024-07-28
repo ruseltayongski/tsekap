@@ -650,15 +650,18 @@
                             }
                         @endphp
                         @foreach($rtacident as $rtAct)
-                            @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
-                            <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="Collision" name="transport_collision_id" value="{{$rtAct->id}}" {{$rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
-                            </div>
-                            @else
-                            <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="checkbox" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"  {{$rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
-                            </div>
-                            @endif
+                            @php
+                                $description = strtolower($rtAct->description);
+                                $isCollision = $description === 'collision';
+                            @endphp
+                        <div class="col-md-2 transport-related">
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="{{ $isCollision ? 'Collision' : 'Land' }}" 
+                                name="transport_accident_id" 
+                                value="{{ $rtAct->id }}"  
+                                {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> 
+                            {{ $rtAct->description }}
+                        </div>
                         @endforeach
                         <div class="col-md-6 transport-related"><hr>
                             <label>Vehicles Involved:</label>
@@ -722,7 +725,7 @@
                             <input type="radio" id="place_school" name="Occurrence" value="School" {{isChecked('School', $trans->pofOccurence)}}> School<br>
                             <input type="radio" id="place_Road" name="Occurrence" value="Road" {{isChecked('Road', $trans->pofOccurence)}}> Road<br>
                             <input type="radio" id="place_Bars" name="Occurrence" value="School" {{isChecked('School', $trans->pofOccurence)}}> Videoke Bars<br>
-                            <input type="radio" id="place_workplace" name="Occurrence" value="workplace" {{isChecked('worlplace', $trans->pofOccurence)}}> Workplace, specify:<br>
+                            <input type="radio" id="place_workplace" name="Occurrence" value="workplace" {{isChecked('workplace', $trans->pofOccurence)}}> Workplace, specify:<br>
                             <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" value="{{$trans->workplace_occurence_specify}}" placeholder="specify here">
                             <input type="radio" id="place_others" name="Occurrence" value="Others" {{isChecked('Others', $trans->pofOccurence)}}> Others:<br>
                             <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details" value="{{$trans->pofOccurence_others}}">
@@ -750,16 +753,23 @@
                             </div>
                             <div class="col-md-4"><hr>
                                 <label>Safety: (check all that apply)</label>
-                       
-                                    @foreach($list_safety as $safe)
-                                    <div class="col-md-6">
-                                        <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}" {{ in_array($safe->id, $get_allsafety->toArray()) ? 'checked' : '' }}>{{ $safe->name }}<br>
-                                    </div>
+                                    @foreach($transport_Id as $id_trans)
+                                        <input type="hidden" name="transport_ids" value="{{ $id_trans }}">
                                     @endforeach
-                                <div class="col-md-6">
-                                    <input type="checkbox" id="safe_others" name="safeOthers" value="Others" {{isChecked('Others', $trans->safety)}}> Others specify:
-                                    <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{$trans->safety_others}}" placeholder="others specify here">
-                                </div>
+                                    @foreach($list_safety as $safe)
+                                 
+                                        <div class="col-md-6">
+                                            <input type="checkbox" id="safe_{{ $index }}" name="categsafe[]" value="{{ $safe->id }}" {{ in_array($safe->id, $get_allsafety->toArray()) ? 'checked' : '' }}>{{ $safe->name }}<br>                                  
+                                        </div>
+
+                                    @if(trim($safe->name) == 'Others')
+                                    
+                                        <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
+                                        <div class="col-md-6 col-md-offset-6">
+                                            <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{ $safe_other }}" placeholder="others specify here">
+                                        </div>
+                                    @endif
+                                    @endforeach
                             </div>
                         </div>
                    {{-- @endforeach --}}
@@ -880,6 +890,9 @@
                     @foreach($hospital_type as $hos)
                         @if(isSimilar($hos->category_name, "B. In-Patient(for admitted hospital cases only)"))
                             <div class="B_InpatientGroup">
+                                <input type="hidden" name="inPatient_id" value="{{ $hospitalData->id }}">
+                                <input type="hidden" name="profile_id" value="{{ $hospitalData->profile_id }}">
+
                                 <div class="col-md-12"><hr class="Inpatient_linehr">
                                 <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
                                     <h6 class="A_Hospital mt-5"> 
@@ -922,13 +935,13 @@
                                     <div class="col-md-12"><hr>
                                         <label for="Outcome">Outcome</label><br>
                                         <div class="col-md-2 col-md-offset-1">
-                                            <input type="checkbox" id="Improved1" name="Outcome1" value="Improved" {{isChecked('Improved', $hospitalData->Outcome)}}> Improved
+                                            <input type="radio" id="Improved1" name="Outcome1" value="Improved" {{isChecked('Improved', $hospitalData->Outcome)}}> Improved
                                         </div>
                                         <div class="col-md-2">
-                                            <input type="checkbox" id="Unimproved1" name="Outcome1" value="Unimproved" {{isChecked('Unimproved', $hospitalData->Outcome)}}> Unimproved
+                                            <input type="radio" id="Unimproved1" name="Outcome1" value="Unimproved" {{isChecked('Unimproved', $hospitalData->Outcome)}}> Unimproved
                                         </div>
                                         <div class="col-md-2">
-                                            <input type="checkbox" id="died1" name="Outcome1" value="died" {{isChecked('died', $hospitalData->Outcome)}}> Died
+                                            <input type="radio" id="died1" name="Outcome1" value="died" {{isChecked('died', $hospitalData->Outcome)}}> Died
                                         </div>
                                     </div>
                                     <div class="col-md-6"><br>

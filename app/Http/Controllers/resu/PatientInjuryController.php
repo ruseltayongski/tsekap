@@ -306,7 +306,7 @@ class PatientInjuryController extends Controller
 
             $transport->risk_factors = $request->risk_factors;
             $transport->rf_others = $request->rf_others;
-            $transport->save(); 
+           
             if($request->safeOthers){
                 $transport->safety = $request->safeOthers;
                 $transport->safety_others = $request->safeothers_details;
@@ -371,16 +371,17 @@ class PatientInjuryController extends Controller
         // ])->find($profile_id);
 
         $transportData = [];
-        $safetyCateg = [];
+        $safe_details = [];
         foreach($profile->preadmission->externalPreadmissions as $transport){
             foreach($transport->transport as $trans){
                 $transportData = $trans;
-
-                foreach($trans->Allsafety as $safe){
-                    $safetyCateg[] = $safe;
-                }
             }
         }
+
+        foreach($transportData->Allsafety as $safeCateg){
+            $safe_details = $safeCateg->safety_details;
+        } 
+
         $hospitalData = [];
         $inpatient = $profile->resuInpatient;
         if($inpatient){
@@ -388,8 +389,9 @@ class PatientInjuryController extends Controller
         }else{
             $hospitalData = $profile->resuEropdbhsrhu;
         }
-
+  
         $get_allSafety = $transportData->Allsafety->pluck('safety_id');
+        $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
@@ -397,7 +399,9 @@ class PatientInjuryController extends Controller
             'list_safety' => $safety,
             'trans' => $transportData,
             'get_allsafety' => $get_allSafety,
-            'hospitalData' => $hospitalData
+            'hospitalData' => $hospitalData,
+            'transport_Id' => $get_transportId,
+            'safe_other' => $safe_details,
         ]);
     }
 
@@ -587,24 +591,34 @@ class PatientInjuryController extends Controller
         }
         //end update if external
         //for Transpart
-         if($request->externalTransport){
-            $transport = ResuTransport::where('Pre_admission_id', $request->Pre_admission_id)
-                ->where('xternal_injury_pread_id', $request->externalTransport)
-                ->first();
-            
-            if($transport){
-                if($request->transport_collision_id){
-                    $request->transport_accident_id = $request->transport_collision_id;
-                    $request->other_collision = $request->transport_collision_id;
-                    $request->other_collision_details = $request->other_collision_details;
-                }else{
-                    $request->transport_accident_id = $request->transport_accident_id;
-                }
+        $this->UpdateTransport($request->externalTransport, $request);
 
-            }else{  
-                return "No transport Id";
+        //ResuInpatient
+
+        if($request->hospital_data_second){
+            $inpatient = ResuInpatient::where('id', $request->inPatient_id)
+                ->where('profile_id', $request->profile_id)
+                ->first();
+            $inpatient->complete_Diagnose = $request->final_diagnose;
+            $inpatient->Disposition = $request->disposition1;
+
+            if(trim($request->disposition1) == 'Others'){
+                $inpatient->details = $request->disposition_others_details;
+
+            }elseif(trim($request->disposition1) == 'Transferred to Another facility/hospital'){
+                $inpatient->details = $request->trans_facility_hos_details2;
+
+            }else{
+                $inpatient->details = null;
             }
-         }
+            $inpatient->Outcome = $request->Outcome1;
+            $inpatient->icd10Code_nature = $request->icd10_nature1;
+            $inpatient->icd10Code_external = $request->icd10_external1;
+
+            $inpatient->save();
+        }else if($request->hospital_data){
+            
+        }
 
          return redirect()->back();
     }
@@ -638,6 +652,98 @@ class PatientInjuryController extends Controller
             ->where('nature_injury_id', $natureInjury_id)
             ->whereNotIn('bodyparts_id', $processedBodyParts)
             ->delete();
+    }
+
+    private function UpdateTransport($transport_id, $request){
+
+        if($transport_id){
+            $transport = ResuTransport::where('Pre_admission_id', $request->Pre_admission_id)
+                ->first();
+            
+            if($transport){
+
+                if($request->transport_collision_id){
+                    $transport->transport_accident_id = $request->transport_collision_id;
+                    $transport->other_collision = $request->Othercollision;
+                    $transport->other_collision_details = $request->other_collision_details;
+                    if(trim($transport->other_collision) == "Others"){
+                    }else{
+                        $transport->other_collision_details = null;
+                    }
+                }
+                    $transport->transport_accident_id = $request->transport_accident_id;
+                    $transport->xternal_injury_pread_id = $transport_id;
+                    $transport->PatientVehicle = $request->Patient_vehicle;
+                    $transport->PvOther_detail = $request->Patient_vehicle_others;
+                    if(trim($transport->PatientVehicle) == "others"){
+                    }else{
+                        $transport->PvOther_detail = null;
+                    }
+                    $transport->positionPatient = $request->position_patient;
+                    $transport->ppother_detail = $request->position_other_details;
+                    if(trim($transport->positionPatient) == 'Others'){
+
+                    }else{
+                        $transport->ppother_detail = null;
+                    }
+                    $transport->pofOccurence =$request->Occurrence;
+                    $transport->workplace_occurence_specify  = $request->workplace_occ_specify;
+                    $transport->pofOccurence_others = $request->Occurrence_others;
+
+                    if(trim($transport->pofOccurence) == "workplace"){
+                    
+                    }else{
+                        $transport->workplace_occurence_specify = null;
+                    }
+                    if(trim($transport->pofOccurence) == 'Others'){
+                    }else{
+                        $transport->pofOccurence_others = null;
+                    }
+
+
+                    $transport->activity_patient = $request->activity_patient;
+                    $transport->AP_others = $request->activity_patient_other;
+                    if(trim($transport->activity_patient) == "Others"){
+
+                    }else{
+                        $transport->AP_others = null;
+                    }
+                    $transport->risk_factors = $request->risk_factors;
+                    $transport->rf_others = $request->rf_others;                
+                    if(trim($transport->risk_factors) == 'Others'){
+
+                    }else{
+                        $transport->rf_others = null;
+                    }
+                $transport->save();
+
+                if($request->has('categsafe') || $request->has('safety_others_id')){
+                        $safet_values = $request->input('categsafe');
+                        
+                        foreach($safet_values as $safety_value){
+
+                            $safety = ResuSafetyTransport::where('Transport_safety_id', $request->transport_ids)
+                                ->where('safety_id', $safety_value)
+                                ->first();
+    
+                            if(!$safety){
+                                $safety = new ResuSafetyTransport();
+                                $safety->Transport_safety_id = $request->transport_ids;
+                                $safety->safety_id = $safety_value;
+                            }
+                            
+                            if($safety_value == $request->safety_others_id){
+                                $safety->safety_details = $request->safeothers_details;
+                            }
+                            
+                            $safety->save();
+                        } 
+                }
+
+            }else{  
+                return "No transport Id";
+            }
+         }
     }
     
 }
