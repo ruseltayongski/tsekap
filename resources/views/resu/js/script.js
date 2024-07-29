@@ -46,6 +46,18 @@ $(document).ready(function () {
     firstAidfields();
   });
 
+  //for transport
+  var transport = $("#Transport");
+  var detailsTrans = $("#Transport_details");
+
+  transport.change(function () {
+    detailsTrans.prop("disabled", !this.checked);
+
+    if (!this.checked) {
+      detailsTrans.prop("disabled", true).val("");
+    }
+  });
+
   if ($("#Transport").is(":checked")) {
     $(".Transport-group").show();
   } else {
@@ -290,5 +302,251 @@ $(document).ready(function () {
     } else {
       ageField.val("");
     }
+  });
+
+  // for enabled and disabled Nature Injury for adding patient
+  var BurnCheckbox = $("#InjuredBurn");
+
+  var degree1 = $("#Degree1");
+  var degree2 = $("#Degree2");
+  var degree3 = $("#Degree3");
+  var degree4 = $("#Degree4");
+
+  var burnDetails = $("#burnDetail");
+
+  var burnSide = $("#burnside");
+  var burnBodyParts = $("#burnbody_parts");
+
+  burnDetails.prop("disabled", true);
+  burnSide.prop("disabled", true);
+  burnBodyParts.prop("disabled", true);
+
+  BurnCheckbox.change(function () {
+    // burnDetails.prop("disabled", !this.checked);
+    degree1.prop("disabled", !this.checked);
+    degree2.prop("disabled", !this.checked);
+    degree3.prop("disabled", !this.checked);
+    degree4.prop("disabled", !this.checked);
+
+    if (!this.checked) {
+      degree1.removeAttr("checked");
+      degree2.removeAttr("checked");
+      degree3.removeAttr("checked");
+      degree4.removeAttr("checked");
+      burnDetails.prop("disabled", true).val("");
+      burnSide.prop("disabled", true).val("");
+      burnBodyParts.prop("disabled", true).val("").trigger("chosen:updated");
+    }
+  });
+
+  degree1
+    .add(degree2)
+    .add(degree3)
+    .add(degree4)
+    .change(function () {
+      burnDetails.prop("disabled", !this.checked);
+    });
+
+  burnDetails.on("input", function () {
+    burnSide.prop("disabled", $(this).val().trim() === "");
+  });
+
+  burnSide.change(function () {
+    var hasValue = $(this).val() !== "";
+    burnBodyParts.prop("disabled", !hasValue).trigger("chosen:updated");
+  });
+  // for fracture
+  var fractureCheck = $("#fractureNature");
+
+  var closetype = $("#closetype");
+  var opentype = $("#opentype");
+
+  var fractureCloseDetails = $("#fracture_close_detail");
+  var fractureOpenDetails = $("#fracture_open_detail");
+
+  var closetypeside = $("#closetype_side");
+  var opentypeside = $("#opentype_side");
+
+  var fractureclosebody = $("#fractureclose_bodyparts");
+  var fractureopenbody = $("#fracture_Open_bodyparts");
+
+  fractureCheck.change(function () {
+    closetype.prop("disabled", !this.checked);
+    opentype.prop("disabled", !this.checked);
+    if (!this.checked) {
+      fractureCloseDetails.prop("disabled", true).val("");
+      fractureOpenDetails.prop("disabled", true).val("");
+      closetypeside.prop("disabled", true).val("");
+      opentypeside.prop("disabled", true).val("");
+      fractureopenbody.prop("disabled", true).val("").trigger("chosen:updated");
+      fractureclosebody
+        .prop("disabled", true)
+        .val("")
+        .trigger("chosen:updated");
+      closetype.removeAttr("checked");
+      opentype.removeAttr("checked");
+    }
+  });
+
+  closetype.add(opentype).change(function () {
+    fractureCloseDetails.prop("disabled", !this.checked);
+    fractureOpenDetails.prop("disabled", !this.checked);
+  });
+
+  fractureCloseDetails.add(fractureOpenDetails).on("input", function () {
+    closetypeside.prop("disabled", $(this).val().trim === "");
+    opentypeside.prop("disabled", $(this).val().trim === "");
+  });
+
+  closetypeside.add(opentypeside).change(function () {
+    var hasValue = $(this).val() !== "";
+
+    fractureopenbody.prop("disabled", !hasValue).trigger("chosen:updated");
+    fractureclosebody.prop("disabled", !hasValue).trigger("chosen:updated");
+  });
+
+  // for Others
+  var other_nature = $("#Others_nature_injured");
+  var other_nature_details = $("#other_nature_datails");
+  var side_others = $("#side_others");
+  var bodyparts_others = $("#body_parts_others");
+
+  other_nature.change(function () {
+    other_nature_details.prop("disabled", $(this).val().trim === "");
+    if (!this.checked) {
+      other_nature_details.prop("disabled", true).val("");
+      side_others.prop("disabled", true).val("");
+      bodyparts_others.prop("disabled", true).val("").trigger("chosen:updated");
+    }
+  });
+
+  other_nature_details.on("input", function () {
+    side_others.prop("disabled", $(this).val().trim === "");
+  });
+
+  side_others.change(function () {
+    var hasValue = $(this).val() !== "";
+
+    bodyparts_others.prop("disabled", !hasValue).trigger("chosen:updated");
+  });
+  //nature multiple generated counter
+  $('[id^="nature"]').each(function () {
+    var counter = $(this).attr("id").match(/\d+/)[0];
+
+    var natureCheckbox = $("#nature" + counter);
+    var natureDetails = $("#nature_details" + counter);
+    var natureside = $("#sideInjured" + counter);
+    var natureBodyParts = $("#body_parts_injured" + counter);
+
+    natureCheckbox.change(function () {
+      natureDetails.prop("disabled", !this.checked);
+      if (!this.checked) {
+        natureDetails.val("");
+        natureside.prop("disabled", true).val("");
+        natureBodyParts
+          .prop("disabled", true)
+          .val("")
+          .trigger("chosen:updated");
+      }
+    });
+
+    natureDetails.on("input", function () {
+      natureside.prop("disabled", $(this).val().trim() === "");
+      if ($(this).val().trim() === "") {
+        natureside.val("");
+        natureBodyParts.prop("disabled", true).val("");
+      }
+    });
+
+    natureside.change(function () {
+      var hasValue = $(this).val() !== "";
+
+      natureBodyParts.prop("disabled", !hasValue).trigger("chosen:updated");
+    });
+  });
+
+  //external injury
+  var exburn = $("#ex_burn");
+  var burn1 = $("#burn1");
+  var burn2 = $("#burn2");
+  var burn3 = $("#burn3");
+  var burn4 = $("#burn4");
+  var burn5 = $("#burn5");
+  var burndetails = $("#exburnDetails");
+  exburn.change(function () {
+    burn1.prop("disabled", !this.checked);
+    burn2.prop("disabled", !this.checked);
+    burn3.prop("disabled", !this.checked);
+    burn4.prop("disabled", !this.checked);
+    burn5.prop("disabled", !this.checked);
+
+    if (!this.checked) {
+      burn1.removeAttr("checked");
+      burn2.removeAttr("checked");
+      burn3.removeAttr("checked");
+      burn4.removeAttr("checked");
+      burn5.removeAttr("checked");
+
+      burndetails.prop("disabled", true).val("");
+    }
+  });
+
+  burn1
+    .add(burn2)
+    .add(burn3)
+    .add(burn4)
+    .add(burn5)
+    .change(function () {
+      burndetails.prop("disabled", !this.checked);
+    });
+
+  //drowning
+  var exdrowning = $("#exDrowning");
+  var drowning1 = $("#drowning1");
+  var drowning2 = $("#drowning2");
+  var drowning3 = $("#drowning3");
+  var drowning4 = $("#drowning4");
+  var drowning5 = $("#drowning5");
+  var drowningDetails = $("#exdrowningDetails");
+
+  exdrowning.change(function () {
+    drowning1.prop("disabled", !this.checked);
+    drowning2.prop("disabled", !this.checked);
+    drowning3.prop("disabled", !this.checked);
+    drowning4.prop("disabled", !this.checked);
+    drowning5.prop("disabled", !this.checked);
+
+    if (!this.checked) {
+      drowning1.removeAttr("checked");
+      drowning2.removeAttr("checked");
+      drowning3.removeAttr("checked");
+      drowning4.removeAttr("checked");
+      drowning5.removeAttr("checked");
+
+      drowningDetails.prop("disabled", true).val("");
+    }
+  });
+  drowning1
+    .add(drowning2)
+    .add(drowning3)
+    .add(drowning4)
+    .add(drowning5)
+    .change(function () {
+      drowningDetails.prop("disabled", !this.checked);
+    });
+
+  $('[id^="external"]').each(function () {
+    var counter = $(this).attr("id").match(/\d+/);
+
+    var external_checkbox = $("#external" + counter);
+    var external_details = $("#external_details" + counter);
+
+    external_checkbox.change(function () {
+      external_details.prop("disabled", !this.checked);
+
+      if (!this.checked) {
+        external_details.prop("disabled", true).val("");
+      }
+    });
   });
 });

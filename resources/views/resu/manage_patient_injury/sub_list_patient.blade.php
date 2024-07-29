@@ -60,6 +60,7 @@
                                 <label for="address-facility">Address of Reporting Facility</label>
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $profile->reportfacility->Addressfacility }}">
                             </div>
+                            
                             <div class="col-md-6">
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
@@ -418,7 +419,7 @@
                                 @if($injured->name == "Burn" || $injured->name == "burn")
                                     <br>
                                     <label>Select Side</label>
-                                    <select class="form-control" name="burnside" id="burnside">
+                                    <select class="form-control" name="burnside" id="update_burnside">
                                         <option value="">Select Side for burn</option>
                                         <option value="right" {{$sides == 'right' ? 'selected' : '' }}>right</option>
                                         <option value="left" {{$sides == 'left' ? 'selected' : '' }}>left</option>
@@ -438,7 +439,6 @@
                                     <br><br>
                                     <label>Select Body parts</label>
                                     <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
-                                        <option value="">Select body parts for Others</option>
                                         @foreach($body_part as $body_parts)
                                         <option value="{{ $body_parts->id }}"  {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                         @endforeach
@@ -446,7 +446,6 @@
                                 @else
                                     <label>Select Body Parts</label>
                                     <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple>
-                                        <option value="">Select body parts for {{$injured->name}}</option>
                                         @foreach($body_part as $body_parts)
                                             <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                         @endforeach
@@ -472,7 +471,6 @@
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
                                 <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
-                                    <option value="">Select body parts for burn</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                     @endforeach
@@ -481,7 +479,6 @@
                                 <br><br><br><br><br><br><br><br>
                                 <label for="bodyparts">Body parts</label>
                                 <select class="form-control chosen-select" name="fracture_bodyparts[]" id="fractureclose_bodyparts" multiple>
-                                    <option value="">Select body parts for close type fracture</option>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
                                     @endforeach
@@ -783,15 +780,17 @@
                             <div class="A_ErOpdGroup">
                                 <h6 class="A_Hospital mt-5"> 
                                 <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}"  {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
+                                <input type="hidden" name="profile_id" value ="{{ $hospitalData->profile_id }}">
+                                 <input type="hidden" name="Eropd_id" value ="{{ $hospitalData->id }}">
                                 {{$hos->category_name}}</h6>
                                 <div class="col-md-12">
                                     <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="YesTransferred" name="Transferred" value="1" {{isChecked('1', $hospitalData->transferred_facility)}}> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="NoTransferred" name="Transferred" value="0" {{isChecked('0', $hospitalData->transferred_facility)}}> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="YesTransferred" name="Transferred" value="1" {{isChecked('1', $hospitalData->transferred_facility)}}> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="NoTransferred" name="Transferred" value="0" {{isChecked('0', $hospitalData->transferred_facility)}}> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="ReferredYes" name="Referred" value="1" {{isChecked('1', $hospitalData->referred_facility)}}> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="Referredno" name="Referred" value="0" {{isChecked('0', $hospitalData->referred_facility)}}> No <br><hr>
+                                    <input type="radio" id="ReferredYes" name="Referred" value="1" {{isChecked('1', $hospitalData->referred_facility)}}> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="Referredno" name="Referred" value="0" {{isChecked('0', $hospitalData->referred_facility)}}> No <br><hr>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
@@ -802,35 +801,35 @@
                                     <label for="">Status upon reashing the Facility</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="deadonarrive" name="reashingFact" value="Dead on Arrival" {{isChecked('Dead on Arrival', $hospitalData->status_facility)}}> Dead on Arrival
+                                    <input type="radio" id="deadonarrive" name="reashingFact" value="Dead on Arrival" {{isChecked('Dead on Arrival', $hospitalData->status_facility)}}> Dead on Arrival
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="alive" name="reashingFact" value="Alive" {{isChecked('Alive', $hospitalData->status_facility)}}> Alive
+                                    <input type="radio" id="alive" name="reashingFact" value="Alive" {{isChecked('Alive', $hospitalData->status_facility)}}> Alive
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="ifalive" name="reashingFact" value="If Alive" {{isChecked('If Alive', $hospitalData->status_facility)}}> If Alive
+                                    <input type="radio" id="ifalive" name="reashingFact" value="If Alive" {{isChecked('If Alive', $hospitalData->status_facility)}}> If Alive
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="conscious" name="reashingFact" value="conscious" {{isChecked('conscious', $hospitalData->status_facility)}}> conscious
+                                    <input type="radio" id="conscious" name="reashingFact" value="conscious" {{isChecked('conscious', $hospitalData->status_facility)}}> conscious
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="Unconscious" name="reashingFact" value="Unconscious" {{isChecked('Unconscious', $hospitalData->status_facility)}}> Unconscious
+                                    <input type="radio" id="Unconscious" name="reashingFact" value="Unconscious" {{isChecked('Unconscious', $hospitalData->status_facility)}}> Unconscious
                                 </div>
                                 <div class="col-md-12"></div>
                                 <div class="col-md-3"><hr>
                                     <label for="">Mode of Transport to the Hospital/Facility</label>
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="ambulance" name="mode_transport" value="Ambulance" {{isChecked('Ambulance', $hospitalData->mode_transport_facility)}}> Ambulance
+                                    <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" {{isChecked('Ambulance', $hospitalData->mode_transport_facility)}}> Ambulance
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="police_vehicle" name="mode_transport" value="Police Vehicle" {{isChecked('Police Vehicle', $hospitalData->mode_transport_facility)}}> Police Vehicle
+                                    <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" {{isChecked('Police Vehicle', $hospitalData->mode_transport_facility)}}> Police Vehicle
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="private_vehicle" name="mode_transport" value="Private Vehicle" {{isChecked('Private Vehicle', $hospitalData->mode_transport_facility)}}> Private Vehicle
+                                    <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" {{isChecked('Private Vehicle', $hospitalData->mode_transport_facility)}}> Private Vehicle
                                 </div>
                                 <div class="col-md-1"><hr>
-                                    <input type="checkbox" id="ModeOthers" name="mode_transport" value="Others" {{isChecked('Others', $hospitalData->mode_transport_facility)}}> Others
+                                    <input type="radio" id="ModeOthers" name="mode_transport" value="Others" {{isChecked('Others', $hospitalData->mode_transport_facility)}}> Others
                                 </div>
                                 <div class="col-md-2"><hr>
                                     <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" value="{{$hospitalData->other_details}}" placeholder="others specify here">
@@ -852,20 +851,20 @@
                                         <label for="Disposition">Disposition:</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="admitted" name="disposition" value="Admitted" {{isChecked('Admitted', $hospitalData->disposition)}}> Admitted <br>
-                                        <input type="checkbox" id="hama" name="disposition" value="HAMA" {{isChecked('HAMA', $hospitalData->disposition)}}> HAMA
+                                        <input type="radio" id="admitted" name="disposition" value="Admitted" {{isChecked('Admitted', $hospitalData->disposition)}}> Admitted <br>
+                                        <input type="radio" id="hama" name="disposition" value="HAMA" {{isChecked('HAMA', $hospitalData->disposition)}}> HAMA
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="treated_sent" name="disposition" value="Treated and Sent Home" {{isChecked('Treated and Sent Home', $hospitalData->disposition)}}> Treated and Sent Home <br>
-                                        <input type="checkbox" id="Absconded" name="disposition" value="Absconded" {{isChecked('Absconded', $hospitalData)}}> Absconded
+                                        <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home" {{isChecked('Treated and Sent Home', $hospitalData->disposition)}}> Treated and Sent Home <br>
+                                        <input type="radio" id="Absconded" name="disposition" value="Absconded" {{isChecked('Absconded', $hospitalData)}}> Absconded
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" {{isChecked('Transferred to Another facility/hospital', $hospitalData->disposition)}}> Transferred to Another facility/hospital, <br>
+                                        <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" {{isChecked('Transferred to Another facility/hospital', $hospitalData->disposition)}}> Transferred to Another facility/hospital, <br>
                                         <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="{{ $hospitalData->details }}" placeholder="Please specify">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
-                                        <input type="checkbox" id="died" name="disposition" value="died"> Died
+                                        <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
+                                        <input type="radio" id="died" name="disposition" value="died"> Died
                                     </div>
                                 </div>
                                 <div class="col-md-12"><hr>
@@ -873,13 +872,13 @@
                                         <label for="Outcome">Outcome</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Improved" name="outcome" value="Improved" {{isChecked('Improved', $hospitalData->outcome)}}> Improved
+                                        <input type="radio" id="Improved" name="outcome" value="Improved" {{isChecked('Improved', $hospitalData->outcome)}}> Improved
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Unimproved" name="outcome" value="Unimproved" {{isChecked('Unimproved', $hospitalData->outcome)}}> Unimproved
+                                        <input type="radio" id="Unimproved" name="outcome" value="Unimproved" {{isChecked('Unimproved', $hospitalData->outcome)}}> Unimproved
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Died1" name="outcome" value="died" {{isChecked('died', $hospitalData->outcome)}}> Died
+                                        <input type="radio" id="Died1" name="outcome" value="died" {{isChecked('died', $hospitalData->outcome)}}> Died
                                     </div>
                                 </div>
                             </div>

@@ -31,6 +31,7 @@ class PatientInjuryController extends Controller
         $profiles = Profile::with(['province', 'muncity', 'barangay'])
             ->whereNotNull('report_facilityId')
             ->orWhereNotNull('Hospital_caseno')
+            ->orderby('id', 'desc')
             ->paginate(10);
 
         return view('resu.manage_patient_injury.list_patient', [
@@ -341,34 +342,42 @@ class PatientInjuryController extends Controller
 
         // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
 
-        $profile = Profile::with(['reportfacility', 
-        'preadmission.natureInjuryPreadmissions.bodyParts',
-        'preadmission.externalPreadmissions.transport.Allsafety',
-        'resuInpatient',
-        'resuEropdbhsrhu'
-        ])->find($profile_id);
-        // $profile = Profile::with([
-        //     'reportfacility',
-        //     'preadmission' => function ($query) {
-        //         $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
-        //         'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
-        //     },
-        //     'preadmission.natureInjuryPreadmissions' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id'); // Limit columns
-        //     },
-        //     'preadmission.natureInjuryPreadmissions.bodyParts' => function ($query) {
-        //         $query->select('id', 'preadmission_id'); // Limit columns
-        //     },
-        //     'preadmission.externalPreadmissions' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id'); // Limit columns
-        //     },
-        //     'preadmission.externalPreadmissions.transport' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id'); // Limit columns
-        //     },
-        //     'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
-        //         $query->select('id', 'Transport_safety_id'); // Limit columns
-        //     }
+        // $profile = Profile::with(['reportfacility', 
+        // 'preadmission.natureInjuryPreadmissions.bodyParts',
+        // 'preadmission.externalPreadmissions.transport.Allsafety',
+        // 'resuInpatient',
+        // 'resuEropdbhsrhu'
         // ])->find($profile_id);
+        $profile = Profile::with([
+            'reportfacility',
+            'preadmission' => function ($query) {
+                $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
+                'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
+            },
+            'preadmission.natureInjuryPreadmissions' => function ($query) {
+                $query->select('id', 'Pre_admission_id','natureInjury_id','subtype','details','side'); // Limit columns
+            },
+            'preadmission.natureInjuryPreadmissions.bodyParts' => function ($query) {
+                $query->select('id', 'preadmission_id','nature_injury_id','bodyparts_id'); // Limit columns
+            },
+            'preadmission.externalPreadmissions' => function ($query) {
+                $query->select('id', 'Pre_admission_id','externalinjury_id','subtype','details'); // Limit columns
+            },
+            'preadmission.externalPreadmissions.transport' => function ($query) {
+                $query->select('id', 'Pre_admission_id','transport_accident_id','xternal_injury_pread_id','other_collision','other_collision_details','PatientVehicle','PvOther_detail',
+                'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','safety'); // Limit columns
+            },
+            'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
+                $query->select('id', 'Transport_safety_id','safety_id','safety_details'); // Limit columns
+            },
+            'resuInpatient' => function ($query){
+                $query->select('id','hospitalfacility_id','Disposition','details','Outcome','icd10Code_nature','icd10Code_external');
+            },
+            'resuEropdbhsrhu' => function ($query){
+                $query->select('id','hospitalfacility_id','profile_id','transferred_facility','referred_facility','originating_hospital','status_facility','mode_transport_facility','other_details',
+                'initial_impression','icd10Code_nature','icd10Code_external','disposition','details','outcome');
+            }
+        ])->find($profile_id);
 
         $transportData = [];
         $safe_details = [];
@@ -392,6 +401,7 @@ class PatientInjuryController extends Controller
   
         $get_allSafety = $transportData->Allsafety->pluck('safety_id');
         $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
+        
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
@@ -617,7 +627,33 @@ class PatientInjuryController extends Controller
 
             $inpatient->save();
         }else if($request->hospital_data){
-            
+            $Eropd = ResuErOpdBhsRhu::where('id', $request->Eropd_id)
+                ->first();
+      
+            $Eropd->hospitalfacility_id = $request->hospital_data;
+            $Eropd->profile_id = $request->profile_id;
+            $Eropd->transferred_facility = $request->Transferred;
+            $Eropd->referred_facility = $request->Referred;
+            $Eropd->originating_hospital = $request->name_orig;
+            $Eropd->status_facility = $request->reashingFact;
+            $Eropd->mode_transport_facility = $request->mode_transport;
+            $Eropd->other_details = $request->mode_others_details;
+            if(trim($Eropd->mode_transport_facility) == "Others"){
+            }else{
+                $Eropd->other_details = null;
+            }
+            $Eropd->initial_impression = $request->Initial_Impression;
+            $Eropd->icd10Code_nature = $request->icd10_nature;
+            $Eropd->icd10Code_external = $request->icd10_external;
+            $Eropd->disposition = $request->disposition;
+            $Eropd->details = $request->trans_facility_hos_details;
+            if(trim($Eropd->disposition) == "Transferred to Another facility/hospital"){
+            }else{
+                $Eropd->details = null;
+            }
+            $Eropd->outcome = $request->outcome;
+            $Eropd->save();
+       
         }
 
          return redirect()->back();
@@ -719,7 +755,7 @@ class PatientInjuryController extends Controller
 
                 if($request->has('categsafe') || $request->has('safety_others_id')){
                         $safet_values = $request->input('categsafe');
-                        
+
                         foreach($safet_values as $safety_value){
 
                             $safety = ResuSafetyTransport::where('Transport_safety_id', $request->transport_ids)

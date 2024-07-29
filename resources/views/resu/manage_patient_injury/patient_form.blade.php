@@ -56,19 +56,19 @@
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="ER" name="typePatient" value="ER"> ER
+                                        <input type="radio" id="ER" name="typePatient" value="ER"> ER
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="OPD" name="typePatient" value="OPD"> OPD
+                                        <input type="radio" id="OPD" name="typePatient" value="OPD"> OPD
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="In_Patient" name="typePatient" value="In-Patient"> In-Patient
+                                        <input type="radio" id="In_Patient" name="typePatient" value="In-Patient"> In-Patient
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="BHS" name="typePatient" value="BHS"> BHS
+                                        <input type="radio" id="BHS" name="typePatient" value="BHS"> BHS
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="RHU" name="typePatient" value="RHU"> RHU
+                                        <input type="radio" id="RHU" name="typePatient" value="RHU"> RHU
                                     </label>
                                 </div><br>
                             </div>
@@ -83,7 +83,7 @@
                                 <label for="lname">Last Name</label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="fname">First Name</label>
                                 <input type="text" class="form-control" name="fname" id="fname" value="">
                             </div>
@@ -91,7 +91,7 @@
                                 <label for="mname">Middle Name</label>
                                 <input type="text" class="form-control" name="mname" id="mname" value="">
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label for="sex">Sex</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
@@ -188,23 +188,23 @@
                     </div>
                     <div class="col-md-4 col-md-offset-1">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
+                            <input type="radio" name="injury_intent" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
                         </label>
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
-                        </label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="Undetermined" value="Undetermined"> Undetermined
+                            <input type="radio" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
                         </label>
                     </div>
                     <div class="col-md-3">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="injury_intent" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
+                            <input type="radio" name="injury_intent" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="injury_intent" id="Undetermined" value="Undetermined"> Undetermined
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="checkbox-inline">
+                            <input type="radio" name="injury_intent" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
                         </label>
                     </div>
                   
@@ -213,7 +213,7 @@
                     </div>
 
                     <div class="col-md-1 col-md-offset-2">
-                        <input type="checkbox" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
+                        <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
                     </div>
                     <div class="col-md-2">
                         <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
@@ -222,7 +222,7 @@
                         <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
                     </div>
                     <div class="col-md-2">
-                        <input type="checkbox" name="firstAidGive" id="firstAidNo" value="No"> No
+                        <input type="radio" name="firstAidGive" id="firstAidNo" value="No"> No
                     </div>
 
 
@@ -234,8 +234,8 @@
 
                     <div class="col-md-3 col-md-offset-1">
                         <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="checkbox" id="single_injured" name="multiple_injured" value="No"> No</p>
+                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="radio" id="single_injured" name="multiple_injured" value="No"> No</p>
                     </div>
                     <div class="col-md-12 col-md-offset-.05">
                         <p class="underline-text text-center" id="underline-text">
@@ -261,19 +261,19 @@
                                     </label><br>
 
                                     [ Degree:<label>
-                                        <input type="radio" id="Degree1" name="Degree" value="Degree 1">
+                                        <input type="radio" id="Degree1" name="Degree" value="Degree 1" disabled>
                                         1
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree2" name="Degree" value="Degree 2">
+                                        <input type="radio" id="Degree2" name="Degree" value="Degree 2" disabled>
                                         2
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree3" name="Degree" value="Degree 3">
+                                        <input type="radio" id="Degree3" name="Degree" value="Degree 3" disabled>
                                         3
                                     </label>
                                     <label>
-                                        <input type="radio" id="Degree4" name="Degree" value="Degree 4">
+                                        <input type="radio" id="Degree4" name="Degree" value="Degree 4" disabled>
                                         4
                                     </label> ]
                                 </div>
@@ -284,10 +284,10 @@
                                     </label><br>
 
                                     <div class="col-md-offset-5">
-                                        <input type="checkbox" id="clostype" name="fracttype" value="close type"> Close Type <!--close type details-->
+                                        <input type="checkbox" id="closetype" name="fracttype" value="close type" disabled> Close Type <!--close type details-->
                                     </div>
                                     <div class="col-md-offset-5"><br>
-                                        <input type="checkbox" id="opentype" name="fracttype" value="open type"> Open Type <!--open type details-->
+                                        <input type="checkbox" id="opentype" name="fracttype" value="open type" disabled> Open Type <!--open type details-->
                                     </div>
                                 </div>  
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
@@ -295,14 +295,14 @@
                                     <label>
                                         <input type="checkbox" id="Others_nature_injured" name="Others_nature_injured" value="{{$injured->id}}"> {{$injured->name}}: Please specify injury and the body parts affected: 
                                     </label>
-                                    <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury">
+                                    <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury" disabled>
                                 </div>
                             @else
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
                                     </label>
-                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details" disabled>
                                 </div>
                                 
                             @endif
@@ -318,16 +318,16 @@
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br>
-                                <input type="text" class="form-control" id="burnDetail" name="burnDetail" id="burn" placeholder="burn details">
+                                <input type="text" class="form-control" id="burnDetail" name="burnDetail" placeholder="burn details" disabled>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 
                                 <label>fracture details</label>
-                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details">
-                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details">
+                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details" disabled>
+                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details" disabled>
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br>
                                 <label>Select side</label>
-                                <select class="form-control" name="side_others" id="side_others">
+                                <select class="form-control" name="side_others" id="side_others" disabled>
                                     <option value="">Select Side for Others</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -335,7 +335,7 @@
                                 </select>
                             @else
                                 <label>Select side</label>
-                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}">
+                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}" disabled>
                                     <option value="">Select Side for {{$injured->name}}</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -358,7 +358,7 @@
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br>
                                 <label>Select Side</label>
-                                <select class="form-control" name="burnside" id="burnside">
+                                <select class="form-control" name="burnside" id="burnside" disabled>
                                     <option value="">Select Side for burn</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -366,13 +366,13 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                 <label>Select side</label>
-                                <select class="form-control" name="closetype_side" id="closetype_side">
+                                <select class="form-control" name="closetype_side" id="closetype_side" disabled>
                                     <option value="">Select side close type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
                                     <option value="Both left and Right">Both Left & right</option>
                                 </select>
-                                <select class="form-control" name="opentype_side" id="opentype_side"> 
+                                <select class="form-control" name="opentype_side" id="opentype_side" disabled> 
                                     <option value="">Select side open type</option>
                                     <option value="right">right</option>
                                     <option value="left">left</option>
@@ -381,16 +381,14 @@
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <br><br>
                                 <label>Select Body parts</label>
-                                <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
-                                    <option value="">Select body parts for Others</option>
+                                <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple disabled>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
                             @else
                                 <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple>
-                                    <option value="">Select body parts for {{$injured->name}}</option>
+                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple disabled>
                                     @foreach($body_part as $body_parts)
                                         <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
@@ -408,22 +406,19 @@
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
-                                    <option value="">Select body parts for burn</option>
+                                <select class="form-control chosen-select" name="burn_body_parts[]" id="burnbody_parts" multiple disabled>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="fractureclose_bodyparts[]" id="fractureclose_bodyparts" multiple>
-                                    <option value="">Select body parts for close type fracture</option>
+                                <select class="form-control chosen-select" name="fractureclose_bodyparts[]" id="fractureclose_bodyparts" multiple disabled>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
                                 </select>
-                                <select class="form-control chosen-select" name="fracture_Open_bodyparts[]" id="fracture_Open_bodyparts" multiple>
-                                    <option value="">Select body parts for Open type fracture</option>
+                                <select class="form-control chosen-select" name="fracture_Open_bodyparts[]" id="fracture_Open_bodyparts" multiple disabled>
                                     @foreach($body_part as $body_parts)
                                     <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
                                     @endforeach
@@ -464,29 +459,29 @@
                                 
                                     <div class="checkbox">
                                         <label>
-                                            <input type="radio" name="burn_type" id="heat" value="heat">
+                                            <input type="radio" name="burn_type" id="burn1" value="heat" disabled>
                                             Heat
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="fire" value="fire">
+                                            <input type="radio" name="burn_type" id="burn2" value="fire" disabled>
                                             fire
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="electricity" value="Electricity">
+                                            <input type="radio" name="burn_type" id="burn3" value="Electricity" disabled>
                                             Electricity
                                         </label>
                                         <label>
-                                            <input type="radio" name="burn_type" id="oil" value="Oil">
+                                            <input type="radio" name="burn_type" id="burn4" value="Oil" disabled>
                                             Oil
                                         </label>
                                         <label>
-                                            <input type="radio" name="friction" id="friction" value="friction">
+                                            <input type="radio" name="friction" id="burn5" value="friction" disabled>
                                             friction
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here"><br>
+                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here" disabled><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
@@ -499,30 +494,30 @@
                                     
                                         <div class="checkbox">
                                             <label>
-                                                <input type="radio" name="drowningType" id="Sea" value="Sea">
+                                                <input type="radio" name="drowningType" id="drowning1" value="Sea" disabled>
                                                 Sea
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="River" value="River">
+                                                <input type="radio" name="drowningType" id="drowning2" value="River" disabled>
                                                 River
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="Lake" value="Lake">
+                                                <input type="radio" name="drowningType" id="drowning3" value="Lake" disabled>
                                                 Lake
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="Pool" value="Pool">
+                                                <input type="radio" name="drowningType" id="drowning4" value="Pool" disabled>
                                                 Pool
                                             </label>
                                             <label>
-                                                <input type="radio" name="drowningType" id="bath_tub" value="Bath Tub">
+                                                <input type="radio" name="drowningType" id="drowning5" value="Bath Tub" disabled>
                                                 Bath Tub
                                             </label>
                                         </div>
                                     </div> 
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exdrowning_Details" id="exdrowningDetails" placeholder="specify here"><br>
+                                    <input type="text" class="form-control inline-input2" name="exdrowning_Details" id="exdrowningDetails" placeholder="specify here" disabled><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Transport")
@@ -535,7 +530,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" placeholder="Enter details">
+                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" placeholder="Enter details" disabled>
                                 </div>
                         @else
                             <div class="col-md-12"></div>
@@ -547,7 +542,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" placeholder="Enter details">
+                                <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" placeholder="Enter details" disabled>
                             </div>
                             @php    
                             $counter++;
