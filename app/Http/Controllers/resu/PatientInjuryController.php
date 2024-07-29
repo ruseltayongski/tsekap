@@ -217,7 +217,7 @@ class PatientInjuryController extends Controller
         else{
             return "Invalid Hosiptal Id";
         }
-
+        
         return redirect()->route('patientInjury')->with('success', 'Patient Successfully Added');
     }   
 
@@ -307,22 +307,20 @@ class PatientInjuryController extends Controller
 
             $transport->risk_factors = $request->risk_factors;
             $transport->rf_others = $request->rf_others;
-           
-            if($request->safeOthers){
-                $transport->safety = $request->safeOthers;
-                $transport->safety_others = $request->safeothers_details;
-            }else{
-                $transport->safety = $transport->id;
-            }
+            $transport->safety = $transport->id;
+            
             $transport->save(); 
 
             if($request->has('safe')){
                 $safet_values = $request->input('safe');
-                
+
                 foreach($safet_values as $safety_value){
                     $safety = new ResuSafetyTransport();
                     $safety->Transport_safety_id = $transport->id;
                     $safety->safety_id = $safety_value;
+                    if($safety_value == $request->safety_others_id){
+                        $safety->safety_details = $request->safeothers_details;
+                    }
                     $safety->save();
                 }
                
@@ -388,7 +386,9 @@ class PatientInjuryController extends Controller
         }
 
         foreach($transportData->Allsafety as $safeCateg){
-            $safe_details = $safeCateg->safety_details;
+            if(!empty($safeCateg->safety_details)){
+                $safe_details = $safeCateg->safety_details;
+            }
         } 
 
         $hospitalData = [];
@@ -401,7 +401,7 @@ class PatientInjuryController extends Controller
   
         $get_allSafety = $transportData->Allsafety->pluck('safety_id');
         $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
-        
+
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,

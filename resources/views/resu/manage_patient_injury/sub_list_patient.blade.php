@@ -60,7 +60,6 @@
                                 <label for="address-facility">Address of Reporting Facility</label>
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $profile->reportfacility->Addressfacility }}">
                             </div>
-                            
                             <div class="col-md-6">
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
@@ -760,7 +759,7 @@
                                         </div>
 
                                     @if(trim($safe->name) == 'Others')
-                                    
+
                                         <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
                                         <div class="col-md-6 col-md-offset-6">
                                             <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{ $safe_other }}" placeholder="others specify here">
@@ -856,15 +855,15 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home" {{isChecked('Treated and Sent Home', $hospitalData->disposition)}}> Treated and Sent Home <br>
-                                        <input type="radio" id="Absconded" name="disposition" value="Absconded" {{isChecked('Absconded', $hospitalData)}}> Absconded
+                                        <input type="radio" id="Absconded" name="disposition" value="Absconded" {{isChecked('Absconded', $hospitalData->disposition)}}> Absconded
                                     </div>
                                     <div class="col-md-3">
                                         <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" {{isChecked('Transferred to Another facility/hospital', $hospitalData->disposition)}}> Transferred to Another facility/hospital, <br>
                                         <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="{{ $hospitalData->details }}" placeholder="Please specify">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
-                                        <input type="radio" id="died" name="disposition" value="died"> Died
+                                        <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission" {{isChecked('Refused Admission', $hospitalData->disposition)}}> Refused Admission <br>
+                                        <input type="radio" id="died" name="disposition" value="died" {{isChecked('died', $hospitalData->disposition)}}> Died
                                     </div>
                                 </div>
                                 <div class="col-md-12"><hr>

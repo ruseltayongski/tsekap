@@ -681,28 +681,24 @@
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Safety: (check all that apply)</label>
-                            <!-- <div class="col-md-6">
-                                <input type="checkbox" id="safe_none" name="safe[]" value="1"> None<br>
-                                <input type="checkbox" id="safe_childseat" name="safe[]" value="2"> Childseat<br>
-                                <input type="checkbox" id="safe_Airbag" name="safe[]" value="3"> Airbag<br>
-                                <input type="checkbox" id="safe_smooking" name="safe[]" value="4"> Lifevest/Lifejacket/flotation device<br>
-                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
-                            </div>
-                            <div class="col-md-6">
-                                <input type="checkbox" id="safeunknown" name="safe[]" value="5"> Unknown<br>
-                                <input type="checkbox" id="safehelmet" name="safe[]" value="6"> Helmet<br>
-                                <input type="checkbox" id="safeSeatbelt" name="safe[]" value="7"> Seatbelt<br>
-                            </div> -->
+                           
                             @foreach($safety as $safe)
                             <div class="col-md-6">
                                     <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
                             </div>
+
+                                @if(trim($safe->name) == 'Others')
+                                    
+                                    <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
+                                    <div class="col-md-6 col-md-offset-6">
+                                        <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                                    </div>
+                                @endif
                             @endforeach
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
                                 <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
