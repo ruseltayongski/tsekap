@@ -646,7 +646,7 @@
                             }
                         @endphp
                         @foreach($rtacident as $rtAct)
-                            @php
+                            <!-- @php
                                 $description = strtolower($rtAct->description);
                                 $isCollision = $description === 'collision';
                             @endphp
@@ -657,7 +657,16 @@
                                 value="{{ $rtAct->id }}"  
                                 {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> 
                             {{ $rtAct->description }}
+                        </div> -->
+                        @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
+                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="Collision" name="transport_accident_id" value="{{$rtAct->id}}" {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
                         </div>
+                        @else
+                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="Land" name="transport_accident_id" value="{{$rtAct->id}}" {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
+                        </div>
+                        @endif
                         @endforeach
                         <div class="col-md-6 transport-related"><hr>
                             <label>Vehicles Involved:</label>

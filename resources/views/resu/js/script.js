@@ -549,4 +549,209 @@ $(document).ready(function () {
       }
     });
   });
+
+  //---------------------------------------for profile verification---------------------------------------//
+  $("#checkProfiles").modal({
+    backdrop: "static",
+    keyboard: false,
+  });
+
+  var checkmodal = $("#checkProfiles").modal("show");
+  console.log("modal", checkmodal);
+
+  // $("#checkProfiles").modal({ backdrop: "static", keyboard: false });
+  // $.validator.setDefaults({
+  //   errorElement: "span",
+  //   errorClass: "help-block",
+  //   //	validClass: 'stay',
+  //   highlight: function (element, errorClass, validClass) {
+  //     $(element).addClass(errorClass); //.removeClass(errorClass);
+  //     $(element)
+  //       .closest(".has-group")
+  //       .removeClass("has-success")
+  //       .addClass("has-error");
+  //   },
+  //   unhighlight: function (element, errorClass, validClass) {
+  //     $(element).removeClass(errorClass); //.addClass(validClass);
+  //     $(element)
+  //       .closest(".has-group")
+  //       .removeClass("has-error")
+  //       .addClass("has-success");
+  //   },
+  //   errorPlacement: function (error, element) {
+  //     if (element.parent(".input-group").length) {
+  //       error.insertAfter(element.parent());
+  //     } else if (element.hasClass("select2")) {
+  //       error.insertAfter(element.next("span"));
+  //     } else if (element.hasClass("chosen-select")) {
+  //       error.insertAfter(element.next("div"));
+  //     } else if (element.hasClass("sex")) {
+  //       error.insertAfter(".span");
+  //     } else {
+  //       error.insertAfter(element);
+  //     }
+  //   },
+  // });
+
+  function fetchProfiles(data) {
+    $(".loading").show();
+
+    $.ajax({
+      url: "get/checkprofiles",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: data,
+      success: function (data) {
+        let content = "";
+        if (data.length > 0) {
+          content +=
+            '<table class="table table-hover table-striped">' +
+            "<thead>" +
+            "<tr>" +
+            "<th>First Name</th>" +
+            "<th>Middle Name</th>" +
+            "<th>Last Name</th>" +
+            "<th>Date of Birth</th>" +
+            "<th>Update</th>" +
+            "</tr></thead>" +
+            "<tbody>";
+          jQuery.each(data, function (i, val) {
+            content +=
+              "<tr>" +
+              "<td>" +
+              val.fname +
+              "</td>" +
+              "<td>" +
+              (val.mname || "") +
+              "</td>" + // Handle null values
+              "<td>" +
+              val.lname +
+              "</td>" +
+              "<td>" +
+              val.dob +
+              "</td>" +
+              `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+              "</tr>";
+          });
+
+          content += "</tbody></table>";
+          $("#checkProfiles").find(".modal-body").html(content);
+        } else {
+          $("#checkProfiles").modal("hide");
+          alert("No matching profiles found.");
+          console.log(data);
+          $(".fname").val(data.fname);
+          $(".mname").val(data.mname);
+          $(".lname").val(data.lname);
+        }
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profiles.");
+      },
+    });
+  }
+
+  // Event listener for the 'Check' button
+  $(".btn-checkProfiles").on("click", function () {
+    const data = {
+      fname: $(".fname").val(),
+      mname: $(".mname").val(),
+      lname: $(".lname").val(),
+      dob: $(".dob").val(),
+    };
+
+    fetchProfiles(data);
+  });
+
+  // $(".btn-checkProfiles").on("click", function () {
+  //   $(".loading").show();
+  //   var content = "";
+  //   var form = $("#form-submit");
+
+  //   var data = {
+  //     fname: $("#checkProfiles").find(".fname").val(),
+  //     mname: $("#checkProfiles").find(".mname").val(),
+  //     lname: $("#checkProfiles").find(".lname").val(),
+  //     dob: $("#checkProfiles").find(".dob").val(),
+  //   };
+
+  //   form.find(".fname").val(data.fname);
+  //   form.find(".mname").val(data.mname);
+  //   form.find(".lname").val(data.lname);
+  //   form.find(".dob").val(data.dob);
+
+  //   $.ajax({
+  //     url: "get/checkprofiles",
+  //     method: "GET",
+  //     headers: {
+  //       "X-CSRF-TOKEN": "{{ csrf_token() }}",
+  //     },
+  //     data: data,
+  //     success: function (data) {
+  //       console.log(data);
+  //       if (data.length > 0) {
+  //         content +=
+  //           '<table class="table table-hover table-striped">' +
+  //           "<thead>" +
+  //           "<tr>" +
+  //           "<th>First Name</th>" +
+  //           "<th>Middle Name</th>" +
+  //           "<th>Last Name</th>" +
+  //           "<th>Date of Birth</th>" +
+  //           "<th>Update</th>" +
+  //           "</tr></thead>" +
+  //           "<tbody>";
+  //         jQuery.each(data, function (i, val) {
+  //           content +=
+  //             "<tr>" +
+  //             "<td>" +
+  //             val.fname +
+  //             "</td>" +
+  //             "<td>" +
+  //             val.mname +
+  //             "</td>" +
+  //             "<td>" +
+  //             val.lname +
+  //             "</td>" +
+  //             "<td>" +
+  //             val.dob +
+  //             "</td>" +
+  //             `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+  //             "</tr>";
+  //         });
+
+  //         content += "</tbody></table>";
+
+  //         // content += '<div class="pagination-controls">';
+  //         // if (data.prev_page_url) {
+  //         //   content +=
+  //         //     '<button onclick="loadPage(' +
+  //         //     (data.current_page - 1) +
+  //         //     ')">Previous</button>';
+  //         // }
+  //         // if (data.next_page_url) {
+  //         //   content +=
+  //         //     '<button onclick="loadPage(' +
+  //         //     (data.current_page + 1) +
+  //         //     ')">Next</button>';
+  //         // }
+  //         // content += "</div>";
+
+  //         $("#checkProfiles").find(".modal-body").html(content);
+  //         $("#checkProfiles").find(".btn-checkProfiles").hide();
+  //       } else {
+  //         $("#checkProfiles").modal("hide");
+  //       }
+
+  //       $(".loading").hide();
+  //     },
+  //     error: function (xhr, status, error) {
+  //       console.error("Error checking profile:", error);
+  //     },
+  //   });
+  // });
 });

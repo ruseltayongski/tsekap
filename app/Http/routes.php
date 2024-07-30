@@ -392,7 +392,8 @@ Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient'
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
-
+//check profile resu client
+Route::get('get/checkprofiles', 'resu\ClientVerifyController@CheckClients')->name('get.checkprofiles');
 //get municipal && province
 Route::get('sublist-patient/get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('sublist-patient/get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');

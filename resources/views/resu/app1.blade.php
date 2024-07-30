@@ -11,6 +11,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('resources/img/favicon.png') }}">
     <meta http-equiv="cache-control" content="max-age=0" />
     <title>{{ (isset($title)) ? $title: 'PHA Check-Up' }}</title>

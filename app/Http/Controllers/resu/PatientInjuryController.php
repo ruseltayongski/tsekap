@@ -278,7 +278,6 @@ class PatientInjuryController extends Controller
 
     //saving for transport vehicle
     private function TransportVehicle($request, $pre_admission_id){
-
         $external_injury_pread_id = $request->externalTransport;
         if($external_injury_pread_id){
             $transport = new ResuTransport();
@@ -369,7 +368,7 @@ class PatientInjuryController extends Controller
                 $query->select('id', 'Transport_safety_id','safety_id','safety_details'); // Limit columns
             },
             'resuInpatient' => function ($query){
-                $query->select('id','hospitalfacility_id','Disposition','details','Outcome','icd10Code_nature','icd10Code_external');
+                $query->select('id','hospitalfacility_id','profile_id','complete_Diagnose','Disposition','details','Outcome','icd10Code_nature','icd10Code_external');
             },
             'resuEropdbhsrhu' => function ($query){
                 $query->select('id','hospitalfacility_id','profile_id','transferred_facility','referred_facility','originating_hospital','status_facility','mode_transport_facility','other_details',
@@ -392,9 +391,9 @@ class PatientInjuryController extends Controller
         } 
 
         $hospitalData = [];
-        $inpatient = $profile->resuInpatient;
-        if($inpatient){
-            $hospitalData = $inpatient;
+      
+        if($profile->resuInpatient){
+            $hospitalData = $profile->resuInpatient;
         }else{
             $hospitalData = $profile->resuEropdbhsrhu;
         }
@@ -695,19 +694,22 @@ class PatientInjuryController extends Controller
         if($transport_id){
             $transport = ResuTransport::where('Pre_admission_id', $request->Pre_admission_id)
                 ->first();
-            
             if($transport){
 
                 if($request->transport_collision_id){
-                    $transport->transport_accident_id = $request->transport_collision_id;
-                    $transport->other_collision = $request->Othercollision;
-                    $transport->other_collision_details = $request->other_collision_details;
-                    if(trim($transport->other_collision) == "Others"){
-                    }else{
-                        $transport->other_collision_details = null;
-                    }
-                }
+            
                     $transport->transport_accident_id = $request->transport_accident_id;
+                    $transport->other_collision = $request->Othercollision;
+                    $transport->other_collision_details = $request->transport_accident_id;
+               
+                }else{
+                    $transport->transport_accident_id = $request->transport_accident_id;
+                }
+ 
+                if(trim($transport->other_collision) == "Others"){
+                }else{
+                    $transport->other_collision_details = null;
+                }
                     $transport->xternal_injury_pread_id = $transport_id;
                     $transport->PatientVehicle = $request->Patient_vehicle;
                     $transport->PvOther_detail = $request->Patient_vehicle_others;

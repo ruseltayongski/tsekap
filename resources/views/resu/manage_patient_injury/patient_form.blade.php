@@ -884,12 +884,13 @@
 
     </div>
 </div>
-@include('../modal.profile')
-@include('../modal.checkProfile')
+<script>
+ var baseUrl = "{{ url('sublist-patient') }}";
+</script>
 @endsection
-@section('js')
-    @include('script.profile')
-@endsection
+
+@include('resu.manage_patient_injury.checkProfile')
+
 <style>
 .json-display-style {
       background-color: black;
