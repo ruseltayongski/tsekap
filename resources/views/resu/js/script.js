@@ -22,6 +22,82 @@ function showPreviousStep() {
   }
 }
 
+//display municipal
+function MunicipalData(provinceId, muncity, muncity_id = null) {
+  $(muncity)
+    .empty()
+    .append('<option value="0" selected>Select Municipal</option>'); // Reset municipal dropdown
+  // console.log("update province Id", provinceId);
+  if (provinceId) {
+    $.ajax({
+      url: "get/municipal/" + provinceId,
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        if (data && data.length > 0) {
+          $.each(data, function (key, value) {
+            if (value.id && value.description) {
+              $(muncity).append(
+                '<option value="' +
+                  value.id +
+                  '">' +
+                  value.description +
+                  "</option>"
+              );
+            }
+          });
+          if (muncity_id) {
+            $(muncity).val(muncity_id);
+            $(muncity).trigger("chosen:updated");
+            console.log("chosen", $(muncity).trigger("chosen:updated"));
+          } else {
+            $(muncity).trigger("chosen:updated");
+            console.log("chosen", $(muncity).trigger("chosen:updated"));
+          }
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(JSON.stringify(jqXHR));
+        console.log("AJAX error: " + textStatus + " : " + errorThrown);
+      },
+    });
+  }
+}
+
+// display Barangay
+function BarangayData(muncityId, barangay, barangay_id = null) {
+  $(barangay).empty().append("<option>Select Barangay</option>");
+
+  $.ajax({
+    url: "get/barangay/" + muncityId,
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      $.each(data, function (key, value) {
+        $(barangay).append(
+          '<option value="' + value.id + '">' + value.description + "</option>"
+        );
+      });
+      if (barangay_id) {
+        $(barangay).val(barangay_id);
+        $(barangay).trigger("chosen:updated");
+      } else {
+        $(barangay).trigger("chosen:updated");
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log(JSON.stringify(jqXHR));
+      console.log("AJAX error: " + textStatus + " : " + errorThrown);
+    },
+  });
+}
+
+$(document).on("click", ".update-btn", function () {
+  var profileId = $(this).data("id");
+  $("#profile_id").val(profileId); // Set the profile_id in the hidden input
+  $("#form-submit").submit(); // Submit the form
+});
+
 //first aid given
 $(document).ready(function () {
   function firstAidfields() {
@@ -134,45 +210,6 @@ $(document).ready(function () {
     $("#addressfacility").val(address);
   });
 
-  //display municipal
-  function MunicipalData(provinceId, muncity, muncity_id = null) {
-    $(muncity).empty().append('<option value="">Select Municipal</option>'); // Reset municipal dropdown
-    console.log("update province Id", provinceId);
-    if (provinceId) {
-      $.ajax({
-        url: "get/municipal/" + provinceId,
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-          if (data && data.length > 0) {
-            $.each(data, function (key, value) {
-              if (value.id && value.description) {
-                $(muncity).append(
-                  '<option value="' +
-                    value.id +
-                    '">' +
-                    value.description +
-                    "</option>"
-                );
-              }
-            });
-            if (muncity_id) {
-              $(muncity).val(muncity_id);
-              $(muncity).trigger("chosen:updated");
-              console.log("chosen", $(muncity).trigger("chosen:updated"));
-            } else {
-              $(muncity).trigger("chosen:updated");
-              console.log("chosen", $(muncity).trigger("chosen:updated"));
-            }
-          }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(JSON.stringify(jqXHR));
-          console.log("AJAX error: " + textStatus + " : " + errorThrown);
-        },
-      });
-    }
-  }
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();
@@ -183,38 +220,6 @@ $(document).ready(function () {
     var provinceId = $(this).val();
     MunicipalData(provinceId, "#municipal_injury");
   });
-
-  // display Barangay
-  function BarangayData(muncityId, barangay, barangay_id = null) {
-    $(barangay).empty().append("<option>Select Barangay</option>");
-
-    $.ajax({
-      url: "get/barangay/" + muncityId,
-      type: "GET",
-      dataType: "json",
-      success: function (data) {
-        $.each(data, function (key, value) {
-          $(barangay).append(
-            '<option value="' +
-              value.id +
-              '">' +
-              value.description +
-              "</option>"
-          );
-        });
-        if (barangay_id) {
-          $(barangay).val(barangay_id);
-          $(barangay).trigger("chosen:updated");
-        } else {
-          $(barangay).trigger("chosen:updated");
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(JSON.stringify(jqXHR));
-        console.log("AJAX error: " + textStatus + " : " + errorThrown);
-      },
-    });
-  }
 
   //this is upate portion permanent Address
   var provinceId = $("#update-province").val();
@@ -233,9 +238,18 @@ $(document).ready(function () {
       var muncityId = $(this).val();
       BarangayData(muncityId, "#update-barangay");
     });
-    BarangayData(municipalId, "#update-barangay", barangayId);
+    if (barangayId !== null && barangayId !== undefined) {
+      BarangayData(municipalId, "#update-barangay", barangayId);
+    }
   }
   // end of update portion
+  console.log("Document ready!");
+
+  if ($("#update_provinceId").length) {
+    console.log("Element #update_provinceId is present.");
+  } else {
+    console.error("Element #update_provinceId is not found!");
+  }
 
   //Address place injury
   var placeprovinceId = $("#update_provinceId").val();
@@ -245,22 +259,29 @@ $(document).ready(function () {
   if (placeprovinceId) {
     $("#update_provinceId").change(function () {
       var PprovinceId = $(this).val();
+      console.log("place province injury", PprovinceId);
       MunicipalData(PprovinceId, "#update_municipal_injury");
     });
+
     MunicipalData(
       placeprovinceId,
       "#update_municipal_injury",
       placemunicipalId
     );
+  } else {
+    console.error("placeprovinceId is not set!");
   }
 
-  if (placemunicipalId) {
+  if (placemunicipalId !== null && placemunicipalId !== undefined) {
     $("#update_municipal_injury").change(function () {
       var pmuncity_id = $(this).val();
-      console.log("pmunicity", pmuncity_id);
+      console.log("place injuruy municity Id", pmuncity_id);
       BarangayData(pmuncity_id, "#update_barangay_injury");
     });
+
     BarangayData(placemunicipalId, "#update_barangay_injury", placebarangayId);
+  } else {
+    console.error("placemunicipalId is not set!");
   }
 
   $("#municipal").change(function () {
@@ -603,9 +624,9 @@ $(document).ready(function () {
         "X-CSRF-TOKEN": "{{ csrf_token() }}",
       },
       data: data,
-      success: function (data) {
+      success: function (record) {
         let content = "";
-        if (data.length > 0) {
+        if (record.length > 0) {
           content +=
             '<table class="table table-hover table-striped">' +
             "<thead>" +
@@ -617,7 +638,7 @@ $(document).ready(function () {
             "<th>Update</th>" +
             "</tr></thead>" +
             "<tbody>";
-          jQuery.each(data, function (i, val) {
+          jQuery.each(record, function (i, val) {
             content +=
               "<tr>" +
               "<td>" +
@@ -639,12 +660,13 @@ $(document).ready(function () {
           content += "</tbody></table>";
           $("#checkProfiles").find(".modal-body").html(content);
         } else {
-          $("#checkProfiles").modal("hide");
           alert("No matching profiles found.");
-          console.log(data);
-          $(".fname").val(data.fname);
-          $(".mname").val(data.mname);
-          $(".lname").val(data.lname);
+          console.log("where is my data", data);
+          $("#fname").val(data.fname);
+          $("#mname").val(data.mname);
+          $("#lname").val(data.lname);
+          $("#dateofbirth").val(data.dob);
+          $("#checkProfiles").modal("hide");
         }
         $(".loading").hide(); // Hide loading indicator
       },

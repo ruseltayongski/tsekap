@@ -35,8 +35,11 @@
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
             {{ csrf_field() }}
             <input type="hidden" name="reportfacility_id" value="{{$profile->reportfacility->id}}">
-            <input type="hidden" name="profile_id" value="{{$profile->id}}">
             <input type="hidden" name="preadmission_id" value="{{$profile->preadmission->id}}">
+            <input type="hidden" name="preadmission_id_update" value="{{$profile->preadmission->id}}">
+            <input type="hidden" name="profile_id" id="profile_id" value="{{ $profile->id }}">
+            <input type="hidden" name="profile_id_update" value="{{ $profile->id }}">
+
             <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
@@ -152,7 +155,7 @@
                             <div class="col-md-3">
                                 <label for="province">Province</label>
                                 <select class="form-control chosen-select" name="provinceInjury" id="update_provinceId">
-                                    <option value="">Select Province Injury</option>
+                                    <option value="0" selected>Select Province Injury</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}" {{ $profile->preadmission && $profile->preadmission->POIProvince_id ==  $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
                                     @endforeach
@@ -266,23 +269,25 @@
                         @php
                             $counter = 1;
                             $renderedInjuredIds = [];
-                            $natureInjury_id_array = $profile->preadmission->natureInjuryPreadmissions->pluck('natureInjury_id')->toArray();
+                            $natureInjury_id_array = $profile->preadmission->natureInjuryPreadmissions 
+                            ? $profile->preadmission->natureInjuryPreadmissions->pluck('natureInjury_id')->toArray() : [];
                             $natureDetails = [];
                             $natureside = [];
-                            $subtype_nature = array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('subtype')->toArray());
+                            $subtype_nature = $profile->preadmission->natureInjuryPreadmissions ?
+                            array_filter($profile->preadmission->natureInjuryPreadmissions->pluck('subtype')->toArray()) : [];
 
                             foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem){
                                 $natureDetails[$natureItem->natureInjury_id] = $natureItem->details;
                                 $natureside[$natureItem->natureInjury_id] = $natureItem->side;
                             }
                         @endphp
-                       
                         @foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem)
-                        <input type="hidden" name="Pre_admission_id" value="{{ $natureItem->Pre_admission_id }}">
-                        <input type="hidden" name="nature_Pread_id{{$counter}}" value="{{ $natureItem->id }}">
+                            <input type="hidden" name="Pre_admission_id" value="{{ $natureItem->Pre_admission_id }}">
+                            <input type="hidden" name="nature_Pread_id{{$counter}}" value="{{ $natureItem->id }}">
                             @php 
                                 $natureArray = explode(',', $natureItem->natureInjury_id); 
                             @endphp
+                        @endforeach
                             @foreach($nature_injury as $injured)
                                 @php
                                     $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);
@@ -333,8 +338,11 @@
                                         $counter++;
                                     @endphp
                                 @endif
+
+                              
                             @endforeach
-                        @endforeach
+                            
+                     
                     </div>
                     <div class="col-md-3">
                         @php
@@ -342,11 +350,13 @@
                             $renderedInjuredIds = [];
                         @endphp
                         @foreach($profile->preadmission->natureInjuryPreadmissions as $natureItem)
+                       
+                        @endforeach
                             @foreach($nature_injury as $injured)
                                 @php
                                     $checkIdInjured = 'injured_' . $injured->id;
                                 @endphp
-
+                     
                                 @if(!in_array($checkIdInjured, $renderedInjuredIds))
                                 
                                      @php
@@ -386,7 +396,7 @@
                                     @endphp
                                 @endif
                             @endforeach
-                        @endforeach
+                      
                         
                         <!----------------------------- Nature of Injury ------------------------------>
                     </div>
@@ -503,8 +513,10 @@
                     @php
                         $counter = 1; 
                         $externaldetails = [];
-                        $exInjury_id = array_filter($profile->preadmission->externalPreadmissions->pluck('externalinjury_id')->toArray());
-                        $subtype_external = array_filter($profile->preadmission->externalPreadmissions->pluck('subtype')->toArray());
+                        $exInjury_id = $profile->preadmission->externalPreadmissions?
+                        array_filter($profile->preadmission->externalPreadmissions->pluck('externalinjury_id')->toArray()) : [];
+                        $subtype_external = $profile->preadmission->externalPreadmissions?
+                        array_filter($profile->preadmission->externalPreadmissions->pluck('subtype')->toArray()) : [];
 
                         foreach($profile->preadmission->externalPreadmissions as $externalItem){
                                 $externaldetails[$externalItem->externalinjury_id] = $externalItem->details;
@@ -780,7 +792,7 @@
                    {{-- @endforeach --}}
                 </div>
                 <!-- end of transport-group -->
-                @if($hospitalData->hospitalfacility_id == 1)
+                {{-- @if($hospitalData->hospitalfacility_id == 1) --}}
                     <div class="col-md-12"><hr>
                         <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
                         @foreach($hospital_type as $hos)
@@ -788,7 +800,6 @@
                             <div class="A_ErOpdGroup">
                                 <h6 class="A_Hospital mt-5"> 
                                 <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}"  {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
-                                <input type="hidden" name="profile_id" value ="{{ $hospitalData->profile_id }}">
                                  <input type="hidden" name="Eropd_id" value ="{{ $hospitalData->id }}">
                                 {{$hos->category_name}}</h6>
                                 <div class="col-md-12">
@@ -893,15 +904,13 @@
                             @endif
                         @endforeach
                     </div>
-                @elseif($hospitalData->hospitalfacility_id == 2)
+                {{-- @elseif($hospitalData->hospitalfacility_id == 2) --}}
                     @foreach($hospital_type as $hos)
                         @if(isSimilar($hos->category_name, "B. In-Patient(for admitted hospital cases only)"))
                             <div class="B_InpatientGroup">
                                 <input type="hidden" name="inPatient_id" value="{{ $hospitalData->id }}">
-                                <input type="hidden" name="profile_id" value="{{ $hospitalData->profile_id }}">
-
                                 <div class="col-md-12"><hr class="Inpatient_linehr">
-                                <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
+                                <!-- <h4 class="patient-font mt-4">Hospital/Facility Data</h4> -->
                                     <h6 class="A_Hospital mt-5"> 
                                     <input type="checkbox" id="B_InPatient" name="hospital_data_second" value="{{$hos->id}}" {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
                                     {{$hos->category_name}}</h6>
@@ -963,19 +972,22 @@
                             </div>
                         @endif
                     @endforeach
-                @else
+              
+                {{-- @else
                 <p>No Data Found!</p>
-                @endif
+                @endif --}}
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-success mx-2">update</button>
+                        <button type="submit" class="btn btn-success mx-2" onclick="submitProfileId()">update</button>
                     </div>
             </div>
         </form>
 
     </div>
 </div>
+
 @endsection
+
 <style>
 .json-display-style {
       background-color: black;
