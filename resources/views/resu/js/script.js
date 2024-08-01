@@ -181,7 +181,24 @@ $(document).ready(function () {
       $(".collision_group").hide();
     }
   });
+
   // for option hide of  A. ER/OPD/BHS/RHU or  B. In-Patient(for admitted hospital cases only)
+
+  if ($("#A_ErOpd").is(":checked")) {
+    $(".B_InpatientGroup").hide();
+  } else {
+    $(".B_InpatientGroup").show();
+  }
+
+  if ($("#B_InPatient").is(":checked")) {
+    $(".A_ErOpdGroup").hide();
+    $(".Inpatient_linehr").hide();
+    $(".hrA_ErOpdGroup").hide();
+  } else {
+    $(".A_EropdGroup").show();
+    $(".Inpatient_linehr").show();
+  }
+
   $("#A_ErOpd").change(function () {
     if ($(this).is(":checked")) {
       $(".B_InpatientGroup").hide();
@@ -452,12 +469,15 @@ $(document).ready(function () {
   });
   //nature multiple generated counter
   $('[id^="nature"]').each(function () {
-    var counter = $(this).attr("id").match(/\d+/)[0];
+    var counter = $(this).attr("id").match(/\d+/);
+    if (counter !== null) {
+      var counters = counter[0];
+    }
 
-    var natureCheckbox = $("#nature" + counter);
-    var natureDetails = $("#nature_details" + counter);
-    var natureside = $("#sideInjured" + counter);
-    var natureBodyParts = $("#body_parts_injured" + counter);
+    var natureCheckbox = $("#nature" + counters);
+    var natureDetails = $("#nature_details" + counters);
+    var natureside = $("#sideInjured" + counters);
+    var natureBodyParts = $("#body_parts_injured" + counters);
 
     natureCheckbox.change(function () {
       natureDetails.prop("disabled", !this.checked);

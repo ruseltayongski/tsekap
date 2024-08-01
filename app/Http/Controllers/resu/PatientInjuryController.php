@@ -32,7 +32,7 @@ class PatientInjuryController extends Controller
             ->whereNotNull('report_facilityId')
             ->orWhereNotNull('Hospital_caseno')
             ->orderby('id', 'desc')
-            ->paginate(10);
+            ->paginate(15);
 
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
@@ -362,7 +362,7 @@ class PatientInjuryController extends Controller
             },
             'preadmission.externalPreadmissions.transport' => function ($query) {
                 $query->select('id', 'Pre_admission_id','transport_accident_id','xternal_injury_pread_id','other_collision','other_collision_details','PatientVehicle','PvOther_detail',
-                'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','safety'); // Limit columns
+                'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','rf_others','safety'); // Limit columns
             },
             'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
                 $query->select('id', 'Transport_safety_id','safety_id','safety_details'); // Limit columns
@@ -399,10 +399,10 @@ class PatientInjuryController extends Controller
         }
   
         $get_allSafety = $transportData->Allsafety? $transportData->Allsafety->pluck('safety_id') : collect();
-        $get_transportId = $transportData->Allsafety? $transportData->Allsafety->pluck('Transport_safety_id') : collect();
+        // $get_transportId = $transportData->Allsafety? $transportData->Allsafety->pluck('Transport_safety_id') : collect();
         // $get_allSafety =  $transportData->Allsafety->pluck('safety_id');
         // $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
-      
+     
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
@@ -477,7 +477,11 @@ class PatientInjuryController extends Controller
             if(!$nature){
                 $nature = new ResuNature_Preadmission();
             }
-            $nature->Pre_admission_id = $request->preadmission_id_update;
+            if($request->preadmission_id_update){
+                $nature->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $nature->Pre_admission_id = $pre_admission->id;
+            }
             $nature->natureInjury_id = $request->InjuredBurn;
             $nature->subtype = $request->Degree;
             $nature->details = $request->burnDetail;
@@ -487,21 +491,25 @@ class PatientInjuryController extends Controller
             
             $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('burn_body_parts', []));
         }
-
+       
         if($request->fractureNature) {
-            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->Pre_admission_id)
+            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->preadmission_id_update)
                     ->where('natureInjury_id', $request->fractureNature)
                     ->first();
+            
             if(!$nature){
                 $nature = new ResuNature_Preadmission();
+            }
+            if($request->preadmission_id_update){
                 $nature->Pre_admission_id = $request->preadmission_id_update;
-                $nature->natureInjury_id = $request->fractureNature;
+            }else{
+                $nature->Pre_admission_id = $pre_admission->id;
             }
+            $nature->natureInjury_id = $request->fractureNature;
             $nature->subtype = $request->fracttype;
-            if($request->fracture_detail || $request->fracture_side){
-                $nature->details = $request->fracture_detail;
-                $nature->side = $request->fracture_side;
-            }
+            $nature->details = $request->fracture_detail;
+            $nature->side = $request->fracture_side;
+    
             $nature->save();
             $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('fracture_bodyparts', []));
         }
@@ -513,12 +521,17 @@ class PatientInjuryController extends Controller
 
             if(!$nature){
                 $nature = new ResuNature_Preadmission();
-                $nature->Pre_admission_id = $request->preadmission_id_update;
-                $nature->natureInjury_id = $request->Others_nature_injured;
+               
             }
-                $nature->details = $request->other_nature_details;
-                $nature->side = $request->side_others;
-                $nature->save();
+            if($request->preadmission_id_update){
+                $nature->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $nature->Pre_admission_id = $pre_admission->id;
+            }
+            $nature->natureInjury_id = $request->Others_nature_injured;
+            $nature->details = $request->other_nature_details;
+            $nature->side = $request->side_others;
+            $nature->save();
 
                 $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('body_parts_others', []));
         }
@@ -528,14 +541,18 @@ class PatientInjuryController extends Controller
         for($i = 1; $i <= $injuredcount; $i++){
             if($request->has('nature' . $i) || $request->has('nature_details' . $i) || $request->has('sideInjured' . $i)){
                 $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->preadmission_id_update)
-                    ->where('natureInjury_id', $request->input('nature', $i))
+                    ->where('natureInjury_id', $request->input('nature'. $i))
                     ->first();
 
                 if(!$nature){
                     $nature = new ResuNature_Preadmission();
-                    $nature->Pre_admission_id = $request->preadmission_id_update;
-                    $nature->natureInjury_id = $request->input('nature' . $i);
                 }
+                if($request->preadmission_id_update){
+                    $nature->Pre_admission_id = $request->preadmission_id_update;
+                }else{
+                    $nature->Pre_admission_id = $pre_admission->id;
+                }
+                $nature->natureInjury_id = $request->input('nature' . $i);
                 $nature->details = $request->input('nature_details' . $i);
                 $nature->side = $request->input('sideInjured' . $i);
                 $nature->save();
@@ -552,9 +569,13 @@ class PatientInjuryController extends Controller
                 ->first();
             if(!$external){
                 $external = new Resuexternal_injury_preAdmission();
-                $external->Pre_admission_id = $request->preadmission_id_update;
-                $external->externalinjury_id = $request->ex_burn;
             }
+            if($request->preadmission_id_update){
+                $external->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $external->Pre_admission_id = $pre_admission->id;
+            }
+            $external->externalinjury_id = $request->ex_burn;
             $external->subtype = $request->burn_type;
             $external->details = $request->exburnDetails;
             $external->save();
@@ -566,9 +587,13 @@ class PatientInjuryController extends Controller
                 ->first();
             if(!$external){
                 $external = new Resuexternal_injury_preAdmission();
-                $external->Pre_admission_id = $request->preadmission_id_update;
-                $external->externalinjury_id = $request->exDrowning;
             }
+            if($request->preadmission_id_update){
+                $external->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $external->Pre_admission_id = $pre_admission->id;
+            }
+            $external->externalinjury_id = $request->exDrowning;
             $external->subtype = $request->drowningType;
             $external->details = $request->exdrowning_Details;
             $external->save();
@@ -581,9 +606,13 @@ class PatientInjuryController extends Controller
             
             if(!$external){
                 $external = new Resuexternal_injury_preAdmission();
-                $external->Pre_admission_id = $request->preadmission_id_update;
-                $external->externalinjury_id = $request->$request->externalTransport;
             }
+            if($request->preadmission_id_update){
+                $external->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $external->Pre_admission_id = $pre_admission->id;
+            }
+            $external->externalinjury_id = $request->externalTransport;
             $external->details = $request->transport_details;
             $external->save();
         }
@@ -596,16 +625,20 @@ class PatientInjuryController extends Controller
                     ->first();
                 if(!$externals){
                     $externals = new Resuexternal_injury_preAdmission();
-                    $externals->Pre_admission_id = $request->preadmission_id_update;
-                    $externals->externalinjury_id = $request->input('external' . $i); 
                 }
+                if($request->preadmission_id_update){
+                    $externals->Pre_admission_id = $request->preadmission_id_update;
+                }else{
+                    $externals->Pre_admission_id = $pre_admission->id;
+                }
+                $externals->externalinjury_id = $request->input('external' . $i); 
                 $externals->details = $request->input('external_details' . $i);
                 $externals->save();
             }
         }
         //end update if external
         //for Transpart
-        $this->UpdateTransport($request->externalTransport, $request);
+        $this->UpdateTransport($request->externalTransport, $request, $pre_admission->id);
 
         //ResuInpatient
         if($request->hospital_data_second){
@@ -702,99 +735,140 @@ class PatientInjuryController extends Controller
             ->delete();
     }
 
-    private function UpdateTransport($transport_id, $request){
-
+    private function UpdateTransport($transport_id, $request, $pre_admission_id){
+   
         if($transport_id){
+
             $transport = ResuTransport::where('Pre_admission_id', $request->preadmission_id_update)
                 ->first();
-            if($transport){
-
-                if($request->transport_collision_id){
-            
-                    $transport->transport_accident_id = $request->transport_accident_id;
-                    $transport->other_collision = $request->Othercollision;
-                    $transport->other_collision_details = $request->transport_accident_id;
-               
-                }else{
-                    $transport->transport_accident_id = $request->transport_accident_id;
-                }
- 
-                if(trim($transport->other_collision) == "Others"){
-                }else{
-                    $transport->other_collision_details = null;
-                }
-                    $transport->xternal_injury_pread_id = $transport_id;
-                    $transport->PatientVehicle = $request->Patient_vehicle;
-                    $transport->PvOther_detail = $request->Patient_vehicle_others;
-                    if(trim($transport->PatientVehicle) == "others"){
-                    }else{
-                        $transport->PvOther_detail = null;
-                    }
-                    $transport->positionPatient = $request->position_patient;
-                    $transport->ppother_detail = $request->position_other_details;
-                    if(trim($transport->positionPatient) == 'Others'){
-
-                    }else{
-                        $transport->ppother_detail = null;
-                    }
-                    $transport->pofOccurence =$request->Occurrence;
-                    $transport->workplace_occurence_specify  = $request->workplace_occ_specify;
-                    $transport->pofOccurence_others = $request->Occurrence_others;
-
-                    if(trim($transport->pofOccurence) == "workplace"){
-                    
-                    }else{
-                        $transport->workplace_occurence_specify = null;
-                    }
-                    if(trim($transport->pofOccurence) == 'Others'){
-                    }else{
-                        $transport->pofOccurence_others = null;
-                    }
-
-
-                    $transport->activity_patient = $request->activity_patient;
-                    $transport->AP_others = $request->activity_patient_other;
-                    if(trim($transport->activity_patient) == "Others"){
-
-                    }else{
-                        $transport->AP_others = null;
-                    }
-                    $transport->risk_factors = $request->risk_factors;
-                    $transport->rf_others = $request->rf_others;                
-                    if(trim($transport->risk_factors) == 'Others'){
-
-                    }else{
-                        $transport->rf_others = null;
-                    }
-                $transport->save();
-
-                if($request->has('categsafe') || $request->has('safety_others_id')){
-                        $safet_values = $request->input('categsafe');
-
-                        foreach($safet_values as $safety_value){
-
-                            $safety = ResuSafetyTransport::where('Transport_safety_id', $request->transport_ids)
-                                ->where('safety_id', $safety_value)
-                                ->first();
-    
-                            if(!$safety){
-                                $safety = new ResuSafetyTransport();
-                                $safety->Transport_safety_id = $request->transport_ids;
-                                $safety->safety_id = $safety_value;
-                            }
-                            
-                            if($safety_value == $request->safety_others_id){
-                                $safety->safety_details = $request->safeothers_details;
-                            }
-                            
-                            $safety->save();
-                        } 
-                }
-
-            }else{  
-                return "No transport Id";
+            if(!$transport){
+             
+                $transport = new ResuTransport();
             }
+            $transport->transport_accident_id = $request->transport_accident_id;
+            $transport->other_collision = $request->Othercollision;
+            $transport->other_collision_details = $request->other_collision_details;
+
+            if(trim($transport->other_collision) == "Others"){
+            }else{
+                $transport->other_collision_details = null;
+            }
+            if($request->preadmission_id_update){
+                $transport->Pre_admission_id = $request->preadmission_id_update;
+            }else{
+                $transport->Pre_admission_id = $pre_admission_id;
+            }
+                $transport->xternal_injury_pread_id = $transport_id;
+                $transport->PatientVehicle = $request->Patient_vehicle;
+                $transport->PvOther_detail = $request->Patient_vehicle_others;
+                if(trim($transport->PatientVehicle) == "others"){
+                }else{
+                    $transport->PvOther_detail = null;
+                }
+                $transport->positionPatient = $request->position_patient;
+                $transport->ppother_detail = $request->position_other_details;
+                if(trim($transport->positionPatient) == 'Others'){
+
+                }else{
+                    $transport->ppother_detail = null;
+                }
+                $transport->pofOccurence =$request->Occurrence;
+                $transport->workplace_occurence_specify  = $request->workplace_occ_specify;
+                $transport->pofOccurence_others = $request->Occurrence_others;
+
+                if(trim($transport->pofOccurence) == "workplace"){
+                
+                }else{
+                    $transport->workplace_occurence_specify = null;
+                }
+                if(trim($transport->pofOccurence) == 'Others'){
+                }else{
+                    $transport->pofOccurence_others = null;
+                }
+
+
+                $transport->activity_patient = $request->activity_patient;
+                $transport->AP_others = $request->activity_patient_other;
+                if(trim($transport->activity_patient) == "Others"){
+
+                }else{
+                    $transport->AP_others = null;
+                }
+                $transport->risk_factors = $request->risk_factors;
+                $transport->rf_others = $request->rf_others;                
+                if(trim($transport->risk_factors) == 'Others'){
+
+                }else{
+                    $transport->rf_others = null;
+                }
+                $transport->save();
+                
+                if($request->has('categsafe') || $request->has('safety_others_id')){
+                    $safet_values = $request->input('categsafe', []);
+                    
+                    if ($request->has('safety_others_id')) {
+                        $safet_values[] = $request->input('safety_others_id');
+                    }
+        
+                    foreach($safet_values as $safety_value){
+                        $transport_id = $request->transport_ids;
+                
+                        $safety = ResuSafetyTransport::where('Transport_safety_id', $transport_id)
+                            ->where('safety_id', $safety_value)
+                            ->first();
+                
+                        if(!$safety){
+                            $safety = new ResuSafetyTransport();
+                        }
+                        if($transport_id){
+                            $safety->Transport_safety_id = $transport_id;
+                        }else{
+                            $safety->Transport_safety_id = $transport->id;
+                        }
+                        $safety->safety_id = $safety_value;
+                
+                        if($safety_value == $request->safety_others_id){
+                            $safety->safety_details = $request->safeothers_details;
+                        }
+                
+                        $safety->save();
+                    } 
+                
+                } else {
+                    return 'No safety data provided.';
+                }
          }
+
+
+        //  if($request->has('categsafe') || $request->has('safeothers_details')){
+
+        //     $safet_values = $request->input('categsafe', []);
+    
+        //     foreach($safet_values as $safety_value){
+             
+        //         $safety = ResuSafetyTransport::where('Transport_safety_id', $request->transport_ids)
+        //             ->where('safety_id', $safety_value)
+        //             ->first();
+
+        //         if(!$safety){
+        //             $safety = new ResuSafetyTransport();
+        //             $safety->Transport_safety_id = $request->transport_ids;
+        //             $safety->safety_id = $safety_value;
+        //             if($safety_value == $request->safety_others_id){
+        //                 $safety->safety_details = $request->safeothers_details;
+        //             }
+        //         }
+                
+                
+        //         $safety->save();
+        //     } 
+
+        // }else{
+        //     return 'No safety data provided.';
+        // }
+
+        
+
     }
     
 }

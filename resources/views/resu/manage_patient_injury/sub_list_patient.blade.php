@@ -31,7 +31,7 @@
         <h2 class="page-header">
             <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.'. '.$profile->lname.' '.$profile->suffix }}
         </h2>
-        <div class="page-divider"></div>
+        <!-- <div class="page-divider"></div> -->
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
             {{ csrf_field() }}
             <input type="hidden" name="reportfacility_id" value="{{$profile->reportfacility->id}}">
@@ -303,12 +303,12 @@
                                     <div class="checkbox">
                                         @if(strtolower($injured->name) == "burn")
                                             <label>
-                                                <input type="checkbox"  name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                                <input type="checkbox" id="InjuredBurn"  name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             Degree:
                                             @foreach([1, 2, 3, 4] as $degree)
                                                 <label>
-                                                    <input type="radio" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
+                                                    <input type="radio" id="Degree1" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
                                                     {{$degree}}
                                                 </label>
                                             @endforeach
@@ -763,16 +763,14 @@
                                 <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" {{isChecked('Alcohol/liquor', $trans->risk_factors)}}> Alcohol/liquor<br>
                                 <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" {{isChecked('Using Mobile Phone', $trans->risk_factors)}}> Using Mobile Phone<br>
                                 <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy" {{isChecked('Sleepy', $trans->risk_factors)}}> Sleepy<br>
-                                <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" {{isChecked('Smooking', $trans->risk_factors)}}> Smooking<br>
+                                <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" {{isChecked('smooking', $trans->risk_factors)}}> Smooking<br>
                                 <input type="radio" id="risk_others" name="risk_factors" value="Others" {{isChecked('Others', $trans->risk_factors)}}> Others specify:
-                                <input type="text" class="form-control" id="risk_others_details" name="rf_others" value="{{$trans->rf_others}}" placeholder="others specify here">
+                                <input type="text" class="form-control" id="risk_others_details" name="rf_others" value="{{ $trans->rf_others }}" placeholder="others specify here">
                                 <p>(eg. Suspected under the influence of substance used)</p>
                             </div>
                             <div class="col-md-4"><hr>
                                 <label>Safety: (check all that apply)</label>
-                                    @foreach($transport_Id as $id_trans)
-                                        <input type="hidden" name="transport_ids" value="{{ $id_trans }}">
-                                    @endforeach
+                                        <input type="hidden" name="transport_ids" value="{{ $trans->id }}">
                                     @foreach($list_safety as $safe)
                                  
                                         <div class="col-md-6">
@@ -793,7 +791,7 @@
                 </div>
                 <!-- end of transport-group -->
                 {{-- @if($hospitalData->hospitalfacility_id == 1) --}}
-                    <div class="col-md-12"><hr>
+                    <div class="col-md-12"><hr class="hrA_ErOpdGroup">
                         <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
                         @foreach($hospital_type as $hos)
                             @if(isSimilar($hos->category_name, "A. ER/OPD/BHS/RHU"))
