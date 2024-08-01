@@ -416,3 +416,5 @@ Route::get('viewSafety', 'resu\InjuryController@safetyView')->name("viewSafety")
 Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 //for tsekap route
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
+//delete nature injury categories
+Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');

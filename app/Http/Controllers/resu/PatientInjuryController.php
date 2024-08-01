@@ -806,9 +806,6 @@ class PatientInjuryController extends Controller
                 if($request->has('categsafe') || $request->has('safety_others_id')){
                     $safet_values = $request->input('categsafe', []);
                     
-                    if ($request->has('safety_others_id')) {
-                        $safet_values[] = $request->input('safety_others_id');
-                    }
         
                     foreach($safet_values as $safety_value){
                         $transport_id = $request->transport_ids;
@@ -868,6 +865,30 @@ class PatientInjuryController extends Controller
         // }
 
         
+
+    }
+
+    public function Deletenature(Request $req){
+
+        $natureId = $req->input('nature_id');
+        $preadmissionId = $req->input('preadmission_id');
+
+        $nature_pread = ResuNature_Preadmission::where('Pre_admission_id', $preadmissionId )
+            ->where('natureInjury_id', $natureId)
+            ->first();
+        $nature_bodyparts = Resunature_injury_bodyparts::where('preadmission_id', $preadmissionId )
+            ->where('nature_injury_id', $natureId)
+            ->first();
+            if($nature_bodyparts){
+                $nature_bodyparts->delete();
+            }
+
+            if ($nature_pread) {
+                $nature_pread->delete();
+                return response()->json(['message' => 'Nature deleted successfully']);
+            }
+
+        return response()->json( $nature_pread);
 
     }
     

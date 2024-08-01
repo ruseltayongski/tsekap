@@ -36,7 +36,7 @@
             {{ csrf_field() }}
             <input type="hidden" name="reportfacility_id" value="{{$profile->reportfacility->id}}">
             <input type="hidden" name="preadmission_id" value="{{$profile->preadmission->id}}">
-            <input type="hidden" name="preadmission_id_update" value="{{$profile->preadmission->id}}">
+            <input type="hidden" name="preadmission_id_update" id="preadmission_id_update" value="{{$profile->preadmission->id}}">
             <input type="hidden" name="profile_id" id="profile_id" value="{{ $profile->id }}">
             <input type="hidden" name="profile_id_update" value="{{ $profile->id }}">
 
@@ -983,6 +983,11 @@
 
     </div>
 </div>
+<script>
+    var deleteNatureUrl = "{{ route('delete-nature') }}";
+    // var deleteNatureUrl = "//?php echo url('delete/nature'); ?>";
+
+</script>
 
 @endsection
 

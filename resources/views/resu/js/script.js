@@ -797,3 +797,66 @@ $(document).ready(function () {
   //   });
   // });
 });
+
+// for deleteing nature
+document.addEventListener('DOMContentLoaded', function() {
+
+  document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+
+        if(!this.checked){
+          let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          let natureId = this.value;
+          let preadmissionId = document.getElementById('preadmission_id_update').value;
+
+          console.log('nature_id',natureId, 'preadmissionId', preadmissionId);
+
+          Lobibox.confirm({
+            title: 'Confirm Deletion',
+            msg: 'Are you sure you want to delete this data?',
+            buttons:{
+              yes: {
+                'class': 'btn btn-success',
+                text: 'Yes',
+                closeOnClick: true
+              },
+              no: {
+                'class': 'btn btn-danger',
+                text: 'No',
+                closeOnClick: true
+              }
+            },
+          
+            callback: function (lobibox, type) {
+              if(type == 'yes'){
+                $.ajax({
+                  url: deleteNatureUrl,
+                  type: 'POST',
+                  headers: {
+                      'X-CSRF-TOKEN': csrfToken
+                  },
+                  data: {
+                    nature_id: natureId,
+                    preadmission_id : preadmissionId,
+                  },
+                  success: function(response){
+                    console.log('Nature deleted successfully', response);
+                  },
+                  error: function(xhr) {
+                    // Handle error, e.g., show an error message
+                    console.error('An error occurred while deleting the nature');
+                }
+
+                });
+              }
+            }
+        });
+
+       }
+
+
+      }); 
+    
+    })
+
+});
