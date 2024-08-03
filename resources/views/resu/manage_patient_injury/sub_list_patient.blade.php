@@ -55,6 +55,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                          
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
                                 <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $profile->reportfacility->typeOfdru }}">
@@ -303,7 +304,7 @@
                                     <div class="checkbox">
                                         @if(strtolower($injured->name) == "burn")
                                             <label>
-                                                <input type="checkbox" id="InjuredBurn"  name="InjuredBurn" value="{{ $injured->id }}"  {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                                <input type="checkbox" id="InjuredBurn"  name="InjuredBurn" value="{{ $injured->id }}" data-category="nature" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             Degree:
                                             @foreach([1, 2, 3, 4] as $degree)
@@ -314,7 +315,7 @@
                                             @endforeach
                                         @elseif(strtolower($injured->name) == "fracture")
                                             <label>
-                                                <input type="checkbox" name="fractureNature" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
+                                                <input type="checkbox" name="fractureNature" value="{{$injured->id}}" data-category="nature" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
                                             <div class="col-md-offset-5">
                                                 <input type="radio" name="fracttype" value="close type" {{ in_array('close type', $subtype_nature) ? 'checked' : '' }}> Close Type
@@ -324,12 +325,12 @@
                                             </div>
                                         @elseif(in_array(strtolower($injured->name), ['others', 'other', 'Other', 'Others']))
                                             <label>
-                                                <input type="checkbox" id="{{$checkIdInjured}}" name="Others_nature_injured" value="{{$injured->id}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}: Please specify injury and the body parts affected:
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="Others_nature_injured" value="{{$injured->id}}" data-category="nature" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}: Please specify injury and the body parts affected:
                                             </label>
                                             <input type="text" class="form-control" id="natureDetails" name="other_nature_details" placeholder="Specify details"  value="{{ $injuryDatails }}">
                                         @else
                                             <label> 
-                                                <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-category="nature" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
                                             </label>
                                             <input type="text" class="form-control" name="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}">
                                         @endif
@@ -533,7 +534,7 @@
                         @if($externalSingle == 'Burns' || $externalSingle == 'Burn')     
                             <div class="col-md-12">
                                 <label>
-                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}
+                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}
                                 </label><br>
                                 <div class="col-md-5">
                                 
@@ -568,7 +569,7 @@
                             <div class="col-md-12">
                                 <div class="d-flex align-items-center">
                                     <label>
-                                        <input type="checkbox" id="exDrowning" name="exDrowning" value="{{ $exInjury->id }}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}: Type/Body of Water:
+                                        <input type="checkbox" id="exDrowning" name="exDrowning" value="{{ $exInjury->id }}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}: Type/Body of Water:
                                     </label><br>
                                     <div class="col-md-5">
                                     
@@ -605,7 +606,7 @@
                                 <div class="col-md-3">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
+                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
                                         </label>
                                     </div>
                                 </div>
@@ -617,7 +618,7 @@
                             <div class="col-md-3">
                                 <div class="checkbox">
                                     <label> 
-                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
+                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
                                     </label>
                                 </div>
                             </div>
@@ -649,8 +650,11 @@
                 {{-- @foreach($tranportData->transport as $trans) --}}
                      
                     <div class="Transport-group" style="display: none;">        
-                        <div class="col-md-12 transport-related">
+                        <div class="col-md-6 transport-related">
                             <label>For Transport Vehicular Accident Only:</label>
+                        </div>
+                        <div class="col-md-6 transport-related">
+                            <label>Vehicular Accident Type: </label>
                         </div>
                         @php
                             function isChecked($value, $selectedValue) {
@@ -658,28 +662,16 @@
                             }
                         @endphp
                         @foreach($rtacident as $rtAct)
-                            <!-- @php
-                                $description = strtolower($rtAct->description);
-                                $isCollision = $description === 'collision';
-                            @endphp
-                        <div class="col-md-2 transport-related">
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="{{ $isCollision ? 'Collision' : 'Land' }}" 
-                                name="transport_accident_id" 
-                                value="{{ $rtAct->id }}"  
-                                {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> 
-                            {{ $rtAct->description }}
-                        </div> -->
-                        @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
-                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="Collision" name="transport_accident_id" value="{{$rtAct->id}}" {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
-                        </div>
-                        @else
                         <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
                             <input type="radio" id="Land" name="transport_accident_id" value="{{$rtAct->id}}" {{ $rtAct->id == $trans->transport_accident_id ? 'checked' : '' }}> {{$rtAct->description}}
                         </div>
-                        @endif
                         @endforeach
+                        <div class="col-md-3 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="Collision" name="transport_collision" value="Collision" {{ isChecked("Collision", $trans->Vehicular_acc_type) }}> Collision
+                        </div>
+                        <div class="col-md-2 transport-related">
+                            <input type="radio" id="non_collision" name="transport_collision" value="Non-Collision" {{ isChecked("Non-Collision", $trans->Vehicular_acc_type) }}> Non-Collision
+                        </div>  
                         <div class="col-md-6 transport-related"><hr>
                             <label>Vehicles Involved:</label>
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
@@ -774,7 +766,7 @@
                                     @foreach($list_safety as $safe)
                                  
                                         <div class="col-md-6">
-                                            <input type="checkbox" id="safe_{{ $index }}" name="categsafe[]" value="{{ $safe->id }}" {{ in_array($safe->id, $get_allsafety->toArray()) ? 'checked' : '' }}>{{ $safe->name }}<br>                                  
+                                            <input type="checkbox" id="safe_{{ $index }}" name="categsafe[]" value="{{ $safe->id }}" data-category="safety" {{ in_array($safe->id, $get_allsafety->toArray()) ? 'checked' : '' }}>{{ $safe->name }}<br>                                  
                                         </div>
 
                                     @if(trim($safe->name) == 'Others')
@@ -797,7 +789,7 @@
                             @if(isSimilar($hos->category_name, "A. ER/OPD/BHS/RHU"))
                             <div class="A_ErOpdGroup">
                                 <h6 class="A_Hospital mt-5"> 
-                                <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}"  {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
+                                <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}" data-category="department"  {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
                                  <input type="hidden" name="Eropd_id" value ="{{ $hospitalData->id }}">
                                 {{$hos->category_name}}</h6>
                                 <div class="col-md-12">
@@ -820,17 +812,17 @@
                                 <div class="col-md-2">
                                     <input type="radio" id="deadonarrive" name="reashingFact" value="Dead on Arrival" {{isChecked('Dead on Arrival', $hospitalData->status_facility)}}> Dead on Arrival
                                 </div>
-                                <div class="col-md-1">
+                                <div class="col-md-2">
                                     <input type="radio" id="alive" name="reashingFact" value="Alive" {{isChecked('Alive', $hospitalData->status_facility)}}> Alive
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="radio" id="ifalive" name="reashingFact" value="If Alive" {{isChecked('If Alive', $hospitalData->status_facility)}}> If Alive
+                                <div class="col-md-1">
+                                    <label for=""> If Alive: </label> 
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="radio" id="conscious" name="reashingFact" value="conscious" {{isChecked('conscious', $hospitalData->status_facility)}}> conscious
+                                    <input type="radio" id="conscious" name="ifAlive" value="conscious" {{ isChecked('conscious', $hospitalData->Ifalive) }}> conscious
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="radio" id="Unconscious" name="reashingFact" value="Unconscious" {{isChecked('Unconscious', $hospitalData->status_facility)}}> Unconscious
+                                    <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious" {{ isChecked('Unconscious', $hospitalData->Ifalive) }}> Unconscious
                                 </div>
                                 <div class="col-md-12"></div>
                                 <div class="col-md-3"><hr>
@@ -910,7 +902,7 @@
                                 <div class="col-md-12"><hr class="Inpatient_linehr">
                                 <!-- <h4 class="patient-font mt-4">Hospital/Facility Data</h4> -->
                                     <h6 class="A_Hospital mt-5"> 
-                                    <input type="checkbox" id="B_InPatient" name="hospital_data_second" value="{{$hos->id}}" {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
+                                    <input type="checkbox" id="B_InPatient" name="hospital_data_second" value="{{$hos->id}}" data-category="in-patient" {{isChecked($hos->id, $hospitalData->hospitalfacility_id)}}>
                                     {{$hos->category_name}}</h6>
                                    
                                     <div class="col-md-12">

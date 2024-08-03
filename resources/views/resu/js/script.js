@@ -165,11 +165,18 @@ $(document).ready(function () {
     }
   });
 
-  if ($("#Collision").is(":checked")) {
-    $(".collision_group").show();
-  } else {
-    $(".collision_group").hide();
-  }
+  // function toggleCollision() {
+  //   if ($("#Collision").is(":checked")) {
+  //     $(".collision_group").show();
+  //   } else if ($("#non_collision").is(":checked")) {
+  //     $(".collision_group").hide();
+  //   } else {
+  //     $(".collision_group").hide();
+  //   }
+  // }
+
+  // $("input[name='transport_collision']").on("change", toggleCollision);
+  // toggleCollision();
 
   $("#Collision").change(function () {
     console.log("works");
@@ -178,6 +185,14 @@ $(document).ready(function () {
     if ($(this).is(":checked")) {
       $(".collision_group").show();
     } else {
+      $(".collision_group").hide();
+    }
+  });
+
+  $("#non_collision").change(function () {
+    console.log("works");
+
+    if ($(this).is(":checked")) {
       $(".collision_group").hide();
     }
   });
@@ -799,64 +814,65 @@ $(document).ready(function () {
 });
 
 // for deleteing nature
-document.addEventListener('DOMContentLoaded', function() {
-
-  document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
-    checkbox.addEventListener('change', function() {
-
-        if(!this.checked){
-          let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+document.addEventListener("DOMContentLoaded", function () {
+  document
+    .querySelectorAll('input[type="checkbox"]')
+    .forEach(function (checkbox) {
+      checkbox.addEventListener("change", function () {
+        if (!this.checked) {
+          let csrfToken = document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content");
           let natureId = this.value;
-          let preadmissionId = document.getElementById('preadmission_id_update').value;
-
-          console.log('nature_id',natureId, 'preadmissionId', preadmissionId);
+          let preadmissionId = document.getElementById(
+            "preadmission_id_update"
+          ).value;
+          let category = this.getAttribute("data-category");
+          console.log("nature_id", natureId, "preadmissionId", preadmissionId);
 
           Lobibox.confirm({
-            title: 'Confirm Deletion',
-            msg: 'Are you sure you want to delete this data?',
-            buttons:{
+            title: "Confirm Deletion",
+            msg: "Are you sure you want to delete this data?",
+            buttons: {
               yes: {
-                'class': 'btn btn-success',
-                text: 'Yes',
-                closeOnClick: true
+                class: "btn btn-success",
+                text: "Yes",
+                closeOnClick: true,
               },
               no: {
-                'class': 'btn btn-danger',
-                text: 'No',
-                closeOnClick: true
-              }
+                class: "btn btn-danger",
+                text: "No",
+                closeOnClick: true,
+              },
             },
-          
+
             callback: function (lobibox, type) {
-              if(type == 'yes'){
+              if (type == "yes") {
                 $.ajax({
                   url: deleteNatureUrl,
-                  type: 'POST',
+                  type: "POST",
                   headers: {
-                      'X-CSRF-TOKEN': csrfToken
+                    "X-CSRF-TOKEN": csrfToken,
                   },
                   data: {
                     nature_id: natureId,
-                    preadmission_id : preadmissionId,
+                    preadmission_id: preadmissionId,
+                    category: category,
                   },
-                  success: function(response){
-                    console.log('Nature deleted successfully', response);
+                  success: function (response) {
+                    console.log("Nature deleted successfully", response);
                   },
-                  error: function(xhr) {
+                  error: function (xhr) {
                     // Handle error, e.g., show an error message
-                    console.error('An error occurred while deleting the nature');
-                }
-
+                    console.error(
+                      "An error occurred while deleting the nature"
+                    );
+                  },
                 });
               }
-            }
-        });
-
-       }
-
-
-      }); 
-    
-    })
-
+            },
+          });
+        }
+      });
+    });
 });

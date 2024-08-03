@@ -202,6 +202,7 @@ class PatientInjuryController extends Controller
             $erOpd->referred_facility = $request->Referred;
             $erOpd->originating_hospital = $request->name_orig;
             $erOpd->status_facility = $request->reashingFact;
+            $Eropd->Ifalive = $request->ifAlive;
             $erOpd->mode_transport_facility = $request->mode_transport;
             $erOpd->other_details = $request->mode_others_details;
             $erOpd->initial_impression = $request->Initial_Impression;
@@ -281,13 +282,13 @@ class PatientInjuryController extends Controller
         if($external_injury_pread_id){
             $transport = new ResuTransport();
             $transport->Pre_admission_id = $pre_admission_id;
-            if($request->transport_accident_id){
-                $transport->transport_accident_id = $request->transport_accident_id;
-            }else{
-                $transport->transport_accident_id = $request->transport_collision_id;
-                $transport->other_collision = $request->Othercollision;
-                $transport->other_collision_details = $request->other_collision_details;
-            }
+            $transport->transport_accident_id = $request->transport_accident_id;
+
+            $transport->Vehicular_acc_type = $request->transport_collision;
+
+            $transport->other_collision = $request->Othercollision;
+            $transport->other_collision_details = $request->other_collision_details;
+
             $transport->xternal_injury_pread_id = $external_injury_pread_id;
 
             $transport->PatientVehicle = $request->Patient_vehicle;
@@ -361,7 +362,7 @@ class PatientInjuryController extends Controller
                 $query->select('id', 'Pre_admission_id','externalinjury_id','subtype','details'); // Limit columns
             },
             'preadmission.externalPreadmissions.transport' => function ($query) {
-                $query->select('id', 'Pre_admission_id','transport_accident_id','xternal_injury_pread_id','other_collision','other_collision_details','PatientVehicle','PvOther_detail',
+                $query->select('id', 'Pre_admission_id','transport_accident_id','Vehicular_acc_type','xternal_injury_pread_id','other_collision','other_collision_details','PatientVehicle','PvOther_detail',
                 'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','rf_others','safety'); // Limit columns
             },
             'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
@@ -371,7 +372,7 @@ class PatientInjuryController extends Controller
                 $query->select('id','hospitalfacility_id','profile_id','complete_Diagnose','Disposition','details','Outcome','icd10Code_nature','icd10Code_external');
             },
             'resuEropdbhsrhu' => function ($query){
-                $query->select('id','hospitalfacility_id','profile_id','transferred_facility','referred_facility','originating_hospital','status_facility','mode_transport_facility','other_details',
+                $query->select('id','hospitalfacility_id','profile_id','transferred_facility','referred_facility','originating_hospital','status_facility','Ifalive','mode_transport_facility','other_details',
                 'initial_impression','icd10Code_nature','icd10Code_external','disposition','details','outcome');
             }
         ])->find($profile_id);
@@ -430,7 +431,8 @@ class PatientInjuryController extends Controller
 
         // $profile_id =  $request->profile_id ?? $request->profile_id_update;
         
-        $profile = Profile::find($request->profile_id_update);  
+        $profile = Profile::find($request->profile_id_update);
+
         if($profile){
           
             $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
@@ -681,6 +683,7 @@ class PatientInjuryController extends Controller
             $Eropd->referred_facility = $request->Referred;
             $Eropd->originating_hospital = $request->name_orig;
             $Eropd->status_facility = $request->reashingFact;
+            $Eropd->Ifalive = $request->ifAlive;
             $Eropd->mode_transport_facility = $request->mode_transport;
             $Eropd->other_details = $request->mode_others_details;
             if(trim($Eropd->mode_transport_facility) == "Others"){
@@ -746,6 +749,7 @@ class PatientInjuryController extends Controller
                 $transport = new ResuTransport();
             }
             $transport->transport_accident_id = $request->transport_accident_id;
+            $transport->Vehicular_acc_type = $request->transport_collision;
             $transport->other_collision = $request->Othercollision;
             $transport->other_collision_details = $request->other_collision_details;
 
@@ -872,23 +876,47 @@ class PatientInjuryController extends Controller
 
         $natureId = $req->input('nature_id');
         $preadmissionId = $req->input('preadmission_id');
+        $category = $req->input('category');
 
-        $nature_pread = ResuNature_Preadmission::where('Pre_admission_id', $preadmissionId )
+        if($category == 'nature'){
+            $nature_pread = ResuNature_Preadmission::where('Pre_admission_id', $preadmissionId )
             ->where('natureInjury_id', $natureId)
             ->first();
-        $nature_bodyparts = Resunature_injury_bodyparts::where('preadmission_id', $preadmissionId )
-            ->where('nature_injury_id', $natureId)
-            ->first();
-            if($nature_bodyparts){
-                $nature_bodyparts->delete();
-            }
 
             if ($nature_pread) {
                 $nature_pread->delete();
-                return response()->json(['message' => 'Nature deleted successfully']);
+                // return response()->json(['message' => 'Nature deleted successfully']);
             }
 
-        return response()->json( $nature_pread);
+            Resunature_injury_bodyparts::where('preadmission_id', $preadmissionId)
+                ->where('nature_injury_id', $natureId)
+                ->forceDelete();
+        }else if($category == 'external'){
+            $external_injured = Resuexternal_injury_preAdmission::where('Pre_admission_id', $preadmissionId)
+            ->where('externalinjury_id', $natureId)
+            ->first();
+
+            if($external_injured){
+                $external_injured->delete();
+            } 
+        }elseif($category == 'safety'){
+            $transport_id = ResuTransport::where('Pre_admission_id', $preadmissionId)->pluck('id');
+        
+            $safetyTrans = ResuSafetyTransport::where('Transport_safety_id', $transport_id)
+                ->where('safety_id', $natureId)
+                ->first();
+    
+            if($safetyTrans){
+                $safetyTrans->delete();
+            }
+        }elseif($category == "department"){
+            
+        }elseif($category == "in-patient"){
+
+        }
+       
+
+        return response()->json($transport_id);
 
     }
     

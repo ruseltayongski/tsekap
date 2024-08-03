@@ -33,7 +33,7 @@
             <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
-                        <h4 class="patient-font">Disease Reporting Unit</h4>
+                        <h4 class="patient-font1">Disease Reporting Unit</h4>
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Reporting Facility</label>
@@ -564,20 +564,23 @@
                <div class="row">
                 <!-- for Transport Group -->
                 <div class="Transport-group" style="display: none;">        
-                    <div class="col-md-12 transport-related">
+                    <div class="col-md-6 transport-related">
                         <label>For Transport Vehicular Accident Only:</label>
                     </div>
+                    <div class="col-md-6 transport-related">
+                        <label>Vehicular Accident Type: </label>
+                    </div>
                     @foreach($rtacident as $rtAct)
-                        @if($rtAct->description == "Collision" || $rtAct->description == "collision" )
                         <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Collision" name="transport_collision_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
+                            <input type="radio" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
                         </div>
-                        @else
-                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
-                        </div>
-                        @endif
-                   
+                    @endforeach
+                    <div class="col-md-3 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="Collision" name="transport_collision" value=" Collision "> Collision
+                    </div>
+                    <div class="col-md-2 transport-related">
+                        <input type="radio" id="non_collision" name="transport_collision" value="Non-Collision"> Non-Collision
+                    </div>  
                     <!-- <div class="col-md-2 transport-related">
                         <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
                     </div>
@@ -590,92 +593,92 @@
                     <div class="col-md-2 transport-related">
                         <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
                     </div> -->
-                    @endforeach
+            
                     <div class="col-md-6 transport-related"><hr>
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
                         <div class="col-md-4">&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
+                            <input type="radio" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
+                            <input type="radio" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
                         </div>
                         <div class="col-md-4">
-                            <input type="checkbox" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
-                            <input type="checkbox" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
-                            <input type="checkbox" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
-                            <input type="checkbox" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
+                            <input type="radio" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
+                            <input type="radio" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
+                            <input type="radio" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
+                            <input type="radio" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
                         </div>
                         <div class="col-md-4">
-                            <input type="checkbox" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
-                            <input type="checkbox" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
+                            <input type="radio" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
+                            <input type="radio" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
                             <input type="text" class="form-control" name="Patient_vehicle_others" placeholder="others details">
                         </div>
                         <div class="col-md-12 collision_group" style="display:none"><br>
                             <p>Other Vehicle/Object Involved (for Collision accident only)</p>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectNone" name="Othercollision" value="None"> None<br>
-                                <input type="checkbox" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
-                                <input type="checkbox" id="objectcar" name="Othercollision" value="Car"> Car<br>
-                                <input type="checkbox" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
+                                <input type="radio" id="objectNone" name="Othercollision" value="None"> None<br>
+                                <input type="radio" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
+                                <input type="radio" id="objectcar" name="Othercollision" value="Car"> Car<br>
+                                <input type="radio" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
                             </div>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectvan" name="Othercollision" value="Van"> Van<br>
-                                <input type="checkbox" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
-                                <input type="checkbox" id="objecttruck" name="Othercollision" value="truck"> truck<br>
-                                <input type="checkbox" id="objectothers" name="Othercollision" value="Others"> Others:
+                                <input type="radio" id="objectvan" name="Othercollision" value="Van"> Van<br>
+                                <input type="radio" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
+                                <input type="radio" id="objecttruck" name="Othercollision" value="truck"> truck<br>
+                                <input type="radio" id="objectothers" name="Othercollision" value="Others"> Others:
                                 <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" placeholder="others details">
                             </div>
                             <div class="col-md-3">
-                                <input type="checkbox" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
-                                <input type="checkbox" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
-                                <input type="checkbox" id="objectunknown" name="Othercollision" value="unknown"> Unknown
+                                <input type="radio" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
+                                <input type="radio" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
+                                <input type="radio" id="objectunknown" name="Othercollision" value="unknown"> Unknown
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 transport-related"><hr><br>
                         <p>Position of Patient</p>
-                        <input type="checkbox" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
-                        <input type="checkbox" id="position_driver" name="position_patient" value="Driver"> Driver<br>
-                        <input type="checkbox" id="position_captain" name="position_patient" value="Captain"> Captain<br>
-                        <input type="checkbox" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
-                        <input type="checkbox" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
-                        <input type="checkbox" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
-                        <input type="checkbox" id="position_others" name="position_patient" value="Others"> Others:<br>
+                        <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
+                        <input type="radio" id="position_driver" name="position_patient" value="Driver"> Driver<br>
+                        <input type="radio" id="position_captain" name="position_patient" value="Captain"> Captain<br>
+                        <input type="radio" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
+                        <input type="radio" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
+                        <input type="radio" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
+                        <input type="radio" id="position_others" name="position_patient" value="Others"> Others:<br>
                         <input type="text" class="form-control" id="position_patient" name="position_other_details" placeholder="others details">
-                        <input type="checkbox" id="position_unknown" name="position_patient" value="Unknown"> Unknown
+                        <input type="radio" id="position_unknown" name="position_patient" value="Unknown"> Unknown
 
                     </div>
                     <div class="col-md-3 transport-related"><hr><br>
                         <p>Place of Occurrence</p>
-                        <input type="checkbox" id="place_home" name="Occurrence" value="Home"> Home<br>
-                        <input type="checkbox" id="place_school" name="Occurrence" value="School"> School<br>
-                        <input type="checkbox" id="place_Road" name="Occurrence" value="Road"> Road<br>
-                        <input type="checkbox" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
-                        <input type="checkbox" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
+                        <input type="radio" id="place_home" name="Occurrence" value="Home"> Home<br>
+                        <input type="radio" id="place_school" name="Occurrence" value="School"> School<br>
+                        <input type="radio" id="place_Road" name="Occurrence" value="Road"> Road<br>
+                        <input type="radio" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
+                        <input type="radio" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
                         <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here">
-                        <input type="checkbox" id="place_others" name="Occurrence" value="Others"> Others:<br>
+                        <input type="radio" id="place_others" name="Occurrence" value="Others"> Others:<br>
                         <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details">
-                        <input type="checkbox" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
+                        <input type="radio" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
                     </div>
                     <div class="col-md-12 transport-related">
                         <div class="col-md-4"><hr>
                             <label>Activity of the patient at the of incident</label><br>
-                            <input type="checkbox" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
-                            <input type="checkbox" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
-                            <input type="checkbox" id="activity_school" name="activity_patient" value="School"> Work Related<br>
-                            <input type="checkbox" id="activity_others" name="activity_patient" value="Others"> Others:
+                            <input type="radio" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
+                            <input type="radio" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
+                            <input type="radio" id="activity_school" name="activity_patient" value="School"> Work Related<br>
+                            <input type="radio" id="activity_others" name="activity_patient" value="Others"> Others:
                             <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details">
-                            <input type="checkbox" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
+                            <input type="radio" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Other Risk Factors at the time of the incident:</label><br>
-                            <input type="checkbox" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
-                            <input type="checkbox" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
-                            <input type="checkbox" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
-                            <input type="checkbox" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
-                            <input type="checkbox" id="risk_others" name="risk_factors" value="Others"> Others specify:
+                            <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
+                            <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
+                            <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
+                            <input type="radio" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
+                            <input type="radio" id="risk_others" name="risk_factors" value="Others"> Others specify:
                             <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
                             <p>(eg. Suspected under the influence of substance used)</p>
                         </div>
@@ -714,12 +717,12 @@
                                 {{$hos->category_name}}</h6>
                                 <div class="col-md-12">
                                     <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="YesTransferred" name="Transferred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="NoTransferred" name="Transferred" value="0"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="YesTransferred" name="Transferred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="NoTransferred" name="Transferred" value="0"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="ReferredYes" name="Referred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="checkbox" id="Referredno" name="Referred" value="0"> No <br><hr>
+                                    <input type="radio" id="ReferredYes" name="Referred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input type="radio" id="Referredno" name="Referred" value="0"> No <br><hr>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
@@ -730,35 +733,35 @@
                                     <label for="">Status upon reashing the Facility</label>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
+                                    <input type="radio" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" id="alive" name="reashingFact" value="Alive"> Alive
                                 </div>
                                 <div class="col-md-1">
-                                    <input type="checkbox" id="alive" name="reashingFact" value="Alive"> Alive
+                                    <label for=""> If Alive: </label> 
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="ifalive" name="reashingFact" value="If Alive"> If Alive
+                                    <input type="radio" id="conscious" name="ifAlive" value="conscious"> conscious
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" id="conscious" name="reashingFact" value="conscious"> conscious
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="checkbox" id="Unconscious" name="reashingFact" value="Unconscious"> Unconscious
+                                    <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious"> Unconscious
                                 </div>
                                 <div class="col-md-12"></div>
                                 <div class="col-md-3"><hr>
                                     <label for="">Mode of Transport to the Hospital/Facility</label>
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
+                                    <input type="radio" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
+                                    <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
                                 </div>
                                 <div class="col-md-2"><hr>
-                                    <input type="checkbox" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
+                                    <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
                                 </div>
                                 <div class="col-md-1"><hr>
-                                    <input type="checkbox" id="ModeOthers" name="mode_transport" value="Others"> Others
+                                    <input type="radio" id="ModeOthers" name="mode_transport" value="Others"> Others
                                 </div>
                                 <div class="col-md-2"><hr>
                                     <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
@@ -780,20 +783,20 @@
                                         <label for="Disposition">Disposition:</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="admitted" name="disposition" value="Admitted"> Admitted <br>
-                                        <input type="checkbox" id="hama" name="disposition" value="HAMA"> HAMA
+                                        <input type="radio" id="admitted" name="disposition" value="Admitted"> Admitted <br>
+                                        <input type="radio" id="hama" name="disposition" value="HAMA"> HAMA
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
-                                        <input type="checkbox" id="Absconded" name="disposition" value="Absconded"> Absconded
+                                        <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
+                                        <input type="radio" id="Absconded" name="disposition" value="Absconded"> Absconded
                                     </div>
                                     <div class="col-md-3">
-                                        <input type="checkbox" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
+                                        <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
                                         <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
-                                        <input type="checkbox" id="died" name="disposition" value="died"> Died
+                                        <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
+                                        <input type="radio" id="died" name="disposition" value="died"> Died
                                     </div>
                                 </div>
                                 <div class="col-md-12"><hr>
@@ -801,13 +804,13 @@
                                         <label for="Outcome">Outcome</label>
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Improved" name="outcome" value="Improved"> Improved
+                                        <input type="radio" id="Improved" name="outcome" value="Improved"> Improved
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
+                                        <input type="radio" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
                                     </div>
                                     <div class="col-md-2">
-                                        <input type="checkbox" id="Died1" name="outcome" value="died"> Died
+                                        <input type="radio" id="Died1" name="outcome" value="died"> Died
                                     </div>
                                 </div>
                             </div>
@@ -830,33 +833,33 @@
 
                                         <label for="Disposition">Disposition:</label><br>
                                         <div class="col-md-3 col-md-offset-1">
-                                            <input type="checkbox" id="discharged" name="disposition1" value="discharged"> Discharged <br>
-                                            <input type="checkbox" id="refused_admiss1" name="disposition1" value="Refused Admission"> Refused Admission
+                                            <input type="radio" id="discharged" name="disposition1" value="discharged"> Discharged <br>
+                                            <input type="radio" id="refused_admiss1" name="disposition1" value="Refused Admission"> Refused Admission
                                         </div>
                                         <div class="col-md-2">
-                                            <input type="checkbox" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
-                                            <input type="checkbox" id="died2" name="disposition1" value="died"> Died
+                                            <input type="radio" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
+                                            <input type="radio" id="died2" name="disposition1" value="died"> Died
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="checkbox" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
+                                            <input type="radio" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
                                             <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="checkbox" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
-                                            <input type="checkbox" id="disposition_others" name="disposition1" value="Others"> Others 
+                                            <input type="radio" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
+                                            <input type="radio" id="disposition_others" name="disposition1" value="Others"> Others 
                                             <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-12"><hr>
                                         <label for="Outcome">Outcome</label><br>
                                         <div class="col-md-2 col-md-offset-1">
-                                            <input type="checkbox" id="Improved1" name="Outcome1" value="Improved"> Improved
+                                            <input type="radio" id="Improved1" name="Outcome1" value="Improved"> Improved
                                         </div>
                                         <div class="col-md-2">
-                                            <input type="checkbox" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
+                                            <input type="radio" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
                                         </div>
                                         <div class="col-md-2">
-                                            <input type="checkbox" id="died1" name="Outcome1" value="died"> Died
+                                            <input type="radio" id="died1" name="Outcome1" value="died"> Died
                                         </div>
                                     </div>
                                     <div class="col-md-6"><br>
@@ -877,11 +880,6 @@
                     </div>
             </div>
         </form>
-
-
-        <h3>JSON Payload:</h3>
-        <pre id="json-display" class="json-display-style"></pre> <!-- Area to display the JSON payload -->
-
     </div>
 </div>
 <script>
