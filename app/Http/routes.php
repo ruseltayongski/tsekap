@@ -418,3 +418,6 @@ Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
 //delete nature injury categories
 Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
+
+Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
+Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
