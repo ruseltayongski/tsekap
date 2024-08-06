@@ -15,6 +15,13 @@ use App\ResuNature_Preadmission;
 use App\ResuNatureInjury;
 use App\ResuExternalInjury;
 use App\Resuexternal_injury_preAdmission;
+use App\ResuTransportAccident;
+use App\ResuTransport;
+use App\ResuSafetyTransport;
+use App\ResuSafety;
+use App\ResuInpatient;
+use App\ResuErOpdBhsRhu;
+use App\ResuHospitalFacility;
 use Log;
 
 class ExcelPatientInjuryController extends Controller
@@ -40,7 +47,7 @@ class ExcelPatientInjuryController extends Controller
                     //     'Addressfacility' => $sheet['addressofdru'],
                     //     'typeofpatient' => $sheet['typeofpatient'],
                     // ]);
-                    //dd($sheet);
+                    // dd($sheet);
                     
                     // $nature_injury = ResuNatureInjury::select('id', 'name')->get();
                    
@@ -256,6 +263,7 @@ class ExcelPatientInjuryController extends Controller
                 //         $nature_Pread->save();
                 //     }
 
+                //external Injury
                     $bite_stings = null;
                     $externalBurns = null;
                     $chemicalSub = null;
@@ -318,7 +326,6 @@ class ExcelPatientInjuryController extends Controller
 
                 //    dd(compact('bite_stings', 'externalBurns', 'chemicalSub', 'contactObject', 'drowning', 'exposureNature', 'fall', 'firecreacker ', 
                 //    'sexualAbuse','gunshot','strangulation','assult','transport','external_others'));
-
                     $exId_bites = null;
                     $exId_burns = null;
                     $exId_chemical = null;
@@ -498,6 +505,7 @@ class ExcelPatientInjuryController extends Controller
                             $external->externalinjury_id =  $exId_transport;
                             $external->details = $ex_details['transport'];
                             $external->save();
+                            $this->ImportTransport($sheet,$pre_admission->id, $external->id);
                         }
 
                         if($exId_others){
@@ -507,54 +515,256 @@ class ExcelPatientInjuryController extends Controller
                             $external->details = $ex_details['others'];
                             $external->save();
                         }
+
+                        $this->ImportTypePatient($sheet, $profile->id);
             });
         });
-
-        // Excel::load($file, function($reader) {
-        //     $reader->each(function($sheet) {
-        //         $sheet->each(function($row) {
-        //             ResuReportFacility::create([
-        //                 'reportfacility' => $row['NameofReportingFacility'],
-        //                 'typeOfdru' => $row['TypeofDRU'],
-        //                 'Addressfacility' => $row['AddressofDRU'],
-        //                 'typeofpatient' => $row['TypeofPatient'],
-        //             ]);
-        //         });
-
-        //     });
-
-        // });
-
-
-        // $mappingData = [
-        //     'NameofReportingFacility' => ['table' => 'resu_report_facility', 'column' => 'reportfacility'],
-        //     'TypeofDRU' => ['table' => 'resu_report_facility', 'column' => 'typeOfdru'],
-        //     'AddressofDRU' => ['table' => 'resu_report_facility', 'column' => 'Addressfacility'],
-        //     'TypeofPatient' => ['table' => 'resu_report_facility', 'column' => 'typeofpatient'],
-        // ];
-
-        // $tableData = [];
-
-        // Excel::load($file, function($reader) use (&$tableData, $mappingData) {
-        //     $sheets = $reader->all();
-
-        //     foreach ($sheets as $sheet) {
-        //         foreach ($sheet as $row) {
-        //             foreach ($mappingData as $header => $map) {
-        //                 if (isset($row->$header)) {
-        //                     $tableData[$map['table']][] = [
-        //                         $map['column'] => $row->$header,
-        //                     ];
-        //                 }
-        //             }
-        //         }
-        //     }
-        // });
-
-        // foreach ($tableData as $table => $rows) {
-        //     DB::table($table)->insert($rows);
-        // }
     }
 
+    private function ImportTransport($sheet, $pre_admission_id, $transport_id){
+
+        if($transport_id){
+
+            $transport_acc_type = ResuTransportAccident::select('id', 'description')->get();
+
+            $transport_acc_id = null;
+
+            $transport = new ResuTransport();
+
+            foreach($transport_acc_type as $acc_type){
+                if(strtolower(trim($acc_type->description)) == strtolower(trim($sheet['transportvehicularaccidents_type']))){
+                    $transport_acc_id = $acc_type->id;
+                }
+            }
+            
+            $OF_Alcohol_liquor = null;
+            $OF_usingMobile = null;
+            $OF_incident_sleepy = null;
+            $OF_smoking = null;
+            $OF_Others = null;
+
+            if($sheet['otherriskfactors_incident_alcohol_liquor'] == 1){
+                $OF_Alcohol_liquor = "Alcohol/liquor";
+            }
+            if($sheet['otherRiskfactors_incident_usingmobilephone'] == 1){
+                $OF_usingMobile = "Using Mobile Phone";
+            }
+            if($sheet['Otherriskfactors_incident_sleepy'] == 1){
+                
+                $OF_incident_sleepy = "Sleepy";
+            
+            }
+            if($sheet['otherriskfactors_the_incident_smoking'] == 1){
+                $OF_smoking = "Smooking";
+            }
+            if($sheet['otherriskfactors_incident_others'] == 1){
+                $OF_Others = "Others";
+            }
+
+            $transport->Pre_admission_id = $pre_admission_id;
+            $transport->transport_accident_id = $transport_acc_id;
+            $transport->Vehicular_acc_type = $sheet['vehicularaccidenttype'];
+            $transport->PatientVehicle = $sheet['vehiclesinvolved_patientvehicle'];
+            $transport->PvOther_detail = $sheet['patientvehicle_others_details'];
+            $transport->other_collision = $sheet['vehicles_involved_othervehicle_objectinvolved'];
+            $transport->other_collision_details = $sheet['other_vehicleobjectinvolved_details'];
+            $transport->positionPatient = $sheet['positionofpatient'];
+            $transport->ppother_detail = $sheet['pop_others_details'];
+            $transport->pofOccurence = $sheet['placeofoccurrence'];
+            $transport->workplace_occurence_specify = $sheet['occurrence_workplace_specify'];
+            $transport->pofoccurence_others = $sheet['occurence_others_details'];
+            $transport->activity_patient = $sheet['activity_ofthe_patienttime_ofincident'];
+            $transport->AP_others = $sheet['others_activity_patient_incident_details'];
+            $transport->risk_factors = $sheet['otherriskfactors_timeofthe_incident'];
+            if($OF_Alcohol_liquor){
+                $transport->risk_factors = $OF_Alcohol_liquor;
+            }elseif($OF_usingMobile){
+                $transport->risk_factors = $OF_usingMobile;
+            }elseif($OF_incident_sleepy){
+                $transport->risk_factors = $OF_incident_sleepy;
+            }elseif($OF_smoking){
+                $transport->risk_factors = $OF_smoking;
+            }elseif($OF_Others){
+                $transport->risk_factors = $OF_Others;
+                $transport->rf_others = $sheet['risk_factors_others_details'];
+            }
+
+            $transport->save();
+
+            $safety_none = null;
+            $safety_childseat = null;
+            $safety_aribag = null;
+            $safety_lifeVest = null;
+            $safety_helmet = null;
+            $safety_seatbelt = null;
+            $safety_unknown = null;
+            $safety_others = null;
+
+            if($sheet['safety_none'] == 1){
+                $safety_none = strtolower(trim("None"));
+            }
+            if($sheet['safety_childseat'] == 1){
+                $safety_childseat = strtolower(trim("Childseat"));
+            }
+            if($sheet['safety_airbag'] == 1){
+                $safety_aribag = strtolower(trim("Airbag"));
+            }
+            if($sheet['safety_lifevest_lifejacket_flotationdevice'] == 1){
+                $safety_lifeVest = strtolower(trim("Lifevest/Lifejacket/flotation device"));
+            }
+            if($sheet['safety_helmet'] == 1){
+                $safety_helmet = strtolower(trim("Helmet"));
+            }
+            if($sheet['safety_seatbelt'] == 1){
+                $safety_seatbelt = strtolower(trim("Seatbelt"));
+            }
+            if($sheet['safety_unknown'] == 1){
+                $safety_unknown = strtolower(trim("Unknown"));
+            }
+            if($sheet['safety_others'] == 1){
+                $safety_others = strtolower(trim("Others"));
+            }
+
+            $safeId_none = null;
+            $safeId_childeseat = null;
+            $safeId_aribag = null;
+            $safeId_lifevest = null;
+            $safeId_helmet = null;
+            $safaId_seatbelt = null;
+            $safeId_unknown = null;
+            $safeId_others = null;
+
+            $safety = ResuSafety::select('id','name')->get();
+
+            foreach($safety as $safe){
+
+                $safename = strtolower(trim($safe->name));
+
+                if($safename == $safety_none){
+                    $safeId_none = $safe->id;
+                }
+                if($safename == $safety_childseat){
+                    $safeId_childeseat = $safe->id;
+                }
+                if($safename == $safety_aribag){
+                    $safeId_aribag = $safe->id;
+                }
+                if($safename == $safety_lifeVest){
+                    $safeId_lifevest = $safe->id;
+                }
+                if($safename == $safety_helmet){
+                    $safeId_helmet = $safe->id;
+                }
+                if($safename == $safety_seatbelt){
+                    $safaId_seatbelt = $safe->id;
+                }
+                if($safename == $safety_unknown){
+                    $safeId_unknown = $safe->id;
+                }
+                if($safename == $safety_others){
+                    $safeId_others = $safe->id;
+                }
+            }
+
+            $safety_trans = new ResuSafetyTransport();
+
+            if($safeId_none){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safeId_none;
+                $safety_trans->save();
+            }
+            if($safeId_childeseat){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safeId_childeseat;
+                $safety_trans->save();
+            }
+            
+            if($safeId_aribag){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safeId_aribag;
+                $safety_trans->save();
+            }
+            
+            if($safeId_lifevest){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safeId_lifevest;
+                $safety_trans->save();
+            }
+            
+            if($safeId_helmet){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safeId_helmet;
+                $safety_trans->save();
+            }
+            
+            if($safaId_seatbelt){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safaId_seatbelt;
+                $safety_trans->save();
+            }
+            if($safety_unknown){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safety_unknown;
+                $safety_trans->save();
+            }
+            if($safety_others){
+                $safety_trans = new ResuSafetyTransport();
+                $safety_trans->Transport_safety_id = $transport->id;
+                $safety_trans->safety_id = $safety_others;
+                $safety_trans->safety_details = $sheet['safety_others_details'];
+                $safety_trans->save();
+            }
+
+        }
+
+    }
+
+    private function ImportTypePatient($sheet, $profile_id){
+
+        $typeOfPatient = ResuHospitalFacility::select('id','name');
+        $type_patientId = null;
+
+        foreach($typeOfPatient as $patient){
+            if(strtolower(trim($patient->name)) == strtolower(trim($sheet['typeofpatient_hospital_facility']))){
+               $type_patientId = $patient->id;
+            }
+        }
+        $transferred = null;
+        if( strtolower(trim($sheet['Referred_Hospital_FacilityforLaboratory'])) == strtolower(trim('No'))){
+            $transferred  = 0;
+        }else{
+            $transferred  = 1;
+        }
+        $referred = null;
+        if(strtolower(trim($sheet['referred_hospital_facilityforlaboratory'])) == strtolower(trim('No'))){
+            $referred = 0
+        }else{
+            $referred = 1;
+        }
+
+        if($type_patientId == 1){
+            $ErOPD = new ResuErOpdBhsRhu();
+            $ErOPD->hospitalfacility_id = $type_patientId;
+            $ErOPD->profile_id = $profile_id;
+            $ErOPD->transferred_facility = $transferred;
+            $ErOPD->referred_facility = $referred,
+            $ErOPD->originating_hospital = $sheet['name_originating_hospital_physician'];
+            $ErOPD->status_facility = $sheet['status_upon_reaching_facility'];
+            $ErOPD->ifAlive = $sheet['ifalive'];
+            $ErOPD->mode_transport_facility = 
+        }
+        if($type_patientId == 2){
+            $Inpatient = new ResuInpatient();
+            $Inpatient->hospitalfacility_id = $type_patientId;
+            $Inpatient->profile_id = $profile_id;
+        }
+    }
 }
 
