@@ -22,6 +22,9 @@ use App\ResuSafety;
 use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
 use App\ResuHospitalFacility;
+use App\Province;
+use App\Barangay;
+use App\Muncity;
 use Log;
 
 class ExcelPatientInjuryController extends Controller
@@ -29,6 +32,23 @@ class ExcelPatientInjuryController extends Controller
     //
     public function ViewImport(){
         return view('resu.importExcel.excelPatientInjury');
+    }
+    private $maxDistance = 3;
+
+    private function findclosematch($items, $sheetValue, $maxDistance){
+        $closestId = null;
+        $sheetValue = strtolower(trim($sheetValue));
+
+        foreach($items as $item){
+            $distance = levenshtein(strtolower(trim($item->description)), $sheetValue);
+            
+            if($distance <= $maxDistance){
+                $closestId = $item->id;
+                break;
+            }
+        }
+        return $closestId;
+
     }
 
     public function import(Request $request)
@@ -47,10 +67,20 @@ class ExcelPatientInjuryController extends Controller
                     //     'Addressfacility' => $sheet['addressofdru'],
                     //     'typeofpatient' => $sheet['typeofpatient'],
                     // ]);
-                    // dd($sheet);
+
+                    $province = Province::select('id', 'description')->get();
+                    $muncity = Muncity::select('id', 'description')->get();
+                    $barangay = Barangay::select('id', 'description')->get();
+
+                    $provinceId = $this->findclosematch($province,$sheet['permanent_province'], $this->maxDistance);
+                    $muncityId = $this->findclosematch($muncity, $sheet['permanent_muncity'], $this->maxDistance);
+                    $barangay_id = $this->findclosematch($barangay, $sheet['permanent_barangay'], $this->maxDistance);
                     
-                    // $nature_injury = ResuNatureInjury::select('id', 'name')->get();
-                   
+                    $provinceId_injury = $this->findclosematch($province, $sheet['place_of_injury_province'], $this->maxDistance);
+                    $muncityId_injury = $this->findclosematch($muncity, $sheet['place_of_injury_muncity'], $this->maxDistance);
+                    $barangayId_injury = $this->findclosematch($barangay, $sheet['place_of_injury_barangay'], $this->maxDistance);
+                
+                    //dd($sheet);
                     $facility = new ResuReportFacility();
 
                     $facility->reportfacility = $sheet['nameofreportingfacility'];
@@ -70,11 +100,14 @@ class ExcelPatientInjuryController extends Controller
                     $profile->lname = $sheet['lastname'];
                     $profile->sex = $sheet['sex'];
                     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
-                    $profile->province_id = $sheet['permanent_province'];
-                    $profile->muncity_id = $sheet['permanent_muncity'];
-                    $profile->barangay_id = $sheet['permanent_barangay'];
-                    $profile->phicID = $sheet['philhealthnumber']  ?? '';
 
+                    $profile->province_id = $provinceId ?? '';
+                    $profile->muncity_id = $muncityId ?? '' ;
+                    $profile->barangay_id = $barangay_id ?? '';
+                    $profile->phicID = $sheet['philhealthnumber']  ?? '';
+                    $profile->nameof_encoder = $sheet['nameofencoder'];
+                    $profile->designation = $sheet['designationofencoder'];
+                    $profile->contact = $sheet['contactnumberofencoder'];
                     $profile->save();
 
                     $dateAndtime = \Carbon\Carbon::parse($sheet['date_and_time_of_injury']);
@@ -87,9 +120,9 @@ class ExcelPatientInjuryController extends Controller
 
                     $pre_admission = new ResuPreadmission();
                     $pre_admission->profile_id = $profile->id;
-                    $pre_admission->POIProvince_id = $sheet['place_of_injury_province'];
-                    $pre_admission->POImuncity_id = $sheet['place_of_injury_muncity'];
-                    $pre_admission->POIBarangay_id = $sheet['place_of_injury_barangay'];
+                    $pre_admission->POIProvince_id = $provinceId_injury ?? '';
+                    $pre_admission->POImuncity_id = $muncityId_injury ?? '';
+                    $pre_admission->POIBarangay_id = $barangayId_injury ?? '';
                     $pre_admission->POIPurok = $sheet['purok'];
                     $pre_admission->dateInjury = $dateInjury;
                     $pre_admission->timeInjury = $timeInjury;
@@ -102,168 +135,170 @@ class ExcelPatientInjuryController extends Controller
                     $pre_admission->multipleInjury = $sheet['multipleinjury'];
                     $pre_admission->save();
 
-                //     $abrasion = null;
-                //     $avulsion = null;
-                //     $burn = null;
-                //     $concussion = null;
-                //     $contusion = null;
-                //     $fracture = null;
-                //     $openwound = null;
-                //     $traumaAmputation = null;
-                //     $Others = null;
+                    $abrasion = null;
+                    $avulsion = null;
+                    $burn = null;
+                    $concussion = null;
+                    $contusion = null;
+                    $fracture = null;
+                    $openwound = null;
+                    $traumaAmputation = null;
+                    $Others = null;
 
-                //     // dd($sheet);
+                  // dd($sheet);
 
-                //     if($sheet['abrasion'] == 1){
-                //         $abrasion = strtolower(trim("abrasion"));
-                //     }
-                //     if($sheet['avulsion'] == 1){
-                //         $avulsions = strtolower(trim("avulsion"));
-                //     }
-                //     if($sheet['burn'] == 1){
-                //         $burn = strtolower("burn");
-                //     }
-                //     if($sheet['concussion'] == 1){
-                //         $concussion = strtolower(trim("concussion"));
-                //     }
-                //     if($sheet['contusion'] == 1){
-                //         $contusion = strtolower(trim("contusion"));
-                //     }
-                //     if($sheet['fracture'] == 1){
-                //         $fracture = strtolower(trim("fracture"));
-                //     }
-                //     if($sheet['openwound'] == 1){
-                //         $openwound = strtolower(trim("Open Wound"));
-                //     }
-                //     if($sheet['traumaticamputation'] == 1){
-                //         $traumaAmputation = strtolower(trim("Traumatic Amputation"));
-                //     }
-                //     if($sheet['others'] == 1){
-                //         $Others = strtolower(trim("Others"));
-                //     }
-                //    // dd(compact('abrasion', 'avulsion', 'burn', 'concussion', 'contusion', 'fracture', 'openwound', 'traumaAmputation', 'Others'));
+                    if($sheet['abrasion'] == 1){
+                        $abrasion = strtolower(trim("abrasion"));
+                    }
+                    if($sheet['avulsion'] == 1){
+                        $avulsions = strtolower(trim("avulsion"));
+                    }
+                    if($sheet['burn'] == 1){
+                        $burn = strtolower("burn");
+                    }
+                    if($sheet['concussion'] == 1){
+                        $concussion = strtolower(trim("concussion"));
+                    }
+                    if($sheet['contusion'] == 1){
+                        $contusion = strtolower(trim("contusion"));
+                    }
+                    if($sheet['fracture'] == 1){
+                        $fracture = strtolower(trim("fracture"));
+                    }
+                    if($sheet['openwound'] == 1){
+                        $openwound = strtolower(trim("Open Wound"));
+                    }
+                    if($sheet['traumaticamputation'] == 1){
+                        $traumaAmputation = strtolower(trim("Traumatic Amputation"));
+                    }
+                    if($sheet['others'] == 1){
+                        $Others = strtolower(trim("Others"));
+                    }
+                   // dd(compact('abrasion', 'avulsion', 'burn', 'concussion', 'contusion', 'fracture', 'openwound', 'traumaAmputation', 'Others'));
+
+                   $nature_injury = ResuNatureInjury::select('id', 'name')->get();
+
+                    $nature_id_abrasion = null;
+                    $nature_id_avulsion = null;
+                    $nature_id_burn = null;
+                    $nature_id_concussion = null;
+                    $nature_id_contusion = null;
+                    $nature_id_fracture = null;
+                    $nature_id_openwound = null;
+                    $nature_id_traumatic = null;
+                    $nature_id_others = null;
+                    foreach($nature_injury as $nature){
+                        $NatureName = strtolower(trim($nature->name));
+                       if($NatureName == $abrasion){
+                        $nature_id_abrasion = $nature->id;
+                       }
+                       if( $NatureName == $avulsion){
+                        $nature_id_avulsion = $nature->id;
+                       }
+                       if($NatureName ==  $burn){
+                        $nature_id_burn = $nature->id;
+                       }
+                       if($NatureName == $concussion){
+                        $nature_id_concussion = $nature->id;
+                       }
+                       if($NatureName == $contusion){
+                        $nature_id_contusion = $nature->id;
+                       }
+                       if($NatureName == $fracture){
+                        $nature_id_fracture = $nature->id;
+                       }
+                       if($NatureName == $openwound){
+                        $nature_id_openwound = $nature->id;
+                       }  
+                       if($NatureName == $traumaAmputation){
+                        $nature_id_traumatic = $nature->id;
+                       }
+                       if($NatureName == $Others){
+                        $nature_id_others = $nature->id;
+                       }                  
+                    }
+                    // Debugging: Check initial assignment
+                    // dd(compact('openwound','nature_id_abrasion', 'nature_id_avulsion', 'nature_id_burn', 'nature_id_concussion', 'nature_id_contusion', 'nature_id_fracture', 'nature_id_openwound', 'nature_id_traumatic', 'nature_id_others'));
+                    $details = [
+                        'abrasion' => $sheet['abrasion_details'],
+                        'avulsion' => $sheet['avulsion_details'],
+                        'burn' => $sheet['burn_details'],
+                        'burnsite' => $sheet['burnsite'],
+                        'concussion' => $sheet['concussion_details'],
+                        'contusion' => $sheet['contusion_details'],
+                        'fracture' => $sheet['fracture_details'],
+                        'fracturetype' => $sheet['fracturetype_details'],
+                        'open_wounds' => $sheet['openwound_details'],
+                        'traumaticamputation' => $sheet['traumaticamputation_details'],
+                        'others' => $sheet['other_details']
+                    ];
                     
-                //     $nature_id_abrasion = null;
-                //     $nature_id_avulsion = null;
-                //     $nature_id_burn = null;
-                //     $nature_id_concussion = null;
-                //     $nature_id_contusion = null;
-                //     $nature_id_fracture = null;
-                //     $nature_id_openwound = null;
-                //     $nature_id_traumatic = null;
-                //     $nature_id_others = null;
-                //     foreach($nature_injury as $nature){
-                //         $NatureName = strtolower(trim($nature->name));
-                //        if($NatureName == $abrasion){
-                //         $nature_id_abrasion = $nature->id;
-                //        }
-                //        if( $NatureName == $avulsion){
-                //         $nature_id_avulsion = $nature->id;
-                //        }
-                //        if($NatureName ==  $burn){
-                //         $nature_id_burn = $nature->id;
-                //        }
-                //        if($NatureName == $concussion){
-                //         $nature_id_concussion = $nature->id;
-                //        }
-                //        if($NatureName == $contusion){
-                //         $nature_id_contusion = $nature->id;
-                //        }
-                //        if($NatureName == $fracture){
-                //         $nature_id_fracture = $nature->id;
-                //        }
-                //        if($NatureName == $openwound){
-                //         $nature_id_openwound = $nature->id;
-                //        }  
-                //        if($NatureName == $traumaAmputation){
-                //         $nature_id_traumatic = $nature->id;
-                //        }
-                //        if($NatureName == $Others){
-                //         $nature_id_others = $nature->id;
-                //        }                  
-                //     }
-                //     // Debugging: Check initial assignment
-                //     // dd(compact('openwound','nature_id_abrasion', 'nature_id_avulsion', 'nature_id_burn', 'nature_id_concussion', 'nature_id_contusion', 'nature_id_fracture', 'nature_id_openwound', 'nature_id_traumatic', 'nature_id_others'));
-                //     $details = [
-                //         'abrasion' => $sheet['abrasion_details'],
-                //         'avulsion' => $sheet['avulsion_details'],
-                //         'burn' => $sheet['burn_details'],
-                //         'burnsite' => $sheet['burnsite'],
-                //         'concussion' => $sheet['concussion_details'],
-                //         'contusion' => $sheet['contusion_details'],
-                //         'fracture' => $sheet['fracture_details'],
-                //         'fracturetype' => $sheet['fracturetype_details'],
-                //         'open_wounds' => $sheet['openwound_details'],
-                //         'traumaticamputation' => $sheet['traumaticamputation_details'],
-                //         'others' => $sheet['other_details']
-                //     ];
-                    
-                //     // Save nature_Pread records with only the natures_id and details
-                //     if ($nature_id_abrasion) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_abrasion;
-                //         $nature_Pread->details = $details['abrasion'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_avulsion) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_avulsion;
-                //         $nature_Pread->details = $details['avulsion'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_burn) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_burn;
-                //         $nature_Pread->details = $details['burn'] . ' ' .  $details['burnsite'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_concussion) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_concussion;
-                //         $nature_Pread->details = $details['concussion'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_contusion) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_contusion;
-                //         $nature_Pread->details = $details['contusion'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_fracture) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_fracture;
-                //         $nature_Pread->details = $details['fracture'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_openwound) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_openwound;
-                //         $nature_Pread->details = $details['open_wounds'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_traumatic) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_traumatic;
-                //         $nature_Pread->details = $details['traumaticamputation'];
-                //         $nature_Pread->save();
-                //     }
-                //     if ($nature_id_others) {
-                //         $nature_Pread = new ResuNature_Preadmission();
-                //         $nature_Pread->Pre_admission_id = $pre_admission->id;
-                //         $nature_Pread->natureInjury_id = $nature_id_others;
-                //         $nature_Pread->details = $details['others'];
-                //         $nature_Pread->save();
-                //     }
+                    // Save nature_Pread records with only the natures_id and details
+                    if ($nature_id_abrasion) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_abrasion;
+                        $nature_Pread->details = $details['abrasion'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_avulsion) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_avulsion;
+                        $nature_Pread->details = $details['avulsion'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_burn) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_burn;
+                        $nature_Pread->details = $details['burn'] . ' ' .  $details['burnsite'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_concussion) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_concussion;
+                        $nature_Pread->details = $details['concussion'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_contusion) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_contusion;
+                        $nature_Pread->details = $details['contusion'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_fracture) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_fracture;
+                        $nature_Pread->details = $details['fracture'] . ' ' . $details['fracturetype'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_openwound) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_openwound;
+                        $nature_Pread->details = $details['open_wounds'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_traumatic) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_traumatic;
+                        $nature_Pread->details = $details['traumaticamputation'];
+                        $nature_Pread->save();
+                    }
+                    if ($nature_id_others) {
+                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread->Pre_admission_id = $pre_admission->id;
+                        $nature_Pread->natureInjury_id = $nature_id_others;
+                        $nature_Pread->details = $details['others'];
+                        $nature_Pread->save();
+                    }
 
-                //external Injury
+                    //external Injury
                     $bite_stings = null;
                     $externalBurns = null;
                     $chemicalSub = null;
@@ -403,11 +438,11 @@ class ExcelPatientInjuryController extends Controller
                             'firecreacker' => $sheet['firecracker_details'],
                             'gunshot' => $sheet['gunshot_details'],
                             'strangulation' => $sheet['strangulation_details'],
-                            'mauling_assault' => $sheet['MaulingAssault_details'],
+                            'mauling_assault' => $sheet['maulingassault_details'],
                             'transport' => $sheet['transport_details'],
-                            'others' => $request['externalothers_details']
+                            'others_det' => $sheet['externalothers_details'],
                         ];
-                        
+
                         if($exId_bites){
                             $external = new Resuexternal_injury_preAdmission();
                             $external->Pre_admission_id =  $pre_admission->id;
@@ -512,11 +547,11 @@ class ExcelPatientInjuryController extends Controller
                             $external = new Resuexternal_injury_preAdmission();
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_others;
-                            $external->details = $ex_details['others'];
+                            $external->details = $ex_details['others_det'];
                             $external->save();
                         }
 
-                        $this->ImportTypePatient($sheet, $profile->id);
+                       $this->ImportTypePatient($sheet, $profile->id);
             });
         });
     }
@@ -588,8 +623,7 @@ class ExcelPatientInjuryController extends Controller
                 $transport->risk_factors = $OF_Others;
                 $transport->rf_others = $sheet['risk_factors_others_details'];
             }
-
-            $transport->save();
+            
 
             $safety_none = null;
             $safety_childseat = null;
@@ -665,62 +699,75 @@ class ExcelPatientInjuryController extends Controller
                     $safeId_others = $safe->id;
                 }
             }
+   
+            $transport->safety = implode('-', [
+                $safeId_none,
+                $safeId_childeseat,
+                $safeId_aribag,
+                $safeId_lifevest,
+                $safeId_helmet,
+                $safaId_seatbelt,
+                $safeId_unknown,
+                $safeId_others,
+            ]);
 
-            $safety_trans = new ResuSafetyTransport();
+            $transport->save();
 
-            if($safeId_none){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safeId_none;
-                $safety_trans->save();
-            }
-            if($safeId_childeseat){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safeId_childeseat;
-                $safety_trans->save();
-            }
+            // $safety_trans = new ResuSafetyTransport();
+
+            // if($safeId_none){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_none;
+            //     $safety_trans->save();
+            // }
+            // if($safeId_childeseat){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_childeseat;
+            //     $safety_trans->save();
+            // }
             
-            if($safeId_aribag){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safeId_aribag;
-                $safety_trans->save();
-            }
+            // if($safeId_aribag){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_aribag;
+            //     $safety_trans->save();
+            // }
             
-            if($safeId_lifevest){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safeId_lifevest;
-                $safety_trans->save();
-            }
+            // if($safeId_lifevest){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_lifevest;
+            //     $safety_trans->save();
+            // }
             
-            if($safeId_helmet){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safeId_helmet;
-                $safety_trans->save();
-            }
+            // if($safeId_helmet){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_helmet;
+            //     $safety_trans->save();
+            // }
             
-            if($safaId_seatbelt){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safaId_seatbelt;
-                $safety_trans->save();
-            }
-            if($safety_unknown){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safety_unknown;
-                $safety_trans->save();
-            }
-            if($safety_others){
-                $safety_trans = new ResuSafetyTransport();
-                $safety_trans->Transport_safety_id = $transport->id;
-                $safety_trans->safety_id = $safety_others;
-                $safety_trans->safety_details = $sheet['safety_others_details'];
-                $safety_trans->save();
-            }
+            // if($safaId_seatbelt){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safaId_seatbelt;
+            //     $safety_trans->save();
+            // }
+            // if($safeId_unknown){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_unknown  ;
+            //     $safety_trans->save();
+            // }
+            // if($safeId_others){
+            //     $safety_trans = new ResuSafetyTransport();
+            //     $safety_trans->Transport_safety_id = $transport->id;
+            //     $safety_trans->safety_id = $safeId_others;
+            //     $safety_trans->safety_details = $sheet['safety_others_details'];
+            //     $safety_trans->save();
+            // }
 
         }
 
@@ -728,23 +775,28 @@ class ExcelPatientInjuryController extends Controller
 
     private function ImportTypePatient($sheet, $profile_id){
 
-        $typeOfPatient = ResuHospitalFacility::select('id','name');
+        $typeOfPatient = ResuHospitalFacility::select('id','category_name')->get();
         $type_patientId = null;
-
+        
         foreach($typeOfPatient as $patient){
-            if(strtolower(trim($patient->name)) == strtolower(trim($sheet['typeofpatient_hospital_facility']))){
+
+            $patientName = strtolower(trim($patient->category_name));
+            $sheetType = strtolower(trim($sheet['typeofpatient_hospital_facility']));
+
+            if(strpos($patientName, $sheetType) !== false || strpos($sheetType, $patientName) !== false){
                $type_patientId = $patient->id;
             }
         }
+  
         $transferred = null;
-        if( strtolower(trim($sheet['Referred_Hospital_FacilityforLaboratory'])) == strtolower(trim('No'))){
+        if( strtolower(trim($sheet['transferred_froman_other_hospital_facility'])) == strtolower(trim('No'))){
             $transferred  = 0;
         }else{
             $transferred  = 1;
         }
         $referred = null;
         if(strtolower(trim($sheet['referred_hospital_facilityforlaboratory'])) == strtolower(trim('No'))){
-            $referred = 0
+            $referred = 0;
         }else{
             $referred = 1;
         }
@@ -754,16 +806,35 @@ class ExcelPatientInjuryController extends Controller
             $ErOPD->hospitalfacility_id = $type_patientId;
             $ErOPD->profile_id = $profile_id;
             $ErOPD->transferred_facility = $transferred;
-            $ErOPD->referred_facility = $referred,
+            $ErOPD->referred_facility = $referred;
             $ErOPD->originating_hospital = $sheet['name_originating_hospital_physician'];
             $ErOPD->status_facility = $sheet['status_upon_reaching_facility'];
             $ErOPD->ifAlive = $sheet['ifalive'];
-            $ErOPD->mode_transport_facility = 
+            $ErOPD->mode_transport_facility = $sheet['modeoftransport_hospital_facility'];
+            $ErOPD->other_details = $sheet['others_modeof_transport_details'];
+            $ErOPD->initial_impression = $sheet['initialimpression'];
+            $ErOPD->icd10Code_nature = $sheet['icd_10code_natureinjury'];
+            $ErOPD->icd10Code_external = $sheet['icd_10codes_external_causeofinjury'];
+            $ErOPD->disposition = $sheet['disposition'];
+            $ErOPD->details = $sheet['specifyfacilitytransferredto'];
+            $ErOPD->outcome = $sheet['outcome'];
+            $ErOPD->save();
         }
         if($type_patientId == 2){
             $Inpatient = new ResuInpatient();
             $Inpatient->hospitalfacility_id = $type_patientId;
             $Inpatient->profile_id = $profile_id;
+            $Inpatient->complete_Diagnose = $sheet['initial_admitting_final_diagnosis'];
+            $Inpatient->Disposition = $sheet['disposition_inpatient'];
+            if($sheet['facilitytransferedto']){
+                $Inpatient->details = $sheet['facilitytransferedto'];
+            }else{
+                $Inpatient->details = $sheet['inpatient_others_details'];
+            }
+            $Inpatient->Outcome = $sheet['inpatient_outcome'];
+            $Inpatient->icd10Code_nature = $sheet['inpatient_icd_10codes_natureofinjury'];
+            $Inpatient->icd10Code_external = $sheet['inpatient_icd10_external_caseofinjury'];
+            $Inpatient->save();
         }
     }
 }

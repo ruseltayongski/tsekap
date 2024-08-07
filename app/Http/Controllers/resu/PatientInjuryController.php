@@ -308,24 +308,25 @@ class PatientInjuryController extends Controller
             $transport->rf_others = $request->rf_others;
             $transport->safety = $transport->id;
             
-            $transport->save(); 
+            $safety_details = null;
+            $safety_ids = null;
 
             if($request->has('safe')){
                 $safet_values = $request->input('safe');
 
-                foreach($safet_values as $safety_value){
-                    $safety = new ResuSafetyTransport();
-                    $safety->Transport_safety_id = $transport->id;
-                    $safety->safety_id = $safety_value;
+                foreach($safet_values as $safety_value){    
+                    $safety_ids = $safety_value;
                     if($safety_value == $request->safety_others_id){
-                        $safety->safety_details = $request->safeothers_details;
-                    }
-                    $safety->save();
+                        $safety_details = $request->safeothers_details;
+                    } 
+                        $safety_ids = $safety_value;
+                
                 }
                
             } 
-            
-      
+            $transport->safety = !empty($safety_ids) ? implode('-', $safety_ids) : ''; 
+            $transport->safety_others = $safety_details;
+            $transport->save(); 
         }else{
             return "Invalid Transport Id";
         }
