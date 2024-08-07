@@ -96,7 +96,7 @@ class ExcelPatientInjuryController extends Controller
                     $profile->Hospital_caseno = $sheet['hospitalcaseno'];
                     $profile->report_facilityId = $facility->id;
                     $profile->fname = $sheet['firstname'];
-                    $profile->mname = $sheet['middlename'];
+                    $profile->mname = $sheet['middlename'] ?? '';
                     $profile->lname = $sheet['lastname'];
                     $profile->sex = $sheet['sex'];
                     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);

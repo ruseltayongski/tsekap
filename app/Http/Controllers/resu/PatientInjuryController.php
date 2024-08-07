@@ -306,26 +306,19 @@ class PatientInjuryController extends Controller
 
             $transport->risk_factors = $request->risk_factors;
             $transport->rf_others = $request->rf_others;
-            $transport->safety = $transport->id;
-            
-            $safety_details = null;
-            $safety_ids = null;
 
             if($request->has('safe')){
                 $safet_values = $request->input('safe');
-
+                $safety_ids = [];
                 foreach($safet_values as $safety_value){    
-                    $safety_ids = $safety_value;
+                    $safety_ids[] = $safety_value;
                     if($safety_value == $request->safety_others_id){
-                        $safety_details = $request->safeothers_details;
+                        $transport->safety_others = $request->safeothers_details;
                     } 
-                        $safety_ids = $safety_value;
-                
                 }
-               
+                $transport->safety =  !empty($safety_ids) ? implode('-',  $safety_ids) : '';
             } 
-            $transport->safety = !empty($safety_ids) ? implode('-', $safety_ids) : ''; 
-            $transport->safety_others = $safety_details;
+
             $transport->save(); 
         }else{
             return "Invalid Transport Id";
@@ -337,7 +330,7 @@ class PatientInjuryController extends Controller
         $user = Auth::user();
         $facility = Facility::all();
         $province = Province::all();
-        $safety = ResuSafety::all();
+        $listsafety = ResuSafety::all();
 
         // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
 
@@ -364,10 +357,7 @@ class PatientInjuryController extends Controller
             },
             'preadmission.externalPreadmissions.transport' => function ($query) {
                 $query->select('id', 'Pre_admission_id','transport_accident_id','Vehicular_acc_type','xternal_injury_pread_id','other_collision','other_collision_details','PatientVehicle','PvOther_detail',
-                'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','rf_others','safety'); // Limit columns
-            },
-            'preadmission.externalPreadmissions.transport.Allsafety' => function ($query) {
-                $query->select('id', 'Transport_safety_id','safety_id','safety_details'); // Limit columns
+                'positionPatient','ppother_detail','pofOccurence','workplace_occurence_specify','pofOccurence_others','activity_patient','AP_others','risk_factors','rf_others','safety','safety_others'); // Limit columns
             },
             'resuInpatient' => function ($query){
                 $query->select('id','hospitalfacility_id','profile_id','complete_Diagnose','Disposition','details','Outcome','icd10Code_nature','icd10Code_external');
@@ -386,12 +376,6 @@ class PatientInjuryController extends Controller
             }
         }
 
-        foreach($transportData->Allsafety as $safeCateg){
-            if(!empty($safeCateg->safety_details)){
-                $safe_details = $safeCateg->safety_details;
-            }
-        } 
-
         $hospitalData = [];
       
         if($profile->resuInpatient){
@@ -399,8 +383,9 @@ class PatientInjuryController extends Controller
         }else{
             $hospitalData = $profile->resuEropdbhsrhu;
         }
-  
-        $get_allSafety = $transportData->Allsafety? $transportData->Allsafety->pluck('safety_id') : collect();
+        $safety = explode('-',$transportData->safety);
+        $safety_id = array_map('intval', $safety);
+
         // $get_transportId = $transportData->Allsafety? $transportData->Allsafety->pluck('Transport_safety_id') : collect();
         // $get_allSafety =  $transportData->Allsafety->pluck('safety_id');
         // $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
@@ -409,12 +394,11 @@ class PatientInjuryController extends Controller
             'profile' => $profile,
             'facility' => $facility,
             'province' => $province,
-            'list_safety' => $safety,
+            'list_safety' => $listsafety,
             'trans' => $transportData,
-            'get_allsafety' => $get_allSafety,
             'hospitalData' => $hospitalData,
             'transport_Id' => $get_transportId,
-            'safe_other' => $safe_details,
+            'safe_ids' =>  $safety_id,
         ]);
     }
 
@@ -806,39 +790,26 @@ class PatientInjuryController extends Controller
                 }else{
                     $transport->rf_others = null;
                 }
-                $transport->save();
+              
                 
                 if($request->has('categsafe') || $request->has('safety_others_id')){
                     $safet_values = $request->input('categsafe', []);
-                    
+                    $safety_ids = [];
         
                     foreach($safet_values as $safety_value){
-                        $transport_id = $request->transport_ids;
-                
-                        $safety = ResuSafetyTransport::where('Transport_safety_id', $transport_id)
-                            ->where('safety_id', $safety_value)
-                            ->first();
-                
-                        if(!$safety){
-                            $safety = new ResuSafetyTransport();
+                        $safety_ids[] = $safety_value;
+                        if($safety_value == $request->safety_others_id) {
+                            $transport->safety_others = $request->safeothers_details;
                         }
-                        if($transport_id){
-                            $safety->Transport_safety_id = $transport_id;
-                        }else{
-                            $safety->Transport_safety_id = $transport->id;
-                        }
-                        $safety->safety_id = $safety_value;
-                
-                        if($safety_value == $request->safety_others_id){
-                            $safety->safety_details = $request->safeothers_details;
-                        }
-                
-                        $safety->save();
                     } 
-                
+                    $transport->safety = !empty($safety_ids) ? implode('-', $safety_ids) : '';
+
                 } else {
                     return 'No safety data provided.';
                 }
+
+                $transport->save();
+
          }
 
 

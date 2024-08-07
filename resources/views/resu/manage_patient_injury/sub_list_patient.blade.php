@@ -55,7 +55,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                          
+                        
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
                                 <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $profile->reportfacility->typeOfdru }}">
@@ -766,14 +766,14 @@
                                     @foreach($list_safety as $safe)
                                  
                                         <div class="col-md-6">
-                                            <input type="checkbox" id="safe_{{ $index }}" name="categsafe[]" value="{{ $safe->id }}" data-category="safety" {{ in_array($safe->id, $get_allsafety->toArray()) ? 'checked' : '' }}>{{ $safe->name }}<br>                                  
+                                            <input type="checkbox" id="safe_{{ $index }}" name="categsafe[]" value="{{ $safe->id }}" data-category="safety" {{ in_array($safe->id, $safe_ids) ? 'checked' : '' }}>{{ $safe->name }}<br>                                  
                                         </div>
 
                                     @if(trim($safe->name) == 'Others')
 
                                         <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
                                         <div class="col-md-6 col-md-offset-6">
-                                            <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{ $safe_other }}" placeholder="others specify here">
+                                            <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{ $trans->safety_others }}" placeholder="others specify here">
                                         </div>
                                     @endif
                                     @endforeach
