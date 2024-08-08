@@ -30,7 +30,6 @@ class PatientInjuryController extends Controller
 
         $profiles = Profile::with(['province', 'muncity', 'barangay'])
             ->whereNotNull('report_facilityId')
-            ->orWhereNotNull('Hospital_caseno')
             ->orderby('id', 'desc')
             ->paginate(15);
 

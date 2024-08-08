@@ -11,6 +11,9 @@
 |
 */
 
+// ini_set('max_execution_time', 1200); // 20 minutes
+// ini_set('memory_limit', '1024M'); // 512 MB
+
 $app = new Illuminate\Foundation\Application(
     realpath(__DIR__.'/../')
 );

@@ -25,6 +25,7 @@ use App\ResuHospitalFacility;
 use App\Province;
 use App\Barangay;
 use App\Muncity;
+use App\Facility;
 use Log;
 
 class ExcelPatientInjuryController extends Controller
@@ -68,6 +69,8 @@ class ExcelPatientInjuryController extends Controller
                     //     'typeofpatient' => $sheet['typeofpatient'],
                     // ]);
 
+                    $facility = Facility::select('id','name')->get();
+
                     $province = Province::select('id', 'description')->get();
                     $muncity = Muncity::select('id', 'description')->get();
                     $barangay = Barangay::select('id', 'description')->get();
@@ -79,36 +82,136 @@ class ExcelPatientInjuryController extends Controller
                     $provinceId_injury = $this->findclosematch($province, $sheet['place_of_injury_province'], $this->maxDistance);
                     $muncityId_injury = $this->findclosematch($muncity, $sheet['place_of_injury_muncity'], $this->maxDistance);
                     $barangayId_injury = $this->findclosematch($barangay, $sheet['place_of_injury_barangay'], $this->maxDistance);
-                
+                 
                     //dd($sheet);
-                    $facility = new ResuReportFacility();
+                    // $report_facility_id = Profile::pluck('report_facilityId')->filter(function($value) {
+                    //     return !is_null($value) && $value !== '';
+                    // })->values();
+                    
+                    // $facilities =  ResuReportFacility::whereIn('id',$report_facility_id)->get();
+                    // $existing_ids = $facilities->pluck('id');
 
-                    $facility->reportfacility = $sheet['nameofreportingfacility'];
-                    $facility->typeOfdru = $sheet['typeofdru'];
-                    $facility->Addressfacility = $sheet['addressofdru'];
-                    $facility->typeofpatient = $sheet['typeofpatient'];
+                    // $facility_ids = null;
+                    // // if($facility){
+                       
+                    // // }else{
+                    // //     $facility = new ResuReportFacility();
+                    // // }
+                    // foreach($facilities as $facility){
+                    //     // $facility = new ResuReportFacility();
+                    //     $facility->reportfacility = $sheet['nameofreportingfacility'];
+                    //     $facility->typeOfdru = $sheet['typeofdru'];
+                    //     $facility->Addressfacility = $sheet['addressofdru'];
+                    //     $facility->typeofpatient = $sheet['typeofpatient'];
+                    //     $facility->save();
+                    //     $facility_ids = $facility->id;
+                    // }
+                    
+                    // $ids_to_create = array_diff($report_facility_id->toArray(), $existing_ids);
+                    
+                    // foreach ($ids_to_create as $id) {
+                    //     $facility = new ResuReportFacility();
 
-                    $facility->save();
+                    //     $facility->reportfacility = $sheet['nameofreportingfacility'];
+                    //     $facility->typeOfdru = $sheet['typeofdru'];
+                    //     $facility->Addressfacility = $sheet['addressofdru'];
+                    //     $facility->typeofpatient = $sheet['typeofpatient'];
+                    //     $facility->save();
+                    
+                    //     $facility_ids = $facility->id;
+                    // }
+                    $facility_id = null;
+                    foreach($facility as $fact){
+                        if(strtolower(trim($fact->name)) ==  strtolower(trim($sheet['nameofreportingfacility']))){
+                            $facility_id =  $fact->id;
+                        }
+                    }
+            
+                    $reportfacility = ResuReportFacility::where('reportfacility', $facility_id)->first();
+                    if($exist_facilityId){
 
-                    $profile = new Profile();
-                    $unique_id = $sheet['firstname'].''.$sheet['middlename'].''.$sheet['lastname'].''.substr($sheet['permanent_province']).''.substr($sheet['permanent_muncity']);
-                    $profile->unique_id = $unique_id;
-                    $profile->Hospital_caseno = $sheet['hospitalcaseno'];
-                    $profile->report_facilityId = $facility->id;
-                    $profile->fname = $sheet['firstname'];
-                    $profile->mname = $sheet['middlename'] ?? '';
-                    $profile->lname = $sheet['lastname'];
-                    $profile->sex = $sheet['sex'];
-                    $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
+                    }else{
+                        $reportfacility = new ResuReportFacility();
+                    }
+                    
+                    $reportfacility->reportfacility = $facility_id;
+                    $reportfacility->typeOfdru = $sheet['typeofdru'];
+                    $reportfacility->Addressfacility = $sheet['addressofdru'];
+                    $reportfacility->typeofpatient = $sheet['typeofpatient'];
+                    $reportfacility->save();
+                    // $unique_id = $sheet['firstname'].''.$sheet['middlename'].''.$sheet['lastname'].''.$barangay_id .''.$muncityId;
 
-                    $profile->province_id = $provinceId ?? '';
-                    $profile->muncity_id = $muncityId ?? '' ;
-                    $profile->barangay_id = $barangay_id ?? '';
-                    $profile->phicID = $sheet['philhealthnumber']  ?? '';
-                    $profile->nameof_encoder = $sheet['nameofencoder'];
-                    $profile->designation = $sheet['designationofencoder'];
-                    $profile->contact = $sheet['contactnumberofencoder'];
+                    // $existingProfile = Profile::where('unique_id', $unique_id)->first();
+                    // if($existingProfile){
+                    //     $profile->Hospital_caseno = $sheet['hospitalcaseno'];
+                    //     $profile->report_facilityId = $facility->id;
+                    //     $profile->fname = $sheet['firstname'];
+                    //     $profile->mname = $sheet['middlename'] ?? '';
+                    //     $profile->lname = $sheet['lastname'];
+                    //     $profile->sex = $sheet['sex'];
+                    //     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
+    
+                    //     $profile->province_id = $provinceId ?? '';
+                    //     $profile->muncity_id = $muncityId ?? '' ;
+                    //     $profile->barangay_id = $barangay_id ?? '';
+                    //     $profile->phicID = $sheet['philhealthnumber']  ?? '';
+                    //     $profile->nameof_encoder = $sheet['nameofencoder'] ?? '';
+                    //     $profile->designation = $sheet['designationofencoder'] ?? '';
+                    //     $profile->contact = $sheet['contactnumberofencoder'] ?? '';
+                    //     $profile->save();   
+                    // }else{
+                    //     $profile = new Profile();
+                    //     $profile->unique_id = $unique_id;
+                    //     $profile->Hospital_caseno = $sheet['hospitalcaseno'];
+                    //     $profile->report_facilityId = $facility->id;
+                    //     $profile->fname = $sheet['firstname'];
+                    //     $profile->mname = $sheet['middlename'] ?? '';
+                    //     $profile->lname = $sheet['lastname'];
+                    //     $profile->sex = $sheet['sex'];
+                    //     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
+    
+                    //     $profile->province_id = $provinceId ?? '';
+                    //     $profile->muncity_id = $muncityId ?? '' ;
+                    //     $profile->barangay_id = $barangay_id ?? '';
+                    //     $profile->phicID = $sheet['philhealthnumber']  ?? '';
+                    //     $profile->nameof_encoder = $sheet['nameofencoder'] ?? '';
+                    //     $profile->designation = $sheet['designationofencoder'] ?? '';
+                    //     $profile->contact = $sheet['contactnumberofencoder'] ?? '';
+                    //     $profile->save();
+                    // }
+
+                    $unique_id = $sheet['firstname'] . '' . $sheet['middlename'] . '' . $sheet['lastname'] . '' . $barangay_id . '' . $muncityId;
+
+                    $existingProfile = Profile::where('unique_id', $unique_id)->first();
+        
+                    if ($existingProfile) {
+                        $profile = $existingProfile;
+                    } else {
+                        $profile = new Profile();
+                        $profile->unique_id = $unique_id;
+                    }
+                    // Update profile details
+                    $selectedProfile = [
+                        'Hospital_caseno' => $sheet['hospitalcaseno'],
+                        'report_facilityId' => $reportfacility->id,
+                        'fname' => $sheet['firstname'],
+                        'mname' => $sheet['middlename'] ?? '',
+                        'lname' => $sheet['lastname'],
+                        'sex' => $sheet['sex'],
+                        'dob' => \Carbon\Carbon::parse($sheet['dateofbirth']),
+                        'province_id' => $provinceId ?? '',
+                        'muncity_id' => $muncityId ?? '',
+                        'barangay_id' => $barangay_id ?? '',
+                        'phicID' => $sheet['philhealthnumber'] ?? '',
+                        'nameof_encoder' => $sheet['nameofencoder'] ?? '',
+                        'designation' => $sheet['designationofencoder'] ?? '',
+                        'contact' => $sheet['contactnumberofencoder'] ?? '',
+                        
+                    ];
+
+                    $profile->fill($selectedProfile);
                     $profile->save();
+                    
 
                     $dateAndtime = \Carbon\Carbon::parse($sheet['date_and_time_of_injury']);
                     $dateInjury= $dateAndtime->format('d/m/y');
@@ -118,22 +221,28 @@ class ExcelPatientInjuryController extends Controller
                     $dateconsult = $dateAndtimeConsult->format('d/m/y');
                     $timeconsult = $dateAndtimeConsult->format('h:i:s a');
 
-                    $pre_admission = new ResuPreadmission();
-                    $pre_admission->profile_id = $profile->id;
-                    $pre_admission->POIProvince_id = $provinceId_injury ?? '';
-                    $pre_admission->POImuncity_id = $muncityId_injury ?? '';
-                    $pre_admission->POIBarangay_id = $barangayId_injury ?? '';
-                    $pre_admission->POIPurok = $sheet['purok'];
-                    $pre_admission->dateInjury = $dateInjury;
-                    $pre_admission->timeInjury = $timeInjury;
-                    $pre_admission->dateConsult = $dateconsult;
-                    $pre_admission->timeConsult = $timeconsult;
-                    $pre_admission->injury_intent = $sheet['injuryintent'];
-                    $pre_admission->first_aid = $sheet['firstaidgiven'];
-                    $pre_admission->what = $sheet['whatfirstaidwasgiven'];
-                    $pre_admission->bywhom = $sheet['whogavethefirstaid'];
-                    $pre_admission->multipleInjury = $sheet['multipleinjury'];
-                    $pre_admission->save();
+                    $pre_admission = ResuPreadmission::where('profile_id', $existingProfile->id)->first();
+                    if($pre_admission){
+                       
+                    }else{
+                        $pre_admission = new ResuPreadmission();
+                        $pre_admission->profile_id = $profile->id;
+                    }
+                        $pre_admission->POIProvince_id = $provinceId_injury ?? '';
+                        $pre_admission->POImuncity_id = $muncityId_injury ?? '';
+                        $pre_admission->POIBarangay_id = $barangayId_injury ?? '';
+                        $pre_admission->POIPurok = $sheet['purok'];
+                        $pre_admission->dateInjury = $dateInjury;
+                        $pre_admission->timeInjury = $timeInjury;
+                        $pre_admission->dateConsult = $dateconsult;
+                        $pre_admission->timeConsult = $timeconsult;
+                        $pre_admission->injury_intent = $sheet['injuryintent'];
+                        $pre_admission->first_aid = $sheet['firstaidgiven'];
+                        $pre_admission->what = $sheet['whatfirstaidwasgiven'];
+                        $pre_admission->bywhom = $sheet['whogavethefirstaid'];
+                        $pre_admission->multipleInjury = $sheet['multipleinjury'];
+                        $pre_admission->save();
+                   
 
                     $abrasion = null;
                     $avulsion = null;
@@ -144,8 +253,6 @@ class ExcelPatientInjuryController extends Controller
                     $openwound = null;
                     $traumaAmputation = null;
                     $Others = null;
-
-                  // dd($sheet);
 
                     if($sheet['abrasion'] == 1){
                         $abrasion = strtolower(trim("abrasion"));
@@ -235,63 +342,120 @@ class ExcelPatientInjuryController extends Controller
                     
                     // Save nature_Pread records with only the natures_id and details
                     if ($nature_id_abrasion) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_abrasion)->first();
+                        if($nature_Pread){
+                         
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_abrasion;
                         $nature_Pread->details = $details['abrasion'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_avulsion) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_avulsion)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_avulsion;
                         $nature_Pread->details = $details['avulsion'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_burn) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_burn)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_burn;
                         $nature_Pread->details = $details['burn'] . ' ' .  $details['burnsite'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_concussion) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_concussion)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_concussion;
                         $nature_Pread->details = $details['concussion'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_contusion) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                             ->where('natureInjury_id', $nature_id_contusion)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
+                       
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_contusion;
                         $nature_Pread->details = $details['contusion'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_fracture) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_fracture)->first();
+                        if($nature_Pread){
+                            
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
+                        
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_fracture;
                         $nature_Pread->details = $details['fracture'] . ' ' . $details['fracturetype'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_openwound) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_openwound)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
+
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_openwound;
                         $nature_Pread->details = $details['open_wounds'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_traumatic) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_traumatic)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_traumatic;
                         $nature_Pread->details = $details['traumaticamputation'];
                         $nature_Pread->save();
                     }
                     if ($nature_id_others) {
-                        $nature_Pread = new ResuNature_Preadmission();
+                        $nature_Pread = ResuNature_Preadmission::where('Pre_admission_id', $pre_admission->id)
+                            ->where('natureInjury_id', $nature_id_others)->first();
+                        if($nature_Pread){
+
+                        }else{
+                            $nature_Pread = new ResuNature_Preadmission();
+                        }
                         $nature_Pread->Pre_admission_id = $pre_admission->id;
                         $nature_Pread->natureInjury_id = $nature_id_others;
                         $nature_Pread->details = $details['others'];
@@ -444,35 +608,65 @@ class ExcelPatientInjuryController extends Controller
                         ];
 
                         if($exId_bites){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_bites)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_bites;
                             $external->details = $ex_details['bite'];
                             $external->save();
                         }
                         if($exId_burns){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_burns)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_burns;
                             $external->details = $ex_details['burn'];
                             $external->save();
                         }
                         if($exId_chemical){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_chemical)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_chemical;
                             $external->details = $ex_details['chemical'];
                             $external->save();
                         }
                         if($exId_contact){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_contact)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_contact;
                             $external->details = $ex_details['object'];
                             $external->save();
                         }
                         if($exId_drowning){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_drowning)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_drowning;
                             $external->details = $ex_details['drowning'];
@@ -480,14 +674,26 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_exposure){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_exposure)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_exposure;
                             $external->details = $ex_details['exposure'];
                             $external->save();
                         }
                         if($exId_fall){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_fall)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_fall;
                             $external->details = $ex_details['fall'];
@@ -496,7 +702,13 @@ class ExcelPatientInjuryController extends Controller
                         
 
                         if($exId_firecracker){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_firecracker)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_firecracker;
                             $external->details = $ex_details['firecreacker'];
@@ -504,14 +716,26 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_sexaulAbure){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_sexaulAbure)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_sexaulAbure;
                             $external->save();
                         }
 
                         if($exId_gunshot){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_gunshot)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_gunshot;
                             $external->details = $ex_details['gunshot'];
@@ -519,7 +743,13 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_strangulation){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_strangulation)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_strangulation;
                             $external->details = $ex_details['strangulation'];
@@ -527,7 +757,13 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_maulingAssault){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_maulingAssault)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id = $exId_maulingAssault;
                             $external->details = $ex_details['mauling_assault'];
@@ -535,7 +771,13 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_transport){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_transport)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_transport;
                             $external->details = $ex_details['transport'];
@@ -544,14 +786,21 @@ class ExcelPatientInjuryController extends Controller
                         }
 
                         if($exId_others){
-                            $external = new Resuexternal_injury_preAdmission();
+                            $external = Resuexternal_injury_preAdmission::where('Pre_admission_id', $pre_admission->id)
+                                ->where('externalinjury_id', $exId_others)->first();
+                            if($external){
+
+                            }else{
+                                $external = new Resuexternal_injury_preAdmission();
+                            }
+
                             $external->Pre_admission_id =  $pre_admission->id;
                             $external->externalinjury_id =  $exId_others;
                             $external->details = $ex_details['others_det'];
                             $external->save();
                         }
 
-                       $this->ImportTypePatient($sheet, $profile->id);
+                        $this->ImportTypePatient($sheet, $profile->id, $existingProfile->id);
             });
         });
     }
@@ -563,8 +812,6 @@ class ExcelPatientInjuryController extends Controller
             $transport_acc_type = ResuTransportAccident::select('id', 'description')->get();
 
             $transport_acc_id = null;
-
-            $transport = new ResuTransport();
 
             foreach($transport_acc_type as $acc_type){
                 if(strtolower(trim($acc_type->description)) == strtolower(trim($sheet['transportvehicularaccidents_type']))){
@@ -594,6 +841,14 @@ class ExcelPatientInjuryController extends Controller
             }
             if($sheet['otherriskfactors_incident_others'] == 1){
                 $OF_Others = "Others";
+            }
+
+            $transport = ResuTransport::where('Pre_admission_id', $pre_admission_id)->first();
+
+            if($transport){
+
+            }else{
+                $transport = new ResuTransport();
             }
 
             $transport->Pre_admission_id = $pre_admission_id;
@@ -712,68 +967,11 @@ class ExcelPatientInjuryController extends Controller
             ]);
 
             $transport->save();
-
-            // $safety_trans = new ResuSafetyTransport();
-
-            // if($safeId_none){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_none;
-            //     $safety_trans->save();
-            // }
-            // if($safeId_childeseat){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_childeseat;
-            //     $safety_trans->save();
-            // }
-            
-            // if($safeId_aribag){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_aribag;
-            //     $safety_trans->save();
-            // }
-            
-            // if($safeId_lifevest){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_lifevest;
-            //     $safety_trans->save();
-            // }
-            
-            // if($safeId_helmet){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_helmet;
-            //     $safety_trans->save();
-            // }
-            
-            // if($safaId_seatbelt){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safaId_seatbelt;
-            //     $safety_trans->save();
-            // }
-            // if($safeId_unknown){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_unknown  ;
-            //     $safety_trans->save();
-            // }
-            // if($safeId_others){
-            //     $safety_trans = new ResuSafetyTransport();
-            //     $safety_trans->Transport_safety_id = $transport->id;
-            //     $safety_trans->safety_id = $safeId_others;
-            //     $safety_trans->safety_details = $sheet['safety_others_details'];
-            //     $safety_trans->save();
-            // }
-
         }
 
     }
 
-    private function ImportTypePatient($sheet, $profile_id){
+    private function ImportTypePatient($sheet, $profile_id, $existingProfile_id){
 
         $typeOfPatient = ResuHospitalFacility::select('id','category_name')->get();
         $type_patientId = null;
@@ -802,9 +1000,17 @@ class ExcelPatientInjuryController extends Controller
         }
 
         if($type_patientId == 1){
-            $ErOPD = new ResuErOpdBhsRhu();
+            $ErOPD = ResuErOpdBhsRhu::where('profile_id', $existingProfile_id)->first();
+
+            if($ErOPD){
+                $ErOPD->profile_id = $existingProfile_id;
+            }else{
+                $ErOPD = new ResuErOpdBhsRhu();
+                $ErOPD->profile_id = $profile_id;
+            }
+
+           
             $ErOPD->hospitalfacility_id = $type_patientId;
-            $ErOPD->profile_id = $profile_id;
             $ErOPD->transferred_facility = $transferred;
             $ErOPD->referred_facility = $referred;
             $ErOPD->originating_hospital = $sheet['name_originating_hospital_physician'];
@@ -821,9 +1027,15 @@ class ExcelPatientInjuryController extends Controller
             $ErOPD->save();
         }
         if($type_patientId == 2){
-            $Inpatient = new ResuInpatient();
+            $Inpatient = ResuInpatient::where('profile_id', $existingProfile_id)->first();
+            if($Inpatient){
+                $Inpatient->profile_id = $existingProfile_id;
+            }else{
+                $Inpatient = new ResuInpatient();
+                $Inpatient->profile_id = $profile_id;
+            }
+
             $Inpatient->hospitalfacility_id = $type_patientId;
-            $Inpatient->profile_id = $profile_id;
             $Inpatient->complete_Diagnose = $sheet['initial_admitting_final_diagnosis'];
             $Inpatient->Disposition = $sheet['disposition_inpatient'];
             if($sheet['facilitytransferedto']){

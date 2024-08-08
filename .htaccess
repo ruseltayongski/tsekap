@@ -2,7 +2,8 @@
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
-
+    # php_value max_execution_time 1200
+    # php_value memory_limit 1024M
     RewriteEngine On
 
     # Redirect Trailing Slashes If Not A Folder...
@@ -19,4 +20,6 @@
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
     Options -Indexes
+
+
 </IfModule>
