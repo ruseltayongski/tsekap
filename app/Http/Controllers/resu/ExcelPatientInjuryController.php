@@ -121,6 +121,7 @@ class ExcelPatientInjuryController extends Controller
                     $facility_id = null;
                     $report_facility_id = null;
                     $other_facility = null;
+                    $levenshtein_threshold = 3;
 
                     $report_facility = ResuReportFacility::select('id', 'others')->get();
 
@@ -129,7 +130,7 @@ class ExcelPatientInjuryController extends Controller
                     foreach($report_facility as $report){
                        $reportfactName =  strtolower(trim($report->others));
 
-                        if($reportfactName == $facility_name){
+                        if($reportfactName == $facility_name || levenshtein($reportfactName, $facility_name) <= $levenshtein_threshold){
                             $report_facility_id = $report->id;
                             break; // exit loop once a match is found
                         }
@@ -137,7 +138,7 @@ class ExcelPatientInjuryController extends Controller
                     
                     foreach($facility as $fact){
                         $report_factname = strtolower(trim($fact->name));
-                        if($report_factname == $facility_name){
+                        if($report_factname == $facility_name || levenshtein($report_factname, $facility_name) <= $levenshtein_threshold){
                             $facility_id = $fact->id;
                             break; // exit loop once a match is found
                         } else {
