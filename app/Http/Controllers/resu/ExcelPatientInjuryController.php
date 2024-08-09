@@ -84,10 +84,7 @@ class ExcelPatientInjuryController extends Controller
                     $barangayId_injury = $this->findclosematch($barangay, $sheet['place_of_injury_barangay'], $this->maxDistance);
                  
                     //dd($sheet);
-                    // $report_facility_id = Profile::pluck('report_facilityId')->filter(function($value) {
-                    //     return !is_null($value) && $value !== '';
-                    // })->values();
-                    
+                   
                     // $facilities =  ResuReportFacility::whereIn('id',$report_facility_id)->get();
                     // $existing_ids = $facilities->pluck('id');
 
@@ -120,25 +117,56 @@ class ExcelPatientInjuryController extends Controller
                     
                     //     $facility_ids = $facility->id;
                     // }
+
                     $facility_id = null;
-                    foreach($facility as $fact){
-                        if(strtolower(trim($fact->name)) ==  strtolower(trim($sheet['nameofreportingfacility']))){
-                            $facility_id =  $fact->id;
+                    $report_facility_id = null;
+                    $other_facility = null;
+
+                    $report_facility = ResuReportFacility::select('id', 'others')->get();
+
+                    $facility_name = strtolower(trim($sheet['nameofreportingfacility']));
+
+                    foreach($report_facility as $report){
+                       $reportfactName =  strtolower(trim($report->others));
+
+                        if($reportfactName == $facility_name){
+                            $report_facility_id = $report->id;
+                            break; // exit loop once a match is found
                         }
                     }
-            
-                    $reportfacility = ResuReportFacility::where('reportfacility', $facility_id)->first();
-                    if($exist_facilityId){
+                    
+                    foreach($facility as $fact){
+                        $report_factname = strtolower(trim($fact->name));
+                        if($report_factname == $facility_name){
+                            $facility_id = $fact->id;
+                            break; // exit loop once a match is found
+                        } else {
+                            $other_facility = $sheet['nameofreportingfacility'];
+                        }
+                    }
+                    
+                    $reportfacility = ResuReportFacility::where('facility_id', $facility_id)
+                        ->orWhere('id', $report_facility_id)->first();
+                    
+                    if(!$reportfacility){
 
-                    }else{
                         $reportfacility = new ResuReportFacility();
                     }
                     
-                    $reportfacility->reportfacility = $facility_id;
-                    $reportfacility->typeOfdru = $sheet['typeofdru'];
-                    $reportfacility->Addressfacility = $sheet['addressofdru'];
-                    $reportfacility->typeofpatient = $sheet['typeofpatient'];
+
+                    if($facility_id || $report_facility_id){
+                        $reportfacility->facility_id = $facility_id;
+                    
+                    } else {
+                        $reportfacility = new ResuReportFacility();
+                        $reportfacility->others = $other_facility;
+                        $reportfacility->typeOfdru = $sheet['typeofdru'];
+                        $reportfacility->Addressfacility = $sheet['addressofdru'];
+                    }
+                    
                     $reportfacility->save();
+                    
+
                     // $unique_id = $sheet['firstname'].''.$sheet['middlename'].''.$sheet['lastname'].''.$barangay_id .''.$muncityId;
 
                     // $existingProfile = Profile::where('unique_id', $unique_id)->first();
@@ -206,6 +234,7 @@ class ExcelPatientInjuryController extends Controller
                         'nameof_encoder' => $sheet['nameofencoder'] ?? '',
                         'designation' => $sheet['designationofencoder'] ?? '',
                         'contact' => $sheet['contactnumberofencoder'] ?? '',
+                        'typeofpatient' => $sheet['typeofpatient'] ?? '',
                         
                     ];
 

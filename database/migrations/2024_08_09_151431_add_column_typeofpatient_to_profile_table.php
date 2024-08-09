@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTypeofpatientColumnToTheProfileTable extends Migration
+class AddColumnTypeofpatientToProfileTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,6 @@ class AddTypeofpatientColumnToTheProfileTable extends Migration
      */
     public function up()
     {
-        //
         Schema::table('profile', function (Blueprint $table) {
             $table->string('typeofpatient')->nullable()->after('Hospital_caseno');
         });
