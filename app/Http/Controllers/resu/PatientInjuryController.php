@@ -339,7 +339,8 @@ class PatientInjuryController extends Controller
         // 'resuInpatient',
         // 'resuEropdbhsrhu'
         // ])->find($profile_id);
-        $profile = Profile::with([
+        $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient')
+             ->with([
             'reportfacility',
             'preadmission' => function ($query) {
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
@@ -367,6 +368,51 @@ class PatientInjuryController extends Controller
             }
         ])->find($profile_id);
             
+        // $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient')
+        // ->with(['reportfacility'])
+        // ->find($profile_id);
+        // if ($needsPreadmission) {
+        //     $profile->load(['preadmission' => function ($query) {
+        //         $query->select('id', 'profile_id', 'POIProvince_id', 'POImuncity_id', 'POIBarangay_id', 'POIPurok', 'dateInjury', 'timeInjury', 'dateConsult', 'timeConsult', 'injury_intent', 'first_aid', 'what', 'bywhom', 'multipleInjury');
+        //     }]);
+        // }
+        
+        // if ($needsNatureInjuryPreadmissions) {
+        //     $profile->load(['preadmission.natureInjuryPreadmissions' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id', 'natureInjury_id', 'subtype', 'details', 'side');
+        //     }]);
+        // }
+        
+        // if ($needsBodyParts) {
+        //     $profile->load(['preadmission.natureInjuryPreadmissions.bodyParts' => function ($query) {
+        //         $query->select('id', 'preadmission_id', 'nature_injury_id', 'bodyparts_id');
+        //     }]);
+        // }
+        
+        // if ($needsExternalPreadmissions) {
+        //     $profile->load(['preadmission.externalPreadmissions' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id', 'externalinjury_id', 'subtype', 'details');
+        //     }]);
+        // }
+        
+        // if ($needsTransport) {
+        //     $profile->load(['preadmission.externalPreadmissions.transport' => function ($query) {
+        //         $query->select('id', 'Pre_admission_id', 'transport_accident_id', 'Vehicular_acc_type', 'xternal_injury_pread_id', 'other_collision', 'other_collision_details', 'PatientVehicle', 'PvOther_detail', 'positionPatient', 'ppother_detail', 'pofOccurence', 'workplace_occurence_specify', 'pofOccurence_others', 'activity_patient', 'AP_others', 'risk_factors', 'rf_others', 'safety', 'safety_others');
+        //     }]);
+        // }
+        
+        // if ($needsResuInpatient) {
+        //     $profile->load(['resuInpatient' => function ($query) {
+        //         $query->select('id', 'hospitalfacility_id', 'profile_id', 'complete_Diagnose', 'Disposition', 'details', 'Outcome', 'icd10Code_nature', 'icd10Code_external');
+        //     }]);
+        // }
+        
+        // if ($needsResuEropdbhsrhu) {
+        //     $profile->load(['resuEropdbhsrhu' => function ($query) {
+        //         $query->select('id', 'hospitalfacility_id', 'profile_id', 'transferred_facility', 'referred_facility', 'originating_hospital', 'status_facility', 'Ifalive', 'mode_transport_facility', 'other_details', 'initial_impression', 'icd10Code_nature', 'icd10Code_external', 'disposition', 'details', 'outcome');
+        //     }]);
+        // }
+
         $transportData = [];
         $safe_details = [];
         foreach($profile->preadmission->externalPreadmissions as $transport){

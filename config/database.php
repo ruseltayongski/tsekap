@@ -7,14 +7,14 @@
 
 
 // local
-// $host = "localhost";
-// $username = "root";
-// $password = "";
+$host = "localhost";
+$username = "root";
+$password = "";
 
 // dummy
-$host = "192.168.110.50";
-$username = "rtayong_dummy50";
-$password = "rtayong_dummy50";
+// $host = "192.168.110.50";
+// $username = "rtayong_dummy50";
+// $password = "rtayong_dummy50";
 
 return [
 
