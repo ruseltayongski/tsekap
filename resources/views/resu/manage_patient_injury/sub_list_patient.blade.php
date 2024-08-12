@@ -49,10 +49,18 @@
                                 <label for="facility-name">Name of Reporting Facility</label>
                                 <select class="form-control chosen-select" name="facilityname" id="facility">
                                     <option value="">Select Reporting Facility</option>
+
                                     @foreach($facility as $fact)
-                                    <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}"
-                                        {{$profile->reportfacility && $profile->reportfacility->reportfacility == $fact->id ? 'selected' : ''}}>{{ $fact->name }}</option>
+                                        <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}"
+                                        {{$profile->reportfacility && $profile->reportfacility->facility_id == $fact->id ? 'selected' : ''}}>{{ $fact->name }}
+                                        </option>
                                     @endforeach
+
+                                    @if(!$profile->reportfacility || !$profile->reportfacility->facility_id)
+                                        <option value="others" selected>
+                                            {{ $profile->reportfacility->others ?: 'Others' }}
+                                        </option>
+                                    @endif
                                 </select>
                             </div>
                         
@@ -88,7 +96,7 @@
                                 </div><br>
                             </div>
                         </div>
-                  
+        
                         <h4 class="patient-font mt-4">General Data</h4>
                         <div class="row">
                             <div class="col-md-3">

@@ -339,9 +339,11 @@ class PatientInjuryController extends Controller
         // 'resuInpatient',
         // 'resuEropdbhsrhu'
         // ])->find($profile_id);
-        $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient')
+        $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient','report_facilityId')
              ->with([
-            'reportfacility',
+            'reportfacility' => function($query){
+                $query->select('id','facility_id','others','typeOfdru','Addressfacility');
+            },
             'preadmission' => function ($query) {
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
                 'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
@@ -430,10 +432,6 @@ class PatientInjuryController extends Controller
         }
         $safety = explode('-',$transportData->safety);
         $safety_id = array_map('intval', $safety);
-
-        // $get_transportId = $transportData->Allsafety? $transportData->Allsafety->pluck('Transport_safety_id') : collect();
-        // $get_allSafety =  $transportData->Allsafety->pluck('safety_id');
-        // $get_transportId = $transportData->Allsafety->pluck('Transport_safety_id');
      
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,

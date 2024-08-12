@@ -237,7 +237,7 @@ $(document).ready(function () {
     var selectedfacility = $(this).find("option:selected");
     var address = selectedfacility.data("address");
     var hospital_type = selectedfacility.data("hospital_type");
-    console.log("address", hospital_type);
+
     $("#typedru").val(hospital_type);
     $("#addressfacility").val(address);
   });

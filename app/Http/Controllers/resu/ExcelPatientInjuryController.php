@@ -130,7 +130,7 @@ class ExcelPatientInjuryController extends Controller
                     foreach($report_facility as $report){
                        $reportfactName =  strtolower(trim($report->others));
 
-                        if($reportfactName == $facility_name || levenshtein($reportfactName, $facility_name) <= $levenshtein_threshold){
+                        if($reportfactName == $facility_name){
                             $report_facility_id = $report->id;
                             break; // exit loop once a match is found
                         }
@@ -138,7 +138,7 @@ class ExcelPatientInjuryController extends Controller
                     
                     foreach($facility as $fact){
                         $report_factname = strtolower(trim($fact->name));
-                        if($report_factname == $facility_name || levenshtein($report_factname, $facility_name) <= $levenshtein_threshold){
+                        if($report_factname == $facility_name){
                             $facility_id = $fact->id;
                             break; // exit loop once a match is found
                         } else {
@@ -155,7 +155,7 @@ class ExcelPatientInjuryController extends Controller
                     }
                     
 
-                    if($facility_id || $report_facility_id){
+                    if($facility_id){
                         $reportfacility->facility_id = $facility_id;
                     
                     } else {
