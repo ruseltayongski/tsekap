@@ -710,7 +710,7 @@
                     <div class="col-md-12"><hr>
                         <h4 class="patient-font mt-4">Hospital/Facility Data</h4>
                         @foreach($hospital_type as $hos)
-                            @if(isSimilar($hos->category_name, "A. ER/OPD/BHS/RHU"))
+                            @if(isSimilar($hos->category_name, "ER/OPD/BHS/RHU"))
                             <div class="A_ErOpdGroup">
                                 <h6 class="A_Hospital mt-5"> 
                                 <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}">
@@ -818,7 +818,7 @@
                         @endforeach
                     </div>
                     @foreach($hospital_type as $hos)
-                        @if(isSimilar($hos->category_name, "B. In-Patient(for admitted hospital cases only)"))
+                        @if(isSimilar($hos->category_name, "In-patient (admitted)"))
                             <div class="B_InpatientGroup">
                                 <div class="col-md-12"><hr class="Inpatient_linehr">
                                     <h6 class="A_Hospital mt-5"> 

@@ -69,14 +69,15 @@
                        <thead>
                            <tr>
                                <th></th>
+                               <th>Facility Name <br>&nbsp;</th>
                                <th>Full Name<br>&nbsp;</th>
                                <th>Age<br>&nbsp;</th>
                                <th>Sex<br>&nbsp;</th>
-                               <th>province<br>&nbsp;</th>
+                               <th>Province/HUC<br>&nbsp;</th>
                                <th>Municipal<br>&nbsp;</th>
                                <th>Barangay<br>&nbsp;</th>
-                               <th>Hospital Case No.<br>&nbsp;</th>
-                               <th>PhilHealth No.<br>&nbsp;</th>
+                               <th>Place Injury<br>&nbsp;</th>
+                               <th>Date Injury<br>&nbsp;</th>
                            </tr>
                        </thead>
                        <tbody>
@@ -88,6 +89,7 @@
                                        <i class="fa fa-eye"></i> View
                                    </a>
                                </td>
+                               <td></td>
                                <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
                                <td>
                                 @php
@@ -100,8 +102,8 @@
                                <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
                                <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
                                <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
-                               <td>{{ $p->Hospital_caseno }}</td>
-                               <td>{{ $p->phicID }}</td>
+                               <td></td>
+                               <td></td>
                            </tr>
                         @endforeach
                        </tbody>

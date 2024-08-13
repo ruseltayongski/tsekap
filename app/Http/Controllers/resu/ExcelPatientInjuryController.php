@@ -69,7 +69,7 @@ class ExcelPatientInjuryController extends Controller
                     //     'typeofpatient' => $sheet['typeofpatient'],
                     // ]);
 
-                    $facility = Facility::select('id','name')->get();
+                   
 
                     $province = Province::select('id', 'description')->get();
                     $muncity = Muncity::select('id', 'description')->get();
@@ -117,100 +117,49 @@ class ExcelPatientInjuryController extends Controller
                     
                     //     $facility_ids = $facility->id;
                     // }
-
+                    $facilities = Facility::select('id','name')->get();
                     $facility_id = null;
-                    $report_facility_id = null;
+                    $report_selected_id = null;
                     $other_facility = null;
-                    $levenshtein_threshold = 3;
-
-                    $report_facility = ResuReportFacility::select('id', 'others')->get();
 
                     $facility_name = strtolower(trim($sheet['nameofreportingfacility']));
-
-                    foreach($report_facility as $report){
-                       $reportfactName =  strtolower(trim($report->others));
-
-                        if($reportfactName == $facility_name){
-                            $report_facility_id = $report->id;
-                            break; // exit loop once a match is found
-                        }
-                    }
                     
-                    foreach($facility as $fact){
+                    foreach($facilities as $fact){
                         $report_factname = strtolower(trim($fact->name));
                         if($report_factname == $facility_name){
                             $facility_id = $fact->id;
                             break; // exit loop once a match is found
                         } else {
-                            $other_facility = $sheet['nameofreportingfacility'];
+                            $other_facility = $facility_name;
                         }
                     }
                     
-                    $reportfacility = ResuReportFacility::where('facility_id', $facility_id)
-                        ->orWhere('id', $report_facility_id)->first();
-                    
-                    if(!$reportfacility){
-
+                    $reportfacility = ResuReportFacility::where('facility_id', $facility_id)->first();
+                    $existingfact = ResuReportFacility::where('others', $other_facility)->first();
+                
+                    if (!$reportfacility) {
                         $reportfacility = new ResuReportFacility();
-                    }
-                    
-
-                    if($facility_id){
                         $reportfacility->facility_id = $facility_id;
-                    
-                    } else {
-                        $reportfacility = new ResuReportFacility();
-                        $reportfacility->others = $other_facility;
-                        $reportfacility->typeOfdru = $sheet['typeofdru'];
-                        $reportfacility->Addressfacility = $sheet['addressofdru'];
                     }
-                    
+           
+                    if ($existingfact) {
+                        
+                    } else {
+
+                        if (!$facility_id && $other_facility ) {
+                            $reportfacility = new ResuReportFacility();
+                            $reportfacility->others = $other_facility;
+                        }
+                    }
+            
+                   
+                    $reportfacility->typeOfdru = $sheet['typeofdru'];
+                    $reportfacility->Addressfacility = $sheet['addressofdru'];
                     $reportfacility->save();
                     
-
-                    // $unique_id = $sheet['firstname'].''.$sheet['middlename'].''.$sheet['lastname'].''.$barangay_id .''.$muncityId;
-
-                    // $existingProfile = Profile::where('unique_id', $unique_id)->first();
-                    // if($existingProfile){
-                    //     $profile->Hospital_caseno = $sheet['hospitalcaseno'];
-                    //     $profile->report_facilityId = $facility->id;
-                    //     $profile->fname = $sheet['firstname'];
-                    //     $profile->mname = $sheet['middlename'] ?? '';
-                    //     $profile->lname = $sheet['lastname'];
-                    //     $profile->sex = $sheet['sex'];
-                    //     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
-    
-                    //     $profile->province_id = $provinceId ?? '';
-                    //     $profile->muncity_id = $muncityId ?? '' ;
-                    //     $profile->barangay_id = $barangay_id ?? '';
-                    //     $profile->phicID = $sheet['philhealthnumber']  ?? '';
-                    //     $profile->nameof_encoder = $sheet['nameofencoder'] ?? '';
-                    //     $profile->designation = $sheet['designationofencoder'] ?? '';
-                    //     $profile->contact = $sheet['contactnumberofencoder'] ?? '';
-                    //     $profile->save();   
-                    // }else{
-                    //     $profile = new Profile();
-                    //     $profile->unique_id = $unique_id;
-                    //     $profile->Hospital_caseno = $sheet['hospitalcaseno'];
-                    //     $profile->report_facilityId = $facility->id;
-                    //     $profile->fname = $sheet['firstname'];
-                    //     $profile->mname = $sheet['middlename'] ?? '';
-                    //     $profile->lname = $sheet['lastname'];
-                    //     $profile->sex = $sheet['sex'];
-                    //     $profile->dob = \Carbon\Carbon::parse($sheet['dateofbirth']);
-    
-                    //     $profile->province_id = $provinceId ?? '';
-                    //     $profile->muncity_id = $muncityId ?? '' ;
-                    //     $profile->barangay_id = $barangay_id ?? '';
-                    //     $profile->phicID = $sheet['philhealthnumber']  ?? '';
-                    //     $profile->nameof_encoder = $sheet['nameofencoder'] ?? '';
-                    //     $profile->designation = $sheet['designationofencoder'] ?? '';
-                    //     $profile->contact = $sheet['contactnumberofencoder'] ?? '';
-                    //     $profile->save();
-                    // }
+                    $facilityIdToUse = $existingfact->id ?? $reportfacility->id;
 
                     $unique_id = $sheet['firstname'] . '' . $sheet['middlename'] . '' . $sheet['lastname'] . '' . $barangay_id . '' . $muncityId;
-
                     $existingProfile = Profile::where('unique_id', $unique_id)->first();
         
                     if ($existingProfile) {
@@ -222,7 +171,7 @@ class ExcelPatientInjuryController extends Controller
                     // Update profile details
                     $selectedProfile = [
                         'Hospital_caseno' => $sheet['hospitalcaseno'],
-                        'report_facilityId' => $reportfacility->id,
+                        'report_facilityId' =>  $facilityIdToUse , 
                         'fname' => $sheet['firstname'],
                         'mname' => $sheet['middlename'] ?? '',
                         'lname' => $sheet['lastname'],

@@ -70,11 +70,10 @@ class PatientInjuryController extends Controller
     public function SubmitPatientInjury(Request $request){
         $user = Auth::user();
         $facility = new ResuReportFacility();
-
-        $facility->reportfacility = $request->facilityname;
+        
+        $facility->facility_id = $request->facilityname;
         $facility->typeOfdru = $request->typedru;
         $facility->Addressfacility = $request->addressfacility;
-        $facility->typeofpatient = $request->typePatient;
         $facility->save();
 
         $profile = new Profile();
@@ -91,6 +90,8 @@ class PatientInjuryController extends Controller
         $profile->muncity_id = $request->municipal;
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
+        $profile->typeofpatient = $request->typePatient;
+
         $profile->save();
 
         $pre_admission = new ResuPreadmission();
