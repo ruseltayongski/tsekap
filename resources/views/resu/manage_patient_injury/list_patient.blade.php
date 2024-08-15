@@ -77,12 +77,27 @@
                                <th>Municipal<br>&nbsp;</th>
                                <th>Barangay<br>&nbsp;</th>
                                <th>Place Injury<br>&nbsp;</th>
-                               <th>Date Injury<br>&nbsp;</th>
+                               <th>Date And Time Injury<br>&nbsp;</th>
                            </tr>
                        </thead>
                        <tbody>
-                        
+
                         @foreach($profile as $p)
+                            @php 
+
+                                $province = null;
+                                $muncity = null;
+                                $barangay = null;
+                                if($p->preadmission->POIProvince_id == $p->province->id){
+                                    $province = $p->province->description;
+                                }
+                                if($p->preadmission->POImuncity_id == $p->muncity->id){
+                                    $muncity = $p->muncity->description;
+                                }
+                                if($p->preadmission->POIBarangay_id == $p->barangay->id){
+                                    $barangay = $p->barangay->description;
+                                }
+                            @endphp
                            <tr>
                                <td nowrap="TRUE">
                                    <a href="{{ asset('sublist-patient/'.$p->id) }}" class="btn btn-xs btn-success">
@@ -102,8 +117,8 @@
                                <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
                                <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
                                <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
-                               <td></td>
-                               <td></td>
+                               <td>{{$province. ' , ' . $muncity. ' , ' . $barangay. ' , ' . $p->preadmission->POIPurok}}</td>
+                               <td>{{$p->preadmission->dateInjury . ' '. $p->preadmission->timeInjury}}</td>
                            </tr>
                         @endforeach
                        </tbody>

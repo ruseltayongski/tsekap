@@ -62,14 +62,6 @@ class ExcelPatientInjuryController extends Controller
         
         Excel::load($file, function($reader) {
             $reader->each(function($sheet) {
-                    // ResuReportFacility::create([
-                    //     'reportfacility' => $sheet['nameofreportingfacility'],
-                    //     'typeOfdru' => $sheet['typeofdru'],
-                    //     'Addressfacility' => $sheet['addressofdru'],
-                    //     'typeofpatient' => $sheet['typeofpatient'],
-                    // ]);
-
-                   
 
                     $province = Province::select('id', 'description')->get();
                     $muncity = Muncity::select('id', 'description')->get();
@@ -83,40 +75,6 @@ class ExcelPatientInjuryController extends Controller
                     $muncityId_injury = $this->findclosematch($muncity, $sheet['place_of_injury_muncity'], $this->maxDistance);
                     $barangayId_injury = $this->findclosematch($barangay, $sheet['place_of_injury_barangay'], $this->maxDistance);
                  
-                    //dd($sheet);
-                   
-                    // $facilities =  ResuReportFacility::whereIn('id',$report_facility_id)->get();
-                    // $existing_ids = $facilities->pluck('id');
-
-                    // $facility_ids = null;
-                    // // if($facility){
-                       
-                    // // }else{
-                    // //     $facility = new ResuReportFacility();
-                    // // }
-                    // foreach($facilities as $facility){
-                    //     // $facility = new ResuReportFacility();
-                    //     $facility->reportfacility = $sheet['nameofreportingfacility'];
-                    //     $facility->typeOfdru = $sheet['typeofdru'];
-                    //     $facility->Addressfacility = $sheet['addressofdru'];
-                    //     $facility->typeofpatient = $sheet['typeofpatient'];
-                    //     $facility->save();
-                    //     $facility_ids = $facility->id;
-                    // }
-                    
-                    // $ids_to_create = array_diff($report_facility_id->toArray(), $existing_ids);
-                    
-                    // foreach ($ids_to_create as $id) {
-                    //     $facility = new ResuReportFacility();
-
-                    //     $facility->reportfacility = $sheet['nameofreportingfacility'];
-                    //     $facility->typeOfdru = $sheet['typeofdru'];
-                    //     $facility->Addressfacility = $sheet['addressofdru'];
-                    //     $facility->typeofpatient = $sheet['typeofpatient'];
-                    //     $facility->save();
-                    
-                    //     $facility_ids = $facility->id;
-                    // }
                     $facilities = Facility::select('id','name')->get();
                     $facility_id = null;
                     $report_selected_id = null;

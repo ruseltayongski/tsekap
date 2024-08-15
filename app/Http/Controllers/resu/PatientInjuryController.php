@@ -28,11 +28,30 @@ class PatientInjuryController extends Controller
     public function PatientInjured(){
         $user = Auth::user();
 
-        $profiles = Profile::with(['province', 'muncity', 'barangay'])
+        // $profiles = Profile::with(['province', 'muncity', 'barangay'])
+        //     ->whereNotNull('report_facilityId')
+        //     ->orderby('id', 'desc')
+        //     ->paginate(15);
+
+        $profiles = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
+            ->with([
+                'province' => function($query){
+                    $query->select('id', 'description');
+                },
+                'muncity' => function($query){
+                    $query->select('id', 'province_id', 'description');
+                },
+                'barangay' => function($query){
+                    $query->select('id', 'muncity_id', 'description');
+                },
+                'preadmission' => function($query){
+                    $query->select('id','profile_id','POIProvince_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','timeInjury');
+                }
+            ])
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc')
             ->paginate(15);
-
+         
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles
@@ -40,15 +59,19 @@ class PatientInjuryController extends Controller
     }
 
     public function PatientForm(){
+        $selectedMuncity = Muncity::select('id','description')
+            ->whereIn('id', ['63','76','80'])
+            ->get();
 
-        $facility = Facility::all();
-        $province = Province::all();
-        $barangay = Barangay::all();
+        $facility = Facility::select('id','name','address','hospital_type')->get();
+        $province = Province::select('id', 'description')->get();
         $safety = ResuSafety::all();
+
+        $province_SelectedMuncity = $province->merge($selectedMuncity);
 
         return view('resu.manage_patient_injury.patient_form',[
             'facility' => $facility,
-            'province' => $province,
+            'province' => $province_SelectedMuncity,
             'muncity' => $muncity,
             'barangay' => $barangay,
             'safety' => $safety,
@@ -57,13 +80,17 @@ class PatientInjuryController extends Controller
 
     public function getMunicipal($provinceid){
 
-      $muncity = Muncity::where('province_id', $provinceid)->get();
+      $muncity = Muncity::where('province_id', $provinceid)
+        ->select('id','province_id','description')
+        ->whereNotIn('id',['63','76','80'])->get();
       
       return response()->json($muncity);
     }
 
     public function getBarangay($muncity_id){
-        $barangay = Barangay::where('muncity_id',$muncity_id)->get();
+        $barangay = Barangay::where('muncity_id',$muncity_id)
+            ->select('id','muncity_id','description')
+            ->get();
         return response()->json($barangay);
     }
 
@@ -118,7 +145,6 @@ class PatientInjuryController extends Controller
             $nature->natureInjury_id = $request->InjuredBurn;
             $nature->subtype = $request->Degree; 
             $nature->details = $request->burnDetail;
-            $nature->side = $request->burnside;
             $nature->save();
 
             $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id , $request->input('burn_body_parts', []));
@@ -129,17 +155,10 @@ class PatientInjuryController extends Controller
             $nature->Pre_admission_id = $pre_admission->id;
             $nature->natureInjury_id = $request->fractureNature;
             $nature->subtype = $request->fracttype;
-            if($request->fracture_open_detail){
-                $nature->details = $request->fracture_open_detail;
-                $nature->side = $request->opentype_side;
-            }else{
-                $nature->details = $request->fracture_close_detail;
-                $nature->side = $request->closetype_side;
-            }
+            $nature->details = $request->fracture_detail;
+          
             $nature->save();
-
-            $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id , $request->input('fractureclose_bodyparts', []));
-            $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('fracture_Open_bodyparts', []));
+            $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id , $request->input('fracture_bodyparts', []));
         }
     
         if($request->Others_nature_injured) {
@@ -147,7 +166,6 @@ class PatientInjuryController extends Controller
             $nature->Pre_admission_id = $pre_admission->id;
             $nature->natureInjury_id = $request->Others_nature_injured;
             $nature->details = $request->other_nature_datails;
-            $nature->side = $request->side_others;
             $nature->save();
 
             $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('body_parts_others', []));
@@ -161,7 +179,6 @@ class PatientInjuryController extends Controller
                 $nature->Pre_admission_id = $pre_admission->id; // Update this as needed
                 $nature->natureInjury_id = $request->input('nature' . $i);
                 $nature->details = $request->input('nature_details' . $i);
-                $nature->side = $request->input('sideInjured' . $i); // Save side directly here
                 $nature->save();
 
                 $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('body_parts_injured' . $i, []));
@@ -328,8 +345,7 @@ class PatientInjuryController extends Controller
 
     public function SublistPatient($profile_id){
         $user = Auth::user();
-        $facility = Facility::all();
-        $province = Province::all();
+        $facility = Facility::select('id','name','address','hospital_type')->get();
         $listsafety = ResuSafety::all();
 
         // $profile = Profile::with(['reportfacility', 'preadmission'])->find($profile_id);
@@ -340,6 +356,13 @@ class PatientInjuryController extends Controller
         // 'resuInpatient',
         // 'resuEropdbhsrhu'
         // ])->find($profile_id);
+        $selectedMuncity = Muncity::select('id','description')
+            ->whereIn('id', ['63','76','80'])
+            ->get();
+        $province = Province::select('id','description')->get();
+
+        $province_selectedMun = $province->merge($selectedMuncity);
+
         $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient','report_facilityId')
              ->with([
             'reportfacility' => function($query){
@@ -437,7 +460,7 @@ class PatientInjuryController extends Controller
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
             'facility' => $facility,
-            'province' => $province,
+            'province' => $province_selectedMun,
             'list_safety' => $listsafety,
             'trans' => $transportData,
             'hospitalData' => $hospitalData,
@@ -452,10 +475,10 @@ class PatientInjuryController extends Controller
         if(!$facility){
             $facility = new ResuReportFacility();
         }
-        $facility->reportfacility = $request->facilityname;
+       
+        $facility->facility_id = $request->facilityname;
         $facility->typeOfdru = $request->typedru;
         $facility->Addressfacility = $request->addressfacility;
-        $facility->typeofpatient = $request->typePatient;
         $facility->save();
 
         // $profile_id =  $request->profile_id ?? $request->profile_id_update;
@@ -477,6 +500,7 @@ class PatientInjuryController extends Controller
             $profile->muncity_id = $request->municipal;
             $profile->barangay_id = $request->barangay;
             $profile->phicID = $request->phil_no;
+            $profile->typeofpatient = $request->typePatient;
             $profile->save();
         }
         // dd($request->all());

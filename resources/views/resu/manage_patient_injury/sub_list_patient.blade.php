@@ -8,13 +8,14 @@
  use App\ResuExternalInjury;
  use App\ResuTransportAccident;
  use App\ResuHospitalFacility;
+ use App\Muncity;
 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
  $ex_injury = ResuExternalInjury::all();
  $rtacident = ResuTransportAccident::all();
  $hospital_type = ResuHospitalFacility::all();
-
+ $muncities = Muncity::select('id', 'description')->get();
  use Carbon\Carbon;
 
  $dob = Carbon::parse($profile->dob);
@@ -34,6 +35,7 @@
         <!-- <div class="page-divider"></div> -->
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
             {{ csrf_field() }}
+            <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <input type="hidden" name="reportfacility_id" value="{{$profile->reportfacility->id}}">
             <input type="hidden" name="preadmission_id" value="{{$profile->preadmission->id}}">
             <input type="hidden" name="preadmission_id_update" id="preadmission_id_update" value="{{$profile->preadmission->id}}">
@@ -63,7 +65,6 @@
                                     @endif
                                 </select>
                             </div>
-                        
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
                                 <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $profile->reportfacility->typeOfdru }}">
@@ -72,11 +73,12 @@
                                 <label for="address-facility">Address of Reporting Facility</label>
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $profile->reportfacility->Addressfacility }}">
                             </div>
+                            
                             <div class="col-md-6">
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
                                         @php
-                                            $typePatients = explode(',', $profile->reportFacility->typeofpatient ?? '')
+                                            $typePatients = explode(',', $profile->typeofpatient ?? '')
                                         @endphp
                                     <label class="checkbox-inline">
                                         <input type="radio" id="ER" name="typePatient" value="ER" {{ in_array('ER', $typePatients) ? 'checked' : ''}}> ER
@@ -133,7 +135,7 @@
                                 <input type="text" class="form-control" id="age" name="age" readonly value="{{$age}}">
                             </div>
                             <div class="col-md-3">
-                                <label for="province">Province</label>
+                                <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
@@ -162,7 +164,7 @@
                                 <label>Place Of Injury:</label>
                             </div>
                             <div class="col-md-3">
-                                <label for="province">Province</label>
+                                <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="provinceInjury" id="update_provinceId">
                                     <option value="0" selected>Select Province Injury</option>
                                     @foreach($province as $prov)
@@ -314,13 +316,8 @@
                                             <label>
                                                 <input type="checkbox" id="InjuredBurn"  name="InjuredBurn" value="{{ $injured->id }}" data-category="nature" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
                                             </label><br>
-                                            Degree:
-                                            @foreach([1, 2, 3, 4] as $degree)
-                                                <label>
-                                                    <input type="radio" id="Degree1" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
-                                                    {{$degree}}
-                                                </label>
-                                            @endforeach
+                                            <input type="text" class="form-control" name="burnDetail" id="burn"  value="{{$injuryDatails}}" placeholder="burn details">
+
                                         @elseif(strtolower($injured->name) == "fracture")
                                             <label>
                                                 <input type="checkbox" name="fractureNature" value="{{$injured->id}}" data-category="nature" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}> {{$injured->name}}
@@ -353,7 +350,7 @@
                             
                      
                     </div>
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         @php
                             $counter = 1;
                             $renderedInjuredIds = [];
@@ -407,8 +404,9 @@
                             @endforeach
                       
                         
-                        <!----------------------------- Nature of Injury ------------------------------>
-                    </div>
+                       
+                    </div> -->
+                     <!----------------------------- Nature of Injury ------------------------------>
                     <input type="hidden" name="injured_count" class="injured_count" value="{{ $counter }}">
                     <div class="col-md-3">
                         @php
@@ -417,6 +415,9 @@
                             $body_parts_id = [];
                         @endphp
                         @foreach($profile->preadmission->natureInjuryPreadmissions as $natureadmission)
+                            @php
+                                $natureDetails[$natureadmission->natureInjury_id] =$natureadmission->details;
+                            @endphp
                             @foreach($natureadmission->bodyParts as $bodyPart)
                                 @if($bodyPart->nature_injury_id == $natureadmission->natureInjury_id)
                                     @php
@@ -433,28 +434,24 @@
                             @endphp
                             
                             @if(!in_array($checkIdInjured, $renderedInjuredIds))
-                        
+                              @php                      
+                                $injuryDatails = $natureDetails[$injured->id] ?? '';
+                              @endphp
                                 @if($injured->name == "Burn" || $injured->name == "burn")
                                     <br>
-                                    <label>Select Side</label>
-                                    <select class="form-control" name="burnside" id="update_burnside">
-                                        <option value="">Select Side for burn</option>
-                                        <option value="right" {{$sides == 'right' ? 'selected' : '' }}>right</option>
-                                        <option value="left" {{$sides == 'left' ? 'selected' : '' }}>left</option>
-                                        <option value="Both left and Right" {{$sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
-                                    </select>
+                                    <label for="bodyParts">Select Body Parts</label>
+                                    <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
+                                    @foreach($body_part as $body_parts)
+                                        <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
+                                    @endforeach
+                                </select>
                                 @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                                     <br><br>
-                                    <label>Select side</label>
-                                        <select class="form-control" name="fracture_side" id="closetype_side">
-                                            <option value="">Select side close type</option>
-                                                <option value="right" {{ $sides == 'right' ? 'selected' : '' }}>right</option>
-                                                <option value="left"  {{ $sides == 'left' ? 'selected' : '' }}>left</option>
-                                                <option value="Both left and Right" {{ $sides == 'Both left and Right' ? 'selected' : '' }}>Both Left & right</option>
-                                        </select>
+                                    <label>fracture details</label>
+                                    <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" value="{{$injuryDatails}}" placeholder=" fracture close type details">
                                 
                                 @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                    <br><br>
+                                    <br><br><br>
                                     <label>Select Body parts</label>
                                     <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple>
                                         @foreach($body_part as $body_parts)
@@ -488,11 +485,14 @@
                             @endphp                            
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <br><br><br><br><br><br><br>
-                                <select class="form-control chosen-select" name="burn_body_parts[]" id="burn_body_parts" multiple>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}" {{ in_array($body_parts->id, $body_parts_ids) ? 'selected' : '' }}>{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
+                                Degree:
+                                @foreach([1, 2, 3, 4] as $degree)
+                                    <label>
+                                        <input type="radio" id="Degree1" name="Degree" value="Degree {{$degree}}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : '' }}>
+                                        {{$degree}}
+                                    </label>
+                                @endforeach
+
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
                                 <br><br><br><br><br><br><br><br>
                                 <label for="bodyparts">Body parts</label>

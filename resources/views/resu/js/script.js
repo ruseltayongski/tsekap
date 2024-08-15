@@ -22,76 +22,6 @@ function showPreviousStep() {
   }
 }
 
-//display municipal
-function MunicipalData(provinceId, muncity, muncity_id = null) {
-  $(muncity)
-    .empty()
-    .append('<option value="0" selected>Select Municipal</option>'); // Reset municipal dropdown
-  // console.log("update province Id", provinceId);
-  if (provinceId) {
-    $.ajax({
-      url: "get/municipal/" + provinceId,
-      type: "GET",
-      dataType: "json",
-      success: function (data) {
-        if (data && data.length > 0) {
-          $.each(data, function (key, value) {
-            if (value.id && value.description) {
-              $(muncity).append(
-                '<option value="' +
-                  value.id +
-                  '">' +
-                  value.description +
-                  "</option>"
-              );
-            }
-          });
-          if (muncity_id) {
-            $(muncity).val(muncity_id);
-            $(muncity).trigger("chosen:updated");
-            console.log("chosen", $(muncity).trigger("chosen:updated"));
-          } else {
-            $(muncity).trigger("chosen:updated");
-            console.log("chosen", $(muncity).trigger("chosen:updated"));
-          }
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.log(JSON.stringify(jqXHR));
-        console.log("AJAX error: " + textStatus + " : " + errorThrown);
-      },
-    });
-  }
-}
-
-// display Barangay
-function BarangayData(muncityId, barangay, barangay_id = null) {
-  $(barangay).empty().append("<option>Select Barangay</option>");
-
-  $.ajax({
-    url: "get/barangay/" + muncityId,
-    type: "GET",
-    dataType: "json",
-    success: function (data) {
-      $.each(data, function (key, value) {
-        $(barangay).append(
-          '<option value="' + value.id + '">' + value.description + "</option>"
-        );
-      });
-      if (barangay_id) {
-        $(barangay).val(barangay_id);
-        $(barangay).trigger("chosen:updated");
-      } else {
-        $(barangay).trigger("chosen:updated");
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log(JSON.stringify(jqXHR));
-      console.log("AJAX error: " + textStatus + " : " + errorThrown);
-    },
-  });
-}
-
 $(document).on("click", ".update-btn", function () {
   var profileId = $(this).data("id");
   $("#profile_id").val(profileId); // Set the profile_id in the hidden input
@@ -199,20 +129,39 @@ $(document).ready(function () {
 
   // for option hide of  A. ER/OPD/BHS/RHU or  B. In-Patient(for admitted hospital cases only)
 
-  if ($("#A_ErOpd").is(":checked")) {
-    $(".B_InpatientGroup").hide();
-  } else {
-    $(".B_InpatientGroup").show();
+  function toggleInPatientContent() {
+    if ($("#B_InPatient").is(":checked")) {
+      $(".A_ErOpdGroup").hide();
+      $(".Inpatient_linehr").hide();
+      $(".hrA_ErOpdGroup").hide();
+      $(".In_patient_content").show();
+    } else {
+      $(".A_EropdGroup").show();
+      $(".Inpatient_linehr").show();
+      $(".In_patient_content").hide();
+    }
   }
 
-  if ($("#B_InPatient").is(":checked")) {
-    $(".A_ErOpdGroup").hide();
-    $(".Inpatient_linehr").hide();
-    $(".hrA_ErOpdGroup").hide();
-  } else {
-    $(".A_EropdGroup").show();
-    $(".Inpatient_linehr").show();
+  toggleInPatientContent();
+  $("#B_InPatient").on("change", function () {
+    toggleInPatientContent();
+  });
+
+  function toggleEROpd() {
+    if ($("#A_ErOpd").is(":checked")) {
+      $(".B_InpatientGroup").hide();
+      $(".ER_Content").show();
+    } else {
+      $(".B_InpatientGroup").show();
+      $(".ER_Content").hide();
+    }
   }
+
+  toggleEROpd();
+
+  $("#A_ErOpd").on("change", function () {
+    toggleEROpd();
+  });
 
   $("#A_ErOpd").change(function () {
     if ($(this).is(":checked")) {
@@ -242,15 +191,121 @@ $(document).ready(function () {
     $("#addressfacility").val(address);
   });
 
+  //display municipal
+
+  function MunicipalData(provinceId, muncity, muncity_id = null) {
+    $(muncity)
+      .empty()
+      .append('<option value="0" selected>Select Municipal</option>'); // Reset municipal dropdown
+    // console.log("update province Id", provinceId);
+    if (provinceId) {
+      $.ajax({
+        url: "get/municipal/" + provinceId,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          console.log("data province", provinceId);
+          if (data && data.length > 0) {
+            $.each(data, function (key, value) {
+              if (value.id && value.description) {
+                $(muncity).append(
+                  '<option value="' +
+                    value.id +
+                    '">' +
+                    value.description +
+                    "</option>"
+                );
+              }
+            });
+            if (muncity_id) {
+              $(muncity).val(muncity_id);
+              $(muncity).trigger("chosen:updated");
+              console.log("chosen", $(muncity).trigger("chosen:updated"));
+            } else {
+              $(muncity).trigger("chosen:updated");
+            }
+          }
+          //this is HUC muncities not provinceId
+          if (provinceId == 63 || provinceId == 76 || provinceId == 80) {
+            var muncities = JSON.parse(
+              document.getElementById("muncities-data").value
+            );
+            muncities.forEach(function (mun) {
+              if (mun.id == provinceId) {
+                $(muncity).append(
+                  '<option value="' +
+                    mun.id +
+                    '" >' +
+                    mun.description +
+                    "</option>"
+                );
+              }
+            });
+
+            if (provinceId) {
+              $(muncity).val(provinceId);
+              $(muncity).trigger("chosen:updated");
+            } else {
+              $(muncity).trigger("chosen:updated");
+            }
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log(JSON.stringify(jqXHR));
+          console.log("AJAX error: " + textStatus + " : " + errorThrown);
+        },
+      });
+    }
+  }
+
+  // display Barangay
+  function BarangayData(muncityId, barangay, barangay_id = null) {
+    $(barangay).empty().append("<option>Select Barangay</option>");
+    console.log("muncity id: ", muncityId);
+    $.ajax({
+      url: "get/barangay/" + muncityId,
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        $.each(data, function (key, value) {
+          $(barangay).append(
+            '<option value="' +
+              value.id +
+              '">' +
+              value.description +
+              "</option>"
+          );
+        });
+        if (barangay_id) {
+          $(barangay).val(barangay_id);
+          $(barangay).trigger("chosen:updated");
+        } else {
+          $(barangay).trigger("chosen:updated");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(JSON.stringify(jqXHR));
+        console.log("AJAX error: " + textStatus + " : " + errorThrown);
+      },
+    });
+  }
+
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();
+
     MunicipalData(provinceId, "#municipal");
   });
 
   $("#provinceId").change(function () {
     var provinceId = $(this).val();
     MunicipalData(provinceId, "#municipal_injury");
+  });
+
+  $("#municipal").change(function () {
+    var muncityId = $(this).val();
+    console.log("barangay muncity id:", muncityId);
+    BarangayData(muncityId, "#barangay");
   });
 
   //this is upate portion permanent Address
@@ -316,12 +371,6 @@ $(document).ready(function () {
     console.error("placemunicipalId is not set!");
   }
 
-  $("#municipal").change(function () {
-    var muncityId = $(this).val();
-
-    BarangayData(muncityId, "#barangay");
-  });
-
   $("#municipal_injury").change(function () {
     var muncityId = $(this).val();
     BarangayData(muncityId, "#barangay_injury");
@@ -375,39 +424,34 @@ $(document).ready(function () {
   burnBodyParts.prop("disabled", true);
 
   BurnCheckbox.change(function () {
-    // burnDetails.prop("disabled", !this.checked);
-    degree1.prop("disabled", !this.checked);
-    degree2.prop("disabled", !this.checked);
-    degree3.prop("disabled", !this.checked);
-    degree4.prop("disabled", !this.checked);
+    burnDetails.prop("disabled", !this.checked);
 
     if (!this.checked) {
-      degree1.removeAttr("checked");
-      degree2.removeAttr("checked");
-      degree3.removeAttr("checked");
-      degree4.removeAttr("checked");
       burnDetails.prop("disabled", true).val("");
-      burnSide.prop("disabled", true).val("");
       burnBodyParts.prop("disabled", true).val("").trigger("chosen:updated");
+      degree1.prop("disabled", true).removeAttr("checked");
+      degree2.prop("disabled", true).removeAttr("checked");
+      degree3.prop("disabled", true).removeAttr("checked");
+      degree4.prop("disabled", true).removeAttr("checked");
     }
   });
 
-  degree1
-    .add(degree2)
-    .add(degree3)
-    .add(degree4)
-    .change(function () {
-      burnDetails.prop("disabled", !this.checked);
-    });
-
   burnDetails.on("input", function () {
-    burnSide.prop("disabled", $(this).val().trim() === "");
-  });
-
-  burnSide.change(function () {
+    // burnSide.prop("disabled", $(this).val().trim() === "");
     var hasValue = $(this).val() !== "";
     burnBodyParts.prop("disabled", !hasValue).trigger("chosen:updated");
   });
+
+  burnBodyParts.change(function () {
+    // burnDetails.prop("disabled", !this.checked);
+    if ($(this).val().length > 0) {
+      degree1.prop("disabled", false);
+      degree2.prop("disabled", false);
+      degree3.prop("disabled", false);
+      degree4.prop("disabled", false);
+    }
+  });
+
   // for fracture
   var fractureCheck = $("#fractureNature");
 
@@ -447,16 +491,17 @@ $(document).ready(function () {
   });
 
   fractureCloseDetails.add(fractureOpenDetails).on("input", function () {
-    closetypeside.prop("disabled", $(this).val().trim === "");
-    opentypeside.prop("disabled", $(this).val().trim === "");
-  });
-
-  closetypeside.add(opentypeside).change(function () {
     var hasValue = $(this).val() !== "";
-
     fractureopenbody.prop("disabled", !hasValue).trigger("chosen:updated");
     fractureclosebody.prop("disabled", !hasValue).trigger("chosen:updated");
   });
+
+  // closetypeside.add(opentypeside).change(function () {
+  //   var hasValue = $(this).val() !== "";
+
+  //   fractureopenbody.prop("disabled", !hasValue).trigger("chosen:updated");
+  //   fractureclosebody.prop("disabled", !hasValue).trigger("chosen:updated");
+  // });
 
   // for Others
   var other_nature = $("#Others_nature_injured");
@@ -474,14 +519,11 @@ $(document).ready(function () {
   });
 
   other_nature_details.on("input", function () {
-    side_others.prop("disabled", $(this).val().trim === "");
-  });
-
-  side_others.change(function () {
     var hasValue = $(this).val() !== "";
 
     bodyparts_others.prop("disabled", !hasValue).trigger("chosen:updated");
   });
+
   //nature multiple generated counter
   $('[id^="nature"]').each(function () {
     var counter = $(this).attr("id").match(/\d+/);
@@ -507,14 +549,6 @@ $(document).ready(function () {
     });
 
     natureDetails.on("input", function () {
-      natureside.prop("disabled", $(this).val().trim() === "");
-      if ($(this).val().trim() === "") {
-        natureside.val("");
-        natureBodyParts.prop("disabled", true).val("");
-      }
-    });
-
-    natureside.change(function () {
       var hasValue = $(this).val() !== "";
 
       natureBodyParts.prop("disabled", !hasValue).trigger("chosen:updated");
