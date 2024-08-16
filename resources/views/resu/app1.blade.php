@@ -142,7 +142,22 @@
                         </li>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ asset('/viewUsers')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Users</a></li>
+                        <!-- @if(Auth::user()->user_priv==1)
+                        <li><a href="{{ url('/services') }}"><i class="fa fa-stethoscope"></i>&nbsp;&nbsp;  Services</a></li>
+                        <li><a href="{{ url('/bracket') }}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;  Age Bracket</a></li>
+                        @endif
+                        @if(Auth::user()->user_priv==1)
+                        <li class="divider"></li>
+                        <li class="hide"><a href="{{ asset('/download')  }}"><i class="fa fa-download"></i>&nbsp;&nbsp; Download Data</a></li>
+                        <li><a href="{{ asset('/feedback')  }}"><i class="fa fa-envelope"></i>&nbsp;&nbsp; User's Feedback <span class="badge">{{ App\Feedback::where('status','!=','1')->count() }}</span></a></li>
+                        @endif -->
 
+                    </ul>
+                </li>
             @elseif($priv==11)
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
