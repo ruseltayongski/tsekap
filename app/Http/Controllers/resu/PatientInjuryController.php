@@ -51,30 +51,53 @@ class PatientInjuryController extends Controller
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc')
             ->paginate(15);
-         
+
+            $facility_id = null;
+            foreach ($profile as $key => $p) {
+                $facility_id = $p->facility_id;
+            }
+            $facility = Facility::select('id', 'name')
+                ->where('id', $facility_id)                
+                ->get();
+            
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
-            'profile' => $profiles
+            'profile' => $profiles,
+            'facility' => $facility,
         ]);
     }
 
     public function PatientForm(){
+
+        $user = Auth::user();
+
+
+
         $selectedMuncity = Muncity::select('id','description')
             ->whereIn('id', ['63','76','80'])
             ->get();
 
-        $facility = Facility::select('id','name','address','hospital_type')->get();
+        $facility = Facility::select('id','name','address','hospital_type')
+            ->where('id', $user->facility_id)    
+            ->get();
+        $facilities = null;
+
+        foreach($facility as $fact){
+            $facilities = $fact;
+        }
+
         $province = Province::select('id', 'description')->get();
         $safety = ResuSafety::all();
 
         $province_SelectedMuncity = $province->merge($selectedMuncity);
 
         return view('resu.manage_patient_injury.patient_form',[
-            'facility' => $facility,
+            'facility' => $facilities,
             'province' => $province_SelectedMuncity,
             'muncity' => $muncity,
             'barangay' => $barangay,
             'safety' => $safety,
+            'user' => $user,
         ]);
     }
 

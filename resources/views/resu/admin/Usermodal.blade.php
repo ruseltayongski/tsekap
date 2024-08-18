@@ -10,6 +10,9 @@
         $provinces = $provinces->where('id',$user->province);
     }
     $provinces = $provinces->get();
+    $muncity = Muncity::select('id','province_id', 'description')
+                ->whereNotIn('id',['63','76','80'])
+                ->get();
 
     $selectedMuncity = Muncity::select('id','description')
     ->whereIn('id', ['63','76','80'])
@@ -83,6 +86,7 @@
                            
                         </select>
                     </div>
+                    <input type="hidden" id="get_all_muncity" value="{{ $muncity }}">
                     <input type="hidden" id="get_muncity" value="{{ $selectedMuncity }}">
                     <hr />
                     <div class="form-group">

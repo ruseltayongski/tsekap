@@ -83,6 +83,7 @@
             <span class="title-desc">
                 <?php
                     $priv = Auth::user()->user_priv;
+                    $priv_fact = Auth::user()->facility_id;
                 ?>
                 @if($priv==1)
                     REGION VII
@@ -158,7 +159,7 @@
 
                     </ul>
                 </li>
-            @elseif($priv==11)
+            @elseif($priv==11 || ($priv==6 && $priv_fact))
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
                     <ul class="dropdown-menu">

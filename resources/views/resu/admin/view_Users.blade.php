@@ -126,7 +126,35 @@
 
                 $('#SelectedMuncity').trigger('chosen:updated');
                 $('#Selectprovince').trigger('chosen:updated');
+            }else{
+                $('#Selectprovince').empty().append('<option value="">Select Province..</option>');
+                var provinces = JSON.parse(document.getElementById("get-province").value);
+
+                $.each(provinces, function(index, province){
+                    $('#Selectprovince').append('<option value=" ' + province.id + ' ">' + province.description + '</option>')
+                });
+                
+                $('#SelectedMuncity').empty().append('<option value="">Select Municipal / City...</option>');
+
+                $('#SelectedMuncity').trigger('chosen:updated');
+                $('#Selectprovince').trigger('chosen:updated');
             }
+
+ 
+        });
+
+        $("#Selectprovince").change(function () {
+            var provinceId = $(this).val();
+            var allmuncity = JSON.parse(document.getElementById("get_all_muncity").value);
+            
+            $.each(allmuncity, function(index, mun){
+                
+                if(mun.province_id == provinceId){
+                    $('#SelectedMuncity').append('<option value=" '+ mun.id +' ">' + mun.description +'</option>');
+                }
+            });
+
+            $('#SelectedMuncity').trigger('chosen:updated');
         });
 
     });

@@ -1,11 +1,14 @@
 @php
     use Carbon\Carbon;
+    
+     $priv_fact= Auth::user()->facility_id;
+
 @endphp
 
 @extends('resu/app1')
 @section('content')
 
-    @if($user_priv->user_priv == 11)
+    @if($user_priv->user_priv == 11 || ($user_priv->user_priv == 6 && $priv_fact))
        
        <div class="col-md-12 wrapper">
            <div class="alert alert-jim">
@@ -60,7 +63,7 @@
                        </form>
                    </div>
                </div>
-   
+                
                <div class="clearfix"></div>
                <div class="page-divider"></div>
                <div class="table-responsive">
@@ -104,7 +107,9 @@
                                        <i class="fa fa-eye"></i> View
                                    </a>
                                </td>
-                               <td></td>
+                               <td>
+
+                               </td>
                                <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
                                <td>
                                 @php

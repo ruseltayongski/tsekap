@@ -181,15 +181,15 @@ $(document).ready(function () {
     }
   });
 
-  $("#facility").change(function () {
-    var facilityId = $(this).val();
-    var selectedfacility = $(this).find("option:selected");
-    var address = selectedfacility.data("address");
-    var hospital_type = selectedfacility.data("hospital_type");
+  // $("#facility").change(function () {
+  //   var facilityId = $(this).val();
+  //   var selectedfacility = $(this).find("option:selected");
+  //   var address = selectedfacility.data("address");
+  //   var hospital_type = selectedfacility.data("hospital_type");
 
-    $("#typedru").val(hospital_type);
-    $("#addressfacility").val(address);
-  });
+  //   $("#typedru").val(hospital_type);
+  //   $("#addressfacility").val(address);
+  // });
 
   //display municipal
 
