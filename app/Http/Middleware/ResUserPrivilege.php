@@ -20,7 +20,8 @@ class ResUserPrivilege
         $fnameParts = explode('-', Auth::user()->fname);
         Auth::user()->fname = end($fnameParts);
  
-        if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11 || (Auth::user()->user_priv == 6 && Auth::user()->facility_id)) {
+        if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11 || (Auth::user()->user_priv == 6 && Auth::user()->facility_id) 
+            || (Auth::user()->user_priv == 7 && $lastPart === 'DSO')) {
             $allowedRoute = [
                 'survelance',
                 'survelance/*'

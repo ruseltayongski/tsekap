@@ -23,10 +23,12 @@ $provinces = $provinces->get();
                     <label>Access Level</label>
                     <select name="level" class="form-control chosen-select">
                         <option value="">Select Level...</option>
-                        <option @if($level=='1') selected @endif value="1">Admin Level</option>
+                        <option @if($level=='1') selected @endif value="1">Region Level</option>
                         <option @if($level=='3') selected @endif value="3">Provincial Level</option>
-                        <option @if($level=='0') selected @endif value="0">Municipal Level</option>
-                        <option @if($level=='2') selected @endif value="2">Barangay Level</option>
+                        <option @if($level=='0') selected @endif value="0">HUC Level</option>
+                        <option @if($level=='2') selected @endif value="2">Facility Level</option>
+                        <option @if($level=='2') selected @endif value="2">DSO Level</option>
+                        <option @if($level=='2') selected @endif value="2">Staff DSO Level</option>
                         <option>Facility Level</option>
                     </select>
                 </div>

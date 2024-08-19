@@ -13,6 +13,11 @@ class UsersCtrl extends Controller
     //
     public function index(){
         
+        $users = User::all();
+
+        $fname = explode('-', $users->fname);
+        $getLastword = $users = end($fname);
+        dd($getLastword);
         return view('resu.admin.view_Users');
     }
 
@@ -33,4 +38,5 @@ class UsersCtrl extends Controller
 
         $u->save();
     }
+    
 }

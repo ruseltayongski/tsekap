@@ -15,10 +15,10 @@
                         <thead>
                         <tr>
                             <th>Full Name</th>
-                            <th>Address/Contact</th>
+                            <th>Address</th>
+                            <th>Contact Number</th>
                             <th>Username</th>
                             <th>Level</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -34,6 +34,9 @@
                                 <td>
                                         <br />
                                         <small class="text-warning"></small>
+                                </td>
+                                <td>
+                                    
                                 </td>
                                 <td>
                                    
@@ -58,15 +61,6 @@
                           
                                         <font class="text-warning text-bold">Barangay</font> -->
                                     
-                                </td>
-                                <td class="text-bold text-warning">
-                                    
-                                        <font class="text-success text-bold">All Barangay</font>
-                                       
-                                        <!-- <font class="text-bold text-info">  Barangay</font>                                       
-                                        <font class="text-bold text-danger">Municipality / City</font>
-                                        <font class="text-bold text-danger"> Barangay</font> -->
-
                                 </td>
                             </tr>
 
