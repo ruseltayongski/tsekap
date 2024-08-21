@@ -1,7 +1,7 @@
 @extends('resu/app1')
 @section('content')
 
-@include('sidebar')
+@include('resu/resuSidebar')
 <?php
  use App\ResuNatureInjury;
  use App\ResuBodyParts;

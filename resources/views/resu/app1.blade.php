@@ -159,7 +159,7 @@
 
                     </ul>
                 </li>
-            @elseif($priv==11 || ($priv==6 && $priv_fact))
+            @else
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
                     <ul class="dropdown-menu">

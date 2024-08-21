@@ -19,9 +19,16 @@ class ResUserPrivilege
     {
         $fnameParts = explode('-', Auth::user()->fname);
         Auth::user()->fname = end($fnameParts);
- 
+        $fname = null;
+        foreach($fnameParts as $f){
+        
+           if($f == 'DSO'){
+                $fname = $f;
+           }
+        }
+
         if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11 || (Auth::user()->user_priv == 6 && Auth::user()->facility_id) 
-            || (Auth::user()->user_priv == 7 && $lastPart === 'DSO')) {
+            || (Auth::user()->user_priv == 7 || Auth::user()->user_priv == 3 && $fname === 'DSO')) {
             $allowedRoute = [
                 'survelance',
                 'survelance/*'

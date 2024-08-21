@@ -62,6 +62,7 @@
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
                                 <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $facility->hospital_type}}">
+                                <input type="hidden" name="facility_id" value="{{ $facility->id }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="address-facility">Address of Reporting Facility</label>

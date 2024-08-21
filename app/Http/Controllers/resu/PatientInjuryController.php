@@ -27,13 +27,12 @@ class PatientInjuryController extends Controller
     //
     public function PatientInjured(){
         $user = Auth::user();
-
         // $profiles = Profile::with(['province', 'muncity', 'barangay'])
         //     ->whereNotNull('report_facilityId')
         //     ->orderby('id', 'desc')
         //     ->paginate(15);
-
-        $profiles = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
+ 
+        $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
             ->with([
                 'province' => function($query){
                     $query->select('id', 'description');
@@ -49,21 +48,31 @@ class PatientInjuryController extends Controller
                 }
             ])
             ->whereNotNull('report_facilityId')
-            ->orderby('id', 'desc')
-            ->paginate(15);
+            ->orderby('id', 'desc');
+             
+            $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->get();
 
-            $facility_id = null;
-            foreach ($profile as $key => $p) {
-                $facility_id = $p->facility_id;
+            if($user->user_priv == 6){ // for facility view
+               
+                $profiles = $query->where('report_facilityId', $user_facility[0]->id)->paginate(15);
+                    
+            }else if($user->user_priv == 7){ //Region view
+               
+                $profiles = $query->paginate(15);
+
+            }else if($user->user_priv == 3){
+               $profiles = $query->where('province_id', $user->province)
+                    ->whereNotIn('province_id',['63','76','80'])
+                    ->paginate(15);
             }
-            $facility = Facility::select('id', 'name')
-                ->where('id', $facility_id)                
-                ->get();
-            
+            else{
+                $profiles = $query->paginate(15);
+            }
+        
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles,
-            'facility' => $facility,
+            // 'facility' => $facility,
         ]);
     }
 
@@ -119,11 +128,16 @@ class PatientInjuryController extends Controller
 
     public function SubmitPatientInjury(Request $request){
         $user = Auth::user();
-        $facility = new ResuReportFacility();
-        
-        $facility->facility_id = $request->facilityname;
-        $facility->typeOfdru = $request->typedru;
-        $facility->Addressfacility = $request->addressfacility;
+        // $reportFact =   ResuReportFacility::select('id','facility_id')->get();
+        // $fact_id = null;
+        // foreach ($reportFact  as $key => $fact) {
+        //     $fact_id = $fact->facility_id;
+        // }
+        $facility = ResuReportFacility::where('facility_id', $request->facility_id)->first();
+        if(!$facility){
+            $facility = new ResuReportFacility();
+        }
+        $facility->facility_id = $request->facility_id;
         $facility->save();
 
         $profile = new Profile();
@@ -142,6 +156,7 @@ class PatientInjuryController extends Controller
         $profile->phicID = $request->phil_no;
         $profile->typeofpatient = $request->typePatient;
 
+        // $profile->nameof_encoder = $user->
         $profile->save();
 
         $pre_admission = new ResuPreadmission();

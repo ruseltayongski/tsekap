@@ -1,14 +1,14 @@
 @php
     use Carbon\Carbon;
+    use App\Facility;
+    use App\ResuReportFacility;
     
-     $priv_fact= Auth::user()->facility_id;
+    $priv_fact= Auth::user()->facility_id;
 
 @endphp
 
 @extends('resu/app1')
 @section('content')
-
-    @if($user_priv->user_priv == 11 || ($user_priv->user_priv == 6 && $priv_fact))
        
        <div class="col-md-12 wrapper">
            <div class="alert alert-jim">
@@ -46,16 +46,18 @@
                                    <div class="clearfix"></div>
                                </div>
                            @endif
-                           @if(!$not_updated)
+                           {{-- @if(!$not_updated)
                                <div class="form-group">
                                    <button class="btn btn-warning col-xs-12" name="viewNotUpdated" value="true"><i class="fa fa-search"></i>{{ $not_updated }} View Not Updated</button>
                                    <div class="clearfix"></div>
                                </div>
+                           @endif --}}
+                           @if($user_priv->user_priv == 6)
+                            <div class="form-group">
+                                <a class="btn btn-info col-xs-12" href="{{ url('patient-form') }}"><i class="fa fa-user-plus"></i> Add Patient Injury</a>
+                                <div class="clearfix"></div>
+                            </div>
                            @endif
-                           <div class="form-group">
-                               <a class="btn btn-info col-xs-12" href="{{ url('patient-form') }}"><i class="fa fa-user-plus"></i> Add Patient Injury</a>
-                               <div class="clearfix"></div>
-                           </div>
                            <!-- <div class="form-group">
                                <a class="btn btn-success col-xs-12" href="#filterResult" data-toggle="modal"><i class="fa fa-filter"></i> Filter Result</a>
                                <div class="clearfix"></div>
@@ -67,12 +69,14 @@
                <div class="clearfix"></div>
                <div class="page-divider"></div>
                <div class="table-responsive">
-               
+           
                    <table class="table table-hover table-striped">
                        <thead>
                            <tr>
                                <th></th>
-                               <th>Facility Name <br>&nbsp;</th>
+                               @if($user_priv->user_priv == 7)
+                                <th>Facility Name <br>&nbsp;</th>
+                               @endif
                                <th>Full Name<br>&nbsp;</th>
                                <th>Age<br>&nbsp;</th>
                                <th>Sex<br>&nbsp;</th>
@@ -107,9 +111,16 @@
                                        <i class="fa fa-eye"></i> View
                                    </a>
                                </td>
-                               <td>
+                               @if($user_priv->user_priv == 7)
+                                <td>
+                                    @php
 
-                               </td>
+                                    $facility_id = ResuReportFacility::find($p->report_facilityId)->facility_id
+                                
+                                    @endphp
+                                      {{  Facility::find($facility_id)->name }}
+                                </td>
+                               @endif
                                <td class="<?php if($p->head=='YES') echo 'text-bold text-primary';?>">{{ $p->fname.' '.$p->mname.' '.$p->lname.' '.$p->suffix }}</td>
                                <td>
                                 @php
@@ -139,7 +150,6 @@
                </div>
            </div>
        </div>    
-    @endif
 
 @endsection
 

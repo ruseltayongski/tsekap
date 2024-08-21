@@ -1,3 +1,8 @@
+<?php
+use App\Muncity;
+use App\Province;
+
+?>
 @extends('resu/app1')
 @section('content')
 
@@ -22,31 +27,53 @@
                         </tr>
                         </thead>
                         <tbody>
-              
-
+                   
+                         @foreach($user as $u)
                             <tr>
+                               
+                                @php
+                                    $fnameParts = str_replace('-DSO', '', $u->fname);
+                                    $dso = explode('-', $u->fname);
+                                    $lastDso = end($dso);
+
+                                @endphp
+                            
                                 <td>
+                                 
+
                                     <a href="#userInfo" class="title-info userInfo" data-id="" data-toggle="modal">
-                                       
-                                     
+                                       {{ $fnameParts }},
+                                       {{ $u->lname }}
                                     </a>
                                 </td>
                                 <td>
-                                        <br />
-                                        <small class="text-warning"></small>
+                                    {{ Muncity::find($u->muncity)->description}},
+                                    {{ Province::find($u->province)->description }}
                                 </td>
                                 <td>
-                                    
+                                    {{ $u->contact}}
                                 </td>
                                 <td>
-                                   
+                                   {{ $u->username}}
                                 </td>
                                 <td>
                            
-                                         <font class="text-success text-bold">Admin</font>
-                  
+                                         
+                                    @if($u->user_priv == 6)
+                                        <font class="text-info text-bold">Facility</font>
+                                    @elseif($u->user_priv == 7)
+                                        <font class="text-danger text-bold">Region</font>
+                                    @elseif($u->user_priv == 3)
+                                        <font class="text-danger text-bold">Provincial</font>
+                                    @elseif($u->user_priv == 8)
+                                        <font class="text-danger text-bold">HUC</font>
+                                    @elseif($u->user_priv == 10)
+                                        <font class="text-bold text-danger">DSO</font> 
+                                    @elseif($u->user_priv == 11)
+                                        <font class="text-bold text-danger">Staff DSO</font>
+                                    @endif
                                         <!-- <font class="text-info text-bold">Municipal</font>
-                             
+                                    
                                         <font class="text-danger text-bold">Provincial</font>
                               
                                         <font class="text-danger text-bold">Dentist</font>
@@ -63,12 +90,12 @@
                                     
                                 </td>
                             </tr>
-
+                        @endforeach
                     
                         </tbody>
                     </table>
                 </div>
-              <!-- pagination -->
+                {{ $user->links() }}
 <!--          
                 <div class="alert alert-warning">
                     <strong><font class="text-warning"><i class="fa fa-warning fa-lg"></i> No data found! </font></strong>
