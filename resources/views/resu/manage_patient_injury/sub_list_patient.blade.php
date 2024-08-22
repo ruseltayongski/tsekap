@@ -976,7 +976,7 @@
                 @endif --}}
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-success mx-2" onclick="submitProfileId()">update</button>
+                        <button type="submit" class="btn btn-success mx-2" >update</button>
                     </div>
             </div>
         </form>

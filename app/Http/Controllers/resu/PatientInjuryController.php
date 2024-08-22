@@ -25,15 +25,20 @@ use App\ResuErOpdBhsRhu;
 class PatientInjuryController extends Controller
 {
     //
-    public function PatientInjured(){
+    public function PatientInjured(Request $request){
         $user = Auth::user();
+     
         // $profiles = Profile::with(['province', 'muncity', 'barangay'])
         //     ->whereNotNull('report_facilityId')
         //     ->orderby('id', 'desc')
         //     ->paginate(15);
- 
+        $keyword = $request->input('keyword');
+     
         $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
             ->with([
+                'facility' => function($query){
+                    $query->select('id', 'name');
+                },
                 'province' => function($query){
                     $query->select('id', 'description');
                 },
@@ -49,26 +54,79 @@ class PatientInjuryController extends Controller
             ])
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc');
+
+            // $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->first();
              
-            $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->get();
-
             if($user->user_priv == 6){ // for facility view
-               
-                $profiles = $query->where('report_facilityId', $user_facility[0]->id)->paginate(15);
-                    
+                if(!empty($keyword)){ //search functionality
+                        $query->where('report_facilityId', $user->facility_id)
+                    ->where(function ($q) use ($keyword){
+                        $q->where('fname', 'like', "%$keyword%")
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhereHas('province', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhere('muncity', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                    });
+                }
+                // $profiles = $query->where('report_facilityId', $user_facility->id)->paginate(15);
+                $profiles = $query->where('report_facilityId', $user->facility_id)->paginate(15);
+    
             }else if($user->user_priv == 7){ //Region view
-               
-                $profiles = $query->paginate(15);
+                if(!empty($keyword)){ //search functionality
+                    $query->where(function ($q) use ($keyword){
+                        $q->where('fname', 'like', "%$keyword%")
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhereHas('province', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhereHas('muncity', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                            // ->orWhereHas('facility', function($q) use ($keyword){
+                            //     $q->where('name', 'like', "%$keyword%");
+                            // });
+                    });
 
-            }else if($user->user_priv == 3){
+                }
+
+                $profiles = $query->paginate(15);
+             
+            }else if($user->user_priv == 3){ //provincial
+
+                if(!empty($keyword)){ //search functionality
+                        $query->where('province_id', $user->province)
+                        ->whereNotIn('province_id',['63','76','80'])    
+                    ->where(function ($q) use ($keyword){
+                        $q->where('fname', 'like', "%$keyword%")
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhereHas('province', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhere('muncity', function ($q) use ($keyword){
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                    });
+                }
+
                $profiles = $query->where('province_id', $user->province)
                     ->whereNotIn('province_id',['63','76','80'])
+                    ->paginate(15);
+            }else if($user->user_priv == 8){ // HUC
+
+                $profiles = $query->where('muncity_id', $user->muncity)
                     ->paginate(15);
             }
             else{
                 $profiles = $query->paginate(15);
             }
-        
+            
+            if ($request->ajax()) { // for populate table search
+                return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
+            }
+
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles,
@@ -144,7 +202,7 @@ class PatientInjuryController extends Controller
         $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
         $profile->unique_id = $unique_id;
         $profile->Hospital_caseno = $request->hospital_no;
-        $profile->report_facilityId = $facility->id;
+        // $profile->report_facilityId = $facility->id;
         $profile->fname = $request->fname;
         $profile->mname = $request->mname;
         $profile->lname = $request->lname;
@@ -155,6 +213,8 @@ class PatientInjuryController extends Controller
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
         $profile->typeofpatient = $request->typePatient;
+        $profile->nameof_encoder = $user->fname.''.$user->lname;
+        $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->
         $profile->save();
@@ -508,7 +568,7 @@ class PatientInjuryController extends Controller
     }
 
     public function UpdatePatientInjury(Request $request){
-  
+        $user = Auth::user();
         $facility = ResuReportFacility::find($request->reportfacility_id);
         if(!$facility){
             $facility = new ResuReportFacility();
@@ -528,7 +588,7 @@ class PatientInjuryController extends Controller
             $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
             $profile->unique_id = $unique_id;
             $profile->Hospital_caseno = $request->hospital_no;
-            $profile->report_facilityId = $facility->id;
+            $profile->report_facilityId = null;
             $profile->fname = $request->fname;
             $profile->mname = $request->mname;
             $profile->lname = $request->lname;
@@ -539,6 +599,7 @@ class PatientInjuryController extends Controller
             $profile->barangay_id = $request->barangay;
             $profile->phicID = $request->phil_no;
             $profile->typeofpatient = $request->typePatient;
+            $profile->nameof_encoder = $user->fname.''.$user->lname;
             $profile->save();
         }
         // dd($request->all());

@@ -10,6 +10,7 @@ use App\ResuReportFacility;
 use App\ResuPreadmission;
 use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
+use App\Facility;
 
 class Profile extends Model
 {
@@ -43,5 +44,10 @@ class Profile extends Model
 
     public function resuEropdbhsrhu(){
         return $this->hasOne(ResuErOpdBhsRhu::class, 'profile_id');
+    }
+
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'report_facilityId');
     }
 }

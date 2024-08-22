@@ -388,6 +388,7 @@ Route::get('external-injury', 'resu\InjuryController@listExternal')->name('exter
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
+Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
 Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 

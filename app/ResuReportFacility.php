@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Profile;
+use App\Facility;
 
 class ResuReportFacility extends Model
 {
@@ -18,4 +19,9 @@ class ResuReportFacility extends Model
     public function profile(){
         return $this->hasOne(Profile::class, 'id');
     }
+
+    public function facility(){ // search for facility
+        return $this->belongsTo(Facility::class, 'facility_id');
+    }
+
 }

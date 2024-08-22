@@ -28,7 +28,7 @@ class ResUserPrivilege
         }
 
         if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11 || (Auth::user()->user_priv == 6 && Auth::user()->facility_id) 
-            || (Auth::user()->user_priv == 7 || Auth::user()->user_priv == 3 && $fname === 'DSO')) {
+            || (Auth::user()->user_priv == 7 || Auth::user()->user_priv == 3 && $fname === 'DSO') || Auth::user()->user_priv == 8) {
             $allowedRoute = [
                 'survelance',
                 'survelance/*'

@@ -15,7 +15,7 @@ class UsersCtrl extends Controller
 
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
             ->whereNotNull('facility_id')
-            ->orWhereIn('user_priv', [11,10,7,3])
+            ->orWhereIn('user_priv', [11,10,7,3,8])
             ->paginate(15);
             
         // $fname = explode('-', $users->fname);
