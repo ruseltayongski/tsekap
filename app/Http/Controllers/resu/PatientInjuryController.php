@@ -28,10 +28,6 @@ class PatientInjuryController extends Controller
     public function PatientInjured(Request $request){
         $user = Auth::user();
      
-        // $profiles = Profile::with(['province', 'muncity', 'barangay'])
-        //     ->whereNotNull('report_facilityId')
-        //     ->orderby('id', 'desc')
-        //     ->paginate(15);
         $keyword = $request->input('keyword');
      
         $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
@@ -71,8 +67,8 @@ class PatientInjuryController extends Controller
                             });
                     });
                 }
-                // $profiles = $query->where('report_facilityId', $user_facility->id)->paginate(15);
-                $profiles = $query->where('report_facilityId', $user->facility_id)->paginate(15);
+
+                $profiles = $query->where('report_facilityId', $user->facility_id)->simplePaginate(15);
     
             }else if($user->user_priv == 7){ //Region view
                 if(!empty($keyword)){ //search functionality
@@ -92,7 +88,7 @@ class PatientInjuryController extends Controller
 
                 }
 
-                $profiles = $query->paginate(15);
+                $profiles = $query->simplePaginate(15);
              
             }else if($user->user_priv == 3){ //provincial
 
@@ -113,14 +109,14 @@ class PatientInjuryController extends Controller
 
                $profiles = $query->where('province_id', $user->province)
                     ->whereNotIn('province_id',['63','76','80'])
-                    ->paginate(15);
+                    ->simplePaginate(15);
             }else if($user->user_priv == 8){ // HUC
 
                 $profiles = $query->where('muncity_id', $user->muncity)
-                    ->paginate(15);
+                    ->simplePaginate(15);
             }
             else{
-                $profiles = $query->paginate(15);
+                $profiles = $query->simplePaginate(15);
             }
             
             if ($request->ajax()) { // for populate table search
@@ -137,8 +133,6 @@ class PatientInjuryController extends Controller
     public function PatientForm(){
 
         $user = Auth::user();
-
-
 
         $selectedMuncity = Muncity::select('id','description')
             ->whereIn('id', ['63','76','80'])

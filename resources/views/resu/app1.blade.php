@@ -164,9 +164,6 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Manage Patient Injury</a></li>
-                        <!-- <li class="dropdown-submenu">
-                            <a href="{{url('bodyparts') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-heartbeat"></i>&nbsp;&nbsp; Body Parts</a>
-                        </li> -->
                     </ul>
                 </li>
             @endif

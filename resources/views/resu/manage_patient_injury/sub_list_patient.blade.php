@@ -9,6 +9,7 @@
  use App\ResuTransportAccident;
  use App\ResuHospitalFacility;
  use App\Muncity;
+ use App\Facility;
 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
@@ -24,6 +25,14 @@
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
      return $percent >= 80; // You can adjust the threshold as needed
+ }
+
+ $facility = Facility::select('id','name','address','hospital_type')
+ ->where('id', $profile->report_facilityId)    
+ ->get();
+  
+ foreach($facility as $fact){
+ $facility = $fact;
  }
 
 ?>
@@ -47,31 +56,18 @@
                     <div class="col-md-12 col-divider">
                         <h4 class="patient-font">Disease Reporting Unit</h4>
                         <div class="row">
-                            <div class="col-md-6">
+                        <div class="col-md-6">
                                 <label for="facility-name">Name of Reporting Facility</label>
-                                <select class="form-control chosen-select" name="facilityname" id="facility">
-                                    <option value="">Select Reporting Facility</option>
-
-                                    @foreach($facility as $fact)
-                                        <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}"
-                                        {{$profile->reportfacility && $profile->reportfacility->facility_id == $fact->id ? 'selected' : ''}}>{{ $fact->name }}
-                                        </option>
-                                    @endforeach
-
-                                    @if(!$profile->reportfacility || !$profile->reportfacility->facility_id)
-                                        <option value="others" selected>
-                                            {{ $profile->reportfacility->others ?: 'Others' }}
-                                        </option>
-                                    @endif
-                                </select>
+                                <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
+                                <input type="hidden" name="facility_id" value="{{ $facility->id }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
-                                <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $profile->reportfacility->typeOfdru }}">
+                                <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $facility->hospital_type }}">
                             </div>
                             <div class="col-md-6">
                                 <label for="address-facility">Address of Reporting Facility</label>
-                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $profile->reportfacility->Addressfacility }}">
+                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{ $facility->address }}">
                             </div>
                             
                             <div class="col-md-6">

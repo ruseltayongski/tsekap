@@ -1,6 +1,6 @@
 @extends('resu/app1')
 @section('content')
-
+@include('resu/resuSidebar')
 <?php
  use App\ResuNatureInjury;
  use App\ResuBodyParts;
@@ -8,11 +8,7 @@
  use App\ResuTransportAccident;
  use App\ResuHospitalFacility;
  use App\Muncity;
- use App\Province;
 
- $Selectedprovince = Province::select('id','description')
-    ->where('id', $user->province)
-    ->get();
 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
@@ -30,8 +26,6 @@
 
 
 ?>
-
-@include('resu/resuSidebar')
 
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
@@ -52,12 +46,6 @@
                                 <label for="facility-name">Name of Reporting Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
                                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">
-                                <!-- <select class="form-control chosen-select" name="facilityname" id="facility">
-                                    <option value="">Select Reporting Facility</option>
-                                    @foreach($facility as $fact)
-                                    <option value="{{ $fact->id }}" data-address="{{$fact->address}}" data-hospital_type="{{ $fact->hospital_type }}">{{ $fact->name }}</option>
-                                    @endforeach
-                                </select> -->
                             </div>
            
                             <div class="col-md-6">

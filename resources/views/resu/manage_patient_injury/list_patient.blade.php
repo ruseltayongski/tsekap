@@ -182,7 +182,7 @@
 
                 timer = setTimeout(() => {
                     $('#search-button').click();
-                }, 2000);
+                }, 500);
 
             });
 

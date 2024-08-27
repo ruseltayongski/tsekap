@@ -1,3 +1,24 @@
+<?php
+use App\Facility;
+use App\Province;
+
+$user = Auth::user();
+
+$facility = Facility::select('id','name','address','hospital_type')
+->where('id', $user->facility_id)    
+->get();
+
+$facilities = null;
+
+foreach($facility as $fact){
+$facility = $fact;
+}
+
+$Selectedprovince = Province::select('id','description')
+   ->where('id', $user->province)
+   ->get();
+
+?>
 
 
 <div class="col-md-3 wrapper">
