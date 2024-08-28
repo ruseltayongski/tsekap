@@ -51,7 +51,8 @@ class PatientInjuryController extends Controller
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc');
 
-            // $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->first();
+
+             $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->first();
              
             if($user->user_priv == 6){ // for facility view
                 if(!empty($keyword)){ //search functionality
@@ -60,9 +61,9 @@ class PatientInjuryController extends Controller
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
                             ->orWhereHas('province', function ($q) use ($keyword){
-                                $q->where('description', 'like', "%$keyword%");
+                                $q->where('description','like', "%$keyword%");
                             })
-                            ->orWhere('muncity', function ($q) use ($keyword){
+                            ->orWhereHas('muncity', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             });
                     });
@@ -81,9 +82,6 @@ class PatientInjuryController extends Controller
                             ->orWhereHas('muncity', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             });
-                            // ->orWhereHas('facility', function($q) use ($keyword){
-                            //     $q->where('name', 'like', "%$keyword%");
-                            // });
                     });
 
                 }
@@ -98,10 +96,7 @@ class PatientInjuryController extends Controller
                     ->where(function ($q) use ($keyword){
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('province', function ($q) use ($keyword){
-                                $q->where('description', 'like', "%$keyword%");
-                            })
-                            ->orWhere('muncity', function ($q) use ($keyword){
+                            ->orWhereHas('muncity', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             });
                     });

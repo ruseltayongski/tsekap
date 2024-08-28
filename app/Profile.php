@@ -30,10 +30,6 @@ class Profile extends Model
         return $this->belongsTo(Barangay::class, 'barangay_id');
     }
 
-    public function reportfacility(){
-        return $this->belongsTo(ResuReportFacility::class, 'report_facilityId');
-    }
-
     public function preadmission(){
         return $this->hasOne(ResuPreadmission::class);
     }
@@ -48,6 +44,6 @@ class Profile extends Model
 
     public function facility()
     {
-        return $this->belongsTo(Facility::class, 'report_facilityId');
+        return $this->belongsTo(Facility::class, 'report_facilityId', 'id');
     }
 }
