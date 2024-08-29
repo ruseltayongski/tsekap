@@ -87,6 +87,9 @@
                                     $province = ($p->preadmission->POIProvince_id == $p->province->id) ? $p->province->description : null;
                                     $muncity = ($p->preadmission->POImuncity_id == $p->muncity->id) ? $p->muncity->description : null;
                                     $barangay = ($p->preadmission->POIBarangay_id == $p->barangay->id) ? $p->barangay->description : null;
+
+                                    $modifiedName = str_replace('-DSO', '', $p->nameof_encoder);
+                                    $NameEncoder = preg_replace('/([a-z])([A-Z])/', '$1 $2', $modifiedName);
                                 @endphp
                                 <tr>
                                     <td nowrap="TRUE">
@@ -96,11 +99,11 @@
                                     </td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>
-                                            @if($p->reportFacility && $p->reportFacility->facility)
+                                            {{--@if($p->reportFacility && $p->reportFacility->facility)
                                                 {{ $p->reportFacility->facility->name }}
                                             @else
                                                 {{ $p->facility->name }}
-                                            @endif
+                                            @endif --}}
                                         </td>
                                     @endif
                                     <td class="{{ $p->head == 'YES' ? 'text-bold text-primary' : '' }}">
@@ -120,8 +123,9 @@
                                     <td>{{ $province . ' , ' . $muncity . ' , ' . $barangay . ' , ' . $p->preadmission->POIPurok }}</td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
                                     @if($user_priv->user_priv !== 6)
-                                        <td>{{ $p->nameof_encoder }}</td>
+                                        <td>{{ $NameEncoder }}</td>
                                     @endif
+                                      
                                 </tr>
                             @endforeach
                         </tbody>

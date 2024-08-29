@@ -30,7 +30,7 @@ class PatientInjuryController extends Controller
      
         $keyword = $request->input('keyword');
      
-        $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId')
+        $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','nameof_encoder')
             ->with([
                 'facility' => function($query){
                     $query->select('id', 'name');
@@ -46,7 +46,7 @@ class PatientInjuryController extends Controller
                 },
                 'preadmission' => function($query){
                     $query->select('id','profile_id','POIProvince_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','timeInjury');
-                }
+                },
             ])
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc');
@@ -452,9 +452,6 @@ class PatientInjuryController extends Controller
 
         $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient','report_facilityId')
              ->with([
-            'reportfacility' => function($query){
-                $query->select('id','facility_id','others','typeOfdru','Addressfacility');
-            },
             'preadmission' => function ($query) {
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
                 'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
