@@ -382,10 +382,14 @@ Route::get('survelance', 'resu\IndexController@index')->name('survelance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
 
+
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
+Route::post('injury-delete', 'resu\InjuryController@deleteInjury')->name('injury-delete');
+// Route::post('injury-update/{id}', 'resu\InjuryController@updateInjury')->name('injury-update'); for update
 Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-bodypart');
 Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
+Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->name('delete-external');
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
@@ -393,6 +397,7 @@ Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient'
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
+Route::post('/delete-body-parts', 'resu\InjuryController@deleteBodyPart')->name('delete-body-parts');
 //check profile resu client
 Route::get('get/checkprofiles', 'resu\ClientVerifyController@CheckClients')->name('get.checkprofiles');
 //get municipal && province
@@ -406,9 +411,9 @@ Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientIn
 Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
 
 //accident type
-
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
 Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");
+Route::post('delete-accident-type','resu\InjuryController@deleteAccidentType')->name("delete-accident-type");
 
 Route::get('hospital', 'resu\HospitalController@index')->name('hospital');
 Route::post('add-hospital', 'resu\HospitalController@SaveHospital')->name('add-hospital');

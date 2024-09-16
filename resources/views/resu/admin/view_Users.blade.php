@@ -12,9 +12,7 @@ use App\Province;
         <div class="alert alert-jim">
             <h2 class="page-header">Users</h2>
 
-            <div class="clearfix"></div>
-
-           
+            <div class="clearfix"></div>           
                 <div class="table-responsive">
                     <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
                         <thead>
@@ -27,7 +25,6 @@ use App\Province;
                         </tr>
                         </thead>
                         <tbody>
-                   
                          @foreach($user as $u)
                             <tr>
                                
@@ -57,8 +54,6 @@ use App\Province;
                                    {{ $u->username}}
                                 </td>
                                 <td>
-                           
-                                         
                                     @if($u->user_priv == 6)
                                         <font class="text-info text-bold">Facility</font>
                                     @elseif($u->user_priv == 7)

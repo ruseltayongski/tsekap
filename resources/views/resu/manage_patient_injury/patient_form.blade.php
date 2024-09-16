@@ -26,7 +26,6 @@
 
 
 ?>
-
     <div class="col-md-8 wrapper">
     <div class="alert alert-jim">
         <h2 class="page-header">
@@ -216,33 +215,37 @@
                     <div class="col-md-12">  <hr>
                         <label>First Aid Given:</label>
                     </div>
-
-                    <div class="col-md-1 col-md-offset-2">
-                        <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
+                        
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                        <div style="margin-right: 15px;">
+                            <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
+                        </div>
+                        <div style="margin-right: 15px;">
+                            <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
+                        </div>
+                        <div style="margin-right: 15px;">
+                            <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
+                        </div>
+                        <div>
+                            <input type="radio" name="firstAidGive" id="firstAidNo" value="No"> No
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="radio" name="firstAidGive" id="firstAidNo" value="No"> No
-                    </div>
-
-
                     <!----------------------------- Nature of Injury ------------------------------>
                     <div class="col-md-12">
                         <hr>
                         <label>Nature of Injuries:</label>
                     </div>
-
                     <div class="col-md-3 col-md-offset-1">
-                        <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
+                        <!-- <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="single_injured" name="multiple_injured" value="No"> No</p>
+                        <input type="radio" id="single_injured" name="multiple_injured" value="No"> No</p> -->
+                        <p style="display: flex; align-items: center; margin: 0">
+                            <p style="margin: 0; padding-right: 10px">Multiple Injuries ?</p>
+                            <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" style="margin: 0 10px">Yes
+                            <input type="radio" id="single_injured" name="multiple_injured" value="No" style="margin: 0 10px">No
+                        </p>
                     </div>
-                    <div class="col-md-12 col-md-offset-.05">
+                    <div class="col-md-12 col-md-offset-.05">  
                         <p class="underline-text text-center" id="underline-text">
                             Check all applicable, indicate in the blank space opposite each type of injury the body location [site] and affected and other details
                         </p>
@@ -272,13 +275,14 @@
                                         <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
                                     </label><br>
 
-                                    <div class="col-md-offset-5">
-                                        <input type="checkbox" id="closetype" name="fracttype" value="close type" disabled> Close Type <!--close type details-->
+                                    <div class="col-md-offset-5" syle=" margin-left: 400px">
+                                        <input type="checkbox" id="closetype" name="fracttype" value="close type" onclick="toggleCheckbox(this)"> Close Type <!--close type details-->
                                     </div>
-                                    <div class="col-md-offset-5"><br>
-                                        <input type="checkbox" id="opentype" name="fracttype" value="open type" disabled> Open Type <!--open type details-->
+                                    <div class="col-md-offset-5"syle=" margin-left: 400px"><br>
+                                        <input type="checkbox" id="opentype" name="fracttype" value="open type" onclick="toggleCheckbox(this)"> Open Type <!--open type details-->
                                     </div>
                                 </div>  
+                                
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <div class="checkbox">
                                     <label>
@@ -286,7 +290,7 @@
                                     </label>
                                     <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury" disabled>
                                 </div>
-                            @else
+                              @else
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
@@ -335,8 +339,10 @@
                                 $counter++;
                             @endphp
                         @endforeach                        
-                    </div> -->
+                    </div> -->  
+
                     <!----------------------------- Nature of Injury ------------------------------>
+                    
                     <input type="hidden" name="injured_count" class="injured_count" value="{{ $counter }}">
                     <div class="col-md-3">
                         @php
@@ -344,7 +350,7 @@
                         @endphp
                         @foreach($nature_injury as $injured)
                             @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br>
+                                <br><br>    
                                 <label>Select Body Parts</label>
                                 <select class="form-control chosen-select" name="burn_body_parts[]" id="burnbody_parts" multiple disabled>
                                     @foreach($body_part as $body_parts)
@@ -353,12 +359,12 @@
                                 </select>
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                             <br><br>
-                                <label>fracture details</label>
+                                <label>Fracture details</label>
                                 <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder=" fracture close type details" disabled>
                                 <!-- <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details" disabled> -->
 
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <br><br>
+                                <br><br><br>
                                 <label>Select Body parts</label>
                                 <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple disabled>
                                     @foreach($body_part as $body_parts)
@@ -402,7 +408,7 @@
                                         4
                                     </label> ]
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
-                                <br><br><br><br><br><br><br><br>
+                                <br><br><br><br><br><br><br><br><br>
                                 <label for="bodyparts">Select Body Parts</label>
                                 <select class="form-control chosen-select" name="fracture_bodyparts[]" id="fractureclose_bodyparts" multiple disabled>
                                     @foreach($body_part as $body_parts)
@@ -589,87 +595,88 @@
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
                         <div class="col-md-4">&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="none_pedes" name="Patient_vehicle" value="None (Pedestrian)"> None (Pedestrian)<br>&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle"> Motorcycle<br>&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="patient_truck" name="Patient_vehicle" value="Truck"> Truck<br>&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="patient_bus" name="Patient_vehicle" value="Bus"> Bus<br>&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="patient_jeepney" name="Patient_vehicle" value="Jeepney"> Jeepney
+                            <input type="radio" id="none_pedes" name="Patient_vehicle" value="None(Pedestrian)" onclick="togglePlaceInput()">None (Pedestrian)<br><br>
+                            <input type="radio" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle" onclick="togglePlaceInput()"> Motorcycle<br>
+                            <input type="radio" id="patient_truck" name="Patient_vehicle" value="Truck" onclick="togglePlaceInput()"> Truck<br>
+                            <input type="radio" id="patient_bus" name="Patient_vehicle" value="Bus" onclick="togglePlaceInput()"> Bus<br>
+                            <input type="radio" id="patient_jeepney" name="Patient_vehicle" value="Jeepney" onclick="togglePlaceInput()"> Jeepney 
                         </div>
                         <div class="col-md-4">
-                            <input type="radio" id="patient_car" name="Patient_vehicle" value="Car"> Car<br>
-                            <input type="radio" id="patient_bicycle" name="Patient_vehicle" value="Bicycle"> Bicycle<br>
-                            <input type="radio" id="patient_van" name="Patient_vehicle" value="Van"> Van<br>
-                            <input type="radio" id="patient_tricycle" name="Patient_vehicle" value="Tricycle"> Tricycle
+                            <input type="radio" id="patient_car" name="Patient_vehicle" value="Car" onclick="togglePlaceInput()"> Car<br>
+                            <input type="radio" id="patient_bicycle" name="Patient_vehicle" value="Bicycle" onclick="togglePlaceInput()"> Bicycle<br>
+                            <input type="radio" id="patient_van" name="Patient_vehicle" value="Van" onclick="togglePlaceInput()"> Van<br>
+                            <input type="radio" id="patient_tricycle" name="Patient_vehicle" value="Tricycle" onclick="togglePlaceInput()"> Tricycle
                         </div>
                         <div class="col-md-4">
-                            <input type="radio" id="patient_unknown" name="Patient_vehicle" value="Unknown"> Unknown<br>
-                            <input type="radio" id="patient_others" name="Patient_vehicle" value="others"> Others<br>
-                            <input type="text" class="form-control" name="Patient_vehicle_others" placeholder="others details">
+                                <input type="radio" id="patient_unknown" name="Patient_vehicle" value="Unknown" onclick="togglePlaceInput()"> Unknown<br>
+                                <input type="radio" id="patient_others" name="Patient_vehicle" value="others" onclick="togglePlaceInput()"> Others<br>
+                                <input type="text" class="form-control hidden" id="patient_vehicle_others" name="Patient_vehicle_others" placeholder="Others details">  
                         </div>
-                        <div class="col-md-12 collision_group" style="display:none"><br>
+                        <div class="col-md-12 collision_group"><br>
                             <p>Other Vehicle/Object Involved (for Collision accident only)</p>
-                            <div class="col-md-3">
-                                <input type="radio" id="objectNone" name="Othercollision" value="None"> None<br>
-                                <input type="radio" id="objectbicycle" name="Othercollision" value="Bicycle"> Bicycle<br>
-                                <input type="radio" id="objectcar" name="Othercollision" value="Car"> Car<br>
-                                <input type="radio" id="objectjeepney" name="Othercollision" value="Jeepney"> Jeepney
+                            <div class="col-md-4"> <!--  <div class="col-md-3">  -->
+                                <input type="radio" id="objectNone" name="Othercollision" value="None" onclick="togglePlaceInput()"> None<br>
+                                <input type="radio" id="objectbicycle" name="Othercollision" value="Bicycle" onclick="togglePlaceInput()">Bicycle<br>
+                                <input type="radio" id="objectcar" name="Othercollision" value="Car" onclick="togglePlaceInput()">Car <br>
+                                <input type="radio" id="objectjeepney" name="Othercollision" value="Jeepney" onclick="togglePlaceInput()">Jeepney <br>
                             </div>
-                            <div class="col-md-3">
-                                <input type="radio" id="objectvan" name="Othercollision" value="Van"> Van<br>
-                                <input type="radio" id="objectbus" name="Othercollision" value="Bus"> Bus<br>
-                                <input type="radio" id="objecttruck" name="Othercollision" value="truck"> truck<br>
-                                <input type="radio" id="objectothers" name="Othercollision" value="Others"> Others:
-                                <input type="text" class="form-control" id="other_collision_details" name="other_collision_details" placeholder="others details">
+                            <div class="col-md-4">
+                                <input type="radio" id="objectvan" name="Othercollision" value="Van" onclick="togglePlaceInput()">Van<br>
+                                <input type="radio" id="objectbus" name="Othercollision" value="Bus" onclick="togglePlaceInput()">Bus<br>
+                                <input type="radio" id="objecttruck" name="Othercollision" value="truck" onclick="togglePlaceInput()">truck<br>
+                                <input type="radio" id="objectothers" name="Othercollision" value="Others" onclick="togglePlaceInput()">Others:<br>
+                                <input type="text" class="form-control hidden" id="other_collision_details" name="other_collision_details" placeholder="others details">
                             </div>
-                            <div class="col-md-3">
-                                <input type="radio" id="objectmotorcycle" name="Othercollision" value="Motorcycle"> Motorcycle<br>
-                                <input type="radio" id="objectTricycle" name="Othercollision" value="Tricycle"> Tricycle<br>
-                                <input type="radio" id="objectunknown" name="Othercollision" value="unknown"> Unknown
+                            <div class="col-md-4">
+                                <input type="radio" id="objectmotorcycle" name="Othercollision" value="Motorcycle" onclick="togglePlaceInput()">Motorcycle<br>
+                                <input type="radio" id="objectTricycle" name="Othercollision" value="Tricycle" onclick="togglePlaceInput()">Tricycle<br>
+                                <input type="radio" id="objectunknown" name="Othercollision" value="unknown" onclick="togglePlaceInput()">Unknown
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 transport-related"><hr><br>
+                    <div class="col-md-3 transport-related">
+                        <hr><br>
                         <p>Position of Patient</p>
-                        <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian"> Pedestrian<br>
-                        <input type="radio" id="position_driver" name="position_patient" value="Driver"> Driver<br>
-                        <input type="radio" id="position_captain" name="position_patient" value="Captain"> Captain<br>
-                        <input type="radio" id="position_pilot" name="position_patient" value="Pilot"> Pilot <br>
-                        <input type="radio" id="position_passenger" name="position_patient" value="Font Passenger"> Front Passenger<br>
-                        <input type="radio" id="position_rear_passenger" name="position_patient" value="Rear Passenger"> Rear Passenger<br>
-                        <input type="radio" id="position_others" name="position_patient" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="position_patient" name="position_other_details" placeholder="others details">
-                        <input type="radio" id="position_unknown" name="position_patient" value="Unknown"> Unknown
-
+                        <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian" onclick="togglePlaceInput()"> Pedestrian<br>
+                        <input type="radio" id="position_driver" name="position_patient" value="Driver" onclick="togglePlaceInput()"> Driver<br>
+                        <input type="radio" id="position_captain" name="position_patient" value="Captain" onclick="togglePlaceInput()"> Captain<br>
+                        <input type="radio" id="position_pilot" name="position_patient" value="Pilot" onclick="togglePlaceInput()"> Pilot<br>
+                        <input type="radio" id="position_passenger" name="position_patient" value="Front Passenger" onclick="togglePlaceInput()"> Front Passenger<br>
+                        <input type="radio" id="position_rear_passenger" name="position_patient" value="Rear Passenger" onclick="togglePlaceInput()"> Rear Passenger<br>
+                        <input type="radio" id="position_unknown" name="position_patient" value="Unknown" onclick="togglePlaceInput()"> Unknown <br>
+                        <input type="radio" id="position_others" name="position_patient" value="Others" onclick="togglePlaceInput()"> Others:<br>
+                        <input type="text" class="form-control hidden" id="position_patient_details" name="position_other_details" placeholder="Others details">
                     </div>
+
                     <div class="col-md-3 transport-related"><hr><br>
                         <p>Place of Occurrence</p>
-                        <input type="radio" id="place_home" name="Occurrence" value="Home"> Home<br>
-                        <input type="radio" id="place_school" name="Occurrence" value="School"> School<br>
-                        <input type="radio" id="place_Road" name="Occurrence" value="Road"> Road<br>
-                        <input type="radio" id="place_Bars" name="Occurrence" value="School"> Videoke Bars<br>
-                        <input type="radio" id="place_workplace" name="Occurrence" value="workplace"> Workplace, specify:<br>
-                        <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here">
-                        <input type="radio" id="place_others" name="Occurrence" value="Others"> Others:<br>
-                        <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details">
-                        <input type="radio" id="place_unknown" name="Occurrence" value="Unknown"> Unknown
+                        <input type="radio" id="place_home" name="Occurrence" value="Home" onclick="togglePlaceInput()"> Home<br>
+                        <input type="radio" id="place_school" name="Occurrence" value="School" onclick="togglePlaceInput()"> School<br>
+                        <input type="radio" id="place_Road" name="Occurrence" value="Road" onclick="togglePlaceInput()"> Road<br>
+                        <input type="radio" id="place_Bars" name="Occurrence" value="School" onclick="togglePlaceInput()"> Videoke Bars<br>
+                        <input type="radio" id="place_workplace" name="Occurrence" value="workplace" onclick="togglePlaceInput()"> Workplace, specify:<br>
+                        <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here" onclick="togglePlaceInput()">
+                        <input type="radio" id="place_others" name="Occurrence" value="Others" onclick="togglePlaceInput()"> Others:<br>
+                        <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details" onclick="togglePlaceInput()">
+                        <input type="radio" id="place_unknown" name="Occurrence" value="Unknown" onclick="togglePlaceInput()"> Unknown
                     </div>
                     <div class="col-md-12 transport-related">
                         <div class="col-md-4"><hr>
                             <label>Activity of the patient at the of incident</label><br>
-                            <input type="radio" id="activity_sports" name="activity_patient" value="Sports"> Sports<br>
-                            <input type="radio" id="activity_leisure" name="activity_patient" value="leisure"> Leisure<br>
-                            <input type="radio" id="activity_school" name="activity_patient" value="School"> Work Related<br>
-                            <input type="radio" id="activity_others" name="activity_patient" value="Others"> Others:
-                            <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details">
-                            <input type="radio" id="activity_unknown" name="activity_patient" value="unknown"> Unknown
+                            <input type="radio" id="activity_sports" name="activity_patient" value="Sports" onclick="togglePlaceInput()" > Sports<br>
+                            <input type="radio" id="activity_leisure" name="activity_patient" value="leisure" onclick="togglePlaceInput()"> Leisure<br>
+                            <input type="radio" id="activity_school" name="activity_patient" value="School" onclick="togglePlaceInput()"> Work Related<br>
+                            <input type="radio" id="activity_others" name="activity_patient" value="Others" onclick="togglePlaceInput()"> Others:
+                            <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details" onclick="togglePlaceInput()"><br>
+                            <input type="radio" id="activity_unknown" name="activity_patient" value="unknown" onclick="togglePlaceInput()"> Unknown
                         </div>
                         <div class="col-md-4"><hr>
                             <label>Other Risk Factors at the time of the incident:</label><br>
-                            <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor"> Alcohol/liquor<br>
-                            <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone"> Using Mobile Phone<br>
-                            <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy"> Sleepy<br>
-                            <input type="radio" id="risk_smooking" name="risk_factors" value="smooking"> Smooking<br>
-                            <input type="radio" id="risk_others" name="risk_factors" value="Others"> Others specify:
+                            <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" onclick="togglePlaceInput()"> Alcohol/liquor<br>
+                            <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" onclick="togglePlaceInput()"> Using Mobile Phone<br>
+                            <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy" onclick="togglePlaceInput()"> Sleepy<br>
+                            <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" onclick="togglePlaceInput()"> Smooking<br>
+                            <input type="radio" id="risk_others" name="risk_factors" value="Others" onclick="togglePlaceInput()"> Others specify:
                             <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
                             <p>(eg. Suspected under the influence of substance used)</p>
                         </div>
@@ -740,23 +747,25 @@
                                         <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious"> Unconscious
                                     </div>
                                     <div class="col-md-12"></div>
+                                    
                                     <div class="col-md-3"><hr>
                                         <label for="">Mode of Transport to the Hospital/Facility</label>
                                     </div>
                                     <div class="col-md-2"><hr>
-                                        <input type="radio" id="ambulance" name="mode_transport" value="Ambulance"> Ambulance
+                                        <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" onclick="togglePlaceInput()"> Ambulance
                                     </div>
                                     <div class="col-md-2"><hr>
-                                        <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle"> Police Vehicle
-                                    </div>
-                                    <div class="col-md-2"><hr>
-                                        <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle"> Private Vehicle
-                                    </div>
-                                    <div class="col-md-1"><hr>
-                                        <input type="radio" id="ModeOthers" name="mode_transport" value="Others"> Others
-                                    </div>
-                                    <div class="col-md-2"><hr>
-                                        <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
+                                        
+                                            <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" onclick="togglePlaceInput()"> Police Vehicle
+                                        </div>
+                                        <div class="col-md-2"><hr>
+                                            <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" onclick="togglePlaceInput()"> Private Vehicle
+                                        </div>
+                                        <div class="col-md-1"><hr>
+                                            <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()"> Others:
+                                        </div>
+                                        <div class="col-md-2"><hr>
+                                            <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
                                     </div>
                                     <div class="col-md-12"><hr>
                                     <label for="initial_imp">Initial Impression</label>
@@ -771,24 +780,29 @@
                                         <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external">
                                     </div>
                                     <div class="col-md-12"><hr>
-                                        <div class="col-md-1">
-                                            <label for="Disposition">Disposition:</label>
+                                    <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="Disposition">Disposition:</label>
+                                            </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <input type="radio" id="admitted" name="disposition" value="Admitted"> Admitted <br>
-                                            <input type="radio" id="hama" name="disposition" value="HAMA"> HAMA
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home"> Treated and Sent Home <br>
-                                            <input type="radio" id="Absconded" name="disposition" value="Absconded"> Absconded
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital, <br>
-                                            <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission"> Refused Admission <br>
-                                            <input type="radio" id="died" name="disposition" value="died"> Died
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <input type="radio" id="admitted" name="disposition" value="Admitted" onclick="togglePlaceInput()"> Admitted <br>
+                                                <input type="radio" id="hama" name="disposition" value="HAMA"> HAMA
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home" onclick="togglePlaceInput()"> Treated and Sent Home <br>
+                                                <input type="radio" id="Absconded" name="disposition" value="Absconded" onclick="togglePlaceInput()"> Absconded
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital,<br>
+                                                <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
+                                            </div>
+                                            
+                                            <div class="col-md-2">
+                                                <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission <br>
+                                                <input type="radio" id="died" name="disposition" value="died" onclick="togglePlaceInput()"> Died
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12"><hr>
@@ -809,9 +823,9 @@
                             </div>
                             @endif
                         @endforeach
-                    </div>
+                    </div>                      
                     @foreach($hospital_type as $hos)
-                        @if(isSimilar($hos->category_name, "In-patient (admitted)"))
+                        @if(isSimilar($hos->category_name,"In-patient(admitted)"))
                             <div class="B_InpatientGroup">
                                 <div class="col-md-12">
                                     <h6 class="A_Hospital mt-5" style="background-color: #A1A8C7;color: #ffff;padding: 3px;margin-top: -10px"> 
@@ -826,21 +840,21 @@
 
                                             <label for="Disposition">Disposition:</label><br>
                                             <div class="col-md-3 col-md-offset-1">
-                                                <input type="radio" id="discharged" name="disposition1" value="discharged"> Discharged <br>
-                                                <input type="radio" id="refused_admiss1" name="disposition1" value="Refused Admission"> Refused Admission
+                                                <input type="radio" id="discharged" name="disposition1" value="discharged" onclick="togglePlaceInput()"> Discharged <br>
+                                                <input type="radio" id="refused_admiss1" name="disposition1" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission
                                             </div>
                                             <div class="col-md-2">
-                                                <input type="radio" id="HAMA1" name="disposition1" value="HAMA"> HAMA <br>
-                                                <input type="radio" id="died2" name="disposition1" value="died"> Died
+                                                <input type="radio" id="HAMA1" name="disposition1" value="HAMA" onclick="togglePlaceInput()"> HAMA <br>
+                                                <input type="radio" id="died2" name="disposition1" value="died" onclick="togglePlaceInput()"> Died
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="radio" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital"> Transferred to Another facility/hospital <br>
+                                                <input type="radio" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital <br>
                                                 <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="radio" id="absconded1" name="disposition1" value="Absconded"> Absconded <br>
-                                                <input type="radio" id="disposition_others" name="disposition1" value="Others"> Others 
-                                                <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="">
+                                                <input type="radio" id="absconded1" name="disposition1" value="Absconded" onclick="togglePlaceInput()"> Absconded <br>
+                                                <input type="radio" id="disposition_others" name="disposition1" value="Others" onclick="togglePlaceInput()"> Others: 
+                                                <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="" placeholder="Others">
                                             </div>
                                         </div>
                                         <div class="col-md-12"><hr>
@@ -878,6 +892,44 @@
 </div>
 <script>
  var baseUrl = "{{ url('sublist-patient') }}";
+
+    function toggleCheckbox(checkbox) 
+            { //BEHAVIOR SET-UP FOR CHECKBOX
+                var checkboxes = document.querySelectorAll('input[name="fracttype"]');
+                    if (checkbox.checked) {
+                            checkboxes.forEach(function(cb) {
+                            if (cb !== checkbox) {
+                            cb.checked = false;
+                            }
+                        });
+                    }
+            }
+
+    function togglePlaceInput() {
+        const inputs = [
+            { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },
+            { radio: document.getElementById('place_others'), input: document.getElementById('place_other_details') },
+            { radio: document.getElementById('activity_others'), input: document.getElementById('activity_Patient_other') },
+            { radio: document.getElementById('position_others'), input: document.getElementById('position_patient_details') },
+            { radio: document.getElementById('patient_others'), input: document.getElementById('patient_vehicle_others') },
+            { radio: document.getElementById('risk_others'), input: document.getElementById('risk_others_details') },
+            { radio: document.getElementById('objectothers'), input: document.getElementById('other_collision_details') },
+            { radio: document.getElementById('ModeOthers'), input: document.getElementById('mode_others_details') },
+            { radio: document.getElementById('trans_facility_hos'), input: document.getElementById('trans_facility_hos_details') },
+            { radio: document.getElementById('trans_facility_hos2'), input: document.getElementById('trans_facility_hos_details2') },
+            { radio: document.getElementById('disposition_others'), input: document.getElementById('disposition_others_details') },
+        ];
+
+        inputs.forEach(item => {
+            if (item.radio.checked) {
+                item.input.classList.remove('hidden');
+            } else {
+                item.input.classList.add('hidden');
+            }
+        });
+    }
+
+
 </script>
 @endsection
 
@@ -941,7 +993,6 @@
     vertical-align: middle;
  }
  .col-md-12 .col-md-3 .inline-input2{
-    
     margin-left: -100px; /* Adjust as necessary */
     flex-shrink: 0;
  }

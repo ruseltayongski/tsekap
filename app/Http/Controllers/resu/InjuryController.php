@@ -48,6 +48,29 @@ class InjuryController extends Controller
         return Redirect::back();
     }
 
+    // public function updateInjury(Request $r, $id)
+    // {
+    //         $injury = ResuNatureInjury::findOrFail($id);
+    //         
+    //         $validatedData = $r->validate([
+    //             'name' => 'required|string|max:255',
+    //         ]);
+    //         $injury->name = $validatedData['name'];
+    //         $injury->save();
+
+    //         // Redirect back with success message
+    //         return Redirect::back()->with('success', 'Update successfully.');
+    // }
+
+
+    public function deleteInjury(Request $r) //nature injury
+    {
+        $name = $r->input('name'); 
+        $injured = ResuNatureInjury::where('name', $name)->firstOrFail(); // Find the injury by name
+        $injured->delete(); // Delete the injury from the database
+        return Redirect::back()->with('success', 'Injury deleted successfully.');
+    }
+    
     public function addbodypart(Request $r){
         
         $b_part = new ResuBodyParts();
@@ -57,6 +80,21 @@ class InjuryController extends Controller
 
         return Redirect::back();
     }
+
+    public function deleteBodyPart(Request $r)
+        {
+                    // Retrieve the ID from the request
+            $id = $r->input('id');
+
+            // Find the body part by its ID
+            $b_part = ResuBodyParts::findOrFail($id);
+
+            // Delete the body part
+            $b_part->delete();
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Body part deleted successfully.');
+        }
 
     public function Listbodyparts(){
 
@@ -84,6 +122,14 @@ class InjuryController extends Controller
         return Redirect::back();
     }
 
+    public function deleteExternalInjury(Request $r) //external injury
+    {
+        $name = $r->input('name'); 
+        $injured = ResuExternalInjury::where('name', $name)->firstOrFail(); // Find the injury by name
+        $injured->delete(); // Delete the injury from the database
+        return Redirect::back()->with('success', 'Injury deleted successfully.');
+    }
+
     public function viewAccident(){
         $rtaccident = ResuTransportAccident::paginate(13);
 
@@ -101,6 +147,14 @@ class InjuryController extends Controller
 
         return Redirect::back();
 
+    }
+
+    public function deleteAccidentType(Request $req) //delete Accident Type
+    {
+        $description = $req->input('description'); 
+        $rtaccident = ResuTransportAccident::where('description', $description)->firstOrFail(); // Find the injury by name
+        $rtaccident->delete(); // Delete the accident from the database
+        return Redirect::back()->with('success', 'Deleted successfully.');
     }
 
     public function safetyView(){

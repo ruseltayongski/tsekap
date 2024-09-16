@@ -12,6 +12,7 @@
                                 <thead>
                                 <tr>
                                     <th>Description</th>  
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -20,7 +21,13 @@
                                         <td>
                                             <font class="text-success text-bold">{{$act_type->description}}</font>
                                         </td>
-                                        
+                                        <td>
+                                            <form action="{{ route('delete-accident-type') }}" method="POST">
+                                                    {{ csrf_field() }}
+                                                    <input type="hidden" name="id" value="{{ $act_type->id }}"> <!-- Pass the ID here -->
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this accident?')">Delete</button>
+                                             </form>
+                                        </td>
                                     </tr>
                                  @endforeach
                                 </tbody>

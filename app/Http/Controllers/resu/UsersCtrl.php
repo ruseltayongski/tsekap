@@ -12,18 +12,23 @@ class UsersCtrl extends Controller
     //
     public function index(){
       
+      //  $keyword = $request->input('keyword');
 
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
             ->whereNotNull('facility_id')
             ->orWhereIn('user_priv', [11,10,7,3,8])
+
             ->paginate(15);
             
         // $fname = explode('-', $users->fname);
         // $getLastword = $users = end($fname);
   
         return view('resu.admin.view_Users', [
-            'user' => $users
+            'user' => $users,
+            //'keyword'=> $keyword
         ]);
+
+
     }
 
     public function AddUsers(Request $req){
@@ -43,6 +48,5 @@ class UsersCtrl extends Controller
         $u->contact = $req->contact;
         $u->user_priv = $req->user_priv;
         $u->save();
-    }
-    
+    }    
 }

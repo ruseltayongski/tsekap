@@ -86,7 +86,7 @@ $(document).ready(function () {
           },
         },
         modal: true,
-        centered: true,
+       centered: true,
       });
     } else {
       $(".Transport-group").hide();
