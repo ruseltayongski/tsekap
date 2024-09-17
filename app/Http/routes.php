@@ -385,11 +385,18 @@ Route::get('bodyparts', 'resu\InjuryController@bodypart');
 
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
 Route::post('injury-delete', 'resu\InjuryController@deleteInjury')->name('injury-delete');
-// Route::post('injury-update/{id}', 'resu\InjuryController@updateInjury')->name('injury-update'); for update
+Route::get('injury-edit/{id}', 'resu\InjuryController@editInjury')->name('injury-edit');
+Route::post('injury-update/{id}', 'resu\InjuryController@updateInjury')->name('injury-update');
+
 Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-bodypart');
+Route::get('edit-body-parts/{id}', 'resu\InjuryController@editBodyParts')->name('edit-body-parts');
+Route::post('update-body-parts/{id}', 'resu\InjuryController@updateBodyparts')->name('update-body-parts');
 Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
+Route::get('injury-external-edit/{id}', 'resu\InjuryController@editExternalInjury')->name('injury-external-edit');
+Route::post('injury-external-update/{id}','resu\InjuryController@updateExternalInjury')->name('injury-external-update');
 Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->name('delete-external');
+
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
@@ -414,6 +421,8 @@ Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientIn
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
 Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");
 Route::post('delete-accident-type','resu\InjuryController@deleteAccidentType')->name("delete-accident-type");
+Route::get('edit-accident-type/{id}','resu\InjuryController@editAccidentType')->name("edit-accident-type");
+Route::post('update-accident-type/{id}','resu\InjuryController@updateAccidentType')->name("update-accident-type");
 
 Route::get('hospital', 'resu\HospitalController@index')->name('hospital');
 Route::post('add-hospital', 'resu\HospitalController@SaveHospital')->name('add-hospital');
@@ -431,3 +440,4 @@ Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('
 // users
 Route::get('viewUsers', 'resu\UsersCtrl@index');
 Route::post('add-users', 'resu\UsersCtrl@AddUsers');
+Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');

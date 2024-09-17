@@ -12,7 +12,8 @@
                     <thead>
                         <tr>
                             <th>Body Name</th> 
-                            <th></th> 
+                            <th></th>
+                            <th></th>  
                         </tr>
                     </thead>
                     <tbody>
@@ -20,6 +21,9 @@
                         <tr>
                             <td>
                                 <font class="text-success text-bold">{{ $parts->name }}</font>
+                            </td>
+                            <td>
+                                <a href="{{ route('edit-body-parts', ['id' => $parts->id]) }}" class="btn btn-primary">Edit</a>
                             </td>
                             <td>
                                 <form action="{{ route('delete-body-parts') }}" method="POST">

@@ -25,7 +25,7 @@
                                             <font class="text-success text-bold">{{ $injury->name }}</font>
                                         </td>
                                         <td>
-                                             <a href="" class="btn btn-primary">Edit</a>
+                                            <a href="{{ route('injury-edit', ['id' => $injury->id]) }}" class="btn btn-primary">Edit</a><!-- Edit link -->
                                         </td>
                                         <td>
                                             <form action="{{ route('injury-delete') }}" method="POST">

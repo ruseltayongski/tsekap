@@ -13,6 +13,7 @@
                                 <tr>
                                     <th>Description</th>  
                                     <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -20,6 +21,9 @@
                                     <tr>
                                         <td>
                                             <font class="text-success text-bold">{{$act_type->description}}</font>
+                                        </td>
+                                        <td>
+                                        <a href=" {{ route('edit-accident-type', ['id' => $act_type->id]) }}" class="btn btn-primary">Edit</a>
                                         </td>
                                         <td>
                                             <form action="{{ route('delete-accident-type') }}" method="POST">

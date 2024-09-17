@@ -23,6 +23,8 @@
                                             <font class="text-success text-bold">{{ $ex->name }}</font>
                                         </td>
                                         <td>
+                                             <a href="{{ route('injury-external-edit', ['id' => $ex->id]) }}" class="btn btn-primary">Edit</a>
+                                        </td>
                                         <td>
                                             <form action="{{ route('delete-external') }}" method="POST">
                                             {{ csrf_field() }}
