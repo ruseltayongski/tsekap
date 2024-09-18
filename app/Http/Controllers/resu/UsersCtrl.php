@@ -22,9 +22,11 @@ class UsersCtrl extends Controller
             
         // $fname = explode('-', $users->fname);
         // $getLastword = $users = end($fname);
+        $userDetails = User::all();
   
         return view('resu.admin.view_Users', [
             'user' => $users,
+            'userDetails'=>$userDetails,
             //'keyword'=> $keyword
         ]);
     }
@@ -45,7 +47,8 @@ class UsersCtrl extends Controller
         $u->password = bcrypt($req->password);
         $u->contact = $req->contact;
         $u->user_priv = $req->user_priv;
-        $u->save();
+        $u->save();        
+        return redirect()->back()->with('success', 'Users added successfully!');
     } 
 
     public function searchUsers(Request $request)
@@ -56,8 +59,9 @@ class UsersCtrl extends Controller
             $muncityId = $request->input('muncity_id');
 
             $query = User::select('fname', 'mname', 'lname', 'muncity', 'province', 'contact', 'username', 'user_priv')
-                ->whereNotNull('facility_id')
-                ->orWhereIn('user_priv', [11, 10, 7, 3, 8]);
+             //->whereNotNull('facility_id')
+            //->orWhereIn('facility_id', [6])
+            ->orWhereIn('user_priv', [11, 10, 7, 3, 8,6]); 
 
             if ($keyword) {
                 $query->where(function($query) use ($keyword) {
@@ -69,21 +73,17 @@ class UsersCtrl extends Controller
                         ->orWhere('province', 'like', '%' . $keyword . '%');
                 });
             }
-
             if ($level) {
                 $query->where('user_priv', $level);
             }
-
             if ($provinceId) {
                 $query->where('province', $provinceId);
             }
-
             if ($muncityId) {
                 $query->where('muncity', $muncityId);
             }
 
             $users = $query->paginate(15);
-
             return view('resu.admin.view_Users', [
                 'user' => $users,
                 'keyword' => $keyword,

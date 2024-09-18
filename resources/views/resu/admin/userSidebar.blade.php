@@ -23,12 +23,12 @@ $provinces = $provinces->get();
                                 <label>Access Level</label>
                                 <select name="level" class="form-control chosen-select">
                                     <option value="">Select Level...</option>
-                                    <option value="1" @if(request('level') == '1') selected @endif>Region Level</option>
+                                    <option value="7" @if(request('level') == '7') selected @endif>Region Level</option>
                                     <option value="3" @if(request('level') == '3') selected @endif>Provincial Level</option>
-                                    <option value="0" @if(request('level') == '0') selected @endif>HUC Level</option>
-                                    <option value="2" @if(request('level') == '2') selected @endif>Facility Level</option>
-                                    <option value="2" @if(request('level') == '2') selected @endif>DSO Level</option>
-                                    <option value="10" @if(request('level') == '10') selected @endif>Staff DSO Level</option>
+                                    <option value="8" @if(request('level') == '8') selected @endif>HUC Level</option>
+                                    <option value="6" @if(request('level') == '6') selected @endif>Facility Level</option>
+                                    <option value="10" @if(request('level') == '10') selected @endif>DSO Level</option>
+                                    <option value="11" @if(request('level') == '11') selected @endif>Staff DSO Level</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -51,9 +51,9 @@ $provinces = $provinces->get();
                                 <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
                             </div>
                             <div class="form-group">
-                                <button type="button" style="margin-top:10px;" class="col-xs-12 btn btn-success" data-toggle="modal" data-target="#AddUser"><i class="fa fa-user-plus"></i> Add User</button>
+                                <button type="button" style="margin-top:10px;" class="col-xs-12 btn btn-success" data-toggle="modal" data-target="#AddUser"><i class="fa fa-user-plus" ></i> Add User</button>
                             </div>
                         </form>
-                </div>
+            </div>
     </div>
 </div>

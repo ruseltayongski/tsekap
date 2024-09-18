@@ -438,6 +438,6 @@ Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
 Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
 
 // users
-Route::get('viewUsers', 'resu\UsersCtrl@index');
+Route::get('viewUsers', 'resu\UsersCtrl@index')->name('resu.admin.view_Users');
 Route::post('add-users', 'resu\UsersCtrl@AddUsers');
 Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');

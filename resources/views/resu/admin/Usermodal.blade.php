@@ -49,7 +49,6 @@
                         <label>Level</label>
                         <select name="user_priv" id='level-select' class="form-control chosen-select" required>
                             <option value="">Select Level...</option>
-
                             <option value="7">Region Level</option>
                             <option value="3">Provincial Level</option>
                             <option value="8">HUC Level</option>
@@ -145,6 +144,19 @@
                     </div>
                     <hr />
                     <div class="form-group">
+                        <label>Level</label>
+                        <select name="user_priv" class="form-control chosen-select" id="user_priv" required>
+                            <option value="">Select Level...</option>
+                            @if($user->user_priv==1)
+                                <option value="1">Admin</option>
+                                <option value="3">Provincial Level</option>
+                            @endif
+                            <option value="0">Municipal Level</option>
+                            <option value="2">Barangay Level</option>
+                            <option value="4">Dentist</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Province</label>
                         <select name="province" class="form-control chosen-select filterProvince" id="province" style="width: 100%;" required>
                             <option value="">Select Province...</option>
@@ -164,28 +176,16 @@
                         <label>Username</label>
                         <input type="text" class="form-control" name="username" id="username" required>
                     </div>
-                    <div class="form-group">
-                        <label>Level</label>
-                        <select name="user_priv" class="form-control chosen-select" id="user_priv" required>
-                            <option value="">Select Level...</option>
-                            @if($user->user_priv==1)
-                                <option value="1">Admin</option>
-                                <option value="3">Provincial Level</option>
-                            @endif
-                            <option value="0">Municipal Level</option>
-                            <option value="2">Barangay Level</option>
-                            <option value="4">Dentist</option>
-                        </select>
-                    </div>
+                   
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" pattern=".{3,}" title="Password - minimum of 3 character" class="form-control" id="password11" name="password" onkeyup="checkPassword2()" placeholder="Unchanged">
+                        <input type="password" pattern=".{3,}" title="Password - minimum of 3 characters" class="form-control" id="password11" name="password" onkeyup="checkPassword2()" placeholder="Unchanged">
                     </div>
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" pattern=".{3,}" title="Confirm password - minimum of 3 Character" class="form-control" id="password12" name="confirm" onkeyup="checkPassword2()" placeholder="Unchanged">
+                        <input type="password" pattern=".{3,}" title="Confirm password - minimum of 3 characters" class="form-control" id="password12" name="confirm" onkeyup="checkPassword2()" placeholder="Unchanged">
                         <div class="has-error text-bold text-danger hide">
-                            <small>Password not match!</small>
+                            <small>Password does not match!</small>
                         </div>
                         <div class="has-match text-bold text-success hide">
                             <small><i class="fa fa-check-circle"></i> Password matched!</small>
@@ -201,4 +201,3 @@
         </form>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-

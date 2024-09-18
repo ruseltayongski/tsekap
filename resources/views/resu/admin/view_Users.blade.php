@@ -32,10 +32,19 @@ use App\Province;
                                     $lastDso = end($dso);
                                 @endphp
                                 <td>
-                                    <a href="#userInfo" class="title-info userInfo" data-id="" data-toggle="modal">
-                                        {{ $fnameParts }},
-                                        {{ $u->lname }}
-                                    </a>
+                                        <a href="#userInfo" class="title-info userInfo"
+                                            data-toggle="modal"
+                                            data-id="{{ $u->id }}"
+                                            data-fname="{{ $u->fname }}"
+                                            data-mname="{{ $u->mname }}"
+                                            data-lname="{{ $u->lname }}"
+                                            data-contact="{{ $u->contact }}"
+                                            data-province="{{ $u->province }}"
+                                            data-muncity="{{ $u->muncity }}"
+                                            data-username="{{ $u->username }}"
+                                            data-user_priv="{{ $u->user_priv }}">
+                                            {{ $u->fname }} {{ $u->lname }}
+                                        </a>
                                 </td>
                                 <td>
                                         {{ Muncity::find($u->muncity)->description }},
@@ -79,17 +88,18 @@ use App\Province;
                             </tbody>
                         </table>
                     </div>
-
                     {{ $user->links() }}
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ url()->previous() }}" class="btn btn-primary">
+
+                    @if(request()->has('keyword') || request()->has('level') || request()->has('province_id') || request()->has('muncity_id'))
+                        <a href="{{ route('resu.admin.view_Users') }}" class="btn btn-primary">
                             <i class="fa fa-arrow-left"></i> Back
                         </a>
+                    @endif
                 <!--          
                 <div class="alert alert-warning">
                     <strong><font class="text-warning"><i class="fa fa-warning fa-lg"></i> No data found! </font></strong>
-                </div> -->
-        </div>
+                </div> -->                
+            </div>
         
     </div>
 
@@ -162,6 +172,29 @@ use App\Province;
             });
 
             $('#SelectedMuncity').trigger('chosen:updated');
+        });
+
+        $('.userInfo').on('click', function() {
+            // Get data from the clicked element
+           // var id = $(this).data('id');
+            var fname = $(this).data('fname');
+            var mname = $(this).data('mname');
+            var lname = $(this).data('lname');
+            var contact = $(this).data('contact');
+            var province = $(this).data('province');
+            var muncity = $(this).data('muncity');
+            var username = $(this).data('username');
+            var user_priv = $(this).data('user_priv');
+            //$('#currentID').val(id);
+            $('#fname').val(fname);
+            $('#mname').val(mname);
+            $('#lname').val(lname);
+            $('#contact').val(contact);
+            $('#username').val(username);
+
+             $('#province').val(province).trigger('chosen:updated'); // Update chosen-select
+             $('#muncity').val(muncity).trigger('chosen:updated'); // Update chosen-select
+            $('#user_priv').val(user_priv).trigger('chosen:updated');
         });
 
     });
