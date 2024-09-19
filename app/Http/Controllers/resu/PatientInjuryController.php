@@ -22,7 +22,7 @@ use App\ResuSafety;
 use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
 
-class PatientInjuryController extends Controller
+class PatientInjuryController extends Controller     
 {
     //
     public function PatientInjured(Request $request){
@@ -173,7 +173,7 @@ class PatientInjuryController extends Controller
         return response()->json($barangay);
     }
 
-    public function SubmitPatientInjury(Request $request){
+    public function SubmitPatientInjury(Request $request){  //added patient
         $user = Auth::user();
         // $reportFact =   ResuReportFacility::select('id','facility_id')->get();
         // $fact_id = null;
@@ -428,8 +428,7 @@ class PatientInjuryController extends Controller
             return "Invalid Transport Id";
         }
 
-    }
-
+    } 
     public function SublistPatient($profile_id){
         $user = Auth::user();
         $facility = Facility::select('id','name','address','hospital_type')->get();
@@ -452,7 +451,7 @@ class PatientInjuryController extends Controller
 
         $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient','report_facilityId')
              ->with([
-            'preadmission' => function ($query) {
+            'preadmission' => function ($query) { //sub list manage patient injury
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
                 'timeConsult','injury_intent','first_aid','what','bywhom','multipleInjury'); // Limit columns
             },
@@ -539,7 +538,7 @@ class PatientInjuryController extends Controller
             $hospitalData = $profile->resuEropdbhsrhu;
         }
         $safety = explode('-',$transportData->safety);
-        $safety_id = array_map('intval', $safety);
+        $safety_id = array_map('intval', $safety);  
      
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,

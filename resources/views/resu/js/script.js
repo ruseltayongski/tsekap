@@ -72,28 +72,27 @@ $(document).ready(function () {
     $('.Transport-group input[type="text"]').val("");
   }
 
-  $("#Transport").change(function () {
-    if ($(this).is(":checked")) {
-      $(".Transport-group").show();
-
-      Lobibox.alert("info", {
-        msg: "Transport/Vehicular Accident is checked. Please fill up the other fields in the <strong>Next option!</strong>",
-        buttons: {
-          ok: {
-            class: "btn btn-info",
-            text: "OK",
-            closeOnClick: true,
-          },
-        },
-        modal: true,
-       centered: true,
+      $("#Transport").change(function () {
+        if ($(this).is(":checked")) {
+          $(".Transport-group").show();
+          Lobibox.alert("info", {
+            msg: "Transport/Vehicular Accident is checked. Please fill up the other fields in the <strong>Next Options!</strong>",
+            buttons: {
+              ok: {
+                class: "btn btn-info",
+                text: "Ok",
+                closeOnClick: true,
+              },
+            },
+            modal: true,
+            centered:true,
+          });
+        } else {
+          $(".Transport-group").hide();
+          $('.Transport-group input[type="checkbox"]').prop("checked", false);
+          $('.Transport-group input[type="text"]').val("");
+        }
       });
-    } else {
-      $(".Transport-group").hide();
-      $('.Transport-group input[type="checkbox"]').prop("checked", false);
-      $('.Transport-group input[type="text"]').val("");
-    }
-  });
 
   // function toggleCollision() {
   //   if ($("#Collision").is(":checked")) {

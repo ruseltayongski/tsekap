@@ -40,7 +40,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true">
+                            <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true" onclick="window.history.back();">
                                 <i class="fa fa-search"></i> View All
                             </button>
                             <div class="clearfix"></div>
@@ -120,12 +120,23 @@
                                     <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
                                     <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
                                     <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
-                                    <td>{{ $province . ' , ' . $muncity . ' , ' . $barangay . ' , ' . $p->preadmission->POIPurok }}</td>
+                                    <!-- <td>{{ $province . ' , ' . $muncity . ' , ' . $barangay . ' , ' . $p->preadmission->POIPurok }}</td> -->
+                                    <!-- <td>{{ $p->preadmission->POIPurok }}</td> -->
+                                    <td>  <!--add if the province, muncity, barangay is null, it will not print together with comma -->
+                                        @php
+                                            $locationParts = [];
+                                            if ($province) $locationParts[] = $province;
+                                            if ($muncity) $locationParts[] = $muncity;
+                                            if ($barangay) $locationParts[] = $barangay;
+                                            if ($p->preadmission->POIPurok) $locationParts[] = $p->preadmission->POIPurok;
+                                            $locationString = implode(' , ', $locationParts);
+                                        @endphp
+                                        {{ $locationString }}
+                                    </td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>{{ $NameEncoder }}</td>
                                     @endif
-                                      
                                 </tr>
                             @endforeach
                         </tbody>
@@ -154,17 +165,17 @@
     <script>
         $(document).ready(function() {
 
-            let timer;
+            // let timer;
 
-            $("#search-keyword").on('input', function() {
+            // $("#search-keyword").on('input', function() {
 
-                clearTimeout(timer);
+            //     clearTimeout(timer);
 
-                timer = setTimeout(() => {
-                    $('#search-button').click();
-                }, 1000);
+            //     timer = setTimeout(() => {
+            //         $('#search-button').click(); 
+            //     }, 1000);
 
-            });
+            // });
 
             $('#search-button').on('click', function(e) {
                 e.preventDefault(); // Prevent form submission\

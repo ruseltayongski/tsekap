@@ -264,8 +264,8 @@
                     @endphp
                     <div class="col-md-3 col-md-offset-1">
                         <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" {{ in_array('Yes', $minjuries) ? 'checked' : '' }}> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="single_injured" name="multiple_injured" value="No" {{ in_array('No', $minjuries) ? 'checked' : '' }}> No</p>
+                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" {{ in_array('Yes', $minjuries) ? 'checked' : '' }}> Yes
+                        <input type="radio" id="single_injured" name="multiple_injured" value="No" {{ in_array('No', $minjuries) ? 'checked' : '' }}>No</p>
                     </div>
                     <div class="col-md-12 col-md-offset-.05">
                         <p class="underline-text text-center" id="underline-text">
@@ -524,7 +524,7 @@
                         array_filter($profile->preadmission->externalPreadmissions->pluck('subtype')->toArray()) : [];
 
                         foreach($profile->preadmission->externalPreadmissions as $externalItem){
-                                $externaldetails[$externalItem->externalinjury_id] = $externalItem->details;
+                                $externaldetails[$externalItem->externalinjury_id] = $externalItem->details; 
                             }  
                     @endphp
                      
@@ -536,12 +536,13 @@
                         @endphp
                         <input type="hidden" name="external_id" id="external_id" value="{{$exInjury->id}}">
                         @if($externalSingle == 'Burns' || $externalSingle == 'Burn')     
-                            <div class="col-md-12">
-                                <label>
-                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> {{$exInjury->name}}
-                                </label><br>
+                        <div class="col-md-12">
+                            <label>
+                                <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> 
+                                {{$exInjury->name}}
+                            </label><br>
+                            <div class="row">
                                 <div class="col-md-5">
-                                
                                     <div class="checkbox">
                                         <label>
                                             <input type="radio" name="burn_type" id="heat" value="heat" {{in_array('heat', $subtype_external) ? 'checked' : '' }}>
@@ -549,7 +550,7 @@
                                         </label>
                                         <label>
                                             <input type="radio" name="burn_type" id="fire" value="fire" {{in_array('fire', $subtype_external) ? 'checked' : '' }}>
-                                            fire
+                                            Fire
                                         </label>
                                         <label>
                                             <input type="radio" name="burn_type" id="electricity" value="Electricity" {{in_array('Electricity', $subtype_external) ? 'checked' : '' }}>
@@ -560,15 +561,17 @@
                                             Oil
                                         </label>
                                         <label>
-                                            <input type="radio" name="friction" id="friction" value="friction" {{in_array('friction', $subtype_external) ? 'checked' : '' }}>
-                                            friction
+                                            <input type="radio" name="burn_type" id="friction" value="friction" {{in_array('friction', $subtype_external) ? 'checked' : '' }}>
+                                            Friction
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" value="{{$ex_details}}" placeholder="specify here"><br>
+                                    <input type="text" class="form-control" name="exburnDetails" id="exburnDetails" value="{{$ex_details}}" placeholder="Specify here">
                                 </div>
                             </div>
+                        </div>
+
                         @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
                             <div class="col-md-12">
                                 <div class="d-flex align-items-center">
@@ -610,8 +613,9 @@
                                 <div class="col-md-3">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
-                                        </label>
+                                                 <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id) ? 'checked' : '' }}> <strong>{{$exInjury->name}}</strong>
+                                                 <!-- <input type="checkbox" value="{{$exInjury->id}}" data-category="external" {{ in_array($exInjury->id, $exInjury_id)}}> <strong>{{$exInjury->name}}</strong> -->
+                                    </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -982,7 +986,6 @@
 <script>
     var deleteNatureUrl = "{{ route('delete-nature') }}";
     // var deleteNatureUrl = "//?php echo url('delete/nature'); ?>";
-
 </script>
 
 @endsection

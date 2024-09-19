@@ -13,7 +13,7 @@
                                 <tr>
                                     <th>Description</th>  
                                     <th></th>
-                                    <th></th>
+                                   
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -25,13 +25,13 @@
                                         <td>
                                         <a href=" {{ route('edit-accident-type', ['id' => $act_type->id]) }}" class="btn btn-primary">Edit</a>
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             <form action="{{ route('delete-accident-type') }}" method="POST">
                                                     {{ csrf_field() }}
-                                                    <input type="hidden" name="id" value="{{ $act_type->id }}"> <!-- Pass the ID here -->
+                                                    <input type="hidden" name="id" value="{{ $act_type->id }}">
                                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this accident?')">Delete</button>
                                              </form>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                  @endforeach
                                 </tbody>

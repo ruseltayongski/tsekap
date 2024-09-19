@@ -548,8 +548,6 @@
                     @endforeach
                     <input type="hidden" name="external_count" class="external_count" value="{{ $counter }}">
                 </div>
-
-
                 <div class="row">
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
@@ -892,7 +890,6 @@
 </div>
 <script>
  var baseUrl = "{{ url('sublist-patient') }}";
-
     function toggleCheckbox(checkbox) 
             { //BEHAVIOR SET-UP FOR CHECKBOX
                 var checkboxes = document.querySelectorAll('input[name="fracttype"]');
@@ -904,8 +901,7 @@
                         });
                     }
             }
-
-    function togglePlaceInput() {
+   function togglePlaceInput() {
         const inputs = [
             { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },
             { radio: document.getElementById('place_others'), input: document.getElementById('place_other_details') },
@@ -928,9 +924,7 @@
             }
         });
     }
-
-
-</script>
+    </script>
 @endsection
 
 @include('resu.manage_patient_injury.checkProfile')

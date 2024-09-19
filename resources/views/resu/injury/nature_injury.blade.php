@@ -28,11 +28,11 @@
                                             <a href="{{ route('injury-edit', ['id' => $injury->id]) }}" class="btn btn-primary">Edit</a><!-- Edit link -->
                                         </td>
                                         <td>
-                                            <form action="{{ route('injury-delete') }}" method="POST">
+                                            <!-- <form action="{{ route('injury-delete') }}" method="POST">
                                             {{ csrf_field() }}
                                                 <input type="hidden" name="name" value="{{ $injury->name }}">
                                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this injury?')">Delete</button>
-                                            </form>
+                                            </form> -->
                                         </td>
                                     </tr>
                                     @endforeach
