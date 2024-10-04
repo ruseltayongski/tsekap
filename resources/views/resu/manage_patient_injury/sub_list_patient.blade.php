@@ -10,12 +10,13 @@
  use App\ResuHospitalFacility;
  use App\Muncity;
  use App\Facility;
-
+ use App\ResuProfileInjury;
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
  $ex_injury = ResuExternalInjury::all();
  $rtacident = ResuTransportAccident::all();
  $hospital_type = ResuHospitalFacility::all();
+
  $muncities = Muncity::select('id', 'description')->get();
  use Carbon\Carbon;
 
@@ -28,7 +29,8 @@
  }
 
  $facility = Facility::select('id','name','address','hospital_type')
- ->where('id', $profile->report_facilityId)    
+ ->where('id', $profile->report_facilityId)  
+ 
  ->get();
   
  foreach($facility as $fact){
@@ -45,7 +47,7 @@
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
-            <input type="hidden" name="reportfacility_id" value="{{$profile->reportfacility->id}}">
+            <input type="hidden" name="report_facilityId" value="{{ $facility->id }}">
             <input type="hidden" name="preadmission_id" value="{{$profile->preadmission->id}}">
             <input type="hidden" name="preadmission_id_update" id="preadmission_id_update" value="{{$profile->preadmission->id}}">
             <input type="hidden" name="profile_id" id="profile_id" value="{{ $profile->id }}">
@@ -59,7 +61,7 @@
                         <div class="col-md-6">
                                 <label for="facility-name">Name of Reporting Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
-                                <input type="hidden" name="facility_id" value="{{ $facility->id }}">
+                                <input type="hidden" name="facility_id" value="{{ $facility->id }}"> 
                             </div>
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
@@ -333,7 +335,7 @@
                                             <label> 
                                                 <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-category="nature" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
                                             </label>
-                                            <input type="text" class="form-control" name="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}">
+                                            <input type="text" class="form-control" name="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}" disable>
                                         @endif
                                     </div>
                                     @php
@@ -778,7 +780,6 @@
                                         </div>
 
                                     @if(trim($safe->name) == 'Others')
-
                                         <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
                                         <div class="col-md-6 col-md-offset-6">
                                             <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" value="{{ $trans->safety_others }}" placeholder="others specify here">
@@ -986,6 +987,9 @@
 <script>
     var deleteNatureUrl = "{{ route('delete-nature') }}";
     // var deleteNatureUrl = "//?php echo url('delete/nature'); ?>";
+    
+    
+
 </script>
 
 @endsection

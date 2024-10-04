@@ -144,7 +144,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Users<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/viewUsers')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Users</a></li>
                         <!-- @if(Auth::user()->user_priv==1)
@@ -218,7 +218,7 @@
         <p class="pull-right">
             version 3.1
         </p>
-        <p>Copyright &copy; 2023 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2024 DOH-RO7 All rights reserved</p>
 
     </div>
 </footer>

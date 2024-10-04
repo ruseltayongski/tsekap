@@ -1,4 +1,5 @@
 <?php
+use App\Muncity;
 use App\Province;
 $provinces = Province::orderBy('description','asc');
 $user= Auth::user();
@@ -40,13 +41,13 @@ $provinces = $provinces->get();
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label>Municipal / City</label>
                                 <input type="hidden" id="muncity_id" value="{{ request('muncity_id') }}" />
                                 <select name="muncity_id" class="chosen-select filterMuncity form-control" id="muncity">
                                     <option value="">Select Municipal / City...</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-default col-xs-12"><i class="fa fa-search"></i> Search</button>
                             </div>

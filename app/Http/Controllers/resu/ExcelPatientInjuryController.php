@@ -10,6 +10,7 @@ use Excel;
 use DB;
 use App\ResuReportFacility;
 use App\Profile;
+use App\ResuProfileInjury;
 use App\ResuPreadmission;
 use App\ResuNature_Preadmission;
 use App\ResuNatureInjury;

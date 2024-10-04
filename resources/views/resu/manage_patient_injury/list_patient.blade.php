@@ -40,9 +40,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-warning col-xs-12" name="viewAll" value="true" onclick="window.history.back();">
-                                <i class="fa fa-search"></i> View All
-                            </button>
+                       
                             <div class="clearfix"></div>
                         </div>
                         @if($user_priv->user_priv == 6)
@@ -84,12 +82,18 @@
                         <tbody>
                             @foreach($profile as $p)
                                 @php 
-                                    $province = ($p->preadmission->POIProvince_id == $p->province->id) ? $p->province->description : null;
-                                    $muncity = ($p->preadmission->POImuncity_id == $p->muncity->id) ? $p->muncity->description : null;
-                                    $barangay = ($p->preadmission->POIBarangay_id == $p->barangay->id) ? $p->barangay->description : null;
+                                    $ad = $p->preadmission;                                                       
+                                    
+                                    $province = $p->province ? $p->province->description : 'N/A';
+                                    $muncity = $p->muncity ? $p->muncity->description : 'N/A';
+                                    $barangay = $p->barangay ? $p->barangay->description : 'N/A';
 
                                     $modifiedName = str_replace('-DSO', '', $p->nameof_encoder);
                                     $NameEncoder = preg_replace('/([a-z])([A-Z])/', '$1 $2', $modifiedName);
+                                    $preprovince = $ad->POIProvince_id ? $ad->province->description : 'N/A';
+                                    $premuncity = $ad->POImuncity_id ? $ad->muncity->description : 'N/A';
+                                    $prebarangay = $ad->POIBarangay_id ? $ad->barangay->description : 'N/A';
+                                   
                                 @endphp
                                 <tr>
                                     <td nowrap="TRUE">
@@ -120,19 +124,7 @@
                                     <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
                                     <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
                                     <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
-                                    <!-- <td>{{ $province . ' , ' . $muncity . ' , ' . $barangay . ' , ' . $p->preadmission->POIPurok }}</td> -->
-                                    <!-- <td>{{ $p->preadmission->POIPurok }}</td> -->
-                                    <td>  <!--add if the province, muncity, barangay is null, it will not print together with comma -->
-                                        @php
-                                            $locationParts = [];
-                                            if ($province) $locationParts[] = $province;
-                                            if ($muncity) $locationParts[] = $muncity;
-                                            if ($barangay) $locationParts[] = $barangay;
-                                            if ($p->preadmission->POIPurok) $locationParts[] = $p->preadmission->POIPurok;
-                                            $locationString = implode(' , ', $locationParts);
-                                        @endphp
-                                        {{ $locationString }}
-                                    </td>
+                                    <td>{{ $preprovince . ' , ' . $premuncity . ' , ' . $prebarangay . ' , ' . $p->preadmission->POIPurok }}</td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>{{ $NameEncoder }}</td>

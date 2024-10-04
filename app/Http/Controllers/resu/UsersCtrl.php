@@ -6,31 +6,28 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+
 
 class UsersCtrl extends Controller
 {
     //
     public function index(){
       
-      //  $keyword = $request->input('keyword');
-
+      //  $keyword = $request->input('keyword');      
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
             ->whereNotNull('facility_id')
             ->orWhereIn('user_priv', [11,10,7,3,8])
-
             ->paginate(15);
-            
-        // $fname = explode('-', $users->fname);
-        // $getLastword = $users = end($fname);
+
         $userDetails = User::all();
   
         return view('resu.admin.view_Users', [
             'user' => $users,
             'userDetails'=>$userDetails,
-            //'keyword'=> $keyword
         ]);
     }
-
     public function AddUsers(Request $req){
         
         $u = new User();
@@ -47,6 +44,7 @@ class UsersCtrl extends Controller
         $u->password = bcrypt($req->password);
         $u->contact = $req->contact;
         $u->user_priv = $req->user_priv;
+        
         $u->save();        
         return redirect()->back()->with('success', 'Users added successfully!');
     } 
@@ -58,14 +56,15 @@ class UsersCtrl extends Controller
             $provinceId = $request->input('province_id');
             $muncityId = $request->input('muncity_id');
 
-            $query = User::select('fname', 'mname', 'lname', 'muncity', 'province', 'contact', 'username', 'user_priv')
+            $query = User::select('id','fname', 'mname', 'lname', 'muncity', 'province', 'contact', 'username', 'user_priv')
              //->whereNotNull('facility_id')
             //->orWhereIn('facility_id', [6])
             ->orWhereIn('user_priv', [11, 10, 7, 3, 8,6]); 
 
             if ($keyword) {
-                $query->where(function($query) use ($keyword) {
-                    $query->where('fname', 'like', '%' . $keyword . '%')
+                $query->where(function($query) use ($keyword) { 
+                    $query  ->where('id', 'like', '%' . $keyword . '%')
+                    ->where('fname', 'like', '%' . $keyword . '%')
                         ->orWhere('mname', 'like', '%' . $keyword . '%')
                         ->orWhere('lname', 'like', '%' . $keyword . '%')
                         ->orWhere('username', 'like', '%' . $keyword . '%')
@@ -91,6 +90,63 @@ class UsersCtrl extends Controller
                 'province_id' => $provinceId,
                 'muncity_id' => $muncityId
             ]);
+        }  
+
+    public function updateUser(Request $req, $id)
+        {
+            // Find the user by ID
+            $user = User::find($id);
+            if (!$user) {
+                return redirect()->back()->withErrors(['id' => 'User not found.']);
+            }
+
+            // Grouping user attributes
+            $userAttributes = [
+                'fname' => $req->input('fname'),
+                'mname' => $req->input('mname'),
+                'lname' => $req->input('lname'),
+                'muncity' => $req->input('muncity'),
+                'province' => $req->input('province'),
+                'username' => $req->input('username'),
+                'contact' => $req->input('contact'),
+                'user_priv' => $req->input('user_priv'),
+                'password' => $req->input('password'),
+            ];
+
+            // Update fields only if new values are provided
+            foreach ($userAttributes as $key => $value) {
+                if ($value !== null && $value !== '') { // Check if the value is not empty or null
+                    if ($key === 'username') {
+                        // Validate unique username in case of an update
+                        $this->validate($req, [
+                            'username' => 'required|string|max:255|unique:users,username,' . $id,
+                        ]);
+                    }
+
+                    if ($key === 'password') {
+                        $user->password = bcrypt($value); // Hash the password if it's being updated
+                    } else {
+                        $user->$key = $value; // Dynamically assign value to the user model
+                    }
+                }
+            }
+
+            // Save changes
+            $user->save();
+
+            return redirect()->back()->with('success', 'User updated successfully!');
         }
 
+        public function deleteUser(Request $request)
+        {
+            $userId = $request->input('user_id');
+            $user = User::find($userId);
+        
+            if ($user) {
+                $user->delete();
+                return redirect()->route('resu.admin.view_Users')->with('success', 'User deleted successfully.');
+            } else {
+                return redirect()->route('resu.admin.view_Users')->with('error', 'User not found.');
+            }
+        }
 }

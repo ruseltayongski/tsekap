@@ -76,7 +76,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function(){
     Route::post('users/save','UserCtrl@save');
     Route::post('users/update','UserCtrl@update');
     Route::get('users/info/{id}','UserCtrl@info');
-    Route::get('users/assign/{id}','UserCtrl@assign');
+    Route::get('users/assign/{id}','UserCtrl@assign');   
     //end users
 
     //location
@@ -413,6 +413,7 @@ Route::get('sublist-patient/get/barangay/{id}', 'resu\PatientInjuryController@ge
 
 Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
+
 //add patient injury
 Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
 Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
@@ -441,3 +442,6 @@ Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('
 Route::get('viewUsers', 'resu\UsersCtrl@index')->name('resu.admin.view_Users');
 Route::post('add-users', 'resu\UsersCtrl@AddUsers');
 Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');
+Route::post('/admin/delete_user', 'resu\UsersCtrl@deleteUser')->name('resu.admin.delete_user');
+//Route::post('/users/update', 'resu\UsersCtrl@updateUser')->name('users.update');
+Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User');

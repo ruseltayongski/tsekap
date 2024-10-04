@@ -3,7 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Profile;
+//use App\Profile;
+use App\ResuProfileInjury;
 use App\Facility;
 
 class ResuReportFacility extends Model
@@ -17,7 +18,7 @@ class ResuReportFacility extends Model
     ];
 
     public function profile(){
-        return $this->hasOne(Profile::class, 'id');
+        return $this->hasOne(ResuProfileInjury::class, 'id');
     }
 
     public function facility(){ // search for facility

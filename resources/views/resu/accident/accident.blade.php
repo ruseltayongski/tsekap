@@ -1,8 +1,6 @@
 @extends('resu/app1')
 @section('content')
-
     @include('resu.accident.accidentSide')
-
     <div class="col-md-9 wrapper">
                 <div class="alert alert-jim">
                     <h2 class="page-header">Accident Type</h2>
@@ -38,7 +36,6 @@
                             </table>
                         </div>
                         {{ $accidentType->links() }}
-
                 </div>
             </div>
 

@@ -21,16 +21,17 @@ use App\ResuSafetyTransport;
 use App\ResuSafety;
 use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
+use App\ResuProfileInjury;
 
 class PatientInjuryController extends Controller     
 {
     //
-    public function PatientInjured(Request $request){
+    public function PatientInjured(Request $request){ 
         $user = Auth::user();
      
         $keyword = $request->input('keyword');
      
-        $query = Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','nameof_encoder')
+        $query =ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
             ->with([
                 'facility' => function($query){
                     $query->select('id', 'name');
@@ -42,7 +43,7 @@ class PatientInjuryController extends Controller
                     $query->select('id', 'province_id', 'description');
                 },
                 'barangay' => function($query){
-                    $query->select('id', 'muncity_id', 'description');
+                    $query->select('id','muncity_id', 'description');
                 },
                 'preadmission' => function($query){
                     $query->select('id','profile_id','POIProvince_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','timeInjury');
@@ -50,7 +51,6 @@ class PatientInjuryController extends Controller
             ])
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc');
-
 
              $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->first();
              
@@ -70,7 +70,7 @@ class PatientInjuryController extends Controller
                 }
 
                 $profiles = $query->where('report_facilityId', $user->facility_id)->simplePaginate(15);
-    
+                
             }else if($user->user_priv == 7){ //Region view
                 if(!empty($keyword)){ //search functionality
                     $query->where(function ($q) use ($keyword){
@@ -116,12 +116,13 @@ class PatientInjuryController extends Controller
             
             if ($request->ajax()) { // for populate table search
                 return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
+                return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
             }
 
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles,
-            // 'facility' => $facility,
+            //'facility' => $facility,
         ]);
     }
 
@@ -161,7 +162,9 @@ class PatientInjuryController extends Controller
 
       $muncity = Muncity::where('province_id', $provinceid)
         ->select('id','province_id','description')
-        ->whereNotIn('id',['63','76','80'])->get();
+        ->whereNotIn('id',['63','76','80'])
+        ->get(); 
+        //63 is Cebu City Capital, 76 is Lapu-Lapu City, Mandaue City
       
       return response()->json($muncity);
     }
@@ -187,11 +190,10 @@ class PatientInjuryController extends Controller
         $facility->facility_id = $request->facility_id;
         $facility->save();
 
-        $profile = new Profile();
+        $profile = new ResuProfileInjury();
         $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
         $profile->unique_id = $unique_id;
         $profile->Hospital_caseno = $request->hospital_no;
-        // $profile->report_facilityId = $facility->id;
         $profile->fname = $request->fname;
         $profile->mname = $request->mname;
         $profile->lname = $request->lname;
@@ -201,8 +203,8 @@ class PatientInjuryController extends Controller
         $profile->muncity_id = $request->municipal;
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
-        $profile->typeofpatient = $request->typePatient;
-        $profile->nameof_encoder = $user->fname.''.$user->lname;
+        $profile->type_of_patient = $request->typePatient;
+        $profile->name_of_encoder = $user->fname.''.$user->lname;
         $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->
@@ -306,7 +308,7 @@ class PatientInjuryController extends Controller
             $erOpd->referred_facility = $request->Referred;
             $erOpd->originating_hospital = $request->name_orig;
             $erOpd->status_facility = $request->reashingFact;
-            $Eropd->Ifalive = $request->ifAlive;
+            $eropd->Ifalive = $request->ifAlive;
             $erOpd->mode_transport_facility = $request->mode_transport;
             $erOpd->other_details = $request->mode_others_details;
             $erOpd->initial_impression = $request->Initial_Impression;
@@ -323,6 +325,11 @@ class PatientInjuryController extends Controller
         // }
         
         return redirect()->route('patientInjury')->with('success', 'Patient Successfully Added');
+        // return view('resu.manage_patient_injury.list_patient', [
+        //     'user_priv' => $user,
+        //     'profile' => $profiles,
+        //     //'facility' => $facility,
+        // ]);
     }   
 
     //sub sub category bodyparts
@@ -449,7 +456,7 @@ class PatientInjuryController extends Controller
 
         $province_selectedMun = $province->merge($selectedMuncity);
 
-        $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient','report_facilityId')
+        $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
              ->with([
             'preadmission' => function ($query) { //sub list manage patient injury
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
@@ -474,54 +481,10 @@ class PatientInjuryController extends Controller
             'resuEropdbhsrhu' => function ($query){
                 $query->select('id','hospitalfacility_id','profile_id','transferred_facility','referred_facility','originating_hospital','status_facility','Ifalive','mode_transport_facility','other_details',
                 'initial_impression','icd10Code_nature','icd10Code_external','disposition','details','outcome');
-            }
-        ])->find($profile_id);
-            
-        // $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseno', 'typeofpatient')
-        // ->with(['reportfacility'])
-        // ->find($profile_id);
-        // if ($needsPreadmission) {
-        //     $profile->load(['preadmission' => function ($query) {
-        //         $query->select('id', 'profile_id', 'POIProvince_id', 'POImuncity_id', 'POIBarangay_id', 'POIPurok', 'dateInjury', 'timeInjury', 'dateConsult', 'timeConsult', 'injury_intent', 'first_aid', 'what', 'bywhom', 'multipleInjury');
-        //     }]);
-        // }
-        
-        // if ($needsNatureInjuryPreadmissions) {
-        //     $profile->load(['preadmission.natureInjuryPreadmissions' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id', 'natureInjury_id', 'subtype', 'details', 'side');
-        //     }]);
-        // }
-        
-        // if ($needsBodyParts) {
-        //     $profile->load(['preadmission.natureInjuryPreadmissions.bodyParts' => function ($query) {
-        //         $query->select('id', 'preadmission_id', 'nature_injury_id', 'bodyparts_id');
-        //     }]);
-        // }
-        
-        // if ($needsExternalPreadmissions) {
-        //     $profile->load(['preadmission.externalPreadmissions' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id', 'externalinjury_id', 'subtype', 'details');
-        //     }]);
-        // }
-        
-        // if ($needsTransport) {
-        //     $profile->load(['preadmission.externalPreadmissions.transport' => function ($query) {
-        //         $query->select('id', 'Pre_admission_id', 'transport_accident_id', 'Vehicular_acc_type', 'xternal_injury_pread_id', 'other_collision', 'other_collision_details', 'PatientVehicle', 'PvOther_detail', 'positionPatient', 'ppother_detail', 'pofOccurence', 'workplace_occurence_specify', 'pofOccurence_others', 'activity_patient', 'AP_others', 'risk_factors', 'rf_others', 'safety', 'safety_others');
-        //     }]);
-        // }
-        
-        // if ($needsResuInpatient) {
-        //     $profile->load(['resuInpatient' => function ($query) {
-        //         $query->select('id', 'hospitalfacility_id', 'profile_id', 'complete_Diagnose', 'Disposition', 'details', 'Outcome', 'icd10Code_nature', 'icd10Code_external');
-        //     }]);
-        // }
-        
-        // if ($needsResuEropdbhsrhu) {
-        //     $profile->load(['resuEropdbhsrhu' => function ($query) {
-        //         $query->select('id', 'hospitalfacility_id', 'profile_id', 'transferred_facility', 'referred_facility', 'originating_hospital', 'status_facility', 'Ifalive', 'mode_transport_facility', 'other_details', 'initial_impression', 'icd10Code_nature', 'icd10Code_external', 'disposition', 'details', 'outcome');
-        //     }]);
-        // }
+            }, 'province', 'muncity','barangay'
 
+        ])->find($profile_id);
+        
         $transportData = [];
         $safe_details = [];
         foreach($profile->preadmission->externalPreadmissions as $transport){
@@ -529,7 +492,7 @@ class PatientInjuryController extends Controller
                 $transportData = $trans;
             }
         }
-
+        
         $hospitalData = [];
       
         if($profile->resuInpatient){
@@ -554,26 +517,27 @@ class PatientInjuryController extends Controller
 
     public function UpdatePatientInjury(Request $request){
         $user = Auth::user();
-        $facility = ResuReportFacility::find($request->reportfacility_id);
+        $facility = ResuReportFacility::find($request->report_facilityId);  
+
         if(!$facility){
             $facility = new ResuReportFacility();
         }
-       
-        $facility->facility_id = $request->facilityname;
+        $facility->facility_id = $request->facility_id;
+        $facility->facility_id = $request->facilityname; //addition informations
         $facility->typeOfdru = $request->typedru;
         $facility->Addressfacility = $request->addressfacility;
         $facility->save();
-
-        // $profile_id =  $request->profile_id ?? $request->profile_id_update;
         
-        $profile = Profile::find($request->profile_id_update);
+        $profile = ResuProfileInjury::find($request->profile_id_update);
 
         if($profile){
           
             $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
             $profile->unique_id = $unique_id;
             $profile->Hospital_caseno = $request->hospital_no;
-            $profile->report_facilityId = null;
+            if ($request->reportfacilityId) {
+                $profile->report_facilityId = $facility->facility_id;
+            }
             $profile->fname = $request->fname;
             $profile->mname = $request->mname;
             $profile->lname = $request->lname;
@@ -583,11 +547,11 @@ class PatientInjuryController extends Controller
             $profile->muncity_id = $request->municipal;
             $profile->barangay_id = $request->barangay;
             $profile->phicID = $request->phil_no;
-            $profile->typeofpatient = $request->typePatient;
-            $profile->nameof_encoder = $user->fname.''.$user->lname;
+            $profile->type_of_patient = $request->typePatient;
+            $profile->name_of_encoder = $user->fname.''.$user->lname;
             $profile->save();
         }
-        // dd($request->all());
+        //dd($request->all());
         $pre_admission = ResuPreadmission::find($request->preadmission_id);
         if(!$pre_admission){
            $pre_admission = new ResuPreadmission();
@@ -840,9 +804,10 @@ class PatientInjuryController extends Controller
             $Eropd->save();
        
         }
-
-         return redirect()->back();
+        return redirect()->route('patientInjury')
+                 ->with('success', 'Patient injury record updated successfully');
     }
+
 
     private function UpdateBodyParts($natureInjury_id, $pre_admission_id, $Allbodyparts){
         $existing_bodyparts = Resunature_injury_bodyparts::where('preadmission_id', $pre_admission_id)

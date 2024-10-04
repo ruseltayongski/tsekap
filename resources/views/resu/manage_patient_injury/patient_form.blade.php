@@ -901,6 +901,7 @@
                         });
                     }
             }
+
    function togglePlaceInput() {
         const inputs = [
             { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },

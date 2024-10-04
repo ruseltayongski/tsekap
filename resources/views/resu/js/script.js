@@ -307,7 +307,7 @@ $(document).ready(function () {
     BarangayData(muncityId, "#barangay");
   });
 
-  //this is upate portion permanent Address
+  //this is update portion permanent Address
   var provinceId = $("#update-province").val();
   var municipalId = $("#update-municipal").data("selected");
   var barangayId = $("#update-barangay").data("selected");
@@ -849,63 +849,49 @@ $(document).ready(function () {
 // for deleteing nature
 document.addEventListener("DOMContentLoaded", function () {
   document
-    .querySelectorAll('input[type="checkbox"]')
-    .forEach(function (checkbox) {
-      checkbox.addEventListener("change", function () {
-        if (!this.checked) {
-          let csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-          let natureId = this.value;
-          let preadmissionId = document.getElementById(
-            "preadmission_id_update"
-          ).value;
-          let category = this.getAttribute("data-category");
-          console.log("nature_id", natureId, "preadmissionId", preadmissionId);
+  .querySelectorAll('input[type="checkbox"]')
+  .forEach(function (checkbox) {
+    checkbox.addEventListener("change", function () {
+      // When checkbox is unchecked
+      if (!this.checked) {
+        let csrfToken = document
+          .querySelector('meta[name="csrf-token"]')
+          .getAttribute("content");
+        let natureId = this.value;
+        let preadmissionId = document.getElementById(
+          "preadmission_id_update"
+        ).value;
+        let category = this.getAttribute("data-category");
+        console.log("nature_id", natureId, "preadmissionId", preadmissionId);
 
-          Lobibox.confirm({
-            title: "Confirm Deletion",
-            msg: "Are you sure you want to delete this data?",
-            buttons: {
-              yes: {
-                class: "btn btn-success",
-                text: "Yes",
-                closeOnClick: true,
-              },
-              no: {
-                class: "btn btn-danger",
-                text: "No",
-                closeOnClick: true,
-              },
-            },
-
-            callback: function (lobibox, type) {
-              if (type == "yes") {
-                $.ajax({
-                  url: deleteNatureUrl,
-                  type: "POST",
-                  headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                  },
-                  data: {
-                    nature_id: natureId,
-                    preadmission_id: preadmissionId,
-                    category: category,
-                  },
-                  success: function (response) {
-                    console.log("Nature deleted successfully", response);
-                  },
-                  error: function (xhr) {
-                    // Handle error, e.g., show an error message
-                    console.error(
-                      "An error occurred while deleting the nature"
-                    );
-                  },
-                });
-              }
-            },
-          });
-        }
-      });
+        // Confirm action but do not delete
+        // Lobibox.confirm({
+        //   title: "Confirm Action",
+        //   msg: "You have unchecked this option. Do you want to proceed without deletion?",
+        //   buttons: {
+        //     yes: {
+        //       class: "btn btn-success",
+        //       text: "Yes",
+        //       closeOnClick: true,
+        //     },
+        //     no: {
+        //       class: "btn btn-danger",
+        //       text: "No",
+        //       closeOnClick: true,
+        //     },
+        //   },
+        //   callback: function (lobibox, type) {
+        //     if (type == "yes") {
+        //       // Instead of deleting, perform any other logic here, like updating the state
+        //       console.log("Checkbox unchecked, no deletion performed.");
+        //       // If you need to trigger some update, do it here.
+        //     } else {
+        //       // If user cancels, you can also reverse the checkbox state
+        //       checkbox.checked = true;
+        //     }
+        //   },
+        // });
+      }
     });
+  });
 });
