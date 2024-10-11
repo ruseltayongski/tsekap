@@ -35,7 +35,6 @@
                             <th>Username</th>
                             <th>Level</th>
                             <th></th>
-                            
                         </tr>
                     </thead>
                     <tbody>
@@ -47,7 +46,11 @@
                                     $lastDso = end($dso);                    
                                 @endphp
                                 <td>
-                                <div class="title-info userInfo" 
+                                <div class="title-info" 
+                                    data-target="#userInfo">
+                                    {{ $u->fname }} {{ $u->lname }}
+                                </div>
+                                <!-- <div class="title-info" 
                                     data-id="{{ $u->id }}" 
                                     data-fname="{{ $u->fname }}" 
                                     data-mname="{{ $u->mname }}" 
@@ -60,8 +63,7 @@
                                     data-toggle="modal" 
                                     data-target="#userInfo">
                                     {{ $u->fname }} {{ $u->lname }}
-                                    
-                                </div>
+                                </div> -->
                                 </td>
                                 <td>
                                         {{ Muncity::find($u->muncity)->description }},
@@ -84,7 +86,6 @@
                                             <font class="text-bold text-danger">Staff DSO</font>
                                         @endif
                                         </td>
-                                        
                                         <td>
                                         <button type="button" class="btn btn-danger btn-sm openDeleteModal" 
                                                 data-id="{{ $u->id }}" 
@@ -130,7 +131,7 @@
                 <!-- Form for delete action -->
                 <form id="deleteUserForm" method="POST" action="{{ route('resu.admin.delete_user') }}">
                     {{ csrf_field() }}
-                    <input type="text" name="user_id" id="delete_user_id">  <!-- Hidden Input -->
+                    <input type="hidden" name="user_id" id="delete_user_id">  <!-- Hidden Input -->
                     <button type="submit" class="btn btn-danger">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </form>
@@ -241,7 +242,6 @@
     </div>
 </div>
 
-
 @include('resu.admin.Usermodal')
 
 @endsection
@@ -345,53 +345,53 @@
             $('#SelectedMuncity-update').trigger('chosen:updated');
         });
 
-       // This will trigger whenever a user clicks the 'Full Name' link
-        $('.userInfo').on('click', function () {
-        var userId = $(this).data('id');
-        var fname = $(this).data('fname');
-        var mname = $(this).data('mname');
-        var lname = $(this).data('lname');
-        var contact = $(this).data('contact');
-        var username = $(this).data('username');
-        var userPriv = $(this).data('user_priv'); 
-        var province = $(this).data('province'); 
-        var muncity = $(this).data('muncity'); 
+    //    // This will trigger whenever a user clicks the 'Full Name' link
+    //     $('.userInfo').on('click', function () {
+    //     var userId = $(this).data('id');
+    //     var fname = $(this).data('fname');
+    //     var mname = $(this).data('mname');
+    //     var lname = $(this).data('lname');
+    //     var contact = $(this).data('contact');
+    //     var username = $(this).data('username');
+    //     var userPriv = $(this).data('user_priv'); 
+    //     var province = $(this).data('province'); 
+    //     var muncity = $(this).data('muncity'); 
 
-        var userPrivDisplay;
-        switch (userPriv) {
-            case 6:
-                userPrivDisplay = 'Facility';
-                break;
-            case 7:
-                userPrivDisplay = 'Region';
-                break;
-            case 3:
-                userPrivDisplay = 'Provincial';
-                break;
-            case 8:
-                userPrivDisplay = 'HUC';
-                break;
-            case 10:
-                userPrivDisplay = 'DSO';
-                break;
-            case 11:
-                userPrivDisplay = 'Staff DSO';
-                break;
-            default:
-                userPrivDisplay = 'Unknown';
-        }
+    //     var userPrivDisplay;
+    //     switch (userPriv) {
+    //         case 6:
+    //             userPrivDisplay = 'Facility';
+    //             break;
+    //         case 7:
+    //             userPrivDisplay = 'Region';
+    //             break;
+    //         case 3:
+    //             userPrivDisplay = 'Provincial';
+    //             break;
+    //         case 8:
+    //             userPrivDisplay = 'HUC';
+    //             break;
+    //         case 10:
+    //             userPrivDisplay = 'DSO';
+    //             break;
+    //         case 11:
+    //             userPrivDisplay = 'Staff DSO';
+    //             break;
+    //         default:
+    //             userPrivDisplay = 'Unknown';
+    //     }
 
-        // Populate modal fields
-        $('#currentID').val(userId);
-        $('#fname').val(fname);
-        $('#mname').val(mname);
-        $('#lname').val(lname);
-        $('#contact').val(contact);
-        $('#username').val(username);
-        $('#level').val(userPrivDisplay);
-        $('#provinces').val(province);
-        $('#muncity').val(muncity);
-        });
+    //     // Populate modal fields
+    //     $('#currentID').val(userId);
+    //     $('#fname').val(fname);
+    //     $('#mname').val(mname);
+    //     $('#lname').val(lname);
+    //     $('#contact').val(contact);
+    //     $('#username').val(username);
+    //     $('#level').val(userPrivDisplay);
+    //     $('#provinces').val(province);
+    //     $('#muncity').val(muncity);
+    //     });
 
         // Open the delete modal and set the user ID for deletion
         $('.openDeleteModal').on('click', function () {

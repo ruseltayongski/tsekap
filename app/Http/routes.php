@@ -443,5 +443,7 @@ Route::get('viewUsers', 'resu\UsersCtrl@index')->name('resu.admin.view_Users');
 Route::post('add-users', 'resu\UsersCtrl@AddUsers');
 Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');
 Route::post('/admin/delete_user', 'resu\UsersCtrl@deleteUser')->name('resu.admin.delete_user');
-//Route::post('/users/update', 'resu\UsersCtrl@updateUser')->name('users.update');
 Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User');
+
+// csv files patient injury
+Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');

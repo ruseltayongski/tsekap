@@ -12,6 +12,7 @@ use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
 use App\Facility;
 
+
 class ResuProfileInjury extends Model
 {
     protected $connection = 'mysql';
@@ -45,5 +46,10 @@ class ResuProfileInjury extends Model
     public function facility()
     {
         return $this->belongsTo(Facility::class, 'report_facilityId', 'id');
-    }
+    }   
+
+    public function reportfacility()
+    {
+        return $this->belongsTo(ResuReportFacility::class, 'report_facility', 'id');
+    }  
 }

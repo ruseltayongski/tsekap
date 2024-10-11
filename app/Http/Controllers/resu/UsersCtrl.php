@@ -36,6 +36,7 @@ class UsersCtrl extends Controller
         }else{
             $u->fname = $req->fname . '-DSO'; 
         }
+        $u->fname = $req->fname;
         $u->mname = $req->mname;
         $u->lname = $req->lname;
         $u->muncity = $req->muncity;
@@ -129,6 +130,12 @@ class UsersCtrl extends Controller
                         $user->$key = $value; // Dynamically assign value to the user model
                     }
                 }
+            }
+
+            if($req->Selected_facilities){
+                $u->facility_id = $req->Selected_facilities;
+            }else{
+                $u->fname = $req->fname . '-DSO'; 
             }
 
             // Save changes

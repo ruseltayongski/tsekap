@@ -8,6 +8,9 @@ use App\ResuProfileInjury;
 use App\ResuNature_Preadmission;
 use App\Resuexternal_injury_preAdmission;
 use App\ResuTransport;
+use App\Resunature_injury_bodyparts;
+
+
 class ResuPreadmission extends Model
 {
     //
@@ -26,8 +29,13 @@ class ResuPreadmission extends Model
         return $this->hasMany(Resuexternal_injury_preAdmission::class, 'Pre_admission_id');
     }
 
+    public function resuInjuryBodyParts()
+    {
+        return $this->hasMany(Resunature_injury_bodyparts::class, 'preadmission_id');
+    }
+
     public function transport(){
-        return hasMany(ResuTransport::class, 'Pre_admission_id');
+        return  $this->hasMany(ResuTransport::class, 'Pre_admission_id');
     }
 
     public function province()
@@ -42,4 +50,5 @@ class ResuPreadmission extends Model
     {
         return $this->belongsTo(Barangay::class, 'POIBarangay_id', 'id');
     }
+
 }

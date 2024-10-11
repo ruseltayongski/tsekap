@@ -16,6 +16,8 @@
  $ex_injury = ResuExternalInjury::all();
  $rtacident = ResuTransportAccident::all();
  $hospital_type = ResuHospitalFacility::all();
+ $user_priv = Auth::user()->user_priv;
+
 
  $muncities = Muncity::select('id', 'description')->get();
  use Carbon\Carbon;
@@ -30,9 +32,7 @@
 
  $facility = Facility::select('id','name','address','hospital_type')
  ->where('id', $profile->report_facilityId)  
- 
  ->get();
-  
  foreach($facility as $fact){
  $facility = $fact;
  }
@@ -76,7 +76,7 @@
                                 <label>Type of Patient</label>
                                 <div class="checkbox">
                                         @php
-                                            $typePatients = explode(',', $profile->typeofpatient ?? '')
+                                            $typePatients = explode(',', $profile->type_of_patient ?? '')
                                         @endphp
                                     <label class="checkbox-inline">
                                         <input type="radio" id="ER" name="typePatient" value="ER" {{ in_array('ER', $typePatients) ? 'checked' : ''}}> ER
@@ -93,6 +93,7 @@
                                     <label class="checkbox-inline">
                                         <input type="radio" id="RHU" name="typePatient" value="RHU" {{ in_array('RHU', $typePatients)? 'checked' : ''}}> RHU
                                     </label>
+
                                 </div><br>
                             </div>
                         </div>
@@ -101,7 +102,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="hospital_no">Hospital Case No.</label>
-                                <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="{{$profile->Hospital_caseno}}">
+                                <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="{{$profile->Hospital_caseNo}}">
                             </div>
                             <div class="col-md-3">
                                 <label for="lname">Last Name</label>
@@ -971,14 +972,17 @@
                             </div>
                         @endif
                     @endforeach
-              
                 {{-- @else
                 <p>No Data Found!</p>
                 @endif --}}
-                    <div class="col-md-12 text-center" style="margin-top: 20px;">
+                <div class="col-md-12 text-center" style="margin-top: 20px;">
+                    @if($user_priv == 7)
                         <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                        <button type="submit" class="btn btn-success mx-2" >update</button>
-                    </div>
+                    @else
+                        <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
+                        <button type="submit" class="btn btn-success mx-2">Update</button>
+                    @endif
+                </div>
             </div>
         </form>
 
@@ -986,10 +990,7 @@
 </div>
 <script>
     var deleteNatureUrl = "{{ route('delete-nature') }}";
-    // var deleteNatureUrl = "//?php echo url('delete/nature'); ?>";
-    
-    
-
+   
 </script>
 
 @endsection

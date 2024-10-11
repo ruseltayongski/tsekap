@@ -76,6 +76,7 @@ class PatientInjuryController extends Controller
                     $query->where(function ($q) use ($keyword){
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
+                            
                             ->orWhereHas('province', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             })
@@ -114,11 +115,11 @@ class PatientInjuryController extends Controller
                 $profiles = $query->simplePaginate(15);
             }
             
-            if ($request->ajax()) { // for populate table search
-                return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
-                return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
-            }
-
+             if ($request->ajax()) { // for populate table search
+                 return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
+            //     return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
+             }
+            
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles,
@@ -188,6 +189,11 @@ class PatientInjuryController extends Controller
             $facility = new ResuReportFacility();
         }
         $facility->facility_id = $request->facility_id;
+       // $facility->facility_id = $request->facilityname; 
+        $facility->typeOfdru = $request->typedru;
+        $facility->Addressfacility = $request->addressfacility;
+        $facility->typeofpatient = $request->typePatient;
+        $facility->reportfacility = $request->facility_id;
         $facility->save();
 
         $profile = new ResuProfileInjury();
@@ -234,6 +240,7 @@ class PatientInjuryController extends Controller
             $nature->natureInjury_id = $request->InjuredBurn;
             $nature->subtype = $request->Degree; 
             $nature->details = $request->burnDetail;
+
             $nature->save();
 
             $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id , $request->input('burn_body_parts', []));
@@ -268,6 +275,7 @@ class PatientInjuryController extends Controller
                 $nature->Pre_admission_id = $pre_admission->id; // Update this as needed
                 $nature->natureInjury_id = $request->input('nature' . $i);
                 $nature->details = $request->input('nature_details' . $i);
+               // $nature->bodypartId = $request->input('body_parts_injured' . $i, []);
                 $nature->save();
 
                 $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('body_parts_injured' . $i, []));
@@ -344,6 +352,7 @@ class PatientInjuryController extends Controller
             ];
         }
         Resunature_injury_bodyparts::insert($bodyPartsData);
+
     }
 
     private function SelectedExternalSaveInjury($request, $pre_admission_id){
@@ -518,14 +527,20 @@ class PatientInjuryController extends Controller
     public function UpdatePatientInjury(Request $request){
         $user = Auth::user();
         $facility = ResuReportFacility::find($request->report_facilityId);  
-
+        // if ($user->userpriv == 7) {
+        //     return redirect()->route('patientInjury')
+        //         ->with('error', 'You do not have permission to update this record.');
+        // }
         if(!$facility){
             $facility = new ResuReportFacility();
         }
         $facility->facility_id = $request->facility_id;
-        $facility->facility_id = $request->facilityname; //addition informations
+       // $facility->facility_id = $request->facilityname; 
         $facility->typeOfdru = $request->typedru;
         $facility->Addressfacility = $request->addressfacility;
+        $facility->reportfacility = $request->facility_id;
+        $facility->typeofpatient = $request->typePatient;
+        $facility->facilityName = $request->facilityname;
         $facility->save();
         
         $profile = ResuProfileInjury::find($request->profile_id_update);
@@ -535,6 +550,7 @@ class PatientInjuryController extends Controller
             $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
             $profile->unique_id = $unique_id;
             $profile->Hospital_caseno = $request->hospital_no;
+
             if ($request->reportfacilityId) {
                 $profile->report_facilityId = $facility->facility_id;
             }

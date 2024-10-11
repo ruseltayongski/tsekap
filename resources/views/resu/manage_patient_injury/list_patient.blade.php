@@ -2,7 +2,6 @@
     use Carbon\Carbon;
     use App\Facility;
     use App\ResuReportFacility;
-
     $priv_fact = Auth::user()->facility_id;
 @endphp
 
@@ -40,9 +39,16 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group">
-                       
                             <div class="clearfix"></div>
                         </div>
+                        @if($user_priv->user_priv == 7)
+                        <div class="form-group">
+                                <a href="{{ route('export.csv') }}" class="btn btn-info col-xs-12">
+                                    <i class="fa fa-download"></i> Download CSV
+                                </a>
+                            <div class="clearfix"></div>
+                        </div>
+                        @endif
                         @if($user_priv->user_priv == 6)
                             <div class="form-group">
                                 <a class="btn btn-info col-xs-12" href="{{ url('patient-form') }}">
@@ -54,7 +60,6 @@
                     </form>
                 </div>
             </div>
-
             <div class="clearfix"></div>
             <div class="page-divider"></div>
             <div id="results-container">
@@ -74,21 +79,25 @@
                                 <th>Barangay<br>&nbsp;</th>
                                 <th>Place Injury<br>&nbsp;</th>
                                 <th>Date And Time Injury<br>&nbsp;</th>
-                                @if($user_priv->user_priv !== 6)
+
+                                <!-- @if($user_priv->user_priv !== 6)
                                     <th>Encoder<br>&nbsp;</th>
-                                @endif
+                                @endif -->
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($profile as $p)
                                 @php 
-                                    $ad = $p->preadmission;                                                       
-                                    
+                                    $ad = $p->preadmission;  
+
+                                   
+
                                     $province = $p->province ? $p->province->description : 'N/A';
                                     $muncity = $p->muncity ? $p->muncity->description : 'N/A';
                                     $barangay = $p->barangay ? $p->barangay->description : 'N/A';
 
-                                    $modifiedName = str_replace('-DSO', '', $p->nameof_encoder);
+                                    $modifiedName = str_replace('-DSO', '', $p->name_of_encoder);
                                     $NameEncoder = preg_replace('/([a-z])([A-Z])/', '$1 $2', $modifiedName);
                                     $preprovince = $ad->POIProvince_id ? $ad->province->description : 'N/A';
                                     $premuncity = $ad->POImuncity_id ? $ad->muncity->description : 'N/A';
@@ -103,11 +112,11 @@
                                     </td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>
-                                            {{--@if($p->reportFacility && $p->reportFacility->facility)
+                                            @if($p->reportFacility && $p->reportFacility->facility)
                                                 {{ $p->reportFacility->facility->name }}
                                             @else
-                                                {{ $p->facility->name }}
-                                            @endif --}}
+                                                {{ $p->facility->name}}
+                                            @endif 
                                         </td>
                                     @endif
                                     <td class="{{ $p->head == 'YES' ? 'text-bold text-primary' : '' }}">
@@ -126,9 +135,16 @@
                                     <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
                                     <td>{{ $preprovince . ' , ' . $premuncity . ' , ' . $prebarangay . ' , ' . $p->preadmission->POIPurok }}</td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
-                                    @if($user_priv->user_priv !== 6)
-                                        <td>{{ $NameEncoder }}</td>
-                                    @endif
+                                    <!-- <td>{{ $NameEncoder ?? 'N/A' }}</td>          -->
+                                    <!-- @if($user_priv->user_priv !== 6)
+                                        <td>
+                                            @if($p->name_of_encoder)
+                                                {{ $p->name_of_encoder }}
+                                            @else
+                                                {{ $NameEncoder ?? 'N/A' }}
+                                            @endif 
+                                        </td>
+                                    @endif-->
                                 </tr>
                             @endforeach
                         </tbody>
