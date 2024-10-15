@@ -28,8 +28,8 @@ class ResuPreadmission extends Model
     public function externalPreadmissions(){
         return $this->hasMany(Resuexternal_injury_preAdmission::class, 'Pre_admission_id');
     }
-
-    public function resuInjuryBodyParts()
+    
+    public function resuInjuryBodyPart()
     {
         return $this->hasMany(Resunature_injury_bodyparts::class, 'preadmission_id');
     }

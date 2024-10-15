@@ -14,5 +14,4 @@ class ResuBodyParts extends Model
     public function bodyPart() { 
         return $this->belongsTo(Resunature_injury_bodyparts::class, 'id');
     }
-   
 }

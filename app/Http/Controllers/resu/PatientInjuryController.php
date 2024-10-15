@@ -277,7 +277,7 @@ class PatientInjuryController extends Controller
                 $nature->details = $request->input('nature_details' . $i);
                // $nature->bodypartId = $request->input('body_parts_injured' . $i, []);
                 $nature->save();
-
+        
                 $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('body_parts_injured' . $i, []));
             }
         }
@@ -353,7 +353,7 @@ class PatientInjuryController extends Controller
         }
         Resunature_injury_bodyparts::insert($bodyPartsData);
 
-    }
+   }
 
     private function SelectedExternalSaveInjury($request, $pre_admission_id){
 
@@ -511,6 +511,13 @@ class PatientInjuryController extends Controller
         }
         $safety = explode('-',$transportData->safety);
         $safety_id = array_map('intval', $safety);  
+
+        // $injuriesWithBodyParts = [];
+
+        // foreach ($profile->preadmission->natureInjuryPreadmissions as $injury) {
+        //     $injuriesWithBodyParts[$injury->natureInjury_id]['injury_details'] = $injury; // Store injury details
+        //     $injuriesWithBodyParts[$injury->natureInjury_id]['body_parts'] = $injury->bodyParts; // Store associated body parts
+        // }
      
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
@@ -521,8 +528,9 @@ class PatientInjuryController extends Controller
             'hospitalData' => $hospitalData,
             'transport_Id' => $get_transportId,
             'safe_ids' =>  $safety_id,
+            //'injuriesWithBodyParts' => $injuriesWithBodyParts,
         ]);
-    }
+    } 
 
     public function UpdatePatientInjury(Request $request){
         $user = Auth::user();
@@ -605,6 +613,7 @@ class PatientInjuryController extends Controller
             $nature->subtype = $request->Degree;
             $nature->details = $request->burnDetail;
             $nature->side = $request->burnside;
+           // $nature->bodypartId = $request->input('body_parts_injured' . $i);
 
             $nature->save();
             
@@ -659,15 +668,15 @@ class PatientInjuryController extends Controller
 
         for($i = 1; $i <= $injuredcount; $i++){
             if($request->has('nature' . $i) || $request->has('nature_details' . $i) || $request->has('sideInjured' . $i)){
-                $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->preadmission_id_update)
+            $nature = ResuNature_Preadmission::where('Pre_admission_id', $request->preadmission_id_update)
                     ->where('natureInjury_id', $request->input('nature'. $i))
-                    ->first();
+                ->first();
 
                 if(!$nature){
                     $nature = new ResuNature_Preadmission();
                 }
                 if($request->preadmission_id_update){
-                    $nature->Pre_admission_id = $request->preadmission_id_update;
+                $nature->Pre_admission_id = $request->preadmission_id_update;
                 }else{
                     $nature->Pre_admission_id = $pre_admission->id;
                 }

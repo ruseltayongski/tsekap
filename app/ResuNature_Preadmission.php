@@ -7,6 +7,7 @@ use App\ResuPreadmission;
 use App\ResuNatureInjury ;
 use App\Resunature_injury_bodyparts;
 use App\ResuBodyParts;
+
 class ResuNature_Preadmission extends Model
 {
     //
@@ -18,11 +19,13 @@ class ResuNature_Preadmission extends Model
     }
 
     public function natureInjury(){
-        return $this->belongsTo(ResuNatureInjury::class,  'natureInjury_id');
+        return $this->belongsTo(ResuNatureInjury::class, 'natureInjury_id');
     }
-   
+    
     public function bodyParts()
     {
-        return $this->hasMany(Resunature_injury_bodyparts::class, 'nature_injury_id'); 
+        return $this->hasMany(Resunature_injury_bodyparts::class, 'nature_injury_id', 'natureInjury_id'); 
     }
+
+    
 }

@@ -251,16 +251,16 @@
                         </p>
                     </div>
                     <div class="col-md-3">
-                        @php
-                            $counter = 1;
-                        @endphp
-                    
-                        @foreach($nature_injury as $injured)
-
                             @php
-                                $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);              
-                                $natureSingle = explode(' ', trim($cleaned_naturel))[0];
+                                $counter = 1;
                             @endphp
+
+                            @foreach($nature_injury as $injured)
+
+                                @php
+                                    $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);              
+                                $natureSingle = explode(' ', trim($cleaned_naturel))[0];
+                                @endphp
 
                             @if($injured->name == "Burn" || $injured->name == "burn")
                                 <div class="checkbox">
@@ -285,25 +285,25 @@
                                 
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
                                 <div class="checkbox">
-                                    <label>
+                                                <label>
                                         <input type="checkbox" id="Others_nature_injured" name="Others_nature_injured" value="{{$injured->id}}"> {{$injured->name}}: Please specify injury and the body parts affected: 
-                                    </label>
+                                                </label>
                                     <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury" disabled>
-                                </div>
-                              @else
+                                            </div>
+                                        @else
                                 <div class="checkbox">
-                                    <label>
+                                            <label>
                                         <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
-                                    </label>
+                                            </label>
                                     <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details" disabled>
                                 </div>
                                 
                             @endif
-                            @php
-                                $counter++;
-                            @endphp
-                        @endforeach
-                    </div>
+                                @php
+                                    $counter++;
+                                @endphp
+                            @endforeach
+                        </div>
                     <!-- <div class="col-md-3">
                         @php
                             $counter = 1;
@@ -932,6 +932,13 @@
 @endsection
 
 @include('resu.manage_patient_injury.checkProfile')
+
+<!-- <script>
+    function toggleDetailInput(checkbox, detailId) {
+        const detailInput = document.getElementById(detailId);
+        detailInput.disabled = !checkbox.checked; // Enable/disable based on checkbox state
+    }
+</script> -->
 
 <style>
 .json-display-style {

@@ -334,7 +334,9 @@
                                             <input type="text" class="form-control" id="natureDetails" name="other_nature_details" placeholder="Specify details"  value="{{ $injuryDatails }}">
                                         @else
                                             <label> 
-                                                <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-category="nature" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}}> {{$injured->name}}
+                                                <input type="checkbox" id="{{$checkIdInjured}}" name="nature{{$counter}}" value="{{ $injured->id }}" data-category="nature" data-details="{{ $natureItem->details }}" {{ in_array($injured->id, $natureInjury_id_array) ? 'checked' : ''}} > {{$injured->name}}
+                                                <!-- <input type="hidden" name="nature[{{$injured->id}}]" value="null"> -->
+                                                <!-- <input type="hidden" name="nature_id_from_db{{$i}}" value="{{ $injured->id }}"> -->
                                             </label>
                                             <input type="text" class="form-control" name="nature_details{{$counter}}"  placeholder="Enter details" value="{{$injuryDatails}}" disable>
                                         @endif
