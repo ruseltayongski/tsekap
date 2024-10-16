@@ -420,7 +420,10 @@
                                 $natureDetails[$natureadmission->natureInjury_id] =$natureadmission->details;
                             @endphp
                             @foreach($natureadmission->bodyParts as $bodyPart)
-                                @if($bodyPart->nature_injury_id == $natureadmission->natureInjury_id)
+                                @if(
+                                    $bodyPart->nature_injury_id == $natureadmission->natureInjury_id &&
+                                    $bodyPart->preadmission_id == $natureadmission->Pre_admission_id
+                                )
                                     @php
                                         $body_parts_id[$bodyPart->nature_injury_id][] = $bodyPart->bodyparts_id;
                                     @endphp

@@ -1113,66 +1113,75 @@ class ExcelPatientInjuryController extends Controller
               // Define the list of injuries
               $injuries = ['Abrasions', 'Avulsion', 'Concussion', 'Contusion', 'Open Wound', 'Traumatic Amputation'];
               $injuryResults = [];
-      
+              
               // Get preadmission entries if they exist
               $preadmissionEntries = $p->preadmission ? $p->preadmission->natureInjuryPreadmissions : null;
-      
-              // Check if preadmission entries exist
+              
               if ($preadmissionEntries && $preadmissionEntries->count() > 0) {
                   foreach ($preadmissionEntries as $preadmission) {
                       // Get the associated nature injury
-                      $latestNatureInjury = $preadmission->natureInjury;
-      
-                      // Check if a nature injury exists
+                      $latestNatureInjury = $preadmission->natureInjury;    
+                      
                       if ($latestNatureInjury) {
-                          // Loop through each injury to check for matches
                           foreach ($injuries as $injury) {
-                              // Check if the injury matches the nature injury ID and name
-                              if ($latestNatureInjury->id == $preadmission->natureInjury_id && $latestNatureInjury->name === $injury) {
-                                  // Initialize the injuryResults entry if it doesn't exist
+                              // Check if the nature injury matches
+                              if ($latestNatureInjury->id == $preadmission->natureInjury_id && 
+                                  $latestNatureInjury->name === $injury) {
+                                  
+                                  // Initialize injury result if not already set
                                   if (!isset($injuryResults[strtolower($injury)])) {
                                       $injuryResults[strtolower($injury)] = [
-                                          'status' => 'Yes',  // Injury found
-                                          'details' => $preadmission->details ? $preadmission->details : ' ',  // Injury details
-                                          'bodyparts_id' => [], // Initialize bodyparts array
-                                          'preadmission_id' => $preadmission->Pre_admission_id, // Store the current preadmission ID
-                                          'nature_injury_id' => $latestNatureInjury->id, // Store the current nature injury ID
+                                          'status' => 'Yes',
+                                          'details' => $preadmission->details ?: ' ',
+                                          'bodyparts_id' => [], 
+                                          'preadmission_id' => $preadmission->Pre_admission_id,
+                                          'nature_injury_id' => $latestNatureInjury->id,
                                       ];
                                   }
-      
-                                  // Handle body parts associated with the nature injury
+              
+                                  // Handle body parts
                                   $bodyParts = $latestNatureInjury->bodyParts;
-      
-                                  if ($bodyParts) {
-                                      // Use map() to create arrays from the bodyParts collection
-                                      $bodyPartIds = $bodyParts->map(function ($item) {
-                                          return $item->bodyparts_id; // Extract the bodyparts_id
+              
+                                  // Check if bodyParts exists
+                                  if ($bodyParts &&count($bodyParts) > 0) {
+                                      // Filter body parts based on Pre_admission_id
+                                      $filteredBodyParts = $bodyParts->filter(function ($bodyPart) use ($preadmission) {
+                                          return $bodyPart->preadmission_id == $preadmission->Pre_admission_id;
+                                      });
+              
+                                      // Extract body part names and ensure uniqueness
+                                      $bodyPartNames = $filteredBodyParts->map(function ($item) {
+                                          return $item->bodypart->name;
                                       })->toArray();
-      
-                                      // Merge bodyPartIds into injuryResults for the specific injury
-                                      $injuryResults[strtolower($injury)]['bodyparts_id'] = array_merge(
+              
+                                      // Merge and remove duplicate body parts using array_unique()
+                                      $injuryResults[strtolower($injury)]['bodyparts_id'] = array_unique(array_merge(
                                           $injuryResults[strtolower($injury)]['bodyparts_id'],
-                                          $bodyPartIds
-                                      );
+                                          $bodyPartNames
+                                      ));
                                   }
                               }
                           }
                       }
                   }
-      
-                  // If no matching injuries were found, mark them as 'No'
+                  
+                  // Mark injuries as 'No' if not found
                   foreach ($injuries as $injury) {
                       if (!isset($injuryResults[strtolower($injury)])) {
                           $injuryResults[strtolower($injury)] = [
-                              'status' => 'No', // Injury not found
-                              'details' => ' ', // Leave details blank
-                              'bodyparts_id' => [], // No bodyparts associated
+                              'status' => 'No',
+                              'details' => ' ',
+                              'bodyparts_id' => [],
                               'preadmission_id' => null,
                               'nature_injury_id' => null,
                           ];
                       }
-                  }
-              }
+                  }              
+              
+                  // Output for debugging
+                  //dd($injuryResults);
+              }        
+              
               
               // Example output
              // dd($injuryResults);
@@ -1211,6 +1220,7 @@ class ExcelPatientInjuryController extends Controller
 
                     $fractureInfo = 'No';  // Default to No
                     $fractureSubtype = 'N/A';  // Default to N/A
+                    $fractureBodyParts = [];    
                     
                     // Check if the preadmission exists and contains fracture information
                     if ($p->preadmission && $p->preadmission->natureInjuryPreadmissions->count() > 0) {
@@ -1224,6 +1234,7 @@ class ExcelPatientInjuryController extends Controller
                                 $fractureSubtype = $natureInjuryPreadmission->subtype ? $natureInjuryPreadmission->subtype : 'N/A';
                                 // Break the loop as we found a fracture, no need to check further
                                 break;
+
                             }
                         }
                     }
@@ -1342,7 +1353,7 @@ class ExcelPatientInjuryController extends Controller
                                 // Break the loop as we found a fracture, no need to check further
                                 break;
                             }
-                        }
+                        } 
                     } 
 //========================================== Transport Vehicle ======================================================
                     $transportStatus = 'No'; 
@@ -1405,8 +1416,8 @@ class ExcelPatientInjuryController extends Controller
                             ($p->preadmission->POIBarangay_id ? $p->preadmission->barangay->description : 'N/A'),
                             $p->preadmission->injury_intent, $p->preadmission->first_aid, $p->preadmission->what,$p->preadmission->bywhom,$p->preadmission->multipleInjury,   
                             $transferredFac, $referredFac, $originatedHos,$statusFacility,$ifAlive,  $modeTransport, $otherDetails, $initialImpression,  $icdCodeNature,  $icdCodeExternal,
-                            $disposition,  $details,  $outcome,  $diagnose, $disposition,$det, $outC , $icdCode_Nature,   $icdCode_External, 
-                            isset($preadmission) ? $preadmission->Pre_admission_id : 'N/A',
+                            $disposition,  $details,  $outcome,  $diagnose, $disposition,$det, $outC , $icdCode_Nature,   $icdCode_External, $p->preadmission->id,
+                          
                             // Abrasion details
                             $injuryResults['abrasions']['status'] ?? 'No',
                             $injuryResults['abrasions']['details'] ?? 'N/A',
@@ -1431,7 +1442,12 @@ class ExcelPatientInjuryController extends Controller
                             $injuryResults['traumatic amputation']['status'] ?? 'No',
                             $injuryResults['traumatic amputation']['details'] ?? 'N/A',
                             implode(',', $injuryResults['traumatic amputation']['bodyparts_id'] ?? []),
-                            $BurnInfo, $BurnSubtype,
+                            // Burn details
+                            // $injuryResults['burn']['status'] ?? 'No',
+                            // $injuryResults['burn']['details'] ?? 'N/A',
+                            // implode(',', $injuryResults['burn']['bodyparts_id'] ?? []),
+                            $BurnInfo,
+                            $BurnSubtype,
                             $fractureInfo,$fractureSubtype, 
                            //external injuries
                             $bitesStatus,  $bitesDetails,

@@ -34,7 +34,6 @@
         <div class="page-divider"></div>
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
             {{ csrf_field() }}
-            
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <div class="form-step" id="form-step-1">
                 <div class="row">
@@ -931,7 +930,7 @@
     </script>
 @endsection
 
-@include('resu.manage_patient_injury.checkProfile')
+<!-- @include('resu.manage_patient_injury.checkProfile') -->
 
 <!-- <script>
     function toggleDetailInput(checkbox, detailId) {

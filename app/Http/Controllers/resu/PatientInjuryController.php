@@ -275,7 +275,7 @@ class PatientInjuryController extends Controller
                 $nature->Pre_admission_id = $pre_admission->id; // Update this as needed
                 $nature->natureInjury_id = $request->input('nature' . $i);
                 $nature->details = $request->input('nature_details' . $i);
-               // $nature->bodypartId = $request->input('body_parts_injured' . $i, []);
+              
                 $nature->save();
         
                 $this->SaveBodyParts($nature->natureInjury_id, $nature->Pre_admission_id ,$request->input('body_parts_injured' . $i, []));
@@ -446,6 +446,7 @@ class PatientInjuryController extends Controller
 
     } 
     public function SublistPatient($profile_id){
+
         $user = Auth::user();
         $facility = Facility::select('id','name','address','hospital_type')->get();
         $listsafety = ResuSafety::all();
@@ -458,6 +459,7 @@ class PatientInjuryController extends Controller
         // 'resuInpatient',
         // 'resuEropdbhsrhu'
         // ])->find($profile_id);
+
         $selectedMuncity = Muncity::select('id','description')
             ->whereIn('id', ['63','76','80'])
             ->get();
@@ -493,6 +495,7 @@ class PatientInjuryController extends Controller
             }, 'province', 'muncity','barangay'
 
         ])->find($profile_id);
+      //  dd($profile->preadmission);
         
         $transportData = [];
         $safe_details = [];
@@ -528,8 +531,9 @@ class PatientInjuryController extends Controller
             'hospitalData' => $hospitalData,
             'transport_Id' => $get_transportId,
             'safe_ids' =>  $safety_id,
-            //'injuriesWithBodyParts' => $injuriesWithBodyParts,
+           
         ]);
+   
     } 
 
     public function UpdatePatientInjury(Request $request){
@@ -539,6 +543,7 @@ class PatientInjuryController extends Controller
         //     return redirect()->route('patientInjury')
         //         ->with('error', 'You do not have permission to update this record.');
         // }
+        
         if(!$facility){
             $facility = new ResuReportFacility();
         }
@@ -665,6 +670,9 @@ class PatientInjuryController extends Controller
         }
 
         $injuredcount = $request->input('injured_count');
+        // $currentNatureInjuries = ResuNature_Preadmission::where('Pre_admission_id', $request->preadmission_id_update)
+        //     ->pluck('natureInjury_id')
+        //     ->toArray();
 
         for($i = 1; $i <= $injuredcount; $i++){
             if($request->has('nature' . $i) || $request->has('nature_details' . $i) || $request->has('sideInjured' . $i)){

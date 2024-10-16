@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Resunature_injury_bodyparts;
+use App\ResuNature_Preadmission;
 
 class ResuBodyParts extends Model
 {
