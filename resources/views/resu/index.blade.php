@@ -1,22 +1,26 @@
 @extends('resu/app1')
 @section('content')
 
-<div class="col-md-9 wrapper">
+<div class="col-md-8 wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 17%; max-width: 1000px;  ">
         <div class="alert alert-jim">
-            <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
+            <h2 class="page-header"><i class="fa fa-home"></i> Homes</h2>
             <div class="page-divider"></div>
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3 class="countBarangay"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <h3 class="countBarangay">
+                            <!-- <i class="fa fa-refresh fa-spin"></i> -->
+                            <i class="fa fa-refresh"></i>
+                        </h3>
                         <p>No. of Barangay</p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-building"></i>
+                        <!-- <i class="fa fa-building"></i> -->
                     </div>
-                    <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
+                     <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
                 </div>
             </div>
+
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-red">
                     <div class="inner">
@@ -29,6 +33,7 @@
                     <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
                 </div>
             </div>
+
             <div class="clearfix"></div>
 
             <div class="col-sm-6 col-xs-12">
@@ -49,6 +54,7 @@
                 </div>
             </div>
 
+
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-green">
                     <div class="inner">
@@ -63,6 +69,7 @@
                     </div>
                 </div>
             </div>
+            
 
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-yellow">
@@ -107,11 +114,11 @@
             {{--</div>--}}
 
             <div class="clearfix"></div>
-            <h3 class="page-header">Monthly
+            <!-- <h3 class="page-header">Monthly
                 <small>Progress</small>
             </h3>
-            <canvas id="montlyProgress" width="400" height="200"></canvas>
+            <canvas id="montlyProgress" width="400" height="200"></canvas> -->
         </div>
     </div>
-    @include('sidebar')
+  
 @endsection

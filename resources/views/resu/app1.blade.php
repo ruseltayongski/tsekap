@@ -73,12 +73,12 @@
 <!-- Fixed navbar -->
 
 <nav class="navbar navbar-default navbar-static-top">
-    <div class="header" style="background-color:#2F4054;padding:10px;">
+    <div class="header" style="background-color:#E0A75E;padding:10px;">
         <div class="col-md-4">
-            <span class="title-info">Welcome,</span> <span class="title-desc">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
+            <span class="title-info" style= "color: black;">Welcome,</span> <span class="title-desc">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
         </div>
         <div class="col-md-4">
-            <span class="title-info">Location:</span>
+            <span class="title-info" style= "color: black;">Location:</span>
 
             <span class="title-desc">
                 <?php
@@ -95,11 +95,11 @@
             </span>
         </div>
         <div class="col-md-4">
-            <span class="title-info">Date:</span> <span class="title-desc">{{ date('M d, Y') }}</span>
+            <span class="title-info" style= "color: black;">Date:</span> <span class="title-desc">{{ date('M d, Y') }}</span>
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="header" style="background-color:#727DAB;padding:15px;">
+    <div class="header" style="background-color:#FCDE70;padding:15px;">
         <div class="container">
             <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" />
         </div>
@@ -213,8 +213,8 @@
     @yield('content')
     <div class="clearfix"></div>
 </div> <!-- /container -->
-<footer class="footer">
-    <div class="container">
+<footer class="footer" style="background-color:#E0A75E;">
+    <div class="container"style= "color: black;" >
         <p class="pull-right">
             version 3.1
         </p>

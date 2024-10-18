@@ -261,7 +261,7 @@ var Lobibox = Lobibox || {};
             me._setSize();
             var pos = me._calculatePosition();
             me.setPosition(pos.left, pos.top);
-        },
+        },  
         _isMobileScreen: function () {
             if ($(window).outerWidth() < 768) {
                 return true;
@@ -510,7 +510,7 @@ var Lobibox = Lobibox || {};
         width           : 600,
         height          : 'auto',  // Height is automatically given calculated by width
         closeButton     : true,  // Show close button or not
-        draggable       : false,  // Make messagebox draggable 
+        draggable       : true,  // Make messagebox draggable 
         customBtnClass  : 'lobibox-btn lobibox-btn-default', // Class for custom buttons
         modal           : true,
         debug           : false,

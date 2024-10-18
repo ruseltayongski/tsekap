@@ -1,6 +1,6 @@
 @extends('resu/app1')
 @section('content')
-@include('resu/resuSidebar')
+
 <?php
  use App\ResuNatureInjury;
  use App\ResuBodyParts;
@@ -26,8 +26,8 @@
 
 
 ?>
-    <div class="col-md-8 wrapper">
-    <div class="alert alert-jim">
+      <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; ">
+     <div class="alert alert-jim">
         <h2 class="page-header">
             <i class="fa fa-user-plus"></i>&nbsp; Patient Injury Form
         </h2>
@@ -55,7 +55,7 @@
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
                             </div>
                             <div class="col-md-6">
-                                <label>Type of Patient</label>
+                                <label>Type of Patient<span class="text-danger">*</span></label>
                                 <div class="checkbox">
                                     <label class="checkbox-inline">
                                         <input type="radio" id="ER" name="typePatient" value="ER"> ER
@@ -71,61 +71,60 @@
                                     </label>
                                     <label class="checkbox-inline">
                                         <input type="radio" id="RHU" name="typePatient" value="RHU"> RHU
-                                    </label>
+                                    </label> 
                                 </div><br>
                             </div>
                         </div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">General Data</h4>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="hospital_no">Hospital Case No.</label>
+                                <label for="hospital_no">Hospital Case No. <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
                             </div>
                             <div class="col-md-3">
-                                <label for="lname">Last Name</label>
+                                <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
                             </div>
                             <div class="col-md-2">
-                                <label for="fname">First Name</label>
+                                <label for="fname">First Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="fname" id="fname" value="">
                             </div>
                             <div class="col-md-2">
-                                <label for="mname">Middle Name</label>
+                                <label for="mname">Middle Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="mname" id="mname" value="">
                             </div>
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
-                                    <option value="male">male</option>
-                                    <option value="female">female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="dateofbirth">Date Of Birth</label>
+                                <label for="dateofbirth">Date Of Birth <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="dateofbirth" name="dateBirth" >
                             </div>
                             <div class="col-md-3">
-                                <label for="age">Age</label>
+                                <label for="age">Age <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="age" name="age" readonly>
                             </div>
                             <div class="col-md-3">
-                                <label for="province">Province/HUC</label>
+                                <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="province" id="province">
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
                                     @endforeach
-
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="municipal">Municipal</label>
+                                <label for="municipal">Municipal <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal" id="municipal">
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="barangay">Barangay</label>
+                                <label for="barangay">Barangay <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="barangay" id="barangay">
                                 </select>
                             </div>
@@ -140,7 +139,7 @@
                                 <label>Place Of Injury:</label>
                             </div>
                             <div class="col-md-3">
-                                <label for="province">Province/HUC</label>
+                                <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="provinceInjury" id="provinceId">
                                     <option value="">Select Province Injury</option>
                                     @foreach($province as $prov)
@@ -149,12 +148,12 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="municipal">Municipal</label>
+                                <label for="municipal">Municipal <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury">
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="barangay">Barangay</label>
+                                <label for="barangay">Barangay <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="barangay_injury" id="barangay_injury">
                                 </select>
                             </div>
@@ -163,12 +162,12 @@
                                 <input type="text" class="form-control" name="purok_injury" id="purok_injury" value="" placeholder="Enter purok/Sitio">
                             </div>
                             <div class="col-md-6">
-                                <label>Date and Time Injury:</label>
+                                <label>Date and Time Injury: <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" name="date_injury" id="date_injury" value="">
                                 <input type="time" class="form-control" name="time_injury" id="time_injury" value="">
                             </div>
                             <div class="col-md-6">
-                                <label>Date and Time Consultation:</label>
+                                <label>Date and Time Consultation: <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" name="date_consult" id="date_consultation" value="">
                                 <input type="time" class="form-control" name="time_consult" id="time_consultation" value="">
                             </div>
@@ -176,17 +175,18 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 text-center" style="margin-top: 20px;">
-                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                        <div class="col-md-12 text-center" style="margin-top: 20px;">
+                            <button type="button" class="btn btn-primary mx-2" onclick="validateAndNextStep()">Next</button>
+                        </div>
                     </div>
-                </div>
             </div>
             <div class="form-step" id="form-step-2" style="display: none;">
                 <div class="row">
                     
                     <div class="col-md-12">
                         <div>
-                            <label>Injury Intent:</label>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Injury Intent <span class="text-danger">*</span></h4>
+                            <!-- <label>Injury Intent:</label> -->
                         </div>
                     </div>
                     <div class="col-md-4 col-md-offset-1">
@@ -211,8 +211,8 @@
                         </label>
                     </div>
                   
-                    <div class="col-md-12">  <hr>
-                        <label>First Aid Given:</label>
+                    <div class="col-md-12">  <hr class="bold-line">
+                        <label>First Aid Given: <span class="text-danger">*</span></label>
                     </div>
                         
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -231,22 +231,22 @@
                     </div>
                     <!----------------------------- Nature of Injury ------------------------------>
                     <div class="col-md-12">
-                        <hr>
-                        <label>Nature of Injuries:</label>
+                    <hr class="bold-line">
+                        <label>Nature of Injuries:</span></label>
                     </div>
                     <div class="col-md-3 col-md-offset-1">
                         <!-- <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="radio" id="single_injured" name="multiple_injured" value="No"> No</p> -->
                         <p style="display: flex; align-items: center; margin: 0">
-                            <p style="margin: 0; padding-right: 10px">Multiple Injuries ?</p>
+                            <p style="margin: 0; padding-right: 10px">Multiple Injuries ? <span class="text-danger">*</span></p>
                             <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" style="margin: 0 10px">Yes
                             <input type="radio" id="single_injured" name="multiple_injured" value="No" style="margin: 0 10px">No
                         </p>
                     </div>
                     <div class="col-md-12 col-md-offset-.05">  
                         <p class="underline-text text-center" id="underline-text">
-                            Check all applicable, indicate in the blank space opposite each type of injury the body location [site] and affected and other details
+                            Check all applicable indicate in the blank space opposite each type of injury the body location [site] and affected and other details
                         </p>
                     </div>
                     <div class="col-md-3">
@@ -434,7 +434,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div>
-                            <label>External Causes/s of Injur/ies:</label>
+                            <label>External Causes/s of Injuries: </label>
                         </div>
                     </div>
                     @php
@@ -588,7 +588,7 @@
                         <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
                     </div> -->
             
-                    <div class="col-md-6 transport-related"><hr>
+                    <div class="col-md-6 transport-related"><hr class="bold-line">
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
                         <div class="col-md-4">&nbsp;&nbsp;&nbsp;
@@ -632,7 +632,8 @@
                         </div>
                     </div>
                     <div class="col-md-3 transport-related">
-                        <hr><br>
+                    <hr class="bold-line">
+                        <br>
                         <p>Position of Patient</p>
                         <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian" onclick="togglePlaceInput()"> Pedestrian<br>
                         <input type="radio" id="position_driver" name="position_patient" value="Driver" onclick="togglePlaceInput()"> Driver<br>
@@ -645,7 +646,7 @@
                         <input type="text" class="form-control hidden" id="position_patient_details" name="position_other_details" placeholder="Others details">
                     </div>
 
-                    <div class="col-md-3 transport-related"><hr><br>
+                    <div class="col-md-3 transport-related">  <hr class="bold-line"><br>
                         <p>Place of Occurrence</p>
                         <input type="radio" id="place_home" name="Occurrence" value="Home" onclick="togglePlaceInput()"> Home<br>
                         <input type="radio" id="place_school" name="Occurrence" value="School" onclick="togglePlaceInput()"> School<br>
@@ -658,46 +659,44 @@
                         <input type="radio" id="place_unknown" name="Occurrence" value="Unknown" onclick="togglePlaceInput()"> Unknown
                     </div>
                     <div class="col-md-12 transport-related">
-                        <div class="col-md-4"><hr>
-                            <label>Activity of the patient at the of incident</label><br>
-                            <input type="radio" id="activity_sports" name="activity_patient" value="Sports" onclick="togglePlaceInput()" > Sports<br>
-                            <input type="radio" id="activity_leisure" name="activity_patient" value="leisure" onclick="togglePlaceInput()"> Leisure<br>
-                            <input type="radio" id="activity_school" name="activity_patient" value="School" onclick="togglePlaceInput()"> Work Related<br>
-                            <input type="radio" id="activity_others" name="activity_patient" value="Others" onclick="togglePlaceInput()"> Others:
-                            <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details" onclick="togglePlaceInput()"><br>
-                            <input type="radio" id="activity_unknown" name="activity_patient" value="unknown" onclick="togglePlaceInput()"> Unknown
-                        </div>
-                        <div class="col-md-4"><hr>
-                            <label>Other Risk Factors at the time of the incident:</label><br>
-                            <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" onclick="togglePlaceInput()"> Alcohol/liquor<br>
-                            <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" onclick="togglePlaceInput()"> Using Mobile Phone<br>
-                            <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy" onclick="togglePlaceInput()"> Sleepy<br>
-                            <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" onclick="togglePlaceInput()"> Smooking<br>
-                            <input type="radio" id="risk_others" name="risk_factors" value="Others" onclick="togglePlaceInput()"> Others specify:
-                            <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
-                            <p>(eg. Suspected under the influence of substance used)</p>
-                        </div>
-                        <div class="col-md-4"><hr>
-                            <label>Safety: (check all that apply)</label>
-                           
-                            @foreach($safety as $safe)
-                            <div class="col-md-6">
-                                    <input type="checkbox" id="safe_none" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
+                            <hr class="bold-line">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Activity of the patient at the time of incident</label><br>
+                                    <input type="radio" id="activity_sports" name="activity_patient" value="Sports" onclick="togglePlaceInput()"> Sports<br>
+                                    <input type="radio" id="activity_leisure" name="activity_patient" value="leisure" onclick="togglePlaceInput()"> Leisure<br>
+                                    <input type="radio" id="activity_school" name="activity_patient" value="Work Related" onclick="togglePlaceInput()"> Work Related<br>
+                                    <input type="radio" id="activity_others" name="activity_patient" value="Others" onclick="togglePlaceInput()"> Others:
+                                    <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details" onclick="togglePlaceInput()"><br>
+                                    <input type="radio" id="activity_unknown" name="activity_patient" value="unknown" onclick="togglePlaceInput()"> Unknown
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label>Other Risk Factors at the time of the incident:</label><br>
+                                    <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" onclick="togglePlaceInput()"> Alcohol/liquor<br>
+                                    <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" onclick="togglePlaceInput()"> Using Mobile Phone<br>
+                                    <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy" onclick="togglePlaceInput()"> Sleepy<br>
+                                    <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" onclick="togglePlaceInput()"> Smooking<br>
+                                    <input type="radio" id="risk_others" name="risk_factors" value="Others" onclick="togglePlaceInput()"> Others specify:
+                                    <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
+                                    <p>(e.g., Suspected under the influence of substances)</p>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label>Safety: (check all that apply)</label><br>
+                                    @foreach($safety as $safe)
+                                        <div class="col-md-6">
+                                            <input type="checkbox" id="safe_{{ $safe->id }}" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
+                                        </div>
+                                        @if(trim($safe->name) == 'Others')
+                                            <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
-
-                                @if(trim($safe->name) == 'Others')
-                                    
-                                    <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
-                                    <div class="col-md-6 col-md-offset-6">
-                                        <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
-                                    </div>
-                                @endif
-                            @endforeach
-                            <!-- <div class="col-md-6">
-                                <input type="checkbox" id="safe_others" name="safeOthers" value="Others"> Others specify:
-                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
-                            </div> -->
-                        </div>
                     </div>
                 </div>
                 <!-- end of transport-group -->
@@ -712,17 +711,17 @@
                                 {{$hos->category_name}}</h6>
                                 <div class="ER_Content" style="display:none">
                                     <div class="col-md-12">
-                                        <label for="transferred facility">Transferred from another hospital/facility</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label for="transferred facility">Transferred from another hospital/facility <span class="text-danger">*</span></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="radio" id="YesTransferred" name="Transferred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="radio" id="NoTransferred" name="Transferred" value="0"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         <input type="radio" id="ReferredYes" name="Referred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="Referredno" name="Referred" value="0"> No <br><hr>
+                                        <input type="radio" id="Referredno" name="Referred" value="0"> No <br> <hr class="bold-line">
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
-                                        <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician">
+                                        <label for="nameofphysician">Name of the Originating Hospital/Physician: <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician" required>
                                     </div>
                                     <div class="col-md-12"><hr></div>
                                     <div class="col-md-3">
@@ -745,38 +744,37 @@
                                     </div>
                                     <div class="col-md-12"></div>
                                     
-                                    <div class="col-md-3"><hr>
+                                    <div class="col-md-3"> <br><br>
                                         <label for="">Mode of Transport to the Hospital/Facility</label>
                                     </div>
-                                    <div class="col-md-2"><hr>
+                                    <div class="col-md-2"><br><br>
                                         <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" onclick="togglePlaceInput()"> Ambulance
                                     </div>
-                                    <div class="col-md-2"><hr>
-                                        
+                                    <div class="col-md-2"><br><br>
                                             <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" onclick="togglePlaceInput()"> Police Vehicle
                                         </div>
-                                        <div class="col-md-2"><hr>
+                                        <div class="col-md-2"><br><br>
                                             <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" onclick="togglePlaceInput()"> Private Vehicle
                                         </div>
-                                        <div class="col-md-1"><hr>
+                                        <div class="col-md-1"><br><br>
                                             <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()"> Others:
                                         </div>
-                                        <div class="col-md-2"><hr>
+                                        <div class="col-md-2"><br><br>
                                             <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
                                     </div>
-                                    <div class="col-md-12"><hr>
+                                    <div class="col-md-12"> <hr class="bold-line">
                                     <label for="initial_imp">Initial Impression</label>
-                                        <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" > <br>
+                                        <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" required > <br>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="">ICD-10 Code/s: Nature of imjury</label>
-                                        <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature">    
+                                        <label for="">ICD-10 Code/s: Nature of injury</label>
+                                        <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature" required>    
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">ICD-10 Code/s: External Cause injury</label>
-                                        <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external">
+                                        <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" required>
                                     </div>
-                                    <div class="col-md-12"><hr>
+                                    <div class="col-md-12"> 
                                     <div class="row">
                                             <div class="col-md-12">
                                                 <label for="Disposition">Disposition:</label>
@@ -802,7 +800,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12"><hr>
+                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <label for="Outcome">Outcome</label>
                                         </div>
@@ -868,29 +866,29 @@
                                         </div>
                                         <div class="col-md-6"><br>
                                             <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
+                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1" required>    
                                         </div>
                                         <div class="col-md-6"><br>
                                             <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
+                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         @endif
-                    @endforeach
-
-                 
+                    @endforeach                 
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                            <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                            <button type="submit" class="btn btn-success mx-2">Submit</button>
                         </div>
                   
             </div>
         </form>
     </div>
 </div>
+
 <script>
+
  var baseUrl = "{{ url('sublist-patient') }}";
     function toggleCheckbox(checkbox) 
             { //BEHAVIOR SET-UP FOR CHECKBOX
@@ -903,7 +901,6 @@
                         });
                     }
             }
-
    function togglePlaceInput() {
         const inputs = [
             { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },
@@ -926,79 +923,204 @@
                 item.input.classList.add('hidden');
             }
         });
+   }
+
+   function validateAndNextStep() {
+    // Get all the required input fields
+    const requiredFields = [
+        { id: 'hospital_no', name: 'Hospital Case No' },
+        { id: 'fname', name: 'First Name' },
+        { id: 'lname', name: 'Last Name' },
+        { id: 'mname', name: 'Middle Name' },
+      
+    ];
+
+    // const requiredDropdowns = [
+    //     { id: 'province', name: 'Province/HUC' },
+    //     { id: 'municipal', name: 'Municipal' },
+    //     { id: 'barangay', name: 'Barangay' }
+    // ];
+
+    let allFieldsValid = true; // Assume all fields are valid initially
+    // Iterate through required fields to check if they are empty
+    requiredFields.forEach(field => {
+        const inputElement = document.getElementById(field.id);
+        const value = inputElement.value.trim(); // Trim to remove extra spaces
+        if (value === '') {
+            allFieldsValid = false; // Set flag to false if any field is empty
+            inputElement.style.borderColor = 'red'; // Highlight empty field in red
+        } else {
+            inputElement.style.borderColor = ''; // Reset border if filled
+        }
+    });
+
+    // requiredDropdowns.forEach(dropdown => {
+    //     const selectElement = document.getElementById(dropdown.id);
+    //     if (selectElement.value === '') {
+    //         allFieldsValid = false;
+    //         selectElement.style.borderColor = 'red'; // Highlight the dropdown in red
+    //     } else {
+    //         selectElement.style.borderColor = ''; // Reset border if filled
+    //     }
+    // });
+    
+    if (!allFieldsValid) {
+        // Alert user if any field is empty
+        alert('Please fill out all required fields.');
+        return; // Prevent moving to the next step
     }
-    </script>
+
+    
+
+    // If all fields are filled, proceed to the next step
+    document.getElementById('form-step-1').style.display = 'none'; // Hide current step
+    document.getElementById('form-step-2').style.display = 'block'; // Show next step
+}
+
+
+document.getElementById('form-submit').addEventListener('submit', function (e) {
+    // Check if the form is valid
+    if (!this.checkValidity()) {
+        e.preventDefault(); // Prevent form from submitting
+
+        // Trigger the browser's built-in validation messages
+        this.reportValidity();
+    }
+});
+
+</script>
 @endsection
 
-<!-- @include('resu.manage_patient_injury.checkProfile') -->
-
-<!-- <script>
-    function toggleDetailInput(checkbox, detailId) {
-        const detailInput = document.getElementById(detailId);
-        detailInput.disabled = !checkbox.checked; // Enable/disable based on checkbox state
-    }
-</script> -->
-
 <style>
-.json-display-style {
-      background-color: black;
-      color: yellow;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .col-divider { 
-        border-right: 1px solid #ddd;
-    }
-    /* .patient-font{
-        background-color: #727DAB;
-        color: white; 
-        padding: 3px;
-    } */
-    .col-md-6 .mt-4 {
-            margin-top: 10px; /* Adjust this value as needed */
+    .json-display-style {
+        background-color: black;
+        color: yellow;
+        padding: 10px;
+        border-radius: 5px;
         }
-    .col-md-12 .underline-text{
-        text-decoration: underline;
 
+        .col-divider { 
+            border-right: 1px solid #ddd;
+        }
+        /* .patient-font{
+            background-color: #727DAB;
+            color: white; 
+            padding: 3px;
+        } */
+        .col-md-6 .mt-4 {
+                margin-top: 10px; /* Adjust this value as needed */
+            }
+        .col-md-12 .underline-text{
+            text-decoration: underline;
+
+        }
+        .ex_type{
+            font-size: 12px;
+        }
+        .col-md-6 .others{
+            border: none;
+            border-bottom: 1px solid black; /* Only bottom border */
+            outline: none; /* Remove default outline */
+            transition: border-bottom-color 0.3s;
+            width: 7em
+        }
+        .col-md-12 .A_Hospital{
+            background-color: #A1A8C7;
+            color: #ffff;
+            padding: 3px;
+            margin-top: -10px;
+        }
+    
+    .col-md-6 .small-input {
+        width: 50%; /* Adjust this value to set the desired width */
+        max-width: 100%; /* Ensure it does not exceed the container's width */
     }
-    .ex_type{
-        font-size: 12px;
+    .indention{
+        border-top: 1px solid black; 
+        margin-bottom: 3px;
     }
-    .col-md-6 .others{
-        border: none;
-        border-bottom: 1px solid black; /* Only bottom border */
-        outline: none; /* Remove default outline */
-        transition: border-bottom-color 0.3s;
-        width: 7em
+    .mt-3{
+        margin-top: 5px;
     }
-    .col-md-12 .A_Hospital{
-        background-color: #A1A8C7;
-        color: #ffff;
-        padding: 3px;
-        margin-top: -10px;
+    .row .inline-input{
+        display: inline-block;
+        width: 275;
+        margin-left: 96px; /* Adjust as necessary */
+        vertical-align: middle;
     }
-  
-   .col-md-6 .small-input {
-    width: 50%; /* Adjust this value to set the desired width */
-    max-width: 100%; /* Ensure it does not exceed the container's width */
-}
-  .indention{
-    border-top: 1px solid black; 
-    margin-bottom: 3px;
-  }
-  .mt-3{
-    margin-top: 5px;
-  }
- .row .inline-input{
+    .col-md-12 .col-md-3 .inline-input2{
+        margin-left: -100px; /* Adjust as necessary */
+        flex-shrink: 0;
+    }
+    .chosen-container-wrapper {
+    max-width: 100%; /* Adjust width as per your layout */
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap; /* Prevent items from wrapping */
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }
+
+    /* Ensure chosen choices align horizontally */
+    .chosen-container-multi .chosen-choices {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5px;
+    gap: 5px;
+    border: none;
+    }
+
+    /* Each choice aligned inline */
+    .chosen-container-multi .chosen-choices li {
     display: inline-block;
-    width: 275;
-    margin-left: 96px; /* Adjust as necessary */
-    vertical-align: middle;
- }
- .col-md-12 .col-md-3 .inline-input2{
-    margin-left: -100px; /* Adjust as necessary */
-    flex-shrink: 0;
- }
+    margin: 0 5px;
+    list-style: none;
+    }
+
+    /* Prevent shrinking of input field */
+    .chosen-container-multi .chosen-choices input[type="text"] {
+    flex: 1;
+    min-width: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    }
+
+    .bold-line {
+        border: none;            /* Remove default hr styling */
+        border-top: 2px solid #000; /* Bold line with black color */
+        margin: 10px 0;          /* Add spacing above and below the line */
+        width: 100%;             /* Full width of container */
+    }
+
+    .is-invalid {
+            border-color: red;
+        }
+
+
+        select, input {
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s;
+}
+
+select:focus, input:focus {
+    border-color: #80bdff;
+    outline: 0;
+}
+
+select.error, input.error {
+    border-color: red;
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
 
 </style>

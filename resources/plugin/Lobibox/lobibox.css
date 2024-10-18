@@ -245,6 +245,7 @@ body.lobibox-open {
   z-index: 4001;
   -webkit-box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
+  margin-top: -250px;
 }
 .lobibox .lobibox-header {
   font-size: 20px;
@@ -272,6 +273,7 @@ body.lobibox-open {
   padding: 15px 20px;
   background-color: rgba(255, 255, 255, 0.98);
   font-size: 16px;
+  /* margin-top: 100px; */
 }
 .lobibox .lobibox-body .lobibox-icon-wrapper {
   position: relative;
@@ -346,6 +348,7 @@ body.lobibox-open {
 }
 .lobibox.lobibox-info {
   border: 1px solid #2e79b4;
+  /* top: 525px; */
 }
 .lobibox.lobibox-info .lobibox-header {
   color: #eeeeee;
@@ -434,6 +437,7 @@ body.lobibox-open {
 .lobibox.lobibox-window {
   border: 3px solid #225eb8;
   border-radius: 6px;
+  /* top: 40px; */
 }
 .lobibox.lobibox-window .lobibox-header {
   background-color: #225eb8;
@@ -446,6 +450,7 @@ body.lobibox-open {
   font-size: 14px;
   padding: 15px;
   background-color: #f5f8fd;
+  /* top: 40px; */
 }
 .lobibox.lobibox-window .lobibox-footer {
   background-color: #8ab0e9;

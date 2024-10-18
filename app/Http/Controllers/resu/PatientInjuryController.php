@@ -184,11 +184,22 @@ class PatientInjuryController extends Controller
         // foreach ($reportFact  as $key => $fact) {
         //     $fact_id = $fact->facility_id;
         // }
+
+        // $validatedData = $request->validate([
+        //     'lname' => 'required|string|max:255',
+        //     // Other fields...
+        // ], [
+        //     'lname.required' => 'Last name is required.',
+        //     'fname.required' => 'First name is required.',
+        //     'mname.required' => 'Middle name is required.',
+        // ]);
+
         $facility = ResuReportFacility::where('facility_id', $request->facility_id)->first();
         if(!$facility){
             $facility = new ResuReportFacility();
         }
         $facility->facility_id = $request->facility_id;
+        $facility->facilityName = $request->facilityname;
        // $facility->facility_id = $request->facilityname; 
         $facility->typeOfdru = $request->typedru;
         $facility->Addressfacility = $request->addressfacility;

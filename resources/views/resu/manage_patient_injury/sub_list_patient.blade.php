@@ -1,7 +1,6 @@
 @extends('resu/app1')
 @section('content')
 
-@include('resu/resuSidebar')
 <?php
  use App\ResuNatureInjury;
  use App\ResuBodyParts;
@@ -38,11 +37,11 @@
  }
 
 ?>
-    <div class="col-md-8 wrapper">
+    <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 17%; ">
     <div class="alert alert-jim">
         <h2 class="page-header">
             <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.'. '.$profile->lname.' '.$profile->suffix }}
-        </h2>
+        </h2 >
         <!-- <div class="page-divider"></div> -->
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
             {{ csrf_field() }}
@@ -119,10 +118,15 @@
 
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
-                                <select class="form-control chosen-select" name="sex" id="sex">
+                                <!-- <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="male" {{ trim($profile->sex) == 'male' ? 'selected' : '' }}>male</option>
                                     <option value="female" {{trim($profile->sex) == 'female' ? 'selected' : '' }}>female</option>
+                                </select> -->
+                                <select class="form-control chosen-select" name="sex" id="sex">
+                                    <option value="">Select sex</option>
+                                    <option value="male">male</option>
+                                    <option value="female">female</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -209,7 +213,10 @@
                     
                     <div class="col-md-12">
                         <div>
-                            <label>Injury Intent:</label>
+                        <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Injury Intent</h4>
+                            <!-- <label>Injury Intent:</label> -->
+                        </div>
                         </div>
                     </div>
                     @php
@@ -238,7 +245,8 @@
                     </div>
                   
                     <div class="col-md-12">  <hr>
-                        <label>First Aid Given:</label>
+                    <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">First Aid Given</h4>
+                        <!-- <label>First Aid Given:</label> -->
                     </div>
                     @php
                         $firstaid = $profile->preadmission->first_aid ? explode(',', $profile->preadmission->first_aid) : [];
@@ -259,8 +267,9 @@
 
                     <!----------------------------- Nature of Injury ------------------------------>
                     <div class="col-md-12">
-                        <hr>
-                        <label>Nature of Injuries:</label>
+                    <hr>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Nature of Injuries</h4>
+                        <!-- <label>Nature of Injuries:</label> -->
                     </div>
                     @php
                         $minjuries = explode(',', $profile->preadmission->multipleInjury);
@@ -520,7 +529,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div>
-                            <label>External Causes/s of Injur/ies:</label>
+                            <!-- <label>External Causes/s of Injur/ies:</label> -->
+                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">External Causes/s of Injuries</h4>
                         </div>
                     </div>
                     @php
@@ -664,11 +674,12 @@
                     $safety = [];
                 @endphp
                 {{-- @foreach($tranportData->transport as $trans) --}}
-                     
+                
                     <div class="Transport-group" style="display: none;">        
                         <div class="col-md-6 transport-related">
                             <label>For Transport Vehicular Accident Only:</label>
                         </div>
+
                         <div class="col-md-6 transport-related">
                             <label>Vehicular Accident Type: </label>
                         </div>
@@ -688,7 +699,7 @@
                         <div class="col-md-2 transport-related">
                             <input type="radio" id="non_collision" name="transport_collision" value="Non-Collision" {{ isChecked("Non-Collision", $trans->Vehicular_acc_type) }}> Non-Collision
                         </div>  
-                        <div class="col-md-6 transport-related"><hr>
+                        <div class="col-md-6 transport-related"> <br><br>
                             <label>Vehicles Involved:</label>
                             <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
                             <div class="col-md-4">&nbsp;&nbsp;&nbsp;
@@ -731,7 +742,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 transport-related"><hr><br>
+                        <div class="col-md-3 transport-related"> <!--<hr class="bold-line"><br>--><br>
                             <p>Position of Patient</p>
                             <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian" {{isChecked('Pedestrian', $trans->positionPatient)}}> Pedestrian<br>
                             <input type="radio" id="position_driver" name="position_patient" value="Driver" {{isChecked('Driver', $trans->positionPatient)}}> Driver<br>
@@ -744,7 +755,7 @@
                             <input type="radio" id="position_unknown" name="position_patient" value="Unknown" {{isChecked('Unknown', $trans->positionPatient)}}> Unknown
 
                         </div>
-                        <div class="col-md-3 transport-related"><hr><br>
+                        <div class="col-md-3 transport-related"> <!--<hr class="bold-line"><br>--><br>
                             <p>Place of Occurrence</p>
                             <input type="radio" id="place_home" name="Occurrence" value="Home" {{isChecked('Home', $trans->pofOccurence)}}> Home<br>
                             <input type="radio" id="place_school" name="Occurrence" value="School" {{isChecked('School', $trans->pofOccurence)}}> School<br>
@@ -757,7 +768,7 @@
                             <input type="radio" id="place_unknown" name="Occurrence" value="Unknown" {{isChecked('Unknown', $trans->pofOccurence)}}> Unknown
                         </div>
                         <div class="col-md-12 transport-related">
-                            <div class="col-md-4"><hr>
+                            <div class="col-md-4"> <hr class="bold-line">
                                 <label>Activity of the patient at the of incident</label><br>
                                 <input type="radio" id="activity_sports" name="activity_patient" value="Sports" {{isChecked('Sports', $trans->activity_patient)}}> Sports<br>
                                 <input type="radio" id="activity_leisure" name="activity_patient" value="leisure" {{isChecked('leisure', $trans->activity_patient)}}> Leisure<br>
@@ -766,7 +777,7 @@
                                 <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" value="{{$trans->AP_others}}" placeholder="others details">
                                 <input type="radio" id="activity_unknown" name="activity_patient" value="unknown" {{isChecked('unknown', $trans->activity_patient)}}> Unknown
                             </div>
-                            <div class="col-md-4"><hr>
+                            <div class="col-md-4"> <hr class="bold-line">
                                 <label>Other Risk Factors at the time of the incident:</label><br>
                                 <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" {{isChecked('Alcohol/liquor', $trans->risk_factors)}}> Alcohol/liquor<br>
                                 <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" {{isChecked('Using Mobile Phone', $trans->risk_factors)}}> Using Mobile Phone<br>
@@ -776,7 +787,7 @@
                                 <input type="text" class="form-control" id="risk_others_details" name="rf_others" value="{{ $trans->rf_others }}" placeholder="others specify here">
                                 <p>(eg. Suspected under the influence of substance used)</p>
                             </div>
-                            <div class="col-md-4"><hr>
+                            <div class="col-md-4"> <hr class="bold-line">
                                 <label>Safety: (check all that apply)</label>
                                         <input type="hidden" name="transport_ids" value="{{ $trans->id }}">
                                     @foreach($list_safety as $safe)
@@ -814,68 +825,79 @@
                                     <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <input type="radio" id="ReferredYes" name="Referred" value="1" {{isChecked('1', $hospitalData->referred_facility)}}> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="radio" id="Referredno" name="Referred" value="0" {{isChecked('0', $hospitalData->referred_facility)}}> No <br><hr>
-                                </div>
-                                <div class="col-md-12">
+                                    <input type="radio" id="Referredno" name="Referred" value="0" {{isChecked('0', $hospitalData->referred_facility)}}> No <br><br><br><!--<hr class="bold-line">-->
+                                    </div>
+                                  <div class="col-md-12">
                                     <label for="nameofphysician">Name of the Originating Hospital/Physician:</label>
                                     <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician" value="{{$hospitalData->originating_hospital}}">
-                                </div>
-                                <div class="col-md-12"><hr></div>
+                                    <br>
+                                </div>                           
+                                
                                 <div class="col-md-3">
                                     <label for="">Status upon reashing the Facility</label>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="radio" id="deadonarrive" name="reashingFact" value="Dead on Arrival" {{isChecked('Dead on Arrival', $hospitalData->status_facility)}}> Dead on Arrival
+                                    <div class="col-md-2">
+                                        <input type="radio" id="deadonarrive" name="reashingFact" value="Dead on Arrival" {{isChecked('Dead on Arrival', $hospitalData->status_facility)}}> Dead on Arrival
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="radio" id="alive" name="reashingFact" value="Alive" {{isChecked('Alive', $hospitalData->status_facility)}}> Alive
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for=""> If Alive: </label> 
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="radio" id="conscious" name="ifAlive" value="conscious" {{ isChecked('conscious', $hospitalData->Ifalive) }}> conscious
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious" {{ isChecked('Unconscious', $hospitalData->Ifalive) }}> Unconscious
+                                    </div>
+                                <div class="col-md-12">
+                                <br><br>
                                 </div>
-                                <div class="col-md-2">
-                                    <input type="radio" id="alive" name="reashingFact" value="Alive" {{isChecked('Alive', $hospitalData->status_facility)}}> Alive
-                                </div>
-                                <div class="col-md-1">
-                                    <label for=""> If Alive: </label> 
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="radio" id="conscious" name="ifAlive" value="conscious" {{ isChecked('conscious', $hospitalData->Ifalive) }}> conscious
-                                </div>
-                                <div class="col-md-2">
-                                    <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious" {{ isChecked('Unconscious', $hospitalData->Ifalive) }}> Unconscious
-                                </div>
-                                <div class="col-md-12"></div>
-                                <div class="col-md-3"><hr>
-                                    <label for="">Mode of Transport to the Hospital/Facility</label>
-                                </div>
-                                <div class="col-md-2"><hr>
-                                    <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" {{isChecked('Ambulance', $hospitalData->mode_transport_facility)}}> Ambulance
-                                </div>
-                                <div class="col-md-2"><hr>
-                                    <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" {{isChecked('Police Vehicle', $hospitalData->mode_transport_facility)}}> Police Vehicle
-                                </div>
-                                <div class="col-md-2"><hr>
-                                    <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" {{isChecked('Private Vehicle', $hospitalData->mode_transport_facility)}}> Private Vehicle
-                                </div>
-                                <div class="col-md-1"><hr>
-                                    <input type="radio" id="ModeOthers" name="mode_transport" value="Others" {{isChecked('Others', $hospitalData->mode_transport_facility)}}> Others
-                                </div>
-                                <div class="col-md-2"><hr>
-                                    <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" value="{{$hospitalData->other_details}}" placeholder="others specify here">
-                                </div>
-                                <div class="col-md-12"><hr>
+                                <div class="col-md-3">
+                                        <label for="">Mode of Transport to the Hospital/Facility</label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" onclick="togglePlaceInput()"> Ambulance
+                                    </div>
+                                    <div class="col-md-2">                                        
+                                            <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" onclick="togglePlaceInput()"> Police Vehicle
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" onclick="togglePlaceInput()"> Private Vehicle
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()"> Others:
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
+                                    </div>
+                                <div class="col-md-12">  
+                                <br><br>
+
                                 <label for="initial_imp">Initial Impression</label>
                                     <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" value="{{$hospitalData->initial_impression}}" > <br>
                                 </div>
+                               
                                 <div class="col-md-6">
-                                    <label for="">ICD-10 Code/s: Nature of imjury</label>
+                                <br>
+                                    <label for="">ICD-10 Code/s: Nature of injury</label>
                                     <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature" value="{{$hospitalData->icd10Code_nature}}">    
                                 </div>
                                 <div class="col-md-6">
+                                <br>
                                     <label for="">ICD-10 Code/s: External Cause injury</label>
                                     <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" value="{{$hospitalData->icd10Code_external}}">
                                 </div>
-                                <div class="col-md-12"><hr>
-                                    <div class="col-md-1">
-                                        <label for="Disposition">Disposition:</label>
+                               
+                                <div class="col-md-12">  <br><br>
+
+                                    <div class="col-md-12">
+                                        <label for="Disposition">Disposition: </label>
                                     </div>
+
                                     <div class="col-md-3">
-                                        <input type="radio" id="admitted" name="disposition" value="Admitted" {{isChecked('Admitted', $hospitalData->disposition)}}> Admitted <br>
+                                        <input type="radio" id="admitted" name="disposition" value="Admitted" {{isChecked('Admitted', $hospitalData->disposition)}}>Admitted <br>
                                         <input type="radio" id="hama" name="disposition" value="HAMA" {{isChecked('HAMA', $hospitalData->disposition)}}> HAMA
                                     </div>
                                     <div class="col-md-3">
@@ -891,7 +913,7 @@
                                         <input type="radio" id="died" name="disposition" value="died" {{isChecked('died', $hospitalData->disposition)}}> Died
                                     </div>
                                 </div>
-                                <div class="col-md-12"><hr>
+                                <div class="col-md-12"> <br><br>
                                     <div class="col-md-2">
                                         <label for="Outcome">Outcome</label>
                                     </div>
@@ -924,7 +946,7 @@
                                         <label for="complete_final">Complete Final Diagnosis</label>
                                         <input type="text" class="form-control" id="complete_final" name="final_diagnose" id="" value="{{$hospitalData->complete_Diagnose}}">
                                     </div>
-                                    <div class="col-md-12"><hr>
+                                    <div class="col-md-12"> <hr class="bold-line">
 
                                         <label for="Disposition">Disposition:</label><br>
                                         <div class="col-md-3 col-md-offset-1">
@@ -953,7 +975,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-12"><hr>
+                                    <div class="col-md-12"> <hr class="bold-line">
                                         <label for="Outcome">Outcome</label><br>
                                         <div class="col-md-2 col-md-offset-1">
                                             <input type="radio" id="Improved1" name="Outcome1" value="Improved" {{isChecked('Improved', $hospitalData->Outcome)}}> Improved
@@ -993,9 +1015,19 @@
 
     </div>
 </div>
+
 <script>
     var deleteNatureUrl = "{{ route('delete-nature') }}";
-   
+    function toggleOthersInput() {
+    const othersInput = document.getElementById('othersInput');
+    const modeOthersRadio = document.getElementById('ModeOthers');
+
+    if (modeOthersRadio.checked) {
+        othersInput.style.display = 'block';  // Show the input field
+    } else {
+        othersInput.style.display = 'none';   // Hide the input field
+    }
+}
 </script>
 
 @endsection
@@ -1062,5 +1094,50 @@
     margin-left: -100px; /* Adjust as necessary */
     flex-shrink: 0;
  }
+
+ .chosen-container-wrapper {
+  max-width: 100%; 
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap; 
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Ensure chosen choices align horizontally */
+.chosen-container-multi .chosen-choices {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 5px;
+  gap: 5px;
+  border: none;
+}
+
+/* Each choice aligned inline */
+.chosen-container-multi .chosen-choices li {
+  display: inline-block;
+  margin: 0 5px;
+  list-style: none;
+}
+
+/* Prevent shrinking of input field */
+.chosen-container-multi .chosen-choices input[type="text"] {
+  flex: 1;
+  min-width: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.bold-line {
+    border: none;            /* Remove default hr styling */
+    border-top: 2px solid #000; /* Bold line with black color */
+    margin: 10px 0;          /* Add spacing above and below the line */
+    width: 100%;             /* Full width of container */
+}
 
 </style>
