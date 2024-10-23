@@ -106,6 +106,7 @@ class PatientInjuryController extends Controller
                $profiles = $query->where('province_id', $user->province)
                     ->whereNotIn('province_id',['63','76','80'])
                     ->simplePaginate(15);
+
             }else if($user->user_priv == 8){ // HUC
 
                 $profiles = $query->where('muncity_id', $user->muncity)
@@ -145,17 +146,17 @@ class PatientInjuryController extends Controller
         }
 
         $province = Province::select('id', 'description')->get();
+        
         $safety = ResuSafety::all();
 
-        $province_SelectedMuncity = $province->merge($selectedMuncity);
+        // $province_SelectedMuncity = $province->merge($selectedMuncity);
 
         return view('resu.manage_patient_injury.patient_form',[
-            'facility' => $facilities,
-            'province' => $province_SelectedMuncity,
-            'muncity' => $muncity,
-            'barangay' => $barangay,
-            'safety' => $safety,
-            'user' => $user,
+                'facility' => $facility,
+                'province' => $province,  // Pass provinces only
+                'selectedMuncity' => $selectedMuncity, // Pass separate muncities if needed
+                'safety' => $safety,
+                'user' => $user,
         ]);
     }
 

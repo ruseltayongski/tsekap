@@ -171,7 +171,7 @@
                                 <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
-                                    <option value="{{ $prov->id }}" {{ $profile->province_id == $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
+                                         <option value="{{ $prov->id }}" {{ $profile->province_id == $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -198,7 +198,7 @@
                             <div class="col-md-3">
                                 <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="provinceInjury" id="update_provinceId">
-                                    <option value="0" selected>Select Province Injury</option>
+                                    <option value="0" selected>Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}" {{ $profile->preadmission && $profile->preadmission->POIProvince_id ==  $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
                                     @endforeach

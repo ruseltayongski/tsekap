@@ -141,9 +141,9 @@
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="provinceInjury" id="provinceId">
-                                    <option value="">Select Province Injury</option>
+                                    <option value="">Select Province</option>
                                     @foreach($province as $prov)
-                                    <option value="{{ $prov->id }}">{{ $prov->description }}</option>
+                                          <option value="{{ $prov->id }}">{{ $prov->description }}</option>
                                     @endforeach
                                 </select>
                             </div>

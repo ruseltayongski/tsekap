@@ -144,7 +144,7 @@
                                     <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
                                     <td>{{ $preprovince . ' , ' . $premuncity . ' , ' . $prebarangay . ' , ' . $p->preadmission->POIPurok }}</td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
-                                    <!-- <td>{{ $NameEncoder ?? 'N/A' }}</td>          -->
+                                    <!-- <td>{{ $NameEncoder ?? 'N/A' }}</td>-->
                                     @if($user_priv->user_priv !== 6)
                                         <td>
                                             @if($p->name_of_encoder)

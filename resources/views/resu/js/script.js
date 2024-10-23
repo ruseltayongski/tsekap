@@ -203,7 +203,7 @@ $(document).ready(function () {
         type: "GET",
         dataType: "json",
         success: function (data) {
-          console.log("data province", provinceId);
+          console.log("data province", provinceId)
           if (data && data.length > 0) {
             $.each(data, function (key, value) {
               if (value.id && value.description) {
@@ -225,29 +225,29 @@ $(document).ready(function () {
             }
           }
           //this is HUC muncities not provinceId
-          if (provinceId == 63 || provinceId == 76 || provinceId == 80) {
-            var muncities = JSON.parse(
-              document.getElementById("muncities-data").value
-            );
-            muncities.forEach(function (mun) {
-              if (mun.id == provinceId) {
-                $(muncity).append(
-                  '<option value="' +
-                    mun.id +
-                    '" >' +
-                    mun.description +
-                    "</option>"
-                );
-              }
-            });
+          // if (provinceId == 63 || provinceId == 76 || provinceId == 80) {
+          //   var muncities = JSON.parse(
+          //     document.getElementById("muncities-data").value
+          //   );
+          //   muncities.forEach(function (mun) {
+          //     if (mun.id == provinceId) {
+          //       $(muncity).append(
+          //         '<option value="' +
+          //           mun.id +
+          //           '" >' +
+          //           mun.description +
+          //           "</option>"
+          //       );
+          //     }
+          //   });
 
-            if (provinceId) {
-              $(muncity).val(provinceId);
-              $(muncity).trigger("chosen:updated");
-            } else {
-              $(muncity).trigger("chosen:updated");
-            }
-          }
+          //   if (provinceId) {
+          //     $(muncity).val(provinceId);
+          //     $(muncity).trigger("chosen:updated");
+          //   } else {
+          //     $(muncity).trigger("chosen:updated");
+          //   }
+          // }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(JSON.stringify(jqXHR));
