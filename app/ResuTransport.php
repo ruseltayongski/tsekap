@@ -15,10 +15,7 @@ class ResuTransport extends Model
         return $this->belongsTo(ResuPreadmission::class, 'Pre_admission_id');
     }
 
-    // public function Allsafety()
-    // {
-    //     return $this->hasMany(ResuSafety::class, 'id');
-    // }
+   
     public function safetyRecord() {
         return $this->belongsTo(ResuSafety::class, 'safety');
     }

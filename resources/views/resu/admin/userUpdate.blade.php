@@ -125,14 +125,13 @@ $(document).ready(function() {
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function(response) {
-                // Redirect to another page after successful update
                 window.location.href = '{{ route("resu.admin.view_Users") }}'; // Redirect to the users list page
             },
             error: function(xhr) {
                 // Handle validation errors or other errors
                 var errors = xhr.responseJSON.errors;
                 $.each(errors, function(key, value) {
-                    alert(value[0]); // Display the first error message (customize this as needed)
+                    alert(value[0]); 
                 });
             }
         });

@@ -525,13 +525,6 @@ class PatientInjuryController extends Controller
         }
         $safety = explode('-',$transportData->safety);
         $safety_id = array_map('intval', $safety);  
-
-        // $injuriesWithBodyParts = [];
-
-        // foreach ($profile->preadmission->natureInjuryPreadmissions as $injury) {
-        //     $injuriesWithBodyParts[$injury->natureInjury_id]['injury_details'] = $injury; // Store injury details
-        //     $injuriesWithBodyParts[$injury->natureInjury_id]['body_parts'] = $injury->bodyParts; // Store associated body parts
-        // }
      
         return view('resu.manage_patient_injury.sub_list_patient',[
             'profile' => $profile,
@@ -629,7 +622,6 @@ class PatientInjuryController extends Controller
             $nature->subtype = $request->Degree;
             $nature->details = $request->burnDetail;
             $nature->side = $request->burnside;
-           // $nature->bodypartId = $request->input('body_parts_injured' . $i);
 
             $nature->save();
             
@@ -707,7 +699,7 @@ class PatientInjuryController extends Controller
                 $this->UpdateBodyParts($nature->natureInjury_id, $nature->Pre_admission_id, $request->input('body_parts_injured' . $i, []));
             }
         }
-        //end of nature Injury update
+
 
         //external update
         if($request->ex_burn){
@@ -784,6 +776,7 @@ class PatientInjuryController extends Controller
             }
         }
         //end update if external
+
         //for Transpart
         $this->UpdateTransport($request->externalTransport, $request, $pre_admission->id);
 
@@ -971,36 +964,7 @@ class PatientInjuryController extends Controller
 
                 $transport->save();
 
-         }
-
-        //  if($request->has('categsafe') || $request->has('safeothers_details')){
-
-        //     $safet_values = $request->input('categsafe', []);
-    
-        //     foreach($safet_values as $safety_value){
-             
-        //         $safety = ResuSafetyTransport::where('Transport_safety_id', $request->transport_ids)
-        //             ->where('safety_id', $safety_value)
-        //             ->first();
-
-        //         if(!$safety){
-        //             $safety = new ResuSafetyTransport();
-        //             $safety->Transport_safety_id = $request->transport_ids;
-        //             $safety->safety_id = $safety_value;
-        //             if($safety_value == $request->safety_others_id){
-        //                 $safety->safety_details = $request->safeothers_details;
-        //             }
-        //         }
-                
-                
-        //         $safety->save();
-        //     } 
-
-        // }else{
-        //     return 'No safety data provided.';
-        // }
-
-        
+         }      
 
     }
 
@@ -1046,8 +1010,6 @@ class PatientInjuryController extends Controller
         }elseif($category == "in-patient"){
 
         }
-       
-
         return response()->json($transport_id);
 
     }

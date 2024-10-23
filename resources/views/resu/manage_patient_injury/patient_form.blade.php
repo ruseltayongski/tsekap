@@ -176,7 +176,8 @@
                 </div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <button type="button" class="btn btn-primary mx-2" onclick="validateAndNextStep()">Next</button>
+                            <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
+                            <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
                         </div>
                     </div>
             </div>
@@ -721,7 +722,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label for="nameofphysician">Name of the Originating Hospital/Physician: <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician" required>
+                                        <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician">
                                     </div>
                                     <div class="col-md-12"><hr></div>
                                     <div class="col-md-3">
@@ -764,15 +765,15 @@
                                     </div>
                                     <div class="col-md-12"> <hr class="bold-line">
                                     <label for="initial_imp">Initial Impression</label>
-                                        <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression" required > <br>
+                                        <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression"> <br>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">ICD-10 Code/s: Nature of injury</label>
-                                        <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature" required>    
+                                        <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature" >    
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">ICD-10 Code/s: External Cause injury</label>
-                                        <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" required>
+                                        <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" >
                                     </div>
                                     <div class="col-md-12"> 
                                     <div class="row">
@@ -866,11 +867,11 @@
                                         </div>
                                         <div class="col-md-6"><br>
                                             <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1" required>    
+                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
                                         </div>
                                         <div class="col-md-6"><br>
                                             <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1" required>
+                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
                                         </div>
                                     </div>
                                 </div>
@@ -965,7 +966,6 @@
 //             }
 //         });
 
-       
 </script>
 @endsection
 <style>
@@ -1018,56 +1018,53 @@
     .row .inline-input{
         display: inline-block;
         width: 275;
-        margin-left: 96px; /* Adjust as necessary */
+        margin-left: 96px; 
         vertical-align: middle;
     }
     .col-md-12 .col-md-3 .inline-input2{
-        margin-left: -100px; /* Adjust as necessary */
+        margin-left: -100px; 
         flex-shrink: 0;
     }
     .chosen-container-wrapper {
-    max-width: 100%; /* Adjust width as per your layout */
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap; /* Prevent items from wrapping */
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+        max-width: 100%; 
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap; 
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
     }
 
-    /* Ensure chosen choices align horizontally */
     .chosen-container-multi .chosen-choices {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 5px;
-    gap: 5px;
-    border: none;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 5px;
+        gap: 5px;
+        border: none;
     }
 
-    /* Each choice aligned inline */
     .chosen-container-multi .chosen-choices li {
-    display: inline-block;
-    margin: 0 5px;
-    list-style: none;
+        display: inline-block;
+        margin: 0 5px;
+        list-style: none;
     }
 
-    /* Prevent shrinking of input field */
     .chosen-container-multi .chosen-choices input[type="text"] {
-    flex: 1;
-    min-width: 50px;
-    background: transparent;
-    border: none;
-    outline: none;
+        flex: 1;
+        min-width: 50px;
+        background: transparent;
+        border: none;
+        outline: none;
     }
 
     .bold-line {
         border: none;            /* Remove default hr styling */
         border-top: 2px solid #000; /* Bold line with black color */
-        margin: 10px 0;          /* Add spacing above and below the line */
-        width: 100%;             /* Full width of container */
+        margin: 10px 0;          
+        width: 100%;            
     }
 
     .is-invalid {
@@ -1075,25 +1072,25 @@
         }
 
 
-        select, input {
-    border: 1px solid #ced4da;
-    transition: border-color 0.3s;
-}
+    select, input {
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s;
+    }
 
-select:focus, input:focus {
-    border-color: #80bdff;
-    outline: 0;
-}
+    select:focus, input:focus {
+        border-color: #80bdff;
+        outline: 0;
+    }
 
-select.error, input.error {
-    border-color: red;
-    animation: shake 0.3s;
-}
+    select.error, input.error {
+        border-color: red;
+        animation: shake 0.3s;
+    }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
 
 </style>

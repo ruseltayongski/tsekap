@@ -20,24 +20,39 @@
  $muncities = Muncity::select('id', 'description')->get();
  use Carbon\Carbon;
 
- $dob = $profile->dob;
- $age = 'N/A';
- 
- if ($dob) {
-     $dob = Carbon::parse($dob);
-     $ageYears = $dob->diffInYears(Carbon::now());
-     $ageMonths = $dob->diffInMonths(Carbon::now()) % 12;
- 
-     if ($ageYears > 0) {
-         $age = $ageYears . ' years old';
-     } else {
-         $age = $ageMonths . ' months old';
-     }
- }
+        $dob = $profile->dob;
+        $age = 'N/A';
+            
+        if ($dob) {
+            $dob = Carbon::parse($dob);
+            $now = Carbon::now();
+
+            // Calculate raw age in years and months
+            $ageYears = $dob->diffInYears($now);
+            $ageMonths = $dob->diffInMonths($now) % 12;
+
+            // Determine if the birthday has already passed this year
+            $birthdayThisYear = $dob->copy()->year($now->year);
+
+            // Adjust the age if the birthday has not occurred yet this year
+            if ($now->lt($birthdayThisYear)) {
+                $ageYears -= 1;
+            }
+
+            // Prepare the age display string
+            if ($ageYears > 0) {
+                $age = $ageYears . ' years old';
+            } else {
+                $age = $ageMonths . ' months old';
+            }
+        } else {
+            $age = 'N/A';
+        }
+
 
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-     return $percent >= 80; // You can adjust the threshold as needed
+     return $percent >= 80; 
  }
 
 
@@ -151,8 +166,6 @@
                                 <input type="text" class="form-control" id="age" name="age" readonly 
                                     value="{{ $age }}">
                             </div>
-
-
                             <div class="col-md-3">
                                 <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}" required>
@@ -427,9 +440,7 @@
                                         $counter++;
                                     @endphp
                                 @endif
-                            @endforeach
-                      
-                        
+                            @endforeach                   
                        
                     </div> -->
                      <!----------------------------- Nature of Injury ------------------------------>
@@ -1040,9 +1051,9 @@
             const modeOthersRadio = document.getElementById('ModeOthers');
 
             if (modeOthersRadio.checked) {
-                othersInput.style.display = 'block';  // Show the input field
+                othersInput.style.display = 'block'; 
             } else {
-                othersInput.style.display = 'none';   // Hide the input field
+                othersInput.style.display = 'none'; 
             }
         }
 

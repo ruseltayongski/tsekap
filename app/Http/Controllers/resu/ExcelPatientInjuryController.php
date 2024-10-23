@@ -1015,7 +1015,6 @@ class ExcelPatientInjuryController extends Controller
             //  dd($profile);
 
             $csvData = [];
-
             // Add headers to CSV
             $csvData[] = [
                'Hospital CaseNo', 'Fname', 'Mname', 'Lname', 'Suffix', 'Age', 'Sex', 'DOB', 'Permanent Province/HUC address', 'Permanent Municipal Acddress', 'Permanent Barangay address', 'Place Injury',
@@ -1064,12 +1063,9 @@ class ExcelPatientInjuryController extends Controller
                'Safety',
                'Phil ID', 'Facility Code','Facility Name', 'DRU','Facility Address', 'Name of the Encoder', 'Date And Time Injury','Updated at'
             ];
-
-            // Iterate through the data and prepare the CSV rows
             foreach ($profile as $p) {
 
                 $dob = Carbon::parse($p->dob);
-                // $age = $dob->diffInYears(Carbon::now());
                 $age = $this->calculateAge($p->dob);
 
              
@@ -1126,12 +1122,9 @@ class ExcelPatientInjuryController extends Controller
                       
                       if ($latestNatureInjury) {
                           foreach ($injuries as $injury) {
-                              // Check if the nature injury matches
                               if ($latestNatureInjury->id == $preadmission->natureInjury_id && 
                                   $latestNatureInjury->name === $injury) {
-                                  
-                                  // Initialize injury result if not already set
-                                  if (!isset($injuryResults[strtolower($injury)])) {
+                                   if (!isset($injuryResults[strtolower($injury)])) {
                                       $injuryResults[strtolower($injury)] = [
                                           'status' => 'Yes',
                                           'details' => $preadmission->details ?: ' ',
@@ -1140,18 +1133,14 @@ class ExcelPatientInjuryController extends Controller
                                           'nature_injury_id' => $latestNatureInjury->id,
                                       ];
                                   }
-              
-                                  // Handle body parts
                                   $bodyParts = $latestNatureInjury->bodyParts;
               
                                   // Check if bodyParts exists
                                   if ($bodyParts &&count($bodyParts) > 0) {
-                                      // Filter body parts based on Pre_admission_id
                                       $filteredBodyParts = $bodyParts->filter(function ($bodyPart) use ($preadmission) {
                                           return $bodyPart->preadmission_id == $preadmission->Pre_admission_id;
                                       });
               
-                                      // Extract body part names and ensure uniqueness
                                       $bodyPartNames = $filteredBodyParts->map(function ($item) {
                                           return $item->bodypart->name;
                                       })->toArray();
@@ -1167,7 +1156,6 @@ class ExcelPatientInjuryController extends Controller
                       }
                   }
                   
-                  // Mark injuries as 'No' if not found
                   foreach ($injuries as $injury) {
                       if (!isset($injuryResults[strtolower($injury)])) {
                           $injuryResults[strtolower($injury)] = [
@@ -1182,57 +1170,18 @@ class ExcelPatientInjuryController extends Controller
               
                   // Output for debugging
                   //dd($injuryResults);
-              }        
-              
-              
+              }          
               // Example output
              // dd($injuryResults);
-              
-                    // Now you can access the result like this:
-                   
-                    // $abrasionStatus = $injuryResults['abrasions']['status'] ?? 'N/A';
-                    // $abrasionDetails = $injuryResults['abrasions']['details'] ?? 'N/A';
-                    // $abrasionbodyPreadmissionIds = $injuryResults['abrasions']['preadmission_id'] ?? [];
-                    // $abrasionbodyNatureIds = $injuryResults['abrasions']['nature_injury_id'] ?? [];
-                    // $abrasionBodyparts = $injuryResults['abrasions']['bodyparts_id'] ?? [];
-
-                    // $avulsionStatus = $injuryResults['avulsion']['status'];
-                    // $avulsionDetails = $injuryResults['avulsion']['details'];
-                    // $bodyPartsIdsAvulsion = $injuryResults['avulsion']['bodyparts_id'] ?? [];
-                    // $avulsionbodyPreadmissionIds = $injuryResults['avulsion']['preadmission_id'] ?? [];
-
-                    // $concussionStatus = $injuryResults['concussion']['status'];
-                    // $concussionDetails = $injuryResults['concussion']['details'];
-                    // $bodyPartsIdsConcussion = $injuryResults['concussion']['bodyparts_id'] ?? [];
-
-                    // $contusionStatus = $injuryResults['contusion']['status'];
-                    // $contusionDetails = $injuryResults['contusion']['details'];
-                    // $bodyPartsIdsContusion = $injuryResults['contusion']['bodyparts_id'] ?? [];
-
-                    // $openwoundStatus = $injuryResults['open wound']['status'];
-                    // $openwoundDetails = $injuryResults['open wound']['details'];
-                    // $bodyPartsIdsOpenWound = $injuryResults['open wound']['bodyparts_id'] ?? [];
-
-                    // $traumaticStatus = $injuryResults['traumatic amputation']['status'];
-                    // $traumaticDetails = $injuryResults['traumatic amputation']['details'];
-                    // $bodyPartsIdsTraumaticAmputation = $injuryResults['traumatic amputation']['bodyparts_id'] ?? [];
-
-                    // Output results for debugging
-                   //dd($abrasionStatus, $abrasionDetails, $abrasionbodyNatureIds,$abrasionbodyPreadmissionIds,  $abrasionBodyparts);
-
                     $fractureInfo = 'No';  // Default to No
                     $fractureSubtype = 'N/A';  // Default to N/A
                     $fractureBodyParts = [];    
                     
-                    // Check if the preadmission exists and contains fracture information
+                    
                     if ($p->preadmission && $p->preadmission->natureInjuryPreadmissions->count() > 0) {
-                        // Loop through all nature injury preadmissions for this preadmission
                         foreach ($p->preadmission->natureInjuryPreadmissions as $natureInjuryPreadmission) {
-                            // Check if the injury is a fracture
                             if ($natureInjuryPreadmission->natureInjury->name === 'Fracture') {
-                                $fractureInfo = 'Yes';  // If fracture is found, set it to Yes
-                                // Check if there's a subtype for the fracture (Close or Open)
-                                // Assuming 'subtype' is a field on the `natureInjuryPreadmission` model
+                                $fractureInfo = 'Yes';  
                                 $fractureSubtype = $natureInjuryPreadmission->subtype ? $natureInjuryPreadmission->subtype : 'N/A';
                                 // Break the loop as we found a fracture, no need to check further
                                 break;
@@ -1241,17 +1190,12 @@ class ExcelPatientInjuryController extends Controller
                         }
                     }
                     
-                    $BurnInfo = 'No';  // Default to No
-                    $BurnSubtype = 'N/A';  // Default to N/A
+                    $BurnInfo = 'No';  
+                    $BurnSubtype = 'N/A';
                     if ($p->preadmission && $p->preadmission->natureInjuryPreadmissions->count() > 0) {
-                        // Loop through all nature injury preadmissions for this preadmission
                         foreach ($p->preadmission->natureInjuryPreadmissions as $natureInjuryPreadmission) {
-                            // Check if the injury is a fracture
                             if ($natureInjuryPreadmission->natureInjury->name === 'Burn') {
                                 $BurnInfo = 'Yes';  // If fracture is found, set it to Yes
-                    
-                                // Check if there's a subtype for the fracture (Close or Open)
-                                // Assuming 'subtype' is a field on the `natureInjuryPreadmission` model
                                 $BurnSubtype = $natureInjuryPreadmission->subtype ? $natureInjuryPreadmission->subtype : 'N/A';
                                 // Break the loop as we found a fracture, no need to check further
                                 break;
@@ -1523,29 +1467,6 @@ class ExcelPatientInjuryController extends Controller
                 }
                 return 'N/A';
             }
-
-
-
-        // private function calculateAge($dob)
-        // {
-        //     if ($dob) {
-        //         $birthDate = \Carbon\Carbon::parse($dob);
-        //         $now = \Carbon\Carbon::now();
-
-        //         // Calculate the age in years
-        //         $years = $now->diffInYears($birthDate);
-                
-        //         // Calculate the age in months (remaining after years)
-        //         $months = $now->diffInMonths($birthDate) % 12;
-
-        //         return [
-        //             'years' => $years,
-        //             'months' => $months,
-        //         ];
-        //     }
-        //     return 'N/A';
-        // }
-
 }
 
 

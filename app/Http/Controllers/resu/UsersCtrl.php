@@ -116,18 +116,17 @@ class UsersCtrl extends Controller
 
             // Update fields only if new values are provided
             foreach ($userAttributes as $key => $value) {
-                if ($value !== null && $value !== '') { // Check if the value is not empty or null
+                if ($value !== null && $value !== '') { 
                     if ($key === 'username') {
-                        // Validate unique username in case of an update
                         $this->validate($req, [
                             'username' => 'required|string|max:255|unique:users,username,' . $id,
                         ]);
                     }
 
                     if ($key === 'password') {
-                        $user->password = bcrypt($value); // Hash the password if it's being updated
+                        $user->password = bcrypt($value); 
                     } else {
-                        $user->$key = $value; // Dynamically assign value to the user model
+                        $user->$key = $value;
                     }
                 }
             }
@@ -137,7 +136,6 @@ class UsersCtrl extends Controller
             }else{
                 $u->fname = $req->fname . '-DSO'; 
             }
-
             // Save changes
             $user->save();
 

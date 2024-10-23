@@ -393,9 +393,8 @@
     //     $('#muncity').val(muncity);
     //     });
 
-        // Open the delete modal and set the user ID for deletion
         $('.openDeleteModal').on('click', function () {
-            var userId = $(this).data('id');  // Retrieve the user ID from the button's data-id
+            var userId = $(this).data('id');  
             $('#delete_user_id').val(userId);  
         });
 

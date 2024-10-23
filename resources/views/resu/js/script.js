@@ -405,32 +405,35 @@ $(document).ready(function () {
   //   }
   // });
 
-  function calculateAge(dateOfBirth, ) {
-    const today = new Date(); 
-    const birthDate = new Date(dateOfBirth); // Parse the input as a Date object
-    const datetimeInjury = new Date (date_injury);
-
-    if (isNaN(birthDate)) {
-        console.error("Invalid Date of Birth");
-        return "Invalid date"; // Return error message if invalid date
-    }
-    
-    let years = today.getFullYear() - birthDate.getFullYear();
-    let months = today.getMonth() - birthDate.getMonth();
-    
-    if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
-        years--;
-        months = (months + 12) % 12; 
-    }
-    if (today.getDate() < birthDate.getDate()) {
-        months--;
-        if (months < 0) {
-            months = 11;
-            years--;
+      function calculateAge(dateOfBirth, date_injury ) {
+        const today = new Date(); 
+        const birthDate = new Date(dateOfBirth); // Parse the input as a Date object
+        if (isNaN(birthDate)) {
+            console.error("Invalid Date of Birth");
+            return "Invalid date"; 
         }
+        
+        let years = today.getFullYear() - birthDate.getFullYear();
+        let months = today.getMonth() - birthDate.getMonth();
+        
+        if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
+            years--;
+            months = (months + 12) % 12; 
+        }
+        if (today.getDate() < birthDate.getDate()) {
+            months--;
+            if (months < 0) {
+                months = 11;
+                years--;
+            }
+        }
+        // return `${years} year${years !== 1 ? 's' : ''}, ${months} month${months !== 1 ? 's' : ''}`;
+          if (years === 0) {
+                return `${months} month${months !== 1 ? 's' : ''} old`;
+             } else {
+                return `${years} year${years !== 1 ? 's' : ''} old`;
+             }
     }
-    return `${years} year${years !== 1 ? 's' : ''}, ${months} month${months !== 1 ? 's' : ''}`;
-}
     // Event listener for date changes
     $("#dateofbirth").on("change", function () {
         const dob = $(this).val(); 

@@ -132,7 +132,7 @@
                                         $ageMonths = $dob->diffInMonths(Carbon::now()) % 12;
 
                                         $age = $ageYears > 0 
-                                                ? "{$ageYears} years old" 
+                                                ? "{$ageYears} years old"   
                                                 : "{$ageMonths} months old";
                                     @endphp
 
