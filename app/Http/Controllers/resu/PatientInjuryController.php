@@ -973,7 +973,6 @@ class PatientInjuryController extends Controller
 
          }
 
-
         //  if($request->has('categsafe') || $request->has('safeothers_details')){
 
         //     $safet_values = $request->input('categsafe', []);

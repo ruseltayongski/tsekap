@@ -1069,7 +1069,9 @@ class ExcelPatientInjuryController extends Controller
             foreach ($profile as $p) {
 
                 $dob = Carbon::parse($p->dob);
-                $age = $dob->diffInYears(Carbon::now());
+                // $age = $dob->diffInYears(Carbon::now());
+                $age = $this->calculateAge($p->dob);
+
              
                         // Access facility and related facility address
                         $facilityName = $p->facility ? $p->facility->name : 'N/A';
@@ -1484,7 +1486,8 @@ class ExcelPatientInjuryController extends Controller
                     
             }
             // Open a file for writing the CSV
-            $filename = 'PatientInjury_data.csv';
+            // $filename = 'Patient_Injury_data.csv';
+            $filename = 'Patient_Injury_data_' . date('Y-m-d') . '.csv';
             $handle = fopen('php://output', 'w');
             header('Content-Type: text/csv');
             header('Content-Disposition: attachment; filename="' . $filename . '"');
@@ -1498,14 +1501,51 @@ class ExcelPatientInjuryController extends Controller
             exit();
         }
 
-        // Helper method to calculate age from DOB
+        //Helper method to calculate age from DOB
+        // private function calculateAge($dob)
+        // {
+        //     if ($dob) {
+        //         return \Carbon\Carbon::parse($dob)->age;
+        //     }
+        //     return 'N/A';
+        // }
         private function calculateAge($dob)
-        {
-            if ($dob) {
-                return \Carbon\Carbon::parse($dob)->age;
+            {
+                if ($dob) {
+                    $dob = \Carbon\Carbon::parse($dob);
+                    $ageYears = $dob->diffInYears(\Carbon\Carbon::now());
+                    $ageMonths = $dob->diffInMonths(\Carbon\Carbon::now()) % 12;
+
+                    // Return only years if non-zero, otherwise return months
+                    return $ageYears > 0 
+                        ? "{$ageYears} years old" 
+                        : "{$ageMonths} months old";
+                }
+                return 'N/A';
             }
-            return 'N/A';
-        }
+
+
+
+        // private function calculateAge($dob)
+        // {
+        //     if ($dob) {
+        //         $birthDate = \Carbon\Carbon::parse($dob);
+        //         $now = \Carbon\Carbon::now();
+
+        //         // Calculate the age in years
+        //         $years = $now->diffInYears($birthDate);
+                
+        //         // Calculate the age in months (remaining after years)
+        //         $months = $now->diffInMonths($birthDate) % 12;
+
+        //         return [
+        //             'years' => $years,
+        //             'months' => $months,
+        //         ];
+        //     }
+        //     return 'N/A';
+        // }
+
 }
 
 

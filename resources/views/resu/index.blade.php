@@ -3,7 +3,7 @@
 
 <div class="col-md-8 wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 17%; max-width: 1000px;  ">
         <div class="alert alert-jim">
-            <h2 class="page-header"><i class="fa fa-home"></i> Homes</h2>
+            <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
             <div class="page-divider"></div>
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-aqua">
@@ -24,7 +24,9 @@
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3 class="countNotUpdated"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <h3 class="countNotUpdated">
+                            <i class="fa fa-refresh"></i>
+                        </h3>
                         <p>No. of Profiles NOT UPDATED</p>
                     </div>
                     <div class="icon">
@@ -39,14 +41,14 @@
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3 class="target_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <h3 class="target_2022"><i class="fa fa-refresh"></i></h3>
                         <p>Target Population (2022)</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-line-chart"></i>
                     </div>
-                    <a href="{{ asset('#') }}" class="small-box-footer">
-                        More info <i class="fa fa-arrow-circle-right"></i>
+                    <a href="{{ asset('#') }}">
+                       <i class="fa"></i>
                     </a>
                     {{--<a href="{{ asset('#') }}" class="small-box-footer">--}}
                         {{--Target Poor ( <font class="old_target"><i class="fa fa-refresh fa-spin"></i></font> )--}}
@@ -58,7 +60,7 @@
             <div class="col-sm-6 col-xs-12">
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3 class="countPopulation_2022"><i class="fa fa-refresh fa-spin"></i></h3>
+                        <h3 class="countPopulation_2022"><i class="fa fa-refresh "></i></h3>
                         <p>Population Profiled (2022)</p>
                     </div>
                     <div class="icon">
@@ -73,17 +75,18 @@
 
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-yellow">
-                    <span class="info-box-icon"><i class="fa fa-line-chart"></i></span>
+                    <!-- <span class="info-box-icon">
+                        <i class="fa fa-line-chart"></i></span> -->
                     <div class="info-box-content">
-                        <span class="info-box-text">TARGET POPULATION (2018)</span>
-                        <span class="info-box-number target_2018"><i class="fa fa-refresh fa-spin"></i></span>
+                        <!-- <span class="info-box-text">TARGET POPULATION (2018)</span>
+                        <span class="info-box-number target_2018"><i class="fa fa-refresh"></i></span> -->
                     </div><!-- /.info-box-content -->
                 </div>
             </div>
 
             <div class="col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
-                    <span class="info-box-icon"><i class="fa fa-users"></i></span>
+                    <!-- <span class="info-box-icon"><i class="fa fa-users"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">POPULATION PROFILED (2018)</span>
                         <span class="info-box-number countPopulation_2018"><i class="fa fa-refresh fa-spin"></i></span>
@@ -92,7 +95,7 @@
                         </div>
                         <span class="progress-description">
                     <span class="profilePercentage_2018"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                  </span>
+                  </span> -->
                     </div><!-- /.info-box-content -->
                 </div>
             </div>

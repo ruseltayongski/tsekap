@@ -73,12 +73,12 @@
 <!-- Fixed navbar -->
 
 <nav class="navbar navbar-default navbar-static-top">
-    <div class="header" style="background-color:#E0A75E;padding:10px;">
+    <div class="header" style="background-color:#2F4054;padding:10px;">
         <div class="col-md-4">
-            <span class="title-info" style= "color: black;">Welcome,</span> <span class="title-desc">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
+            <span class="title-info">Welcome,</span> <span class="title-desc">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</span>
         </div>
         <div class="col-md-4">
-            <span class="title-info" style= "color: black;">Location:</span>
+            <span class="title-info">Location:</span>
 
             <span class="title-desc">
                 <?php
@@ -95,13 +95,13 @@
             </span>
         </div>
         <div class="col-md-4">
-            <span class="title-info" style= "color: black;">Date:</span> <span class="title-desc">{{ date('M d, Y') }}</span>
+            <span class="title-info">Date:</span> <span class="title-desc">{{ date('M d, Y') }}</span>
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="header" style="background-color:#FCDE70;padding:15px;">
+    <div class="header" style="background-color:#727DAB;padding:15px;">
         <div class="container">
-            <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" />
+            <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" style="padding-left: 100px;" />
         </div>
     </div>
     <div class="container">
@@ -161,9 +161,9 @@
                 </li>
             @else
             <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Form<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Manage Patient Injury</a></li>
+                        <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Patient Injury Form</a></li>
                     </ul>
                 </li>
             @endif
@@ -213,12 +213,12 @@
     @yield('content')
     <div class="clearfix"></div>
 </div> <!-- /container -->
-<footer class="footer" style="background-color:#E0A75E;">
+<footer class="footer" style="background-color:#2F4054; padding-right: 99%; padding-left: -5%">
     <div class="container"style= "color: black;" >
         <p class="pull-right">
             version 3.1
         </p>
-        <p>Copyright &copy; 2024 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2024 DOH-RO7 All right reserved</p>
 
     </div>
 </footer>

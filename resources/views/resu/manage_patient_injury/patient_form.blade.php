@@ -9,6 +9,8 @@
  use App\ResuHospitalFacility;
  use App\Muncity;
 
+ //use Carbon\Carbon;
+//  $dob = Carbon::parse($profile->dob);
 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
@@ -23,8 +25,6 @@
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
      return $percent >= 80; // You can adjust the threshold as needed
  }
-
-
 ?>
       <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; ">
      <div class="alert alert-jim">
@@ -103,11 +103,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date Of Birth <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" >
+                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth">
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="age" name="age" readonly>
+                                <input type="text" class="form-control" id="age" name="age" value="" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
@@ -925,72 +925,49 @@
         });
    }
 
-   function validateAndNextStep() {
-    // Get all the required input fields
-    const requiredFields = [
-        { id: 'hospital_no', name: 'Hospital Case No' },
-        { id: 'fname', name: 'First Name' },
-        { id: 'lname', name: 'Last Name' },
-        { id: 'mname', name: 'Middle Name' },
+//    function validateAndNextStep() {
+//     // Get all the required input fields
+//     const requiredFields = [
+//         { id: 'hospital_no', name: 'Hospital Case No' },
+//         { id: 'fname', name: 'First Name' },
+//         { id: 'lname', name: 'Last Name' },
+//         { id: 'mname', name: 'Middle Name' },
       
-    ];
+//     ];
 
-    // const requiredDropdowns = [
-    //     { id: 'province', name: 'Province/HUC' },
-    //     { id: 'municipal', name: 'Municipal' },
-    //     { id: 'barangay', name: 'Barangay' }
-    // ];
+//     let allFieldsValid = true;
+//     requiredFields.forEach(field => {
+//         const inputElement = document.getElementById(field.id);
+//         const value = inputElement.value.trim(); // Trim to remove extra spaces
+//         if (value === '') {
+//             allFieldsValid = false; // Set flag to false if any field is empty
+//             inputElement.style.borderColor = 'red'; // Highlight empty field in red
+//         } else {
+//             inputElement.style.borderColor = ''; // Reset border if filled
+//         }
+//     });   
 
-    let allFieldsValid = true; // Assume all fields are valid initially
-    // Iterate through required fields to check if they are empty
-    requiredFields.forEach(field => {
-        const inputElement = document.getElementById(field.id);
-        const value = inputElement.value.trim(); // Trim to remove extra spaces
-        if (value === '') {
-            allFieldsValid = false; // Set flag to false if any field is empty
-            inputElement.style.borderColor = 'red'; // Highlight empty field in red
-        } else {
-            inputElement.style.borderColor = ''; // Reset border if filled
-        }
-    });
+//         if (!allFieldsValid) {
+//             // Alert user if any field is empty
+//             alert('Please fill out all required fields.');
+//             return;
+//         }        
+//         // If all fields are filled, proceed to the next step
+//         document.getElementById('form-step-1').style.display = 'none'; 
+//         document.getElementById('form-step-2').style.display = 'block';
+//     }
 
-    // requiredDropdowns.forEach(dropdown => {
-    //     const selectElement = document.getElementById(dropdown.id);
-    //     if (selectElement.value === '') {
-    //         allFieldsValid = false;
-    //         selectElement.style.borderColor = 'red'; // Highlight the dropdown in red
-    //     } else {
-    //         selectElement.style.borderColor = ''; // Reset border if filled
-    //     }
-    // });
-    
-    if (!allFieldsValid) {
-        // Alert user if any field is empty
-        alert('Please fill out all required fields.');
-        return; // Prevent moving to the next step
-    }
+//         document.getElementById('form-submit').addEventListener('submit', function (e) {
+//             // Check if the form is valid
+//             if (!this.checkValidity()) {
+//                 e.preventDefault(); 
+//                 this.reportValidity();
+//             }
+//         });
 
-    
-
-    // If all fields are filled, proceed to the next step
-    document.getElementById('form-step-1').style.display = 'none'; // Hide current step
-    document.getElementById('form-step-2').style.display = 'block'; // Show next step
-}
-
-
-document.getElementById('form-submit').addEventListener('submit', function (e) {
-    // Check if the form is valid
-    if (!this.checkValidity()) {
-        e.preventDefault(); // Prevent form from submitting
-
-        // Trigger the browser's built-in validation messages
-        this.reportValidity();
-    }
-});
-
+       
 </script>
 @endsection
-
 <style>
     .json-display-style {
         background-color: black;
@@ -1002,11 +979,7 @@ document.getElementById('form-submit').addEventListener('submit', function (e) {
         .col-divider { 
             border-right: 1px solid #ddd;
         }
-        /* .patient-font{
-            background-color: #727DAB;
-            color: white; 
-            padding: 3px;
-        } */
+
         .col-md-6 .mt-4 {
                 margin-top: 10px; /* Adjust this value as needed */
             }

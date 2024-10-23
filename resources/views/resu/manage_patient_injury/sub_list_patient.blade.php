@@ -17,17 +17,29 @@
  $hospital_type = ResuHospitalFacility::all();
  $user_priv = Auth::user()->user_priv;
 
-
  $muncities = Muncity::select('id', 'description')->get();
  use Carbon\Carbon;
 
- $dob = Carbon::parse($profile->dob);
- $age = $dob->diffInYears(Carbon::now());
+ $dob = $profile->dob;
+ $age = 'N/A';
+ 
+ if ($dob) {
+     $dob = Carbon::parse($dob);
+     $ageYears = $dob->diffInYears(Carbon::now());
+     $ageMonths = $dob->diffInMonths(Carbon::now()) % 12;
+ 
+     if ($ageYears > 0) {
+         $age = $ageYears . ' years old';
+     } else {
+         $age = $ageMonths . ' months old';
+     }
+ }
 
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
      return $percent >= 80; // You can adjust the threshold as needed
  }
+
 
  $facility = Facility::select('id','name','address','hospital_type')
  ->where('id', $profile->report_facilityId)  
@@ -133,10 +145,14 @@
                                 <label for="dateofbirth">Date Of Birth</label>
                                 <input type="date" class="form-control" id="dateofbirth" name="dateBirth" value="{{ $profile->dob }}">
                             </div>
+
                             <div class="col-md-3">
                                 <label for="age">Age</label>
-                                <input type="text" class="form-control" id="age" name="age" readonly value="{{$age}}">
+                                <input type="text" class="form-control" id="age" name="age" readonly 
+                                    value="{{ $age }}">
                             </div>
+
+
                             <div class="col-md-3">
                                 <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}" required>
@@ -1018,16 +1034,18 @@
 
 <script>
     var deleteNatureUrl = "{{ route('delete-nature') }}";
-    function toggleOthersInput() {
-    const othersInput = document.getElementById('othersInput');
-    const modeOthersRadio = document.getElementById('ModeOthers');
 
-    if (modeOthersRadio.checked) {
-        othersInput.style.display = 'block';  // Show the input field
-    } else {
-        othersInput.style.display = 'none';   // Hide the input field
-    }
-}
+        function toggleOthersInput() {
+            const othersInput = document.getElementById('othersInput');
+            const modeOthersRadio = document.getElementById('ModeOthers');
+
+            if (modeOthersRadio.checked) {
+                othersInput.style.display = 'block';  // Show the input field
+            } else {
+                othersInput.style.display = 'none';   // Hide the input field
+            }
+        }
+
 </script>
 
 @endsection

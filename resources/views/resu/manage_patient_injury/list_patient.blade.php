@@ -79,10 +79,9 @@
                                 <th>Barangay<br>&nbsp;</th>
                                 <th>Place Injury<br>&nbsp;</th>
                                 <th>Date And Time Injury<br>&nbsp;</th>
-
-                                <!-- @if($user_priv->user_priv !== 6)
+                                @if($user_priv->user_priv !== 6)
                                     <th>Encoder<br>&nbsp;</th>
-                                @endif -->
+                                @endif
 
                             </tr>
                         </thead>
@@ -90,9 +89,6 @@
                             @foreach($profile as $p)
                                 @php 
                                     $ad = $p->preadmission;  
-
-                                   
-
                                     $province = $p->province ? $p->province->description : 'N/A';
                                     $muncity = $p->muncity ? $p->muncity->description : 'N/A';
                                     $barangay = $p->barangay ? $p->barangay->description : 'N/A';
@@ -122,12 +118,25 @@
                                     <td class="{{ $p->head == 'YES' ? 'text-bold text-primary' : '' }}">
                                         {{ $p->fname . ' ' . $p->mname . ' ' . $p->lname . ' ' . $p->suffix }}
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         @php
                                             $dob = Carbon::parse($p->dob);
                                             $age = $dob->diffInYears(Carbon::now());
                                         @endphp
                                         {{ $age }}
+                                    </td> -->
+                                    <td>
+                                    @php
+                                        $dob = Carbon::parse($p->dob);
+                                        $ageYears = $dob->diffInYears(Carbon::now());
+                                        $ageMonths = $dob->diffInMonths(Carbon::now()) % 12;
+
+                                        $age = $ageYears > 0 
+                                                ? "{$ageYears} years old" 
+                                                : "{$ageMonths} months old";
+                                    @endphp
+
+                                    {{ $age }}
                                     </td>
                                     <td>{{ $p->sex }}</td>
                                     <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
@@ -136,7 +145,7 @@
                                     <td>{{ $preprovince . ' , ' . $premuncity . ' , ' . $prebarangay . ' , ' . $p->preadmission->POIPurok }}</td>
                                     <td>{{ $p->preadmission->dateInjury . ' ' . $p->preadmission->timeInjury }}</td>
                                     <!-- <td>{{ $NameEncoder ?? 'N/A' }}</td>          -->
-                                    <!-- @if($user_priv->user_priv !== 6)
+                                    @if($user_priv->user_priv !== 6)
                                         <td>
                                             @if($p->name_of_encoder)
                                                 {{ $p->name_of_encoder }}
@@ -144,7 +153,7 @@
                                                 {{ $NameEncoder ?? 'N/A' }}
                                             @endif 
                                         </td>
-                                    @endif-->
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

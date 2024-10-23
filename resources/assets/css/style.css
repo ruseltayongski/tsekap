@@ -11,14 +11,14 @@ body {
 .footer {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 50%;
   color: #fff;
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #2F4054;
 }
 .footer p {
-  margin: 20px 0;    
+  margin: 18px 0;    
 }
 
 /* Custom page CSS

@@ -78,7 +78,8 @@
         <img style="height: 95px;" src="{{ asset('resources/img/tsekap-logo.png') }}" />
         <br />
         <h3><b>PHILIPPINE HEALTH AGENDA</b></h3>
-        <h4><b>CHECK-UP SYSTEM</b></h4>
+        <!-- <h4><b>CHECK-UP SYSTEM</b></h4> -->
+        <h4><b>INJURY SYSTEM</b></h4>
         {{--<a href="#"><b>PHA</b> CHECK-UP</a>--}}
     </div><!-- /.login-logo -->
 
@@ -110,9 +111,9 @@
                         <label style="cursor:pointer;">
                             <input type="checkbox" name="remember"> Remember Me
                         </label><br><br>
-                        <a href="{{ asset("resources/apk/Tsekap-3.1-dummy.apk") }}" type="button" class="btn btn-success">
+                        <!-- <a href="{{ asset("resources/apk/Tsekap-3.1-dummy.apk") }}" type="button" class="btn btn-success">
                             <i class="fa fa-mobile"></i> <small> Mobile Check-Up (.apk) </small>
-                        </a>
+                        </a> -->
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">

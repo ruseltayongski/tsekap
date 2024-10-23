@@ -92,13 +92,13 @@
                                                 data-toggle="modal" 
                                                 data-target="#deleteModal">
                                             <i class="fa fa-trash"></i> Delete
-                                        </button>
-                                        <button type="button" class="btn btn-success btn-sm updateUser" 
-                                                data-id="{{ $u->id }}" 
-                                                data-toggle="modal" 
-                                                data-target="#updateUser">
-                                            <i class="fa fa-edit"></i> Update
-                                        </button>
+                                        </button>                                        
+                                            <button type="button" class="btn btn-success btn-sm updateUser" 
+                                                    data-id="{{ $u->id }}" 
+                                                    data-toggle="modal" 
+                                                    data-target="#updateUser">
+                                                <i class="fa fa-edit"></i> Update
+                                            </button>
                                         </td>
                                     </tr>                                    
                                 @endforeach
