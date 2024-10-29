@@ -32,7 +32,8 @@ class PatientInjuryController extends Controller
         $keyword = $request->input('keyword');
      
         $query =ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
-            ->with([
+        // $query =Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')   
+        ->with([
                 'facility' => function($query){
                     $query->select('id', 'name');
                 },
@@ -68,7 +69,6 @@ class PatientInjuryController extends Controller
                             });
                     });
                 }
-
                 $profiles = $query->where('report_facilityId', $user->facility_id)->simplePaginate(15);
                 
             }else if($user->user_priv == 7){ //Region view
@@ -84,7 +84,6 @@ class PatientInjuryController extends Controller
                                 $q->where('description', 'like', "%$keyword%");
                             });
                     });
-
                 }
 
                 $profiles = $query->simplePaginate(15);
@@ -124,7 +123,7 @@ class PatientInjuryController extends Controller
         return view('resu.manage_patient_injury.list_patient', [
             'user_priv' => $user,
             'profile' => $profiles,
-            //'facility' => $facility,
+        
         ]);
     }
 
@@ -144,19 +143,22 @@ class PatientInjuryController extends Controller
         foreach($facility as $fact){
             $facilities = $fact;
         }
-
-        $province = Province::select('id', 'description')->get();
-        
-        $safety = ResuSafety::all();
-
+        // $province = Province::select('id', 'description')->get();
+        // $safety = ResuSafety::all();
         // $province_SelectedMuncity = $province->merge($selectedMuncity);
 
+        $province = Province::select('id', 'description')->get();
+        $safety = ResuSafety::all();
+
+        $province_SelectedMuncity = $province->merge($selectedMuncity);
+
         return view('resu.manage_patient_injury.patient_form',[
-                'facility' => $facility,
-                'province' => $province,  // Pass provinces only
-                'selectedMuncity' => $selectedMuncity, // Pass separate muncities if needed
-                'safety' => $safety,
-                'user' => $user,
+                'facility' => $facilities,
+            'province' => $province_SelectedMuncity,
+            'muncity' => $muncity,
+            'barangay' => $barangay,
+            'safety' => $safety,
+            'user' => $user,
         ]);
     }
 
@@ -209,6 +211,7 @@ class PatientInjuryController extends Controller
         $facility->save();
 
         $profile = new ResuProfileInjury();
+        // $profile = new Profile();
         $unique_id = $request->fname.''.$request->mname.''.$request->lname.''.$request->suffix.''.$request->barangay.''.$user->muncity;
         $profile->unique_id = $unique_id;
         $profile->Hospital_caseno = $request->hospital_no;
@@ -479,7 +482,8 @@ class PatientInjuryController extends Controller
 
         $province_selectedMun = $province->merge($selectedMuncity);
 
-        $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
+         $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
+        // $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
              ->with([
             'preadmission' => function ($query) { //sub list manage patient injury
                 $query->select('id', 'profile_id','POIProvince_id','POImuncity_id','POImuncity_id','POIBarangay_id','POIPurok','dateInjury','dateInjury','timeInjury','dateConsult',
@@ -531,6 +535,7 @@ class PatientInjuryController extends Controller
             'profile' => $profile,
             'facility' => $facility,
             'province' => $province_selectedMun,
+            // 'selectedMuncity' => $selectedMuncity,
             'list_safety' => $listsafety,
             'trans' => $transportData,
             'hospitalData' => $hospitalData,
@@ -561,7 +566,8 @@ class PatientInjuryController extends Controller
         $facility->facilityName = $request->facilityname;
         $facility->save();
         
-        $profile = ResuProfileInjury::find($request->profile_id_update);
+         $profile = ResuProfileInjury::find($request->profile_id_update);
+      //  $profile = Profile::find($request->profile_id_update);
 
         if($profile){
           

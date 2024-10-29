@@ -381,8 +381,6 @@ Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAc
 Route::get('survelance', 'resu\IndexController@index')->name('survelance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
-
-
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
 Route::post('injury-delete', 'resu\InjuryController@deleteInjury')->name('injury-delete');
 Route::get('injury-edit/{id}', 'resu\InjuryController@editInjury')->name('injury-edit');
@@ -397,7 +395,6 @@ Route::get('injury-external-edit/{id}', 'resu\InjuryController@editExternalInjur
 Route::post('injury-external-update/{id}','resu\InjuryController@updateExternalInjury')->name('injury-external-update');
 Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->name('delete-external');
 
-
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
 Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
@@ -405,6 +402,7 @@ Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
 Route::post('/delete-body-parts', 'resu\InjuryController@deleteBodyPart')->name('delete-body-parts');
+
 //check profile resu client
 Route::get('get/checkprofiles', 'resu\ClientVerifyController@CheckClients')->name('get.checkprofiles');
 //get municipal && province
@@ -432,6 +430,7 @@ Route::get('viewSafety', 'resu\InjuryController@safetyView')->name("viewSafety")
 Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 //for tsekap route
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
+
 //delete nature injury categories
 Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
 
@@ -447,3 +446,9 @@ Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User'
 
 // csv files patient injury
 Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');
+
+
+//risk assessment 
+Route::get('/RiskAssessment', function () {
+    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+})->name('riskassessment');

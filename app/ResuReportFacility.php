@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-//use App\Profile;
+use App\Profile;
 use App\ResuProfileInjury;
 use App\Facility;
 

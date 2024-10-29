@@ -28,8 +28,10 @@
 ?>
     <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; padding-bottom: 5%">
        <div class="alert alert-jim">
-        <h2 class="page-header">
-            <i class="fa fa-user-plus"></i>&nbsp; Patient Injury Form
+        <h2 class="page-header"  style="text-align: center">
+            <i class="fa fa-user"></i>&nbsp; PHILPEN RISK ASSESSMENT FORM (REVISED 2022)
+            <br>
+            <p style="font-size: 15pt; font-style: italic; text-align: center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adults > 20 years old</p>
         </h2>
         <div class="page-divider"></div>
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
@@ -38,13 +40,18 @@
             <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
-                        <h4 class="patient-font" style="background-color: #727DAB;color: white;padding: 3px;margin-top: -28px; ">Disease Reporting Unit</h4>
+                        <!-- <h4 class="patient-font" style="background-color: #727DAB;color: white;padding: 3px;margin-top: -28px; ">Patient Informations</h4> -->
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="facility-name">Name of Reporting Facility</label>
+                                <label for="facility-name">Name of Health Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
                                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">
-                            </div>
+                            </div> 
+                            <div class="col-md-6">
+                                <label for="address-facility">Date of Assessment</label>
+                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
+                            </div><br><br>
+                            <!--
            
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
@@ -53,8 +60,8 @@
                             <div class="col-md-6">
                                 <label for="address-facility">Address of Reporting Facility</label>
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
-                            </div>
-                            <div class="col-md-6">
+                            </div> -->
+                            <!-- <div class="col-md-6">
                                 <label>Type of Patient<span class="text-danger">*</span></label>
                                 <div class="checkbox">
                                     <label class="checkbox-inline">
@@ -73,14 +80,15 @@
                                         <input type="radio" id="RHU" name="typePatient" value="RHU"> RHU
                                     </label> 
                                 </div><br>
-                            </div>
+                            </div> -->
+                            <br><br><br>
                         </div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">General Data</h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">I. PATIENT'S INFORMATION</h4>
                         <div class="row">
-                            <div class="col-md-3">
+                            <!-- <div class="col-md-3">
                                 <label for="hospital_no">Hospital Case No. <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
-                            </div>
+                            </div> -->
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
@@ -95,6 +103,14 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
+                                <select class="form-control chosen-select" name="sex" id="sex">
+                                    <option value="">Select sex</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="sex">Civil Status</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="male">Male</option>
@@ -128,50 +144,230 @@
                                 <select class="form-control chosen-select" name="barangay" id="barangay">
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-3">
+                                <label for="lname">Contact Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                            </div>
+                         
+                            <div class="col-md-5">
                                 <label for="phil_no">PhilHealth No.</label>
                                 <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
                             </div>
-                        </div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Pre-admission Data</h4>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Place Of Injury:</label>
+
+                            <div class="col-md-5">
+                                <label for="phil_no">Persons with Disability ID Card No. if applicable:</label>
+                                <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
                             </div>
-                            <div class="col-md-3">
-                                <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="provinceInjury" id="provinceId">
-                                    <option value="">Select Province</option>
-                                    @foreach($province as $prov)
-                                          <option value="{{ $prov->id }}">{{ $prov->description }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="municipal">Municipal <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury">
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="barangay_injury" id="barangay_injury">
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <label for="barangay">Purok/Sitio</label>
-                                <input type="text" class="form-control" name="purok_injury" id="purok_injury" value="" placeholder="Enter purok/Sitio">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Date and Time Injury: <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="date_injury" id="date_injury" value="">
-                                <input type="time" class="form-control" name="time_injury" id="time_injury" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label>Date and Time Consultation: <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="date_consult" id="date_consultation" value="">
-                                <input type="time" class="form-control" name="time_consult" id="time_consultation" value="">
+                            <div class="col-md-5 d-flex align-items-center">
+                                    <label class="mr-2">Employment Status:</label><br>
+                                    <input type="checkbox" name="employment_status" id="employment_status">
+                                    <label for="employment_status" class="ml-2">Employed</label>
+                                    <input type="checkbox" name="employment_status" id="employment_status">
+                                    <label for="employment_status" class="ml-2">Unemployed</label>
+                                    <input type="checkbox" name="employment_status" id="employment_status">
+                                    <label for="employment_status" class="ml-2">Self-Employed</label>
+                                    <br>
+                                    <!-- <div class="col-md-5">
+                                    <label for="ethnicity">Ethnicity:</label>
+                                    <select class="form-control" name="ethnicity" id="ethnicity">
+                                        <option value="">Select an Option</option>
+                                        <option value="asian">Asian</option>
+                                        <option value="black">Black or African American</option>
+                                        <option value="hispanic">Hispanic or Latino</option>
+                                        <option value="white">White</option>
+                                        <option value="native">Native American or Alaska Native</option>
+                                        <option value="pacific">Native Hawaiian or Pacific Islander</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div> -->
                             </div>
                         </div>
+                        <br>
+                    </div>
+                    <div class="col-md-12">
+                        <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                                <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Description</th>
+                                    <th>Option (Yes / No)</th>
+                                    <th>Details</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   <tr>
+                                        <td>2.1 Chest Pain</td>
+                                        <td>
+                                            <input type="checkbox" class="chestPainCheckbox" id="chestPainYes" value="Yes"> Yes
+                                            <input type="checkbox" class="chestPainCheckbox" id="chestPainNo" value="No" style="margin-left: 15px;"> No
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control chestPainDetails" id="chestPainDetails" 
+                                                placeholder="By whom:" disable>
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <td>2.2 Difficulty of Breathing</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.3 Loss of Consciousness</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.4 Slurred Speech</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.5 Facial Asymmetry</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                <td>2.6 Weakness/Numbness on arm <br> of the left on one side of the body</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.7 Disoriented as to time, <br> place and person</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.8 Chest Retractions</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.9 Seizure or Convulsion</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.10 Act of self-harm or suicide</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.11 Agitated and/or aggressive behavior</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.12 Eye Injury/ Foreign Body on the eye</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2.13 Severe Injuries</td>
+                                    <td>
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
+                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
+                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                            placeholder="By whom:" style="display: none;">
+                                    </td>
+                                    </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="row">
@@ -182,63 +378,13 @@
                     </div>
             </div>
             <div class="form-step" id="form-step-2" style="display: none;">
-                <div class="row">
-                    
-                    <div class="col-md-12">
-                        <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Injury Intent <span class="text-danger">*</span></h4>
-                            <!-- <label>Injury Intent:</label> -->
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-md-offset-1">
-                        <label class="checkbox-inline">
-                            <input type="radio" name="injury_intent" id="Accidental" value="Unintentional/Accidental"> Unintentional/Accidental
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" name="injury_intent" id="Selfinflicted" value="Intentional (Self-inflicted)"> Intentional (Self-inflicted)
-                        </label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="checkbox-inline">
-                            <input type="radio" name="injury_intent" id="Violence" value="Intentional/(Violence)"> Intentional/(Violence)
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" name="injury_intent" id="Undetermined" value="Undetermined"> Undetermined
-                        </label>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="checkbox-inline">
-                            <input type="radio" name="injury_intent" id="VAWCPatient" value="VAWC Patient"> VAWC Patient
-                        </label>
-                    </div>
-                  
-                    <div class="col-md-12">  <hr class="bold-line">
-                        <label>First Aid Given: <span class="text-danger">*</span></label>
-                    </div>
-                        
-                    <div class="col-md-12" style="display: flex; align-items: center;">
-                        <div style="margin-right: 15px;">
-                            <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes"> Yes
-                        </div>
-                        <div style="margin-right: 15px;">
-                            <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;">
-                        </div>
-                        <div style="margin-right: 15px;">
-                            <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;">
-                        </div>
-                        <div>
-                            <input type="radio" name="firstAidGive" id="firstAidNo" value="No"> No
-                        </div>
-                    </div>
-                    <!----------------------------- Nature of Injury ------------------------------>
+                <div class="row">                                      
                     <div class="col-md-12">
                     <hr class="bold-line">
                         <label>Nature of Injuries:</span></label>
                     </div>
                     <div class="col-md-3 col-md-offset-1">
-                        <!-- <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes"> Yes &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="single_injured" name="multiple_injured" value="No"> No</p> -->
+                     
                         <p style="display: flex; align-items: center; margin: 0">
                             <p style="margin: 0; padding-right: 10px">Multiple Injuries ? <span class="text-danger">*</span></p>
                             <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" style="margin: 0 10px">Yes
@@ -925,6 +1071,48 @@
         });
    }
 
+   // Chest Pain Checkbox Logic
+   const chestPainYes = document.getElementById('chestPainYes');
+    const chestPainNo = document.getElementById('chestPainNo');
+    const chestPainDetails = document.getElementById('chestPainDetails');
+
+    chestPainYes.addEventListener('change', function () {
+        if (this.checked) {
+            chestPainDetails.disabled = false; // Enable the text box
+            chestPainNo.checked = false; // Uncheck 'No' checkbox
+        } else {
+            chestPainDetails.disabled = true; // Disable the text box
+        }
+    });
+
+    chestPainNo.addEventListener('change', function () {
+        if (this.checked) {
+            chestPainDetails.disabled = true; // Disable the text box
+            chestPainYes.checked = false; // Uncheck 'Yes' checkbox
+        }
+    });
+
+    // Difficulty of Breathing Checkbox Logic
+    const breathingYes = document.getElementById('breathingYes');
+    const breathingNo = document.getElementById('breathingNo');
+    const breathingDetails = document.getElementById('breathingDetails');
+
+    breathingYes.addEventListener('change', function () {
+        if (this.checked) {
+            breathingDetails.disabled = false; // Enable the text box
+            breathingNo.checked = false; // Uncheck 'No' checkbox
+        } else {
+            breathingDetails.disabled = true; // Disable the text box
+        }
+    });
+
+    breathingNo.addEventListener('change', function () {
+        if (this.checked) {
+            breathingDetails.disabled = true; // Disable the text box
+            breathingYes.checked = false; // Uncheck 'Yes' checkbox
+        }
+    });
+
 //    function validateAndNextStep() {
 //     // Get all the required input fields
 //     const requiredFields = [
@@ -967,7 +1155,7 @@
 
 </script>
 @endsection
-<!-- @include('resu.manage_patient_injury.checkProfile') -->
+@include('resu.manage_patient_injury.checkProfile')
 <style>
     .json-display-style {
         background-color: black;

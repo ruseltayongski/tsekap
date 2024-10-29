@@ -26,7 +26,7 @@
             @endif
             <div class="row">
                 <div class="col-md-8">
-                    <form class="form-inline" method="POST" action="{{ route('patientInjury') }}">
+                    <form class="form-inline" method="POST" action=" ">
                         {{ csrf_field() }}
                         <div class="form-group">
                             <input type="text" class="form-control" id="search-keyword" placeholder="Quick Search" name="keyword" value="" autofocus>
@@ -93,7 +93,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($profile as $p)
+                            <!-- @foreach($profile as $p)
                                 @php 
                                     $ad = $p->preadmission;  
                                     $province = $p->province ? $p->province->description : 'N/A';
@@ -105,7 +105,7 @@
                                     $preprovince = $ad->POIProvince_id ? $ad->province->description : 'N/A';
                                     $premuncity = $ad->POImuncity_id ? $ad->muncity->description : 'N/A';
                                     $prebarangay = $ad->POIBarangay_id ? $ad->barangay->description : 'N/A';
-                                @endphp
+                                @endphp -->
                                 <tr>
                                     <td nowrap="TRUE">
                                         <a href="{{ asset('sublist-patient/'.$p->id) }}" class="btn btn-xs btn-success">

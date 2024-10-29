@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\ResuProfileInjury;
 use App\Profile;
 
 class ClientVerifyController extends Controller
@@ -31,11 +32,9 @@ class ClientVerifyController extends Controller
         if($req->dob){
             $profile = $profile->where('dob',"$dob%");
         }
-
         $profiles = $profile->orderBy('lname', 'asc')
         ->limit(20)
         ->get();
-
         return response()->json($profiles);
     }
 }

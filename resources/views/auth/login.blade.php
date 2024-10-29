@@ -36,7 +36,6 @@
                     <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4><b>PHILIPPINE HEALTH AGENDA CHECK-UP SYSTEM</b></h4>
                 </div><br>
-
                 <div class="">
                     <div style="font-size:1.1em;">
                         {{--<i class="fa fa-phone"></i> <b class="text-warning">Main Contact Person:</b>--}}
@@ -111,9 +110,9 @@
                         <label style="cursor:pointer;">
                             <input type="checkbox" name="remember"> Remember Me
                         </label><br><br>
-                        <!-- <a href="{{ asset("resources/apk/Tsekap-3.1-dummy.apk") }}" type="button" class="btn btn-success">
+                        <a href="{{ asset("resources/apk/Tsekap-3.1-dummy.apk") }}" type="button" class="btn btn-success">
                             <i class="fa fa-mobile"></i> <small> Mobile Check-Up (.apk) </small>
-                        </a> -->
+                        </a>
                     </div>
                 </div><!-- /.col -->
                 <div class="col-xs-4">

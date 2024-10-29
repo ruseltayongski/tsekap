@@ -145,16 +145,18 @@
 
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
-                                <!-- <select class="form-control chosen-select" name="sex" id="sex">
+                                <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="male" {{ trim($profile->sex) == 'male' ? 'selected' : '' }}>male</option>
                                     <option value="female" {{trim($profile->sex) == 'female' ? 'selected' : '' }}>female</option>
-                                </select> -->
-                                <select class="form-control chosen-select" name="sex" id="sex">
+                                </select>
+
+                                <!-- <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="male">male</option>
                                     <option value="female">female</option>
-                                </select>
+                                </select> -->
+                                
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date Of Birth</label>
@@ -292,8 +294,6 @@
                     <div class="col-md-2">
                         <input type="radio" name="firstAidGive" id="firstAidNo" value="No" {{ in_array('No', $firstaid) ? 'checked' : '' }}> No
                     </div>
-
-
                     <!----------------------------- Nature of Injury ------------------------------>
                     <div class="col-md-12">
                     <hr>

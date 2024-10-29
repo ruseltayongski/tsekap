@@ -117,7 +117,8 @@
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li>
+                <!-- <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li> -->
+                <li><a href=""><i class="fa fa-home"></i> Home</a></li>
             @if($priv==10)
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Injury<span class="caret"></span></a>
@@ -164,6 +165,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Form<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Patient Injury Form</a></li>
+                        <li> <a href="{{ url('RiskAssessment') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Risk Assessment Form</a></li>
                     </ul>
                 </li>
             @endif
@@ -213,7 +215,7 @@
     @yield('content')
     <div class="clearfix"></div>
 </div> <!-- /container -->
-<footer class="footer" style="background-color:#2F4054; padding-right: 99%; padding-left: -5%">
+<footer class="footer" style="background-color:#2F4054; padding-right: 100%; padding-left: -5%">
     <div class="container"style= "color: black;" >
         <p class="pull-right">
             version 3.1

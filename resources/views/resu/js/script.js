@@ -728,7 +728,7 @@ $(document).ready(function () {
   function fetchProfiles(data) {
     $(".loading").show();
 
-    $.ajax({
+    $.ajax({     //check profiles
       url: "get/checkprofiles",
       method: "GET",
       headers: {
@@ -746,7 +746,7 @@ $(document).ready(function () {
             "<th>Middle Name</th>" +
             "<th>Last Name</th>" +
             "<th>Date of Birth</th>" +
-            "<th>Update</th>" +
+            // "<th>Update</th>" +
             "</tr></thead>" +
             "<tbody>";
           jQuery.each(record, function (i, val) {
@@ -762,10 +762,10 @@ $(document).ready(function () {
               val.lname +
               "</td>" +
               "<td>" +
-              val.dob +
-              "</td>" +
-              `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
-              "</tr>";
+              val.dob 
+            //   "</td>" +
+            //  `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+            //   "</tr>";
           });
 
           content += "</tbody></table>";
