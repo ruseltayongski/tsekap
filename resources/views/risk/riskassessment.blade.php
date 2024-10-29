@@ -12,12 +12,12 @@
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
 
- $nature_injury = ResuNatureInjury::all();
- $body_part = ResuBodyParts::all(); 
- $ex_injury = ResuExternalInjury::all();
- $rtacident = ResuTransportAccident::all();
+//  $nature_injury = ResuNatureInjury::all();
+//  $body_part = ResuBodyParts::all(); 
+//  $ex_injury = ResuExternalInjury::all();
+//  $rtacident = ResuTransportAccident::all();
 
- $hospital_type = ResuHospitalFacility::all();
+//  $hospital_type = ResuHospitalFacility::all();
 
  $muncities = Muncity::select('id', 'description')->get();
 
@@ -51,36 +51,6 @@
                                 <label for="address-facility">Date of Assessment</label>
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
                             </div><br><br>
-                            <!--
-           
-                            <div class="col-md-6">
-                                <label for="dru">Type of DRU</label>
-                                <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $facility->hospital_type}}">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="address-facility">Address of Reporting Facility</label>
-                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
-                            </div> -->
-                            <!-- <div class="col-md-6">
-                                <label>Type of Patient<span class="text-danger">*</span></label>
-                                <div class="checkbox">
-                                    <label class="checkbox-inline">
-                                        <input type="radio" id="ER" name="typePatient" value="ER"> ER
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" id="OPD" name="typePatient" value="OPD"> OPD
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" id="In_Patient" name="typePatient" value="In-Patient"> In-Patient
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" id="BHS" name="typePatient" value="BHS"> BHS
-                                    </label>
-                                    <label class="checkbox-inline">
-                                        <input type="radio" id="RHU" name="typePatient" value="RHU"> RHU
-                                    </label> 
-                                </div><br>
-                            </div> -->
                             <br><br><br>
                         </div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">I. PATIENT'S INFORMATION</h4>
@@ -110,11 +80,13 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <label for="sex">Civil Status</label>
-                                <select class="form-control chosen-select" name="sex" id="sex">
-                                    <option value="">Select sex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                <label for="cvStatus">Civil Status</label>
+                                <select class="form-control chosen-select" name="cvStatus" id="cvStatus">
+                                    <option value="">Select status</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Widowed">Widowed</option>
+                                    <option value="Legally Separated">Legally Separated</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -167,6 +139,8 @@
                                     <input type="checkbox" name="employment_status" id="employment_status">
                                     <label for="employment_status" class="ml-2">Self-Employed</label>
                                     <br>
+                                    <!-- Employment status -->
+
                                     <!-- <div class="col-md-5">
                                     <label for="ethnicity">Ethnicity:</label>
                                     <select class="form-control" name="ethnicity" id="ethnicity">
@@ -207,162 +181,138 @@
                                         </td>
                                         <td>
                                             <input type="text" class="form-control chestPainDetails" id="chestPainDetails" 
-                                                placeholder="By whom:" disable>
+                                             placeholder="By whom:" disable>
                                         </td>
                                     </tr>
                                 <tr>
                                     <td>2.2 Difficulty of Breathing</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="difficultBreathCheckbox" id="dfbYes" value="Yes"> Yes
+                                        <input type="checkbox" class="difficultBreathCheckbox" id="dfbNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control dfbDetails" id="dfbDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.3 Loss of Consciousness</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="lossConCheckbox" id="lossConYes" value="Yes"> Yes
+                                        <input type="checkbox" class="lossConCheckbox" id="lossConNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control lossConDetails" id="lossConDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.4 Slurred Speech</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="slurredCheckbox" id="slurredYes" value="Yes"> Yes
+                                        <input type="checkbox" class="slurresCheckbox" id="slurredNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control slurredDetails" id="slurredDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.5 Facial Asymmetry</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="facialCheckbox" id="facialYes" value="Yes"> Yes
+                                        <input type="checkbox" class="facialCheckbox" id="facialNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control facialDetails" id="druByWh" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                 <td>2.6 Weakness/Numbness on arm <br> of the left on one side of the body</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="weaknumbCheckbox" id="weaknumbYes" value="Yes"> Yes
+                                        <input type="checkbox" class="weaknumbCheckbox" id="weaknumbNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control weaknumbDetails" id="weaknumbDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.7 Disoriented as to time, <br> place and person</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="disCheckbox" id="disYes" value="Yes"> Yes
+                                        <input type="checkbox" class="disCheckbox" id="disNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control disDetails" id="disDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.8 Chest Retractions</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="chestRetracCheckbox" id="chestRetractYes" value="Yes"> Yes
+                                        <input type="checkbox" class="chestRetracCheckbox" id="chestRetractNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control chestRetractDetails" id="chestRetractDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.9 Seizure or Convulsion</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="seizureCheckbox" id="seizureYes" value="Yes"> Yes
+                                        <input type="checkbox" class="seizureCheckbox" id="seizuredNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control seizureDetails" id="seizureDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.10 Act of self-harm or suicide</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="selfharmCheckbox" id="selfharmYes" value="Yes"> Yes
+                                        <input type="checkbox" class="selfharmCheckbox" id="selfharmNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control selfharmDetails" id="selfharmDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.11 Agitated and/or aggressive behavior</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="agitatedCheckbox" id="agitatedYes" value="Yes"> Yes
+                                        <input type="checkbox" class="agitatedCheckbox" id="agitatedNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control agitatedDetails" id="agitatedDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.12 Eye Injury/ Foreign Body on the eye</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="eyeInjuryCheckbox" id="eyeInjuryYes" value="Yes"> Yes
+                                        <input type="checkbox" class="eyeInjuryheckbox" id="eyeInjuryNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control eyeInjuryDetails" id="eyeInjuryDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.13 Severe Injuries</td>
                                     <td>
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidYes" value="Yes"> Yes
-                                        <input type="checkbox" class="firstAidCheckbox" id="firstAidNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="severeCheckbox" id="severeYes" value="Yes"> Yes
+                                        <input type="checkbox" class="severeCheckbox" id="severeNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control firstAidDetails" id="druWhat" name="druWhat" 
-                                            placeholder="What:" style="display: none; margin-bottom: 5px;">
-                                        <input type="text" class="form-control firstAidDetails" id="druByWhom" name="druByWhom" 
+                                        <input type="text" class="form-control severeDetails" id="severeDetails" name="druByWhom" 
                                             placeholder="By whom:" style="display: none;">
                                     </td>
                                     </tr>
@@ -373,662 +323,611 @@
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
+                             <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                        </div>
+                 </div>
+            </div>
+         <!-- PAST MEDICAL HISTORY -->
+         <div class="form-step" id="form-step-2" style="display: none;">
+             <div class="row">
+                    <div class="col-md-12">
+                        <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY <span class="text-danger">*</span></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                                <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Description</th>
+                                    <th>Option (Yes / No)</th>
+                                    <th>Details</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   <tr>
+                                        <td>3.1 Hypertension</td>
+                                        <td>
+                                            <input type="checkbox" class="hypertensionCheckbox" id="hypertensionYes" value="Yes"> Yes
+                                            <input type="checkbox" class="hypertensionCheckbox" id="hypertensionNo" value="No" style="margin-left: 15px;"> No
+                                        </td>
+                                    </tr>
+                                <tr>
+                                    <td>3.2 Heart Disease</td>
+                                    <td>
+                                        <input type="checkbox" class="heartdiseaseCheckbox" id="heartsdiseaseYes" value="Yes"> Yes
+                                        <input type="checkbox" class="heartdiseaseCheckbox" id="heartdiseaseNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.3 Diabetes</td>
+                                    <td>
+                                        <input type="checkbox" class="diabetesCheckbox" id="diabetesYes" value="Yes"> Yes
+                                        <input type="checkbox" class="diabetesCheckbox" id="diabetesNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.4 Cancer</td>
+                                    <td>
+                                        <input type="checkbox" class="cancerCheckbox" id="cancerYes" value="Yes"> Yes
+                                        <input type="checkbox" class="cancerCheckbox" id="cancerNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3.5 COPD</td>
+                                    <td>
+                                        <input type="checkbox" class="codCheckbox" id="codYes" value="Yes"> Yes
+                                        <input type="checkbox" class="codCheckbox" id="codNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                <td>3.6 Asthma</td>
+                                    <td>
+                                        <input type="checkbox" class="asthmaCheckbox" id="asthmaYes" value="Yes"> Yes
+                                        <input type="checkbox" class="asthmaCheckbox" id="asthmaNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td> 3.7 Allergies</td>
+                                    <td>
+                                        <input type="checkbox" class="allergiesCheckbox" id="allergiesYes" value="Yes"> Yes
+                                        <input type="checkbox" class="allergiesCheckbox" id="allergiesNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>3.8 Mental, Neurological, and Substance-Abuse Disorder</td>
+                                    <td>
+                                        <input type="checkbox" class="mnsCheckbox" id="mnsYes" value="Yes"> Yes
+                                        <input type="checkbox" class="mnsCheckbox" id="mnsNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>3.9 Vision Problems</td>
+                                    <td>
+                                        <input type="checkbox" class="visionCheckbox" id="visionYes" value="Yes"> Yes
+                                        <input type="checkbox" class="visionCheckbox" id="visionNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>3.10 Previous Surgical History</td>
+                                    <td>
+                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="surgicalhistoryYes" value="Yes"> Yes
+                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="surgicalhistoryNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>3.11 Thyroid Disorders</td>
+                                    <td>
+                                        <input type="checkbox" class="thyroidCheckbox" id="thyroidYes" value="Yes"> Yes
+                                        <input type="checkbox" class="thyroidCheckbox" id="thyroidNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>3.12 Kidney Disorders</td>
+                                    <td>
+                                        <input type="checkbox" class="kidneyCheckbox" id="kidneyYes" value="Yes"> Yes
+                                        <input type="checkbox" class="kidneyCheckbox" id="kidneyNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">IV. FAMILY HISTORY <span class="text-danger">*</span></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                                <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Description</th>
+                                    <th>Option (Yes / No)</th>
+                                    <th>Details</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   <tr>
+                                        <td>4.1 Hypertension</td>
+                                        <td>
+                                            <input type="checkbox" class="hyperCheckbox" id="hyperYes" value="Yes"> Yes
+                                            <input type="checkbox" class="hyperCheckbox" id="hyperNo" value="No" style="margin-left: 15px;"> No
+                                        </td>
+                                       
+                                    </tr>
+                                <tr>
+                                    <td>4.2 Stroke</td>
+                                    <td>
+                                        <input type="checkbox" class="strokeCheckbox" id="strokeYes" value="Yes"> Yes
+                                        <input type="checkbox" class="strokeCheckbox" id="strokeNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>4.3 Heart Disease (change from "Cardiovascular") </td>
+                                    <td>
+                                        <input type="checkbox" class="heartdisCheckbox" id="heartdisYes" value="Yes"> Yes
+                                        <input type="checkbox" class="heartdisCheckbox" id="heartdisNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>4.4 Diabetes Mellitus</td>
+                                    <td>
+                                        <input type="checkbox" class="diabetesmelCheckbox" id="diabetesmelYes" value="Yes"> Yes
+                                        <input type="checkbox" class="diabetemelCheckbox" id="diabetesmelNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>4.5 Asthma</td>
+                                    <td>
+                                        <input type="checkbox" class="asthmas_Checkbox" id="asthmaYes" value="Yes"> Yes
+                                        <input type="checkbox" class="asthmas_Checkbox" id="asthmaNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                <td>4.6 Cancer</td>
+                                    <td>
+                                        <input type="checkbox" class="cancer_Checkbox" id="cancer_Yes" value="Yes"> Yes
+                                        <input type="checkbox" class="cancer_Checkbox" id="cancer_No" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td> 4.7 Kidney Disease </td>
+                                    <td>
+                                        <input type="checkbox" class="kidneyDis_Checkbox" id="kidney_diYes" value="Yes"> Yes
+                                        <input type="checkbox" class="kidneyDis_Checkbox" id="kidney_disNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>4.8 1st Degree relative with premature coronary <br> disease or vascular disease <br> (includes "Heart Attack")</td>
+                                    <td>
+                                        <input type="checkbox" class="degreerelativeCheckbox" id="degreerelativeYes" value="Yes"> Yes
+                                        <input type="checkbox" class="degreerelativeCheckbox" id="degreerelativeNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>4.9 Family having TB in the last 5 years </td>
+                                    <td>
+                                        <input type="checkbox" class="familytbCheckbox" id="familytbYes" value="Yes"> Yes
+                                        <input type="checkbox" class="familytbCheckbox" id="familytbNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                                <tr>
+                                    <td>4.10 Mental, Neuroligical and Substance Abuse Disorder</td>
+                                    <td>
+                                        <input type="checkbox" class="mnsadCheckbox" id="mnsadYes" value="Yes"> Yes
+                                        <input type="checkbox" class="mnsadCheckbox" id="mnsadNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>4.11 COPD</td>
+                                    <td>
+                                        <input type="checkbox" class="COPCheckbox" id="COPYes" value="Yes"> Yes
+                                        <input type="checkbox" class="COPCheckbox" id="COPNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                   
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center" style="margin-top: 20px;">
+                        <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
+                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                    </div>
+                </div>
+             </div>             
+             <div class="form-step" id="form-step-3" style="display: none;">
+                <div class="row">                 
+                <!-- risk factors -->
+                <div class="col-md-12">
+                        <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">V. NCD RISK FACTORS <span class="text-danger">*</span></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Description</th>
+                                    <th>Option (Yes / No)</th>
+                                    <th>Details</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                   <tr>
+                                        <td>5.1 Tobacco Use</td>
+                                        <td>
+                                            <input type="checkbox" class="q1Checkbox" id="q1" value="Yes"> Q1 Never Used (proceed to Q2) <br>
+                                            <input type="checkbox" class="q2Checkbox" id="q2" value="Yes"> Q2 Exposure to secondhand smoke <br>
+                                            <input type="checkbox" class="q3Checkbox" id="q3" value="Yes"> Q3 Former tobacco user (stopped smoking > 1 year) <br>
+                                            <input type="checkbox" class="q4Checkbox" id="q4" value="Yes"> Q4 Current tobacco user (currently smoking or stopped smoking)
+                                        </td>
+                                       
+                                    </tr>
+                                <tr>
+                                    <td>5.2 Alcohol Intake</td>
+                                    <td>
+                                         <input type="checkbox" class= "alcoholq1Checkbox" id="alcoholq1Never" value="No"> Q1 Never Consumed 
+                                         <input type="checkbox" class="alcoholq1Checkbox" id="alcoholq1Yes" value="Yes"> Yes, drinks alcohol
+                                        <br><br><br><br>
+                                        Q2. Do you drink 5 or more standards drinks for men, and 4 or more for women (in one sitting/occasion) in the past year? <br><br>
+                                         <input type="checkbox" class= "alcoholq2Checkbox" id="alcoholq1Yes" value="Yes"> Never Consumed 
+                                         <input type="checkbox" class="alcoholq2Checkbox" id="alcoholq2No" value="No"> Yes, drinks alcohol
+                                         <br>
+                                         <br>
+                                    </td>
+                                   
+                                    
+                                </tr>
+                                <tr>
+                                    <td>5.3 Physical Activity </td>
+                                    <td>
+                                        Does the patient do at least 2.5 hours a week of moderate-intensity physical activity?  <br><br>
+                                        <input type="checkbox" class="physicalCheckbox" id="physicalYes" value="Yes"> Yes
+                                        <input type="checkbox" class="physicalCheckbox" id="physicalNo" value="No" style="margin-left: flex"> No
+                                        <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5.4 Nutrition and Dietary Assessment </td>
+                                    <td>
+                                        Q1 Does the patient eat high fat, high salt food,(processed/fast food such as instant <br> noodles, burgers, fries, dried fish),
+                                        "ihaw-ihaw/fried" (e.g isaw, barbecue, liver, chicken skin)and high sugar food and drinks (e.g chocolates, cakes, pastries, softdrinks) weekly? <br><br><br>
+                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietYes" value="Yes"> Yes
+                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo" value="No" style="margin-left: flex"> No
+                                    </td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5.5 Weight (kg) 
+                                    </td>
+                                    <td>
+                                        <input type="text" class="textbox" id="weight" value=""> 
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        5.6 Height (cm) 
+                                    </td>
+                                    <td>
+                                        <input type="text" class="textbox" id="height" value=""> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                <td>
+                                        5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
+                                    </td>
+                                    <td>
+                                        <input type="text" class="textbox" id="BMI" value=""> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5.8 Waist Circumference (cm): F < 80cm M < 90
+                                    </td>
+                                    <td>
+                                        <input type="text" class="textbox" id="waist" value=""> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5.9 Blood Pressure (mmHg)
+                                    </td>
+                                    <td>
+                                        <input type="text" class="textbox" id="bloodPressure" value=""> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center" style="margin-top: 20px;">
+                        <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
+                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                    </div>
+                </div>
+                       
+            </div>
+
+            <div class="form-step" id="form-step-4" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
+                            V. RISK SCREENING <span class="text-danger">*</span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr>
+                            <th colspan="2" style="border: 1px solid #000; padding: 10px; background-color: #f2f2f2;">
+                                6.1 Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
+                            </th>
+                        </tr>
+
+                        <?php 
+                        // PHP array to define sections and inputs
+                        $sections = [
+                            "Blood Sugar" => [
+                                ["label" => "FBS Result", "type" => "text"],
+                                ["label" => "RBS Result", "type" => "text"],
+                                ["label" => "Date Taken", "type" => "date"]
+                            ],
+                            "Check if DM clinical symptoms are present" => [
+                                ["label" => "Polyphagia", "type" => "checkbox"],
+                                ["label" => "Polydipsia", "type" => "checkbox"],
+                                ["label" => "Polyuria", "type" => "checkbox"]
+                            ],
+                            "Lipid Profile" => [
+                                ["label" => "Total Cholesterol", "type" => "text"],
+                                ["label" => "HDL", "type" => "text"],
+                                ["label" => "LDL", "type" => "text"],
+                                ["label" => "VLDL", "type" => "text"],
+                                ["label" => "Triglyceride", "type" => "text"],
+                                ["label" => "Date Taken", "type" => "date"]
+                            ],
+                            "Urinalysis/ Urine Dipstick Test" => [
+                                ["label" => "Protein", "type" => "text"],
+                                ["label" => "Ketones", "type" => "text"],
+                                ["label" => "Date Taken", "type" => "date"]
+                            ]
+                        ];
+                        // Loop through the sections to generate the table rows
+                        foreach ($sections as $section => $inputs): ?>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                    <?= $section ?>
+                                </td>
+                                <td style="border: 1px solid #000; padding: 10px;">
+                                    <?php if ($inputs[0]['type'] === 'checkbox'): ?>
+                                        <div class="checkbox-group" style="display: flex; gap: 10px;">
+                                            <?php foreach ($inputs as $input): ?>
+                                                <label>
+                                                    <input type="checkbox" name="<?= strtolower($input['label']) ?>"> 
+                                                    <?= $input['label'] ?>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <?php foreach ($inputs as $input): ?>
+                                            <div style="margin-bottom: 10px;">
+                                                <label><?= $input['label'] ?>:</label>
+                                                <input type="<?= $input['type'] ?>" name="<?= strtolower(str_replace(' ', '_', $input['label'])) ?>" 
+                                                    style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <th colspan="2" style="border: 1px solid #000; padding: 10px; background-color: #f2f2f2;">
+                                6.2 Chronic Respiratory Disease (Asthma and COPD)
+                            </th>
+                        </tr>
+
+                        <?php 
+                // PHP array to define sections and inputs
+                    $sections = [
+                        "CHECK all applicable" => [
+                            ["label" => "Breathlessness (or a 'need for air')", "type" => "checkbox"],
+                            ["label" => "Chronic cough", "type" => "checkbox"],
+                            ["label" => "Sputum (mucous) production", "type" => "checkbox"],
+                            ["label" => "Chest tightness", "type" => "checkbox"],
+                            ["label" => "Wheezing", "type" => "checkbox"]
+                        ],
+                        "If YES to any of the symptoms, obtain peak expiratory flow rate (PEFR). 
+                        Give inhaled salbutamol, then repeat after 15 minutes." => [
+                            "RESULTS" => [
+                                ["label" => ">20% change from baseline (consider Probable Asthma)", "type" => "checkbox"],
+                                ["label" => "<20% change from baseline (consider Probable COPD)", "type" => "checkbox"]
+                            ]
+                        ]
+                    ];
+
+                    // Loop through the sections to generate the table rows
+                    foreach ($sections as $section => $inputs): ?>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold; width: 25%;">
+                                <?= $section ?>
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <div class="checkbox-group" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                <?php if (is_array($inputs) && isset($inputs['RESULTS'])): ?>
+                                            <p><strong>Results:</strong></p>
+                                            <div class="checkbox-group" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                <?php foreach ($inputs['RESULTS'] as $input): ?>
+                                                    <label style="display: flex; align-items: center; gap: 5px;">
+                                                        <input type="<?= $input['type'] ?>" name="<?= strtolower(str_replace(' ', '_', $input['label'])) ?>"> 
+                                                        <?= $input['label'] ?> 
+                                                    </label>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="checkbox-group" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                <?php foreach ($inputs as $input): ?>
+                                                    <label style="display: flex; align-items: center; gap: 5px;">
+                                                        <input type="<?= $input['type'] ?>" name="<?= strtolower(str_replace(' ', '_', $input['label'])) ?>"> 
+                                                        <?= $input['label'] ?> 
+                                                    </label>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </table>
+                    </div>
+
+                        <div class="col-md-12 text-center" style="margin-top: 20px;">
+                            <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
                             <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
                         </div>
                     </div>
-            </div>
-            <div class="form-step" id="form-step-2" style="display: none;">
-                <div class="row">                                      
-                    <div class="col-md-12">
-                    <hr class="bold-line">
-                        <label>Nature of Injuries:</span></label>
-                    </div>
-                    <div class="col-md-3 col-md-offset-1">
-                     
-                        <p style="display: flex; align-items: center; margin: 0">
-                            <p style="margin: 0; padding-right: 10px">Multiple Injuries ? <span class="text-danger">*</span></p>
-                            <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" style="margin: 0 10px">Yes
-                            <input type="radio" id="single_injured" name="multiple_injured" value="No" style="margin: 0 10px">No
-                        </p>
-                    </div>
-                    <div class="col-md-12 col-md-offset-.05">  
-                        <p class="underline-text text-center" id="underline-text">
-                            Check all applicable indicate in the blank space opposite each type of injury the body location [site] and affected and other details
-                        </p>
-                    </div>
-                    <div class="col-md-3">
-                            @php
-                                $counter = 1;
-                            @endphp
+                </div>
 
-                            @foreach($nature_injury as $injured)
-                                @php
-                                    $cleaned_nature = preg_replace('/[\/,]/', ' ', $injured->name);              
-                                $natureSingle = explode(' ', trim($cleaned_naturel))[0];
-                                @endphp
-
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="InjuredBurn" name="InjuredBurn" value="{{ $injured->id }}"> {{$injured->name}}
-                                    </label>
-                                    <input type="text" class="form-control" id="burnDetail" name="burnDetail" placeholder="burn details" disabled>
-                                </div>
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="fractureNature" name="fractureNature" value="{{$injured->id}}"> {{$injured->name}}
-                                    </label><br>
-
-                                    <div class="col-md-offset-5" syle=" margin-left: 400px">
-                                        <input type="checkbox" id="closetype" name="fracttype" value="close type" onclick="toggleCheckbox(this)"> Close Type <!--close type details-->
-                                    </div>
-                                    <div class="col-md-offset-5"syle=" margin-left: 400px"><br>
-                                        <input type="checkbox" id="opentype" name="fracttype" value="open type" onclick="toggleCheckbox(this)"> Open Type <!--open type details-->
-                                    </div>
-                                </div>  
-                                
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <div class="checkbox">
-                                                <label>
-                                        <input type="checkbox" id="Others_nature_injured" name="Others_nature_injured" value="{{$injured->id}}"> {{$injured->name}}: Please specify injury and the body parts affected: 
-                                                </label>
-                                    <input type="text" class="form-control" id="other_nature_datails" name="other_nature_datails" id="other_nature_injury" disabled>
-                                            </div>
-                                        @else
-                                <div class="checkbox">
-                                            <label>
-                                        <input type="checkbox" id="nature{{$counter}}" name="nature{{$counter}}" value="{{ $injured->id}} "> {{$injured->name}}
-                                            </label>
-                                    <input type="text" class="form-control" name="nature_details{{$counter}}" id="nature_details{{$counter}}" placeholder="Enter details" disabled>
-                                </div>
-                                
-                            @endif
-                                @php
-                                    $counter++;
-                                @endphp
-                            @endforeach
-                        </div>
-                    <!-- <div class="col-md-3">
-                        @php
-                            $counter = 1;
-                        @endphp
-                        @foreach($nature_injury as $injured)
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br>
-                                <input type="text" class="form-control" id="burnDetail" name="burnDetail" placeholder="burn details" disabled>
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
-                                
-                                <label>fracture details</label>
-                                <input type="text" class="form-control" name="fracture_close_detail" id="fracture_close_detail" placeholder=" fracture close type details" disabled>
-                                <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details" disabled>
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <br>
-                                <label>Select side</label>
-                                <select class="form-control" name="side_others" id="side_others" disabled>
-                                    <option value="">Select Side for Others</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @else
-                                <label>Select side</label>
-                                <select class="form-control" name="sideInjured{{$counter}}" id="sideInjured{{$counter}}" disabled>
-                                    <option value="">Select Side for {{$injured->name}}</option>
-                                    <option value="right">right</option>
-                                    <option value="left">left</option>
-                                    <option value="Both left and Right">Both Left & right</option>
-                                </select>
-                            @endif
-                            @php
-                                $counter++;
-                            @endphp
-                        @endforeach                        
-                    </div> -->  
-
-                    <!----------------------------- Nature of Injury ------------------------------>
-                    
-                    <input type="hidden" name="injured_count" class="injured_count" value="{{ $counter }}">
-                    <div class="col-md-3">
-                        @php
-                            $counter = 1;
-                        @endphp
-                        @foreach($nature_injury as $injured)
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br><br>    
-                                <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="burn_body_parts[]" id="burnbody_parts" multiple disabled>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")
-                            <br><br>
-                                <label>Fracture details</label>
-                                <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder=" fracture close type details" disabled>
-                                <!-- <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details" disabled> -->
-
-                            @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
-                                <br><br><br>
-                                <label>Select Body parts</label>
-                                <select class="form-control chosen-select" name="body_parts_others[]" id="body_parts_others" multiple disabled>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                            @else
-                                <label>Select Body Parts</label>
-                                <select class="form-control chosen-select" name="body_parts_injured{{$counter}}[]" id="body_parts_injured{{$counter}}" multiple disabled>
-                                    @foreach($body_part as $body_parts)
-                                        <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                            @endif
-                            @php
-                                $counter++;
-                            @endphp
-                        @endforeach
-                    </div>
-                    <div class="col-md-3">
-                         @php
-                            $counter = 1;
-                        @endphp
-                        @foreach($nature_injury as $injured)
-                            @if($injured->name == "Burn" || $injured->name == "burn")
-                                <br><br><br><br><br><br><br>
-                                [ Degree:<label>
-                                        <input type="radio" id="Degree1" name="Degree" value="Degree 1" disabled>
-                                        1
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree2" name="Degree" value="Degree 2" disabled>
-                                        2
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree3" name="Degree" value="Degree 3" disabled>
-                                        3
-                                    </label>
-                                    <label>
-                                        <input type="radio" id="Degree4" name="Degree" value="Degree 4" disabled>
-                                        4
-                                    </label> ]
-                            @elseif($injured->name == "Fracture" || $injured->name == "fracture")    
-                                <br><br><br><br><br><br><br><br><br>
-                                <label for="bodyparts">Select Body Parts</label>
-                                <select class="form-control chosen-select" name="fracture_bodyparts[]" id="fractureclose_bodyparts" multiple disabled>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select>
-                                <!-- <select class="form-control chosen-select" name="fracture_Open_bodyparts[]" id="fracture_Open_bodyparts" multiple disabled>
-                                    @foreach($body_part as $body_parts)
-                                    <option value="{{ $body_parts->id }}">{{ $body_parts->name }}</option>
-                                    @endforeach
-                                </select> -->
-                            @endif
-                        @endforeach
+            <div class="form-step" id="form-step-5" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
+                            VII. MANAGEMENT <span class="text-danger">*</span>
+                        </h4>
                     </div>
                 </div>
-                <div class="row">
+                <div class="col-md-12">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <?php
+                        // PHP array to define the management sections
+                        $management = [
+                            "Lifestyle Modification" => [
+                                "type" => "textarea",
+                                "name" => "lifestyle_modification"
+                            ],
+                            "Medications" => [
+                                "Anti-Hypertensives" => [
+                                    "name" => "anti_hypertensives",
+                                    "options" => ["Yes", "No", "Unknown"],
+                                    "specify" => "anti_hypertensives_specify"
+                                ],
+                                "Anti-Diabetes" => [
+                                    "name" => "anti_diabetes",
+                                    "options" => ["Yes", "No", "Unknown"],
+                                    "sub-options" => ["Oral Hypoglycemic", "Insulin", "Not Known", "Others"],
+                                    "specify" => "anti_diabetes_specify"
+                                ]
+                            ],
+                            "Date of Follow-up" => [
+                                "type" => "date",
+                                "name" => "follow_up_date"
+                            ],
+                            "Remarks" => [
+                                "type" => "textarea",
+                                "name" => "remarks"
+                            ]
+                        ];
+                        ?>
+
+                <!-- HTML Table Structure for Management Section -->
+                <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th colspan="2" style="text-align: left; background-color: #f1f1f1; padding: 10px;">Lifestyle Modification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     <!-- Medications Section -->
+                        <tr>
+                            <td style="font-weight: bold;">Medications</td>
+                            <td>
+                                <!-- Anti-Hypertensives -->
+                                <div>
+                                    <label style="font-weight: bold;">a. Anti-Hypertensives:</label>
+                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                        <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
+                                            <label>
+                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
+                                         style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+
+                                <!-- Anti-Diabetes -->
+                                <div style="margin-top: 10px;">
+                                    <label style="font-weight: bold;">b. Anti-Diabetes:</label>
+                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                        <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
+                                            <label>
+                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+
+                                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+                                        <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
+                                            <label>
+                                                <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
+                                            </label>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
+                                        style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Date of Follow-up Section -->
+                        <tr>
+                            <td style="font-weight: bold;">Date of Follow-up</td>
+                            <td>
+                                <input type="date" name="follow_up_date" value="<?= date('Y-m-d') ?>" 
+                                    style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
+                            </td>
+                        </tr>
+
+                        <!-- Remarks Section -->
+                        <tr>
+                            <td style="font-weight: bold;">Remarks</td>
+                            <td>
+                                <textarea name="remarks" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                    </table>
+                    </div>
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
-                        <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
-                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
-                    </div>
-                </div>
-            </div>
-            <div class="form-step" id="form-step-3" style="display: none;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>
-                            <label>External Causes/s of Injuries: </label>
-                        </div>
-                    </div>
-                    @php
-                        $counter = 1;
-                    @endphp
-                    @foreach($ex_injury as $exInjury)
-                        @php
-                            $cleaned_external = preg_replace('/[\/,]/', ' ', $exInjury->name);              
-                            $externalSingle = explode(' ', trim($cleaned_external))[0];
-                        @endphp
-                        <input type="hidden" name="external_id" id="external_id" value="{{$exInjury->id}}">
-                        @if($externalSingle == 'Burns' || $externalSingle == 'Burn')     
-                            <div class="col-md-12">
-                                <label>
-                                    <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}"> {{$exInjury->name}}
-                                </label><br>
-                                <div class="col-md-5">
-                                
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="radio" name="burn_type" id="burn1" value="heat" disabled>
-                                            Heat
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="burn_type" id="burn2" value="fire" disabled>
-                                            fire
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="burn_type" id="burn3" value="Electricity" disabled>
-                                            Electricity
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="burn_type" id="burn4" value="Oil" disabled>
-                                            Oil
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="friction" id="burn5" value="friction" disabled>
-                                            friction
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here" disabled><br>
-                                </div>
-                            </div>
-                        @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
-                            <div class="col-md-12">
-                                <div class="d-flex align-items-center">
-                                    <label>
-                                        <input type="checkbox" id="exDrowning" name="exDrowning" value="{{ $exInjury->id }}"> {{$exInjury->name}}: Type/Body of Water:
-                                    </label><br>
-                                    <div class="col-md-5">
-                                    
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="radio" name="drowningType" id="drowning1" value="Sea" disabled>
-                                                Sea
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="drowningType" id="drowning2" value="River" disabled>
-                                                River
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="drowningType" id="drowning3" value="Lake" disabled>
-                                                Lake
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="drowningType" id="drowning4" value="Pool" disabled>
-                                                Pool
-                                            </label>
-                                            <label>
-                                                <input type="radio" name="drowningType" id="drowning5" value="Bath Tub" disabled>
-                                                Bath Tub
-                                            </label>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exdrowning_Details" id="exdrowningDetails" placeholder="specify here" disabled><br>
-                                </div>
-                            </div>
-                        @elseif($externalSingle == "Transport")
-                            <div class="col-md-12"></div>
-                                <div class="col-md-3">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" id="Transport" name="externalTransport" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control" name="transport_details" id="Transport_details" placeholder="Enter details" disabled>
-                                </div>
-                        @else
-                            <div class="col-md-12"></div>
-                            <div class="col-md-3">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" id="external{{$counter}}" name="external{{$counter}}" value="{{$exInjury->id}}"> <strong>{{$exInjury->name}}</strong>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" name="external_details{{$counter}}" id="external_details{{$counter}}" placeholder="Enter details" disabled>
-                            </div>
-                            @php    
-                            $counter++;
-                            @endphp
-                        @endif
-                    @endforeach
-                    <input type="hidden" name="external_count" class="external_count" value="{{ $counter }}">
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center" style="margin-top: 20px;">
-                        <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
-                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
-                    </div>
-                </div>
-            </div>
-            <div class="form-step" id="form-step-4" style="display: none;">
-               <div class="row">
-                <!-- for Transport Group -->
-                <div class="Transport-group" style="display: none;">        
-                    <div class="col-md-6 transport-related">
-                        <label>For Transport Vehicular Accident Only:</label>
-                    </div>
-                    <div class="col-md-6 transport-related">
-                        <label>Vehicular Accident Type: </label>
-                    </div>
-                    @foreach($rtacident as $rtAct)
-                        <div class="col-md-2 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="Land" name="transport_accident_id" value="{{$rtAct->id}}"> {{$rtAct->description}}
-                        </div>
-                    @endforeach
-                    <div class="col-md-3 transport-related">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="Collision" name="transport_collision" value=" Collision "> Collision
-                    </div>
-                    <div class="col-md-2 transport-related">
-                        <input type="radio" id="non_collision" name="transport_collision" value="Non-Collision"> Non-Collision
-                    </div>  
-                    <!-- <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="water" name="transport_vehic" value="water"> Water
-                    </div>
-                    <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="air" name="transport_vehic" value="Air"> Air
-                    </div>
-                    <div class="col-md-3 transport-related"> 
-                        <input type="checkbox" id="Collision" name="transport_vehic" value="Collision"> Collision&nbsp;&nbsp;&nbsp;
-                    </div>
-                    <div class="col-md-2 transport-related">
-                        <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
-                    </div> -->
-            
-                    <div class="col-md-6 transport-related"><hr class="bold-line">
-                        <label>Vehicles Involved:</label>
-                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
-                        <div class="col-md-4">&nbsp;&nbsp;&nbsp;
-                            <input type="radio" id="none_pedes" name="Patient_vehicle" value="None(Pedestrian)" onclick="togglePlaceInput()">None (Pedestrian)<br><br>
-                            <input type="radio" id="patient_motorcycle" name="Patient_vehicle" value="Motorcycle" onclick="togglePlaceInput()"> Motorcycle<br>
-                            <input type="radio" id="patient_truck" name="Patient_vehicle" value="Truck" onclick="togglePlaceInput()"> Truck<br>
-                            <input type="radio" id="patient_bus" name="Patient_vehicle" value="Bus" onclick="togglePlaceInput()"> Bus<br>
-                            <input type="radio" id="patient_jeepney" name="Patient_vehicle" value="Jeepney" onclick="togglePlaceInput()"> Jeepney 
-                        </div>
-                        <div class="col-md-4">
-                            <input type="radio" id="patient_car" name="Patient_vehicle" value="Car" onclick="togglePlaceInput()"> Car<br>
-                            <input type="radio" id="patient_bicycle" name="Patient_vehicle" value="Bicycle" onclick="togglePlaceInput()"> Bicycle<br>
-                            <input type="radio" id="patient_van" name="Patient_vehicle" value="Van" onclick="togglePlaceInput()"> Van<br>
-                            <input type="radio" id="patient_tricycle" name="Patient_vehicle" value="Tricycle" onclick="togglePlaceInput()"> Tricycle
-                        </div>
-                        <div class="col-md-4">
-                                <input type="radio" id="patient_unknown" name="Patient_vehicle" value="Unknown" onclick="togglePlaceInput()"> Unknown<br>
-                                <input type="radio" id="patient_others" name="Patient_vehicle" value="others" onclick="togglePlaceInput()"> Others<br>
-                                <input type="text" class="form-control hidden" id="patient_vehicle_others" name="Patient_vehicle_others" placeholder="Others details">  
-                        </div>
-                        <div class="col-md-12 collision_group"><br>
-                            <p>Other Vehicle/Object Involved (for Collision accident only)</p>
-                            <div class="col-md-4"> <!--  <div class="col-md-3">  -->
-                                <input type="radio" id="objectNone" name="Othercollision" value="None" onclick="togglePlaceInput()"> None<br>
-                                <input type="radio" id="objectbicycle" name="Othercollision" value="Bicycle" onclick="togglePlaceInput()">Bicycle<br>
-                                <input type="radio" id="objectcar" name="Othercollision" value="Car" onclick="togglePlaceInput()">Car <br>
-                                <input type="radio" id="objectjeepney" name="Othercollision" value="Jeepney" onclick="togglePlaceInput()">Jeepney <br>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="radio" id="objectvan" name="Othercollision" value="Van" onclick="togglePlaceInput()">Van<br>
-                                <input type="radio" id="objectbus" name="Othercollision" value="Bus" onclick="togglePlaceInput()">Bus<br>
-                                <input type="radio" id="objecttruck" name="Othercollision" value="truck" onclick="togglePlaceInput()">truck<br>
-                                <input type="radio" id="objectothers" name="Othercollision" value="Others" onclick="togglePlaceInput()">Others:<br>
-                                <input type="text" class="form-control hidden" id="other_collision_details" name="other_collision_details" placeholder="others details">
-                            </div>
-                            <div class="col-md-4">
-                                <input type="radio" id="objectmotorcycle" name="Othercollision" value="Motorcycle" onclick="togglePlaceInput()">Motorcycle<br>
-                                <input type="radio" id="objectTricycle" name="Othercollision" value="Tricycle" onclick="togglePlaceInput()">Tricycle<br>
-                                <input type="radio" id="objectunknown" name="Othercollision" value="unknown" onclick="togglePlaceInput()">Unknown
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 transport-related">
-                    <hr class="bold-line">
-                        <br>
-                        <p>Position of Patient</p>
-                        <input type="radio" id="position_pedes" name="position_patient" value="Pedestrian" onclick="togglePlaceInput()"> Pedestrian<br>
-                        <input type="radio" id="position_driver" name="position_patient" value="Driver" onclick="togglePlaceInput()"> Driver<br>
-                        <input type="radio" id="position_captain" name="position_patient" value="Captain" onclick="togglePlaceInput()"> Captain<br>
-                        <input type="radio" id="position_pilot" name="position_patient" value="Pilot" onclick="togglePlaceInput()"> Pilot<br>
-                        <input type="radio" id="position_passenger" name="position_patient" value="Front Passenger" onclick="togglePlaceInput()"> Front Passenger<br>
-                        <input type="radio" id="position_rear_passenger" name="position_patient" value="Rear Passenger" onclick="togglePlaceInput()"> Rear Passenger<br>
-                        <input type="radio" id="position_unknown" name="position_patient" value="Unknown" onclick="togglePlaceInput()"> Unknown <br>
-                        <input type="radio" id="position_others" name="position_patient" value="Others" onclick="togglePlaceInput()"> Others:<br>
-                        <input type="text" class="form-control hidden" id="position_patient_details" name="position_other_details" placeholder="Others details">
-                    </div>
-
-                    <div class="col-md-3 transport-related">  <hr class="bold-line"><br>
-                        <p>Place of Occurrence</p>
-                        <input type="radio" id="place_home" name="Occurrence" value="Home" onclick="togglePlaceInput()"> Home<br>
-                        <input type="radio" id="place_school" name="Occurrence" value="School" onclick="togglePlaceInput()"> School<br>
-                        <input type="radio" id="place_Road" name="Occurrence" value="Road" onclick="togglePlaceInput()"> Road<br>
-                        <input type="radio" id="place_Bars" name="Occurrence" value="School" onclick="togglePlaceInput()"> Videoke Bars<br>
-                        <input type="radio" id="place_workplace" name="Occurrence" value="workplace" onclick="togglePlaceInput()"> Workplace, specify:<br>
-                        <input type="text" class="form-control" id="workplace_occurence_details" name="workplace_occ_specify" placeholder="specify here" onclick="togglePlaceInput()">
-                        <input type="radio" id="place_others" name="Occurrence" value="Others" onclick="togglePlaceInput()"> Others:<br>
-                        <input type="text" class="form-control" id="place_other_details" name="Occurrence_others" placeholder="others details" onclick="togglePlaceInput()">
-                        <input type="radio" id="place_unknown" name="Occurrence" value="Unknown" onclick="togglePlaceInput()"> Unknown
-                    </div>
-                    <div class="col-md-12 transport-related">
-                            <hr class="bold-line">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label>Activity of the patient at the time of incident</label><br>
-                                    <input type="radio" id="activity_sports" name="activity_patient" value="Sports" onclick="togglePlaceInput()"> Sports<br>
-                                    <input type="radio" id="activity_leisure" name="activity_patient" value="leisure" onclick="togglePlaceInput()"> Leisure<br>
-                                    <input type="radio" id="activity_school" name="activity_patient" value="Work Related" onclick="togglePlaceInput()"> Work Related<br>
-                                    <input type="radio" id="activity_others" name="activity_patient" value="Others" onclick="togglePlaceInput()"> Others:
-                                    <input type="text" class="form-control" id="activity_Patient_other" name="activity_patient_other" placeholder="others details" onclick="togglePlaceInput()"><br>
-                                    <input type="radio" id="activity_unknown" name="activity_patient" value="unknown" onclick="togglePlaceInput()"> Unknown
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label>Other Risk Factors at the time of the incident:</label><br>
-                                    <input type="radio" id="risk_liquor" name="risk_factors" value="Alcohol/liquor" onclick="togglePlaceInput()"> Alcohol/liquor<br>
-                                    <input type="radio" id="risk_mobilephone" name="risk_factors" value="Using Mobile Phone" onclick="togglePlaceInput()"> Using Mobile Phone<br>
-                                    <input type="radio" id="risk_sleepy" name="risk_factors" value="Sleepy" onclick="togglePlaceInput()"> Sleepy<br>
-                                    <input type="radio" id="risk_smooking" name="risk_factors" value="smooking" onclick="togglePlaceInput()"> Smooking<br>
-                                    <input type="radio" id="risk_others" name="risk_factors" value="Others" onclick="togglePlaceInput()"> Others specify:
-                                    <input type="text" class="form-control" id="risk_others_details" name="rf_others" placeholder="others specify here">
-                                    <p>(e.g., Suspected under the influence of substances)</p>
-                                </div>
-                                
-                                <div class="col-md-4">
-                                    <label>Safety: (check all that apply)</label><br>
-                                    @foreach($safety as $safe)
-                                        <div class="col-md-6">
-                                            <input type="checkbox" id="safe_{{ $safe->id }}" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
-                                        </div>
-                                        @if(trim($safe->name) == 'Others')
-                                            <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control" id="safeothers_details" name="safeothers_details" placeholder="others specify here">
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <!-- end of transport-group -->
-          
-                    <div class="col-md-12">
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">Hospital/Facility Data</h4>
-                        @foreach($hospital_type as $hos)
-                            @if(isSimilar($hos->category_name, "ER/OPD/BHS/RHU"))
-                            <div class="A_ErOpdGroup">
-                                <h6 class="A_Hospital mt-5" style="background-color: #A1A8C7;color: #ffff;padding: 3px;margin-top: -10px"> 
-                                <input type="checkbox" id="A_ErOpd" name="hospital_data" value="{{$hos->id}}">
-                                {{$hos->category_name}}</h6>
-                                <div class="ER_Content" style="display:none">
-                                    <div class="col-md-12">
-                                        <label for="transferred facility">Transferred from another hospital/facility <span class="text-danger">*</span></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="YesTransferred" name="Transferred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="NoTransferred" name="Transferred" value="0"> No <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <label for="referred by hospital">Referred by another Hospital/Facility for Laboratory and/or other medical procedures</label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="ReferredYes" name="Referred" value="1"> Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" id="Referredno" name="Referred" value="0"> No <br> <hr class="bold-line">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="nameofphysician">Name of the Originating Hospital/Physician: <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="name_orig" name="name_orig" placeholder="Name of the Originating Hospital/Physician">
-                                    </div>
-                                    <div class="col-md-12"><hr></div>
-                                    <div class="col-md-3">
-                                        <label for="">Status upon reashing the Facility</label>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="radio" id="deadonarrive" name="reashingFact" value=" Dead on Arrival"> Dead on Arrival
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="radio" id="alive" name="reashingFact" value="Alive"> Alive
-                                    </div>
-                                    <div class="col-md-1">
-                                        <label for=""> If Alive: </label> 
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="radio" id="conscious" name="ifAlive" value="conscious"> conscious
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="radio" id="Unconscious" name="ifAlive" value="Unconscious"> Unconscious
-                                    </div>
-                                    <div class="col-md-12"></div>
-                                    
-                                    <div class="col-md-3"> <br><br>
-                                        <label for="">Mode of Transport to the Hospital/Facility</label>
-                                    </div>
-                                    <div class="col-md-2"><br><br>
-                                        <input type="radio" id="ambulance" name="mode_transport" value="Ambulance" onclick="togglePlaceInput()"> Ambulance
-                                    </div>
-                                    <div class="col-md-2"><br><br>
-                                            <input type="radio" id="police_vehicle" name="mode_transport" value="Police Vehicle" onclick="togglePlaceInput()"> Police Vehicle
-                                        </div>
-                                        <div class="col-md-2"><br><br>
-                                            <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" onclick="togglePlaceInput()"> Private Vehicle
-                                        </div>
-                                        <div class="col-md-1"><br><br>
-                                            <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()"> Others:
-                                        </div>
-                                        <div class="col-md-2"><br><br>
-                                            <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
-                                    </div>
-                                    <div class="col-md-12"> <hr class="bold-line">
-                                    <label for="initial_imp">Initial Impression</label>
-                                        <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression"> <br>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">ICD-10 Code/s: Nature of injury</label>
-                                        <input type="text" class="form-control" id="icd10_nature" name="icd10_nature" id="icd10_nature" >    
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="">ICD-10 Code/s: External Cause injury</label>
-                                        <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" >
-                                    </div>
-                                    <div class="col-md-12"> 
-                                    <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="Disposition">Disposition:</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="radio" id="admitted" name="disposition" value="Admitted" onclick="togglePlaceInput()"> Admitted <br>
-                                                <input type="radio" id="hama" name="disposition" value="HAMA"> HAMA
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home" onclick="togglePlaceInput()"> Treated and Sent Home <br>
-                                                <input type="radio" id="Absconded" name="disposition" value="Absconded" onclick="togglePlaceInput()"> Absconded
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital,<br>
-                                                <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
-                                            </div>
-                                            
-                                            <div class="col-md-2">
-                                                <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission <br>
-                                                <input type="radio" id="died" name="disposition" value="died" onclick="togglePlaceInput()"> Died
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-2">
-                                            <label for="Outcome">Outcome</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Improved" name="outcome" value="Improved"> Improved
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Died1" name="outcome" value="died"> Died
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        @endforeach
-                    </div>                      
-                    @foreach($hospital_type as $hos)
-                        @if(isSimilar($hos->category_name,"In-patient(admitted)"))
-                            <div class="B_InpatientGroup">
-                                <div class="col-md-12">
-                                    <h6 class="A_Hospital mt-5" style="background-color: #A1A8C7;color: #ffff;padding: 3px;margin-top: -10px"> 
-                                    <input type="checkbox" id="B_InPatient" name="hospital_data_second" value="{{$hos->id}}">
-                                    {{$hos->category_name}}</h6>
-                                    <div class="In_patient_content" style="display:none">
-                                        <div class="col-md-12">
-                                            <label for="complete_final">Complete Final Diagnosis</label>
-                                            <input type="text" class="form-control" id="complete_final" name="final_diagnose" id="" value="">
-                                        </div>
-                                        <div class="col-md-12"><hr>
-
-                                            <label for="Disposition">Disposition:</label><br>
-                                            <div class="col-md-3 col-md-offset-1">
-                                                <input type="radio" id="discharged" name="disposition1" value="discharged" onclick="togglePlaceInput()"> Discharged <br>
-                                                <input type="radio" id="refused_admiss1" name="disposition1" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="radio" id="HAMA1" name="disposition1" value="HAMA" onclick="togglePlaceInput()"> HAMA <br>
-                                                <input type="radio" id="died2" name="disposition1" value="died" onclick="togglePlaceInput()"> Died
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="trans_facility_hos2" name="disposition1" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital <br>
-                                                <input type="text" class="form-control" id="trans_facility_hos_details2" name="trans_facility_hos_details2" value="" placeholder="Please specify">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="absconded1" name="disposition1" value="Absconded" onclick="togglePlaceInput()"> Absconded <br>
-                                                <input type="radio" id="disposition_others" name="disposition1" value="Others" onclick="togglePlaceInput()"> Others: 
-                                                <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="" placeholder="Others">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12"><hr>
-                                            <label for="Outcome">Outcome</label><br>
-                                            <div class="col-md-2 col-md-offset-1">
-                                                <input type="radio" id="Improved1" name="Outcome1" value="Improved"> Improved
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="radio" id="Unimproved1" name="Outcome1" value="Unimproved"> Unimproved
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="radio" id="died1" name="Outcome1" value="died"> Died
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
-                                        </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach                 
-                        <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
                             <button type="submit" class="btn btn-success mx-2">Submit</button>
                         </div>
-                  
-            </div>
+                    </div>
+                </div>
         </form>
     </div>
 </div>
