@@ -85,7 +85,6 @@ class PatientInjuryController extends Controller
                             });
                     });
                 }
-
                 $profiles = $query->simplePaginate(15);
              
             }else if($user->user_priv == 3){ //provincial

@@ -11,7 +11,7 @@
 
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
-
+ 
  $nature_injury = ResuNatureInjury::all();
  $body_part = ResuBodyParts::all(); 
  $ex_injury = ResuExternalInjury::all();
@@ -45,7 +45,6 @@
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
                                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">
                             </div>
-           
                             <div class="col-md-6">
                                 <label for="dru">Type of DRU</label>
                                 <input type="text" class="form-control" name="typedru" id="typedru" readonly value="{{ $facility->hospital_type}}">
@@ -881,12 +880,10 @@
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
                             <button type="submit" class="btn btn-success mx-2">Submit</button>
                         </div>
-                  
             </div>
         </form>
     </div>
 </div>
-
 <script>
 
  var baseUrl = "{{ url('sublist-patient') }}";

@@ -122,7 +122,6 @@ class UsersCtrl extends Controller
                             'username' => 'required|string|max:255|unique:users,username,' . $id,
                         ]);
                     }
-
                     if ($key === 'password') {
                         $user->password = bcrypt($value); 
                     } else {

@@ -12,15 +12,7 @@
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
 
-//  $nature_injury = ResuNatureInjury::all();
-//  $body_part = ResuBodyParts::all(); 
-//  $ex_injury = ResuExternalInjury::all();
-//  $rtacident = ResuTransportAccident::all();
-
-//  $hospital_type = ResuHospitalFacility::all();
-
  $muncities = Muncity::select('id', 'description')->get();
-
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
      return $percent >= 80; // You can adjust the threshold as needed
@@ -34,6 +26,7 @@
             <p style="font-size: 15pt; font-style: italic; text-align: center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adults > 20 years old</p>
         </h2>
         <div class="page-divider"></div>
+        <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}"> -->
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
@@ -46,11 +39,24 @@
                                 <label for="facility-name">Name of Health Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
                                 <input type="hidden" name="facility_id" value="{{ $facility->id }}">
-                            </div> 
-                            <div class="col-md-6">
-                                <label for="address-facility">Date of Assessment</label>
-                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}">
-                            </div><br><br>
+                             </div> 
+                                 @php
+                                    use Carbon\Carbon;
+                                @endphp
+                                <!-- <label for="address-facility">Date of Assessment</label>
+                                <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}"> -->
+                                    <div class="col-md-6">
+                                        <label for="date-of-assessment">Date of Assessment</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            name="date_of_assessment" 
+                                            id="date-of-assessment" 
+                                            readonly 
+                                           value="{{ Carbon::now()->format('F d, Y') }}"
+                                        >
+                                    </div>
+                            <br><br>
                             <br><br><br>
                         </div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">I. PATIENT'S INFORMATION</h4>
@@ -140,185 +146,146 @@
                                     <label for="employment_status" class="ml-2">Self-Employed</label>
                                     <br>
                                     <!-- Employment status -->
-
-                                    <!-- <div class="col-md-5">
-                                    <label for="ethnicity">Ethnicity:</label>
-                                    <select class="form-control" name="ethnicity" id="ethnicity">
-                                        <option value="">Select an Option</option>
-                                        <option value="asian">Asian</option>
-                                        <option value="black">Black or African American</option>
-                                        <option value="hispanic">Hispanic or Latino</option>
-                                        <option value="white">White</option>
-                                        <option value="native">Native American or Alaska Native</option>
-                                        <option value="pacific">Native Hawaiian or Pacific Islander</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div> -->
+                                            <!-- <div class="col-md-5">
+                                            <label for="ethnicity">Ethnicity:</label>
+                                            <select class="form-control" name="ethnicity" id="ethnicity">
+                                                <option value="">Select an Option</option>
+                                                <option value="asian">Asian</option>
+                                                <option value="black">Black or African American</option>
+                                                <option value="hispanic">Hispanic or Latino</option>
+                                                <option value="white">White</option>
+                                                <option value="native">Native American or Alaska Native</option>
+                                                <option value="pacific">Native Hawaiian or Pacific Islander</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                    </div> -->
                             </div>
                         </div>
                         <br>
                     </div>
                     <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
+                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
+                            <p style="font-style: italic; font-size: 15px;">
+                                If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
+                            </p>
+                            <button type="button" class="btn btn-sm btn-primary" style="margin-left: 700px;" onclick="checkAllNo()">Check All No</button>
                         </div>
+                        <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
+                        <br>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
                                 <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <!-- <th>Description</th>
-                                    <th>Option (Yes / No)</th>
-                                    <th>Details</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
+                            <tbody>                                                                       
                                    <tr>
                                         <td>2.1 Chest Pain</td>
                                         <td>
-                                            <input type="checkbox" class="chestPainCheckbox" id="chestPainYes" value="Yes"> Yes
-                                            <input type="checkbox" class="chestPainCheckbox" id="chestPainNo" value="No" style="margin-left: 15px;"> No
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control chestPainDetails" id="chestPainDetails" 
-                                             placeholder="By whom:" disable>
+                                            <input type="checkbox" class="healthCheckbox" id="chestPainYes" value="Yes"> Yes
+                                            <input type="checkbox" class="healthCheckbox" id="chestPainNo" value="No"> No
                                         </td>
                                     </tr>
                                 <tr>
                                     <td>2.2 Difficulty of Breathing</td>
                                     <td>
-                                        <input type="checkbox" class="difficultBreathCheckbox" id="dfbYes" value="Yes"> Yes
-                                        <input type="checkbox" class="difficultBreathCheckbox" id="dfbNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control dfbDetails" id="dfbDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="dfbYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="dfbNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.3 Loss of Consciousness</td>
                                     <td>
-                                        <input type="checkbox" class="lossConCheckbox" id="lossConYes" value="Yes"> Yes
-                                        <input type="checkbox" class="lossConCheckbox" id="lossConNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control lossConDetails" id="lossConDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="lossConYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="lossConNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.4 Slurred Speech</td>
                                     <td>
-                                        <input type="checkbox" class="slurredCheckbox" id="slurredYes" value="Yes"> Yes
-                                        <input type="checkbox" class="slurresCheckbox" id="slurredNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control slurredDetails" id="slurredDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="slurredYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="slurredNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.5 Facial Asymmetry</td>
                                     <td>
-                                        <input type="checkbox" class="facialCheckbox" id="facialYes" value="Yes"> Yes
-                                        <input type="checkbox" class="facialCheckbox" id="facialNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control facialDetails" id="druByWh" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="facialYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="facialNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                 <td>2.6 Weakness/Numbness on arm <br> of the left on one side of the body</td>
                                     <td>
-                                        <input type="checkbox" class="weaknumbCheckbox" id="weaknumbYes" value="Yes"> Yes
-                                        <input type="checkbox" class="weaknumbCheckbox" id="weaknumbNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control weaknumbDetails" id="weaknumbDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.7 Disoriented as to time, <br> place and person</td>
                                     <td>
-                                        <input type="checkbox" class="disCheckbox" id="disYes" value="Yes"> Yes
-                                        <input type="checkbox" class="disCheckbox" id="disNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control disDetails" id="disDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="disYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="disNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.8 Chest Retractions</td>
                                     <td>
-                                        <input type="checkbox" class="chestRetracCheckbox" id="chestRetractYes" value="Yes"> Yes
-                                        <input type="checkbox" class="chestRetracCheckbox" id="chestRetractNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control chestRetractDetails" id="chestRetractDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.9 Seizure or Convulsion</td>
                                     <td>
-                                        <input type="checkbox" class="seizureCheckbox" id="seizureYes" value="Yes"> Yes
-                                        <input type="checkbox" class="seizureCheckbox" id="seizuredNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control seizureDetails" id="seizureDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="seizureYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="seizuredNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.10 Act of self-harm or suicide</td>
                                     <td>
-                                        <input type="checkbox" class="selfharmCheckbox" id="selfharmYes" value="Yes"> Yes
-                                        <input type="checkbox" class="selfharmCheckbox" id="selfharmNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control selfharmDetails" id="selfharmDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="selfharmYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="selfharmNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.11 Agitated and/or aggressive behavior</td>
                                     <td>
-                                        <input type="checkbox" class="agitatedCheckbox" id="agitatedYes" value="Yes"> Yes
-                                        <input type="checkbox" class="agitatedCheckbox" id="agitatedNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control agitatedDetails" id="agitatedDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.12 Eye Injury/ Foreign Body on the eye</td>
                                     <td>
-                                        <input type="checkbox" class="eyeInjuryCheckbox" id="eyeInjuryYes" value="Yes"> Yes
-                                        <input type="checkbox" class="eyeInjuryheckbox" id="eyeInjuryNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control eyeInjuryDetails" id="eyeInjuryDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo" value="No" style="margin-left: flex"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.13 Severe Injuries</td>
                                     <td>
-                                        <input type="checkbox" class="severeCheckbox" id="severeYes" value="Yes"> Yes
-                                        <input type="checkbox" class="severeCheckbox" id="severeNo" value="No" style="margin-left: flex"> No
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control severeDetails" id="severeDetails" name="druByWhom" 
-                                            placeholder="By whom:" style="display: none;">
+                                        <input type="checkbox" class="healthCheckbox" id="severeYes" value="Yes"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="severeNo" value="No" style="margin-left: flex"> No
                                     </td>
                                     </tr>
                             </tbody>
-                        </table>
+                         </table>
                     </div>
+                </div>
+                <div class="additional-inputs">
+                        <div class="col-md-3">
+                            <label for="physicianName">Physician Name:</label>
+                            <input type="text" class="form-control" id="physicianName" placeholder="Enter physician name">
+                        </div>
+                        <div class="col-md-3" style="right: -10%">
+                            <label for="reason">Reason:</label>
+                            <input type="text" class="form-control" id="reason" placeholder="Enter reason">
+                        </div>
+                        <div class="col-md-3" style="right: -20%">
+                            <label for="facility">What Facility:</label>
+                            <input type="text" class="form-control" id="facility" placeholder="Enter facility"> 
+                            <!-- Dropdown Menu -->
+                        </div>
                 </div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
@@ -349,7 +316,7 @@
                                         <td>3.1 Hypertension</td>
                                         <td>
                                             <input type="checkbox" class="hypertensionCheckbox" id="hypertensionYes" value="Yes"> Yes
-                                            <input type="checkbox" class="hypertensionCheckbox" id="hypertensionNo" value="No" style="margin-left: 15px;"> No
+                                            <input type="checkbox" class="hypertensionCheckbox" id="hypertensionNo" value="No"> No
                                         </td>
                                     </tr>
                                 <tr>
@@ -460,7 +427,7 @@
                                         <td>4.1 Hypertension</td>
                                         <td>
                                             <input type="checkbox" class="hyperCheckbox" id="hyperYes" value="Yes"> Yes
-                                            <input type="checkbox" class="hyperCheckbox" id="hyperNo" value="No" style="margin-left: 15px;"> No
+                                            <input type="checkbox" class="hyperCheckbox" id="hyperNo" value="No"> No
                                         </td>
                                        
                                     </tr>
@@ -534,7 +501,6 @@
                                         <input type="checkbox" class="mnsadCheckbox" id="mnsadYes" value="Yes"> Yes
                                         <input type="checkbox" class="mnsadCheckbox" id="mnsadNo" value="No" style="margin-left: flex"> No
                                     </td>
-                                    
                                 </tr>
                                 <tr>
                                     <td>4.11 COPD</td>
@@ -579,20 +545,27 @@
                                             <input type="checkbox" class="q1Checkbox" id="q1" value="Yes"> Q1 Never Used (proceed to Q2) <br>
                                             <input type="checkbox" class="q2Checkbox" id="q2" value="Yes"> Q2 Exposure to secondhand smoke <br>
                                             <input type="checkbox" class="q3Checkbox" id="q3" value="Yes"> Q3 Former tobacco user (stopped smoking > 1 year) <br>
-                                            <input type="checkbox" class="q4Checkbox" id="q4" value="Yes"> Q4 Current tobacco user (currently smoking or stopped smoking)
+                                            <input type="checkbox" class="q4Checkbox" id="q4" value="Yes"> Q4 Current tobacco user (currently smoking or stopped smoking) <br> <br>
+                                            
+                                            <p style="font-style: italic; font-size: 15px;">
+                                                If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
+                                            </p>
                                         </td>
                                        
                                     </tr>
                                 <tr>
                                     <td>5.2 Alcohol Intake</td>
                                     <td>
-                                         <input type="checkbox" class= "alcoholq1Checkbox" id="alcoholq1Never" value="No"> Q1 Never Consumed 
+                                         <input type="checkbox" class= "alcoholq1Checkbox" id="alcoholq1Never" value="No"> Never Consumed 
                                          <input type="checkbox" class="alcoholq1Checkbox" id="alcoholq1Yes" value="Yes"> Yes, drinks alcohol
                                         <br><br><br><br>
-                                        Q2. Do you drink 5 or more standards drinks for men, and 4 or more for women (in one sitting/occasion) in the past year? <br><br>
-                                         <input type="checkbox" class= "alcoholq2Checkbox" id="alcoholq1Yes" value="Yes"> Never Consumed 
-                                         <input type="checkbox" class="alcoholq2Checkbox" id="alcoholq2No" value="No"> Yes, drinks alcohol
-                                         <br>
+                                        <input type="checkbox" class="alcoholq1Checkbox" id="alcoholq1Yes" value="Yes"> Do you drink 5 or more standards drinks for men, and 4 or more for women (in one sitting/occasion) in the past year? <br><br>
+                                        <br>
+                                            <p style="font-style: italic; font-size: 15px;">
+                                                If NO, congratulate the patient. The patient is at a lower risk of drinking alcohol.
+                                                If YES, proceed using AUDIT SCREENING TOOL (Form 2) to assess alcohol consumption and alcohol problems.
+                                                If binge drinker, provide brief advice and/or extended brief advice. The patient is on the higher risk category level of drinking or in harmful use of alcohol.
+                                            </p>
                                          <br>
                                     </td>
                                    
@@ -605,6 +578,11 @@
                                         <input type="checkbox" class="physicalCheckbox" id="physicalYes" value="Yes"> Yes
                                         <input type="checkbox" class="physicalCheckbox" id="physicalNo" value="No" style="margin-left: flex"> No
                                         <br>
+
+                                        <br>
+                                            <p style="font-style: italic; font-size: 15px;">
+                                            If NO or patient does not reach the recommended hours/week of moderate-intensity physical activity, give lifestyle modification advice following Annex 1. Healthy Lifestyle Module.
+                                         <br>
                                     </td>
                                 </tr>
                                 <tr>
@@ -614,6 +592,10 @@
                                         "ihaw-ihaw/fried" (e.g isaw, barbecue, liver, chicken skin)and high sugar food and drinks (e.g chocolates, cakes, pastries, softdrinks) weekly? <br><br><br>
                                         <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietYes" value="Yes"> Yes
                                         <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo" value="No" style="margin-left: flex"> No
+                                        <br><br><br>
+                                            <p style="font-style: italic; font-size: 15px;">
+                                            If YES to the question, give lifestyle modification advice following Annex 2. Nutrition Practice Guidelines for Health Professionals in the Primary Care Screening.
+                                         <br>
                                     </td>
                                     
                                 </tr>
@@ -933,7 +915,6 @@
 </div>
 
 <script>
-
  var baseUrl = "{{ url('sublist-patient') }}";
     function toggleCheckbox(checkbox) 
             { //BEHAVIOR SET-UP FOR CHECKBOX
@@ -970,87 +951,38 @@
         });
    }
 
-   // Chest Pain Checkbox Logic
-   const chestPainYes = document.getElementById('chestPainYes');
-    const chestPainNo = document.getElementById('chestPainNo');
-    const chestPainDetails = document.getElementById('chestPainDetails');
+   // Get all checkboxes with class 'healthCheckbox'
+   document.addEventListener('DOMContentLoaded', () => {
+        // Hide additional inputs on page load
+        const additionalInputs = document.querySelector('.additional-inputs');
+        additionalInputs.style.display = 'none';
 
-    chestPainYes.addEventListener('change', function () {
-        if (this.checked) {
-            chestPainDetails.disabled = false; // Enable the text box
-            chestPainNo.checked = false; // Uncheck 'No' checkbox
-        } else {
-            chestPainDetails.disabled = true; // Disable the text box
-        }
+        // Get all checkboxes with class 'healthCheckbox'
+        const healthCheckboxes = document.querySelectorAll('.healthCheckbox');
+
+        // Add an event listener to each checkbox
+        healthCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                // Check if any "Yes" checkbox is checked
+                const anyChecked = Array.from(healthCheckboxes).some(cb => cb.checked && cb.id.endsWith('Yes'));
+                // Show or hide additional inputs based on checkbox status
+                additionalInputs.style.display = anyChecked ? 'block' : 'none';
+            });
+        });
     });
+    function checkAllNo() {
+        const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
+        const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
 
-    chestPainNo.addEventListener('change', function () {
-        if (this.checked) {
-            chestPainDetails.disabled = true; // Disable the text box
-            chestPainYes.checked = false; // Uncheck 'Yes' checkbox
-        }
-    });
+        // Check or uncheck all "No" checkboxes based on current state
+        noCheckboxes.forEach(checkbox => {
+            checkbox.checked = !allChecked; // Toggle the checkbox state
+        });
 
-    // Difficulty of Breathing Checkbox Logic
-    const breathingYes = document.getElementById('breathingYes');
-    const breathingNo = document.getElementById('breathingNo');
-    const breathingDetails = document.getElementById('breathingDetails');
-
-    breathingYes.addEventListener('change', function () {
-        if (this.checked) {
-            breathingDetails.disabled = false; // Enable the text box
-            breathingNo.checked = false; // Uncheck 'No' checkbox
-        } else {
-            breathingDetails.disabled = true; // Disable the text box
-        }
-    });
-
-    breathingNo.addEventListener('change', function () {
-        if (this.checked) {
-            breathingDetails.disabled = true; // Disable the text box
-            breathingYes.checked = false; // Uncheck 'Yes' checkbox
-        }
-    });
-
-//    function validateAndNextStep() {
-//     // Get all the required input fields
-//     const requiredFields = [
-//         { id: 'hospital_no', name: 'Hospital Case No' },
-//         { id: 'fname', name: 'First Name' },
-//         { id: 'lname', name: 'Last Name' },
-//         { id: 'mname', name: 'Middle Name' },
-      
-//     ];
-
-//     let allFieldsValid = true;
-//     requiredFields.forEach(field => {
-//         const inputElement = document.getElementById(field.id);
-//         const value = inputElement.value.trim(); // Trim to remove extra spaces
-//         if (value === '') {
-//             allFieldsValid = false; // Set flag to false if any field is empty
-//             inputElement.style.borderColor = 'red'; // Highlight empty field in red
-//         } else {
-//             inputElement.style.borderColor = ''; // Reset border if filled
-//         }
-//     });   
-
-//         if (!allFieldsValid) {
-//             // Alert user if any field is empty
-//             alert('Please fill out all required fields.');
-//             return;
-//         }        
-//         // If all fields are filled, proceed to the next step
-//         document.getElementById('form-step-1').style.display = 'none'; 
-//         document.getElementById('form-step-2').style.display = 'block';
-//     }
-
-//         document.getElementById('form-submit').addEventListener('submit', function (e) {
-//             // Check if the form is valid
-//             if (!this.checkValidity()) {
-//                 e.preventDefault(); 
-//                 this.reportValidity();
-//             }
-//         });
+        // Hide additional inputs as "No" is selected
+        const additionalInputs = document.querySelector('.additional-inputs');
+        additionalInputs.style.display = 'none';
+    }
 
 </script>
 @endsection
@@ -1179,5 +1111,10 @@
         25% { transform: translateX(-5px); }
         75% { transform: translateX(5px); }
     }
+
+    .additional-inputs {
+            display: none; /* Initially hide the inputs */
+            margin-top: 15px;
+        }
 
 </style>
