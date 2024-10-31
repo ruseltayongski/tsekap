@@ -169,8 +169,6 @@
                     </ul>
                 </li>
             @endif
-                
-
                 <li class="dropdown">
                     <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a> -->
                     <ul class="dropdown-menu">
@@ -209,7 +207,6 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-
 <div class="container-fluid">
     <div class="loading"></div>
     @yield('content')
@@ -224,7 +221,8 @@
 
     </div>
 </footer>
-@include('modal')
+
+<!-- @include('modal') -->
 
         <!-- Bootstrap core JavaScript
     ================================================== -->

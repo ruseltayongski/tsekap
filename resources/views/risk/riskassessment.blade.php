@@ -1,6 +1,7 @@
 @extends('resu/app1')
 @section('content')
 <!-- @include('resu/resuSidebar') -->
+
 <?php
  use App\ResuNatureInjury;
  use App\ResuBodyParts;
@@ -17,13 +18,14 @@
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
      return $percent >= 80; // You can adjust the threshold as needed
  }
+
 ?>
     <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; padding-bottom: 5%">
        <div class="alert alert-jim">
         <h2 class="page-header"  style="text-align: center">
             <i class="fa fa-user"></i>&nbsp; PHILPEN RISK ASSESSMENT FORM (REVISED 2022)
             <br>
-            <p style="font-size: 15pt; font-style: italic; text-align: center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adults > 20 years old</p>
+            <p style="font-size: 15pt; font-style: italic; text-align: center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adults > 20 years old</p>
         </h2>
         <div class="page-divider"></div>
         <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}"> -->
@@ -47,8 +49,7 @@
                                 <input type="text" class="form-control" name="addressfacility" id="addressfacility" readonly value="{{$facility->address}}"> -->
                                     <div class="col-md-6">
                                         <label for="date-of-assessment">Date of Assessment</label>
-                                        <input 
-                                            type="text" 
+                                        <input type="text" 
                                             class="form-control" 
                                             name="date_of_assessment" 
                                             id="date-of-assessment" 
@@ -146,7 +147,7 @@
                                     <label for="employment_status" class="ml-2">Self-Employed</label>
                                     <br>
                                     <!-- Employment status -->
-                                            <!-- <div class="col-md-5">
+                                    <!-- <div class="col-md-5">
                                             <label for="ethnicity">Ethnicity:</label>
                                             <select class="form-control" name="ethnicity" id="ethnicity">
                                                 <option value="">Select an Option</option>
@@ -174,9 +175,9 @@
                         <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
                         <br>
                     </div>
-                    <div class="col-md-12" style="display: flex; align-items: center;">
-                                <table class="table table-bordered">
-                            <tbody>                                                                       
+                    <div class="col-md-12" style="display: flex; align-items: center; ">
+                                <table class="table table-bordered" >
+                            <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">                                                                       
                                    <tr>
                                         <td>2.1 Chest Pain</td>
                                         <td>
@@ -311,7 +312,7 @@
                                     <th>Details</th> -->
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
                                    <tr>
                                         <td>3.1 Hypertension</td>
                                         <td>
@@ -422,7 +423,7 @@
                                     <th>Details</th> -->
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
                                    <tr>
                                         <td>4.1 Hypertension</td>
                                         <td>
@@ -538,7 +539,7 @@
                                     <th>Details</th> -->
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
                                    <tr>
                                         <td>5.1 Tobacco Use</td>
                                         <td>
@@ -915,41 +916,41 @@
 </div>
 
 <script>
- var baseUrl = "{{ url('sublist-patient') }}";
-    function toggleCheckbox(checkbox) 
-            { //BEHAVIOR SET-UP FOR CHECKBOX
-                var checkboxes = document.querySelectorAll('input[name="fracttype"]');
-                    if (checkbox.checked) {
-                            checkboxes.forEach(function(cb) {
-                            if (cb !== checkbox) {
-                            cb.checked = false;
-                            }
-                        });
-                    }
-            }
-   function togglePlaceInput() {
-        const inputs = [
-            { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },
-            { radio: document.getElementById('place_others'), input: document.getElementById('place_other_details') },
-            { radio: document.getElementById('activity_others'), input: document.getElementById('activity_Patient_other') },
-            { radio: document.getElementById('position_others'), input: document.getElementById('position_patient_details') },
-            { radio: document.getElementById('patient_others'), input: document.getElementById('patient_vehicle_others') },
-            { radio: document.getElementById('risk_others'), input: document.getElementById('risk_others_details') },
-            { radio: document.getElementById('objectothers'), input: document.getElementById('other_collision_details') },
-            { radio: document.getElementById('ModeOthers'), input: document.getElementById('mode_others_details') },
-            { radio: document.getElementById('trans_facility_hos'), input: document.getElementById('trans_facility_hos_details') },
-            { radio: document.getElementById('trans_facility_hos2'), input: document.getElementById('trans_facility_hos_details2') },
-            { radio: document.getElementById('disposition_others'), input: document.getElementById('disposition_others_details') },
-        ];
+//  var baseUrl = "{{ url('sublist-patient') }}";
+//     function toggleCheckbox(checkbox) 
+//             { //BEHAVIOR SET-UP FOR CHECKBOX
+//                 var checkboxes = document.querySelectorAll('input[name="fracttype"]');
+//                     if (checkbox.checked) {
+//                             checkboxes.forEach(function(cb) {
+//                             if (cb !== checkbox) {
+//                             cb.checked = false;
+//                             }
+//                         });
+//                     }
+//             }
+//    function togglePlaceInput() {
+//         const inputs = [
+//             { radio: document.getElementById('place_workplace'), input: document.getElementById('workplace_occurence_details') },
+//             { radio: document.getElementById('place_others'), input: document.getElementById('place_other_details') },
+//             { radio: document.getElementById('activity_others'), input: document.getElementById('activity_Patient_other') },
+//             { radio: document.getElementById('position_others'), input: document.getElementById('position_patient_details') },
+//             { radio: document.getElementById('patient_others'), input: document.getElementById('patient_vehicle_others') },
+//             { radio: document.getElementById('risk_others'), input: document.getElementById('risk_others_details') },
+//             { radio: document.getElementById('objectothers'), input: document.getElementById('other_collision_details') },
+//             { radio: document.getElementById('ModeOthers'), input: document.getElementById('mode_others_details') },
+//             { radio: document.getElementById('trans_facility_hos'), input: document.getElementById('trans_facility_hos_details') },
+//             { radio: document.getElementById('trans_facility_hos2'), input: document.getElementById('trans_facility_hos_details2') },
+//             { radio: document.getElementById('disposition_others'), input: document.getElementById('disposition_others_details') },
+//         ];
 
-        inputs.forEach(item => {
-            if (item.radio.checked) {
-                item.input.classList.remove('hidden');
-            } else {
-                item.input.classList.add('hidden');
-            }
-        });
-   }
+//         inputs.forEach(item => {
+//             if (item.radio.checked) {
+//                 item.input.classList.remove('hidden');
+//             } else {
+//                 item.input.classList.add('hidden');
+//             }
+//         });
+//    }
 
    // Get all checkboxes with class 'healthCheckbox'
    document.addEventListener('DOMContentLoaded', () => {
@@ -986,7 +987,10 @@
 
 </script>
 @endsection
-@include('resu.manage_patient_injury.checkProfile')
+
+@include('risk.risk_check_profile.riskCheckProfile')
+
+
 <style>
     .json-display-style {
         background-color: black;

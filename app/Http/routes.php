@@ -405,6 +405,7 @@ Route::post('/delete-body-parts', 'resu\InjuryController@deleteBodyPart')->name(
 
 //check profile resu client
 Route::get('get/checkprofiles', 'resu\ClientVerifyController@CheckClients')->name('get.checkprofiles');
+
 //get municipal && province
 Route::get('sublist-patient/get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('sublist-patient/get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
@@ -452,3 +453,6 @@ Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('
 Route::get('/RiskAssessment', function () {
     return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
 })->name('riskassessment');
+
+//risk get profile verification
+Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');

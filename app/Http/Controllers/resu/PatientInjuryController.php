@@ -31,7 +31,7 @@ class PatientInjuryController extends Controller
      
         $keyword = $request->input('keyword');
      
-        $query =ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
+        $query = ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
         // $query =Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')   
         ->with([
                 'facility' => function($query){

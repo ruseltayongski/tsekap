@@ -691,6 +691,15 @@ $(document).ready(function () {
   var checkmodal = $("#checkProfiles").modal("show");
   console.log("modal", checkmodal);
 
+  $("#riskCheckProfile").modal({
+    backdrop: "static",
+    keyboard: false,
+  });
+
+  var riskcheckmodal = $("#riskCheckProfile").modal("show");
+  console.log("modal", riskcheckmodal);
+
+
   // $("#checkProfiles").modal({ backdrop: "static", keyboard: false });
   // $.validator.setDefaults({
   //   errorElement: "span",
@@ -788,6 +797,70 @@ $(document).ready(function () {
     });
   }
 
+  function fetchRiskProfiles(data) {
+    $(".loading").show();
+
+    $.ajax({     //check profiles
+      url: "get/riskCheckProfile",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: data,
+      success: function (record) {
+        let content = "";
+        if (record.length > 0) {
+          content +=
+            '<table class="table table-hover table-striped">' +
+            "<thead>" +
+            "<tr>" +
+            "<th>First Name</th>" +
+            "<th>Middle Name</th>" +
+            "<th>Last Name</th>" +
+            "<th>Date of Birth</th>" +
+            // "<th>Update</th>" +
+            "</tr></thead>" +
+            "<tbody>";
+          jQuery.each(record, function (i, val) {
+            content +=
+              "<tr>" +
+              "<td>" +
+              val.fname +
+              "</td>" +
+              "<td>" +
+              (val.mname || "") +
+              "</td>" + // Handle null values
+              "<td>" +
+              val.lname +
+              "</td>" +
+              "<td>" +
+              val.dob 
+            //   "</td>" +
+            //  `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+            //   "</tr>";
+          });
+
+          content += "</tbody></table>";
+          $("#riskCheckProfile").find(".modal-body").html(content);
+        } else {
+          alert("No matching profiles found.");
+          console.log("where is my data", data);
+          $("#fname").val(data.fname);
+          $("#mname").val(data.mname);
+          $("#lname").val(data.lname);
+          $("#dateofbirth").val(data.dob);
+          $("#checkProfiles").modal("hide");
+        }
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profiles.");
+      },
+    });
+  }
+
+
   // Event listener for the 'Check' button
   $(".btn-checkProfiles").on("click", function () {
     const data = {
@@ -798,6 +871,16 @@ $(document).ready(function () {
     };
 
     fetchProfiles(data);
+  });
+
+  $(".btn-riskCheckProfiles").on("click", function () {
+    const data = {
+      fname: $(".fname").val(),
+      mname: $(".mname").val(),
+      lname: $(".lname").val(),
+      dob: $(".dob").val(),
+    };
+    fetchRiskProfiles(data);
   });
 
   // $(".btn-checkProfiles").on("click", function () {

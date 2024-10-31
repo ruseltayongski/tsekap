@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\resu;
-
+namespace App\Http\Controllers\risk;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\ResuProfileInjury;
 use App\Profile;
 
-class ClientVerifyController extends Controller
+class RiskClientVerificationController extends Controller
 {
     //
-    public function CheckClients(Request $req){
+    public function riskCheckClient(Request $req){
         $fname = $req->input('fname');
         $lname = $req->input('lname');
         $mname = $req->input('mname');
