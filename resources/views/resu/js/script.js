@@ -691,13 +691,13 @@ $(document).ready(function () {
   var checkmodal = $("#checkProfiles").modal("show");
   console.log("modal", checkmodal);
 
-  $("#riskCheckProfile").modal({
-    backdrop: "static",
-    keyboard: false,
-  });
+  // $("#riskCheckProfile").modal({
+  //   backdrop: "static",
+  //   keyboard: false,
+  // });
 
-  var riskcheckmodal = $("#riskCheckProfile").modal("show");
-  console.log("modal", riskcheckmodal);
+  // var riskcheckmodal = $("#riskCheckProfileModal").modal("show");
+  // console.log("modal", riskcheckmodal);
 
 
   // $("#checkProfiles").modal({ backdrop: "static", keyboard: false });
@@ -797,6 +797,7 @@ $(document).ready(function () {
     });
   }
 
+
   function fetchRiskProfiles(data) {
     $(".loading").show();
 
@@ -818,30 +819,22 @@ $(document).ready(function () {
             "<th>Middle Name</th>" +
             "<th>Last Name</th>" +
             "<th>Date of Birth</th>" +
-            // "<th>Update</th>" +
+            "<th>Action</th>" +
             "</tr></thead>" +
             "<tbody>";
           jQuery.each(record, function (i, val) {
             content +=
               "<tr>" +
-              "<td>" +
-              val.fname +
-              "</td>" +
-              "<td>" +
-              (val.mname || "") +
-              "</td>" + // Handle null values
-              "<td>" +
-              val.lname +
-              "</td>" +
-              "<td>" +
-              val.dob 
-            //   "</td>" +
-            //  `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
-            //   "</tr>";
+              "<td>" + val.fname + "</td>" +
+              "<td>" + (val.mname || "") + "</td>" + // Handle null values
+              "<td>" + val.lname + "</td>" +
+              "<td>" + val.dob + "</td>" +
+              `<td><a class="btn btn-xs btn-success risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+              "</tr>";
           });
 
           content += "</tbody></table>";
-          $("#riskCheckProfile").find(".modal-body").html(content);
+          $("#riskCheckProfileModal").find(".modal-body").html(content);
         } else {
           alert("No matching profiles found.");
           console.log("where is my data", data);
@@ -849,7 +842,7 @@ $(document).ready(function () {
           $("#mname").val(data.mname);
           $("#lname").val(data.lname);
           $("#dateofbirth").val(data.dob);
-          $("#checkProfiles").modal("hide");
+          $("#riskCheckProfiles").hide();
         }
         $(".loading").hide(); // Hide loading indicator
       },
@@ -860,6 +853,34 @@ $(document).ready(function () {
     });
   }
 
+  function fetchSpecificProfile(id) {
+    $(".loading").show();
+
+    $.ajax({     //check profiles
+      url: "get/riskGetSpecificProfile",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: {id: id},
+      success: function (record) {
+        console.log(record);
+        $('#lname').val(record.lname || '');  // Set last name
+        $('#fname').val(record.fname || '');  // Set first name
+        $('#mname').val(record.mname || '');  // Set middle name
+        $('#suffix').val(record.suffix || '').trigger("chosen:updated");
+        $('#dateofbirth').val(record.dob || '').trigger("change");
+        $('#sex').val(record.sex || '').trigger("chosen:updated");
+
+        $("#riskCheckProfileModal").modal("hide");
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profile.");
+      },
+    });
+  }
 
   // Event listener for the 'Check' button
   $(".btn-checkProfiles").on("click", function () {
@@ -874,6 +895,7 @@ $(document).ready(function () {
   });
 
   $(".btn-riskCheckProfiles").on("click", function () {
+    $("#riskCheckProfileModal").modal("show");
     const data = {
       fname: $(".fname").val(),
       mname: $(".mname").val(),
@@ -883,6 +905,14 @@ $(document).ready(function () {
     fetchRiskProfiles(data);
   });
 
+  $(document).on('click', '.risk-update-profile', function() {
+    // Get the ID from the data-id attribute
+    var id = $(this).data('id');
+    // Log the ID to the console
+    console.log("The ID is:", id);
+
+    fetchSpecificProfile(id)
+  });
   // $(".btn-checkProfiles").on("click", function () {
   //   $(".loading").show();
   //   var content = "";

@@ -1,6 +1,7 @@
 @extends('resu/app1')
 @section('content')
-<!-- @include('resu/resuSidebar') -->
+@include('risk/riskSidebar')
+@include('risk.risk_check_profile.riskCheckProfile');
 
 <?php
  use App\ResuNatureInjury;
@@ -9,6 +10,14 @@
  use App\ResuTransportAccident;
  use App\ResuHospitalFacility;
  use App\Muncity;
+ use App\Facility;
+ use App\Province;
+ 
+ $user = Auth::user();
+ 
+ $facility = Facility::select('id','name','address','hospital_type')
+ ->where('id', $user->facility_id)    
+ ->get();
 
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
@@ -20,7 +29,7 @@
  }
 
 ?>
-    <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; padding-bottom: 5%">
+    <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding-bottom: 5%">
        <div class="alert alert-jim">
         <h2 class="page-header"  style="text-align: center">
             <i class="fa fa-user"></i>&nbsp; PHILPEN RISK ASSESSMENT FORM (REVISED 2022)
@@ -39,8 +48,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Health Facility</label>
-                                <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ $facility->name }}">
-                                <input type="hidden" name="facility_id" value="{{ $facility->id }}">
+                                <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}">
                              </div> 
                                  @php
                                     use Carbon\Carbon;
@@ -79,11 +87,24 @@
                                 <input type="text" class="form-control" name="mname" id="mname" value="">
                             </div>
                             <div class="col-md-2">
+                                <label for="suffix">Suffix</label>
+                                <select class="form-control chosen-select" name="suffix" id="suffix">
+                                    <option value="">Select suffix</option>
+                                    <option value="Jr">Jr</option>
+                                    <option value="Sr">Sr</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                    <option value="V">V</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
                                 <label for="sex">Sex</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -984,12 +1005,8 @@
         const additionalInputs = document.querySelector('.additional-inputs');
         additionalInputs.style.display = 'none';
     }
-
 </script>
 @endsection
-
-@include('risk.risk_check_profile.riskCheckProfile')
-
 
 <style>
     .json-display-style {
