@@ -540,13 +540,13 @@
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
-                                   <tr>
+                                   <tr>     
                                         <td>5.1 Tobacco Use</td>
                                         <td>
-                                            <input type="checkbox" class="q1Checkbox" id="q1" value="Yes"> Q1 Never Used (proceed to Q2) <br>
-                                            <input type="checkbox" class="q2Checkbox" id="q2" value="Yes"> Q2 Exposure to secondhand smoke <br>
-                                            <input type="checkbox" class="q3Checkbox" id="q3" value="Yes"> Q3 Former tobacco user (stopped smoking > 1 year) <br>
-                                            <input type="checkbox" class="q4Checkbox" id="q4" value="Yes"> Q4 Current tobacco user (currently smoking or stopped smoking) <br> <br>
+                                            <input type="checkbox" class="q1Checkbox" id="q1" value="Yes"> Never Used (proceed to Q2) <br>
+                                            <input type="checkbox" class="q2Checkbox" id="q2" value="Yes"> Exposure to secondhand smoke <br>
+                                            <input type="checkbox" class="q3Checkbox" id="q3" value="Yes"> Former tobacco user (stopped smoking > 1 year) <br>
+                                            <input type="checkbox" class="q4Checkbox" id="q4" value="Yes"> Current tobacco user (currently smoking or stopped smoking) <br> <br>
                                             
                                             <p style="font-style: italic; font-size: 15px;">
                                                 If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
@@ -589,7 +589,7 @@
                                 <tr>
                                     <td>5.4 Nutrition and Dietary Assessment </td>
                                     <td>
-                                        Q1 Does the patient eat high fat, high salt food,(processed/fast food such as instant <br> noodles, burgers, fries, dried fish),
+                                         Does the patient eat high fat, high salt food,(processed/fast food such as instant <br> noodles, burgers, fries, dried fish),
                                         "ihaw-ihaw/fried" (e.g isaw, barbecue, liver, chicken skin)and high sugar food and drinks (e.g chocolates, cakes, pastries, softdrinks) weekly? <br><br><br>
                                         <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietYes" value="Yes"> Yes
                                         <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo" value="No" style="margin-left: flex"> No
