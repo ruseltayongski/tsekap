@@ -170,7 +170,9 @@
                             <p style="font-style: italic; font-size: 15px;">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
-                            <button type="button" class="btn btn-sm btn-primary" style="margin-left: 700px;" onclick="checkAllNo()">Check All No</button>
+                            <div style="display: flex; justify-content: end">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
+                        </div>
                         </div>
                         <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
                         <br>
