@@ -191,7 +191,9 @@
                             <p style="font-style: italic; font-size: 15px;">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
-                            <button type="button" class="btn btn-sm btn-primary" style="margin-left: 700px;" onclick="checkAllNo()">Check All No</button>
+                        </div>
+                        <div style="display: flex; justify-content: end">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
                         </div>
                         <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
                         <br>
@@ -202,8 +204,8 @@
                                    <tr>
                                         <td>2.1 Chest Pain</td>
                                         <td>
-                                            <input type="checkbox" class="healthCheckbox" id="chestPainYes" value="Yes"> Yes
-                                            <input type="checkbox" class="healthCheckbox" id="chestPainNo" value="No"> No
+                                            <input type="checkbox" class="healthCheckbox" id="dfbYes" value="Yes" onclick="toggleCheckbox('dfbYes', 'dfbNo')"> Yes
+                                            <input type="checkbox" class="healthCheckbox" id="dfbNo" value="No" onclick="toggleCheckbox('dfbNo', 'dfbYes')"> No
                                         </td>
                                     </tr>
                                 <tr>
@@ -1004,6 +1006,11 @@
         // Hide additional inputs as "No" is selected
         const additionalInputs = document.querySelector('.additional-inputs');
         additionalInputs.style.display = 'none';
+    }
+
+    // Toggle Checkbox
+    function toggleCheckbox(currentId, otherId) {
+        document.getElementById(otherId).checked = false;
     }
 </script>
 @endsection
