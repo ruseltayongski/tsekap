@@ -4,11 +4,6 @@
 @include('risk.risk_check_profile.riskCheckProfile');
 
 <?php
- use App\ResuNatureInjury;
- use App\ResuBodyParts;
- use App\ResuExternalInjury;
- use App\ResuTransportAccident;
- use App\ResuHospitalFacility;
  use App\Muncity;
  use App\Facility;
  use App\Province;
@@ -21,12 +16,9 @@
 
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
+ $province = Province::select('id', 'description')->get();
 
  $muncities = Muncity::select('id', 'description')->get();
- function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
-     similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-     return $percent >= 80; // You can adjust the threshold as needed
- }
 
 ?>
     <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding-bottom: 5%">
@@ -86,8 +78,8 @@
                                 <label for="suffix">Suffix</label>
                                 <select class="form-control chosen-select" name="suffix" id="suffix">
                                     <option value="">Select suffix</option>
-                                    <option value="Jr">Jr</option>
-                                    <option value="Sr">Sr</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
                                     <option value="I">I</option>
                                     <option value="II">II</option>
                                     <option value="III">III</option>
@@ -105,15 +97,15 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date of Birth <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth">
+                                <input type="date" class="form-control" id="dateofbirth" name="dateofbirth">
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age <span class="text-danger"></span></label>
                                 <input type="text" class="form-control" id="age" name="age" value="" readonly>
                             </div>
                             <div class="col-md-3">
-                                <label for="cvStatus">Civil Status <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="cvStatus" id="cvStatus">
+                                <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
+                                <select class="form-control chosen-select" name="civil_status" id="civil_status">
                                     <option value="">Select status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
@@ -123,7 +115,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="contact" id="contact" value="">
+                                <input type="text" class="form-control" name="religion" id="religion" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>

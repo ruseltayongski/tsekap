@@ -829,7 +829,7 @@ $(document).ready(function () {
               "<td>" + (val.mname || "") + "</td>" + // Handle null values
               "<td>" + val.lname + "</td>" +
               "<td>" + val.dob + "</td>" +
-              `<td><a class="btn btn-xs btn-success risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+              `<td><a class="btn btn-xs btn-success btn-risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
               "</tr>";
           });
 
@@ -869,8 +869,22 @@ $(document).ready(function () {
         $('#fname').val(record.fname || '');  // Set first name
         $('#mname').val(record.mname || '');  // Set middle name
         $('#suffix').val(record.suffix || '').trigger("chosen:updated");
+        $('#contact').val(record.contact || '');
         $('#dateofbirth').val(record.dob || '').trigger("change");
         $('#sex').val(record.sex || '').trigger("chosen:updated");
+        $('#civil_status').val(record.civil_status || '').trigger("chosen:updated");
+        $('#religion').val(record.religion || '');
+        $('#height').val(record.height || '').trigger("change");
+        $('#weight').val(record.weight || '').trigger("change");
+        $('#phic_id').val(record.phicId || '');
+
+        setDropdownValue('#province', record.province_id || '', function() {
+          setDropdownValue('#municipal', record.muncity_id || '', function() {
+              setDropdownValue('#barangay', record.barangay_id || '', function() {
+                  console.log("All dropdowns set!");
+              });
+          });
+        })
 
         $("#riskCheckProfileModal").modal("hide");
         $(".loading").hide(); // Hide loading indicator
@@ -905,14 +919,20 @@ $(document).ready(function () {
     fetchRiskProfiles(data);
   });
 
-  $(document).on('click', '.risk-update-profile', function() {
-    // Get the ID from the data-id attribute
+  $(document).on('click', '.btn-risk-update-profile', function() {
     var id = $(this).data('id');
-    // Log the ID to the console
-    console.log("The ID is:", id);
+    console.log(id);
 
-    fetchSpecificProfile(id)
+    fetchSpecificProfile(id);
   });
+
+  // Helper function to set dropdown values with callbacks
+  function setDropdownValue(selector, value, callback) {
+    $(selector).val(value).trigger("chosen:updated").trigger("change");
+    // Add a delay before executing the callback
+    setTimeout(callback, 500); // Adjust delay if necessary
+}
+  
   // $(".btn-checkProfiles").on("click", function () {
   //   $(".loading").show();
   //   var content = "";
