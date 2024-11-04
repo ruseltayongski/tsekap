@@ -9,7 +9,7 @@
 // local
 $host = "localhost";
 $username = "root";
-$password = "123";
+$password = "unity";
 
 // dummy
 // $host = "192.168.110.50";
