@@ -4,11 +4,6 @@
 @include('risk.risk_check_profile.riskCheckProfile');
 
 <?php
- use App\ResuNatureInjury;
- use App\ResuBodyParts;
- use App\ResuExternalInjury;
- use App\ResuTransportAccident;
- use App\ResuHospitalFacility;
  use App\Muncity;
  use App\Facility;
  use App\Province;
@@ -21,12 +16,9 @@
 
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
+ $province = Province::select('id', 'description')->get();
 
  $muncities = Muncity::select('id', 'description')->get();
- function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
-     similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-     return $percent >= 80; // You can adjust the threshold as needed
- }
 
 ?>
     <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding-bottom: 5%">
@@ -66,32 +58,28 @@
                                         >
                                     </div>
                             <br><br>
-                            <br><br><br>
+                            <br><br>
                         </div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">I. PATIENT'S INFORMATION</h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;">I. PATIENT'S INFORMATION</h4>
                         <div class="row">
-                            <!-- <div class="col-md-3">
-                                <label for="hospital_no">Hospital Case No. <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
-                            </div> -->
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="fname">First Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="fname" id="fname" value="">
                             </div>
-                            <div class="col-md-2">
-                                <label for="mname">Middle Name <span class="text-danger">*</span></label>
+                            <div class="col-md-3">
+                                <label for="mname">Middle Name </label>
                                 <input type="text" class="form-control" name="mname" id="mname" value="">
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="suffix">Suffix</label>
                                 <select class="form-control chosen-select" name="suffix" id="suffix">
                                     <option value="">Select suffix</option>
-                                    <option value="Jr">Jr</option>
-                                    <option value="Sr">Sr</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
                                     <option value="I">I</option>
                                     <option value="II">II</option>
                                     <option value="III">III</option>
@@ -99,17 +87,25 @@
                                     <option value="V">V</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
-                                <label for="sex">Sex</label>
+                            <div class="col-md-3">
+                                <label for="sex">Sex <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
-                                <label for="cvStatus">Civil Status</label>
-                                <select class="form-control chosen-select" name="cvStatus" id="cvStatus">
+                            <div class="col-md-3">
+                                <label for="dateofbirth">Date of Birth <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dateofbirth" name="dateofbirth">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="age">Age <span class="text-danger"></span></label>
+                                <input type="text" class="form-control" id="age" name="age" value="" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
+                                <select class="form-control chosen-select" name="civil_status" id="civil_status">
                                     <option value="">Select status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
@@ -118,14 +114,15 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="dateofbirth">Date Of Birth <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth">
+                                <label for="religion">Religion <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="religion" id="religion" value="">
                             </div>
                             <div class="col-md-3">
-                                <label for="age">Age <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="age" name="age" value="" readonly>
+                                <label for="contact">Contact Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="contact" id="contact" value="">
                             </div>
-                            <div class="col-md-3">
+                            <div class="row"></div>
+                            <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="province" id="province">
                                     <option value="">Select Province</option>
@@ -134,53 +131,62 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal" id="municipal">
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="barangay" id="barangay">
                                 </select>
                             </div>
+                            <div class="col-md-4">
+                                <label for="street">Street</label>
+                                <input type="text" class="form-control" name="street" id="street" value="">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="purok">Purok</label>
+                                <input type="text" class="form-control" name="purok" id="purok" value="">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="sitio">Sitio</label>
+                                <input type="text" class="form-control" name="sitio" id="sitio" value="">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="phic_id">PhilHealth No.</label>
+                                <input type="text" class="form-control" name="phic_id" id="phic_id" value=""><br>
+                            </div>
+                            <div class="col-md-7">
+                                <label for="pwd_id">Persons with Disability ID Card No. if applicable:</label>
+                                <input type="text" class="form-control" name="pwd_id" id="pwd_id" value=""><br>
+                            </div>
                             <div class="col-md-3">
-                                <label for="lname">Contact Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                                <label for="ethnicity">Ethnicity:</label>
+                                <select class="form-control" name="ethnicity" id="ethnicity">
+                                    <option value="">Select an Option</option>
+                                    <option value="bisaya">Bisaya</option>
+                                    <option value="ilonggo">Ilonggo</option>
+                                    <option value="waray">Waray</option>
+                                </select>
                             </div>
-                         
-                            <div class="col-md-5">
-                                <label for="phil_no">PhilHealth No.</label>
-                                <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
+                            <div class="col-md-3 d-flex align-items-center">
+                                <label class="mr-2">Indigenous Person:</label><br>
+                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
+                                <label for="indigenous_person" class="ml-2">Yes</label>
+                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
+                                <label for="indigenous_person" class="ml-2">No</label>
+                                <br>
                             </div>
-
-                            <div class="col-md-5">
-                                <label for="phil_no">Persons with Disability ID Card No. if applicable:</label>
-                                <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
-                            </div>
-                            <div class="col-md-5 d-flex align-items-center">
-                                    <label class="mr-2">Employment Status:</label><br>
-                                    <input type="checkbox" name="employment_status" id="employment_status">
-                                    <label for="employment_status" class="ml-2">Employed</label>
-                                    <input type="checkbox" name="employment_status" id="employment_status">
-                                    <label for="employment_status" class="ml-2">Unemployed</label>
-                                    <input type="checkbox" name="employment_status" id="employment_status">
-                                    <label for="employment_status" class="ml-2">Self-Employed</label>
-                                    <br>
-                                    <!-- Employment status -->
-                                    <!-- <div class="col-md-5">
-                                            <label for="ethnicity">Ethnicity:</label>
-                                            <select class="form-control" name="ethnicity" id="ethnicity">
-                                                <option value="">Select an Option</option>
-                                                <option value="asian">Asian</option>
-                                                <option value="black">Black or African American</option>
-                                                <option value="hispanic">Hispanic or Latino</option>
-                                                <option value="white">White</option>
-                                                <option value="native">Native American or Alaska Native</option>
-                                                <option value="pacific">Native Hawaiian or Pacific Islander</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                    </div> -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <label class="mr-2">Employment Status:</label><br>
+                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <label for="employment_status" class="ml-2">Employed</label>
+                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <label for="employment_status" class="ml-2">Unemployed</label>
+                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <label for="employment_status" class="ml-2">Self-Employed</label>
+                                <br>
                             </div>
                         </div>
                         <br>
