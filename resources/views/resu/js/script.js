@@ -864,6 +864,7 @@ $(document).ready(function () {
       data: {id: id},
       success: function (record) {
         console.log(record);
+        $('#profile_id').val(record.profileId || '');
         $('#lname').val(record.lname || '');  // Set last name
         $('#fname').val(record.fname || '');  // Set first name
         $('#mname').val(record.mname || '');  // Set middle name

@@ -41,7 +41,7 @@
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Health Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}">
-                                <input type="hidden" name="facility_id" value="{{ $facility->id ?? '' }}"> 
+                                <input type="hidden" name="facility_id_updated" id="facility_id_updated" value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}"> 
                             </div> 
                                  @php
                                     use Carbon\Carbon;
@@ -63,6 +63,7 @@
                         </div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;">I. PATIENT'S INFORMATION</h4>
                         <div class="row">
+                            <input type="hidden" class="form-control" name="profile_id" id="profile_id" value="">
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
@@ -166,10 +167,10 @@
                                 <label for="ethnicity">Ethnicity:</label>
                                 <select class="form-control" name="ethnicity" id="ethnicity">
                                     <option value="">Select an Option</option>
-                                    <option value="ati">Ati</option>
-                                    <option value="badjao">Badjao</option>
                                     <option value="bisaya">Bisaya</option>
+                                    <option value="badjao">Badjao</option>
                                     <option value="waray">Waray</option>
+                                    <option value="ati">Ati</option>
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex align-items-center">
@@ -190,9 +191,9 @@
                             </div>
                         </div>
                         <br>
-                        <div class="col-md-12 text-center" style="margin-top: 20px;">
+                        <!-- <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="submit" class="btn btn-success mx-2">Submit</button>
-                        </div>
+                        </div> -->
                     </div>  
                     </div>
                     <div class="col-md-12">
@@ -306,7 +307,7 @@
                          </table>
                     </div>
                 </div>
-                <div class="additional-inputs">
+                <div class="additional-inputs" >
                         <div class="col-md-3">
                             <label for="physicianName">Physician Name:</label>
                             <input type="text" class="form-control" id="physicianName" placeholder="Enter physician name">
@@ -318,7 +319,6 @@
                         <div class="col-md-3" style="right: -20%">
                             <label for="facility">What Facility:</label>
                             <input type="text" class="form-control" id="facility" placeholder="Enter facility"> 
-                            <!-- Dropdown Menu -->
                         </div>
                 </div>
                 <div class="row">
