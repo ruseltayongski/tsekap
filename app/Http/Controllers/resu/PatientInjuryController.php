@@ -167,8 +167,7 @@ class PatientInjuryController extends Controller
         ->select('id','province_id','description')
         ->whereNotIn('id',['63','76','80'])
         ->get(); 
-        //63 is Cebu City Capital, 76 is Lapu-Lapu City, Mandaue City
-      
+       
       return response()->json($muncity);
     }
 

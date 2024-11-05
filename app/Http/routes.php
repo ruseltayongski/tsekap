@@ -373,8 +373,6 @@ Route::get('logout',function(){
     \Illuminate\Support\Facades\Session::flush();
     return redirect('login');
 });
-
-
 //for resu 
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
 

@@ -3,21 +3,21 @@
 <!-- @include('resu/resuSidebar') -->
 
 <?php
- use App\ResuNatureInjury;
- use App\ResuBodyParts;
- use App\ResuExternalInjury;
- use App\ResuTransportAccident;
- use App\ResuHospitalFacility;
- use App\Muncity;
+    use App\ResuNatureInjury;
+    use App\ResuBodyParts;
+    use App\ResuExternalInjury;
+    use App\ResuTransportAccident;
+    use App\ResuHospitalFacility;
+    use App\Muncity;
 
- //use Carbon\Carbon;
- //$dob = Carbon::parse($profile->dob);
+    //use Carbon\Carbon;
+    //$dob = Carbon::parse($profile->dob);
 
- $muncities = Muncity::select('id', 'description')->get();
- function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
-     similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-     return $percent >= 80; // You can adjust the threshold as needed
- }
+    $muncities = Muncity::select('id', 'description')->get();
+    function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
+        similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
+        return $percent >= 80; // You can adjust the threshold as needed
+    }
 
 ?>
     <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 15%; padding-bottom: 5%">
