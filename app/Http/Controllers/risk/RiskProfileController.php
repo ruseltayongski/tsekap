@@ -16,12 +16,10 @@ use App\RiskProfile;
 class RiskProfileController extends Controller     
 {
     //
-    
     public function getMunicipal($provinceid){
 
       $muncity = Muncity::where('province_id', $provinceid)
         ->select('id','province_id','description')
-        ->whereNotIn('id',['63','76','80'])
         ->get(); 
         //63 is Cebu City Capital, 76 is Lapu-Lapu City, Mandaue City
       
@@ -69,6 +67,6 @@ class RiskProfileController extends Controller
         $riskprofile->save();
 
         // Redirect after saving
-        return redirect()->route('submit-patient-risk-form')->with('success', 'Patient Successfully Added');
+        return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
 }

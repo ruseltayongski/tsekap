@@ -166,26 +166,25 @@
                                 <label for="ethnicity">Ethnicity:</label>
                                 <select class="form-control" name="ethnicity" id="ethnicity">
                                     <option value="">Select an Option</option>
+                                    <option value="ati">Ati</option>
+                                    <option value="badjao">Badjao</option>
                                     <option value="bisaya">Bisaya</option>
-                                    <option value="ilonggo">Ilonggo</option>
                                     <option value="waray">Waray</option>
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex align-items-center">
-                                <label class="mr-2">Indigenous Person:</label><br>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
+                                <label class="mr-2">Indigenous Person?</label><br>
+                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
                                 <label for="indigenous_person" class="ml-2">Yes</label>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
-                                <label for="indigenous_person" class="ml-2">No</label>
                                 <br>
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status:</label><br>
-                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
                                 <label for="employment_status" class="ml-2">Employed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
                                 <label for="employment_status" class="ml-2">Unemployed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status">
+                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
                                 <label for="employment_status" class="ml-2">Self-Employed</label>
                                 <br>
                             </div>
