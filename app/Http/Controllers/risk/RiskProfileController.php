@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\risk;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -38,7 +37,8 @@ class RiskProfileController extends Controller
         $user = Auth::user();
 
         $riskprofile = new RiskProfile();
-        $unique_id = $req->fname . $req->mname . $req->lname . $req->suffix . $req->barangay . $user->muncity;
+        
+        $unique_id = $req->fname . $req->mname . $req->lname . $req->suffix . $req->barangay . $user->muncity; // Ensure $user->muncity is accessible
         $riskprofile->unique_id = $unique_id;
 
         // Assign all the necessary values
@@ -48,6 +48,7 @@ class RiskProfileController extends Controller
         $riskprofile->suffix = $req->suffix;
         $riskprofile->sex = $req->sex;
         $riskprofile->dob = $req->dateofbirth;
+        $riskprofile->age = $req->age;
         $riskprofile->province_id = $req->province;
         $riskprofile->municipal_id = $req->municipal;
         $riskprofile->barangay_id = $req->barangay;
@@ -62,11 +63,12 @@ class RiskProfileController extends Controller
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
         $riskprofile->facility_id_updated = $req->facility_id; // Ensure this is not null
-
+    
         // Save the profile
         $riskprofile->save();
-
+    
         // Redirect after saving
         return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
+    
 }
