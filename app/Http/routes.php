@@ -457,3 +457,4 @@ Route::get('/RiskAssessment', function () {
 //risk get profile verification
 Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
 Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
+Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');

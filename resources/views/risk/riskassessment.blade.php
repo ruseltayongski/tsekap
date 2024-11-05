@@ -29,8 +29,8 @@
             <p style="font-size: 15pt; font-style: italic; text-align: center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Adults > 20 years old</p>
         </h2>
         <div class="page-divider"></div>
-        <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}"> -->
-        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
+        <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}"> -->
+            <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <div class="form-step" id="form-step-1">
@@ -41,7 +41,8 @@
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Health Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}">
-                             </div> 
+                                <input type="hidden" name="facility_id" value="{{ $facility->id ?? '' }}"> 
+                            </div> 
                                  @php
                                     use Carbon\Carbon;
                                 @endphp
@@ -190,6 +191,10 @@
                             </div>
                         </div>
                         <br>
+                        <div class="col-md-12 text-center" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-success mx-2">Submit</button>
+                        </div>
+                    </div>  
                     </div>
                     <div class="col-md-12">
                         <div>
