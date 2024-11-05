@@ -405,7 +405,7 @@ $(document).ready(function () {
   //   }
   // });
 
-      function calculateAge(dateOfBirth, date_injury ) {
+      function calculateAge(dateOfBirth) {
         const today = new Date(); 
         const birthDate = new Date(dateOfBirth); // Parse the input as a Date object
         if (isNaN(birthDate)) {
@@ -800,7 +800,6 @@ $(document).ready(function () {
 
   function fetchRiskProfiles(data) {
     $(".loading").show();
-
     $.ajax({     //check profiles
       url: "get/riskCheckProfile",
       method: "GET",
@@ -925,6 +924,13 @@ $(document).ready(function () {
 
     fetchSpecificProfile(id);
   });
+
+  // $(document).on('click', '.btn-risk-profile', function() {
+  //   var id = $(this).data('id');
+  //   console.log(id);
+
+  //   insertRiskProfile(id);
+  // });
 
   // Helper function to set dropdown values with callbacks
   function setDropdownValue(selector, value, callback) {
