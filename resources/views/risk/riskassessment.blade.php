@@ -634,7 +634,7 @@
                                         5.5 Weight (kg) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="weight" value=""> 
+                                        <input type="text" class="textbox" id="weight" value="" oninput="calculateBMI()"> 
                                     </td>
                                 </tr>
                                 
@@ -643,7 +643,7 @@
                                         5.6 Height (cm) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="height" value=""> 
+                                        <input type="text" class="textbox" id="height" value="" oninput="calculateBMI()"> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -651,7 +651,7 @@
                                         5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="BMI" value=""> 
+                                        <input type="text" class="textbox" id="BMI" value="" readonly><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" value=""></span></i></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -945,6 +945,52 @@
 </div>
 
 <script>
+
+    function bmiResultToStr(bmi){
+        let strVal = ""
+        if (bmi < 18.5) {
+            strVal = "Underweight";
+        } 
+        else if (bmi < 24.9) {
+            strVal = "Normal weight";
+        } 
+        else if (bmi < 29.9) {
+            strVal = "Overweight";
+        } 
+        else if (bmi < 34.9) {
+            strVal = "Obesity class 1";
+        } 
+        else if (bmi < 39.9) {
+            strVal = "Obesity class 2";
+        } 
+        else if (bmi > 40) {
+            strVal = "Obesity class 3";
+        } 
+        else {
+            strVal = "Error...";
+        }
+
+        return strVal;
+    }
+    
+    function calculateBMI(){
+        let weight = parseFloat(document.getElementById('weight').value);
+        let height = parseFloat(document.getElementById('height').value);
+
+        if(weight > 0 && height > 0){
+            let heightInMeters = height / 100;
+            let bmi = weight / (heightInMeters * heightInMeters);
+            
+            // set BMI values
+            document.getElementById('BMI').value = bmi.toFixed(2);
+            document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
+        }
+        else{
+            document.getElementById('BMI').value = "";
+            document.getElementById('bmiStrVal').textContent = "";
+        }
+    }
+
 //  var baseUrl = "{{ url('sublist-patient') }}";
 //     function toggleCheckbox(checkbox) 
 //             { //BEHAVIOR SET-UP FOR CHECKBOX
