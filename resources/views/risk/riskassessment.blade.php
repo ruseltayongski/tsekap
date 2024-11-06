@@ -115,10 +115,11 @@
                                     <option value="Legally Separated">Legally Separated</option>
                                 </select>
                             </div>
+                            <div class="row"></div>
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="religion" id="religion" onchange="showOtherReligionField()">
-                                    <option value="">Select religion</option>
+                                    <option value="">Select Religion</option>
                                     <option value="Roman Catholic">Roman Catholic</option>
                                     <option value="Islam">Islam</option>
                                     <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
@@ -129,14 +130,14 @@
                                     <option value="United Church of Christ in the Philippines">United Church of Christ in the Philippines</option>
                                     <option value="Jehovah’s Witnesses">Jehovah’s Witnesses</option>
                                     <option value="Church of Christ">Church of Christ</option>
-                                    <option value="Latter-Day Saints">Latter-Day Saints</option>
+                                    <option value="Latter-Day Saints">Latter-Day Saints/Mormon Church</option>
                                     <option value="Assemblies of God">Assemblies of God</option>
                                     <option value="Kingdom of Jesus Christ">Kingdom of Jesus Christ</option>
                                     <option value="Baptists">Baptists</option>
                                     <option value="Methodists">Methodists</option>
                                     <option value="Episcopal Church in the Philippines">Episcopal Church in the Philippines</option>
-                                    <option value="Hinduism">Hinduism</option>
                                     <option value="Buddhism">Buddhism</option>
+                                    <option value="Hinduism">Hinduism</option>  
                                     <option value="Judaism">Judaism</option>
                                     <option value="Baha'i">Baha'i</option>
                                     <option value="Jainism">Jainism</option>
@@ -148,13 +149,12 @@
 							<div class="col-md-3" id="other-religion-div" style="display:none;">
 								<label for="other_religion">Specify Other Religion <span class="text-danger">*</span></label>
 								<input type="text" class="form-control" name="other_religion" id="other_religion" placeholder="Please specify religion">
-							</div>
-
+							</div> 
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="contact" id="contact" value="">
                             </div>
-                            <div class="row"></div>
+                            <div class="row"><br/></div>
                             <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="province" id="province">
@@ -165,7 +165,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="municipal">Municipal <span class="text-danger">*</span></label>
+                                <label for="municipal">Municipality/City <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal" id="municipal">
                                 </select>
                             </div>
@@ -198,7 +198,7 @@
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity:</label>
                                 <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
-                                    <option value="">Select an Option</option>
+                                    <option value="">Select Ethnicity</option>
                                     <option value="Cebuano">Cebuano</option> 
                                     <option value="Bisaya">Bisaya</option>
                                     <option value="Tagalog">Tagalog</option>
@@ -243,43 +243,51 @@
 							</div>
                             <div class="col-md-3 d-flex align-items-center">
                                 <label class="mr-2">Indigenous Person:</label><br>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
-                                <label for="indigenous_person" class="ml-2">Yes</label>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
-                                <label for="indigenous_person" class="ml-2">No</label>
-                                <br>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person_yes">
+                                    <label for="indigenous_person" class="ml-2">Yes</label>
+                                </span>
+                                <span style="padding-right: 10px;"> 
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person_no">
+                                    <label for="indigenous_person" class="ml-2">No</label>
+                                </span>
+                                <br/>
                             </div>
                             <div class="row"><br/></div>
                             <br/>
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status:</label><br>
-                                <input type="checkbox" name="employment_status" id="employment_status">
-                                <label for="employment_status" class="ml-2">Employed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status">
-                                <label for="employment_status" class="ml-2">Unemployed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status">
-                                <label for="employment_status" class="ml-2">Self-Employed</label>
-                                <br>
+                                <!--Nested for styling controls-->
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="employment_status" id="employment_status_employed">
+                                    <label for="employment_status_employed" class="ml-2">Employed</label>
+                                </span>
+                                <span style="padding-right: 10px;"> 
+                                    <input type="checkbox" name="employment_status" id="employment_status_unemployed">
+                                    <label for="employment_status_unemployed" class="ml-2">Unemployed</label>
+                                </span>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="employment_status" id="employment_status_self_employed">
+                                    <label for="employment_status_self_employed" class="ml-2">Self-Employed</label>
+                                </span>
+                                <br/>
                             </div>
-                        </br>
-                        <br>
-                        <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <button type="submit" class="btn btn-success mx-2">Submit</button>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div>
+                    <br><br> 
+                    <div class="row">
+                        <div class="col-md-12">
                             <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
-                            <p style="font-style: italic; font-size: 15px;">
+                            <p style="font-style: italic; font-size: 15px; text-align: justify">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
                         </div>
-                        <div style="display: flex; justify-content: end">
-                            <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
-                        </div>
-                        <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
-                        <br>
                     </div>
+                    <br/>
+                    <div style="display: flex; justify-content: end">
+                            <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
+                    </div>
+                        <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
+                    <br>
                     <div class="col-md-12" style="display: flex; align-items: center; ">
                                 <table class="table table-bordered" >
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">                                                                       
@@ -1021,7 +1029,8 @@
 
 <script language="javascript" type="text/javascript">
 
-    function bmiResultToStr(bmi){
+    // for determining BMI values
+    const bmiResultToStr = (bmi) => {
         let strVal = ""
         if (bmi < 18.5) {
             strVal = "Underweight";
@@ -1048,7 +1057,8 @@
         return strVal;
     }
     
-    function calculateBMI(){
+    // for calculating BMI
+    const calculateBMI = () => {
         let weight = parseFloat(document.getElementById('weight').value);
         let height = parseFloat(document.getElementById('height').value);
 
@@ -1066,7 +1076,9 @@
         }
     }
 
-	function showOtherReligionField() {
+
+    // controls the other religion field
+	const showOtherReligionField = () => {
     	let religionSelect = document.getElementById("religion");
     	let otherReligionDiv = document.getElementById("other-religion-div");
     	if (religionSelect.value === "Others") {
@@ -1077,7 +1089,8 @@
    		}
 	}
 
-    function showOtherEthnicityField() {
+    // controls the other ethnicity field
+    const showOtherEthnicityField = () => {
     	let ethnicitySelect = document.getElementById("ethnicity");
     	let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
     	if (ethnicitySelect.value === "Others") {
@@ -1087,6 +1100,32 @@
   	      otherEthnicityDiv.style.display = "none";
    		}
 	}
+
+    // Get all checkboxes with the name 'employment_status'
+    const employmentStatusCheckboxes = document.querySelectorAll('input[name="employment_status"]');
+
+    // controls the functionality for the employment checkbox
+    employmentStatusCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            // When one checkbox is checked, uncheck all others
+            employmentStatusCheckboxes.forEach((box) => {
+                if (box !== this) box.checked = false;
+            });
+        });
+    }); 
+
+    // Get all checkboxes with the name 'indigenous_person'
+    const indigenousPersonCheckboxes = document.querySelectorAll('input[name="indigenous_person"]');
+
+    // controls the functionality for the employment checkbox
+    indigenousPersonCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            // When one checkbox is checked, uncheck all others
+            indigenousPersonCheckboxes.forEach((box) => {
+                if (box !== this) box.checked = false;
+            });
+        });
+    }); 
 
 //  var baseUrl = "{{ url('sublist-patient') }}";
 //     function toggleCheckbox(checkbox) 
@@ -1143,7 +1182,8 @@
             });
         });
     });
-    function checkAllNo() {
+
+    const checkAllNo = () => {
         const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
         const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
 
@@ -1158,9 +1198,10 @@
     }
 
     // Toggle Checkbox
-    function toggleCheckbox(currentId, otherId) {
+    const toggleCheckbox = (currentId, otherId) => {
         document.getElementById(otherId).checked = false;
     }
+    
 </script>
 @endsection
 
