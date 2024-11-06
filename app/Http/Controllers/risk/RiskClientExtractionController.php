@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\risk;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Profile;
+use App\RiskProfile;
+use App\ResuReportFacility;
 
 class RiskClientExtractionController extends Controller
 {
@@ -13,11 +16,10 @@ class RiskClientExtractionController extends Controller
         $id = $req->input('id');
 
         // Retrieve the profile with the specified ID, selecting only fname, mname, and lname fields
-        $profile = Profile::select('unique_id','fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id',
+        $profile = Profile::select('fname','mname','lname','suffix','dob','sex','barangay_id','muncity_id','province_id',
                                     'civil_status','religion','contact','height','weight','phicID',)
                     ->where('id', $id)
                     ->first();
-
         // Check if profile exists
         if ($profile) {
             // Remove trailing whitespace from lname

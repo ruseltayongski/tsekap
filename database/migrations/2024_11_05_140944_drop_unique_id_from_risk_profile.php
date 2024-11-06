@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropColumnFromRiskForm extends Migration
+class DropUniqueIdFromRiskProfile extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class DropColumnFromRiskForm extends Migration
     public function up()
     {
         //
-        Schema::table('risk_form', function (Blueprint $table) {
-            $table->dropColumn('ar_diffBreat');
+        Schema::table('risk_profile', function (Blueprint $table) {
+            $table->dropColumn('unique_id');
         });
     }
 
@@ -26,8 +26,8 @@ class DropColumnFromRiskForm extends Migration
     public function down()
     {
         //
-         Schema::table('risk_form', function (Blueprint $table) {
-            $table->string('ar_diffBreat', 8)->nullable()->after('risk_profile_id');
+        Schema::table('risk_profile', function (Blueprint $table) {
+            $table->dropColumn('unique_id');
         });
     }
 }

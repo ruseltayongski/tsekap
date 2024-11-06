@@ -167,7 +167,8 @@ class PatientInjuryController extends Controller
         ->select('id','province_id','description')
         ->whereNotIn('id',['63','76','80'])
         ->get(); 
-       
+        //63 is Cebu City Capital, 76 is Lapu-Lapu City, Mandaue City
+      
       return response()->json($muncity);
     }
 
@@ -223,7 +224,7 @@ class PatientInjuryController extends Controller
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
         $profile->type_of_patient = $request->typePatient;
-        $profile->name_of_encoder = $user->fname.' '.$user->lname;
+        $profile->name_of_encoder = $user->fname.''.$user->lname;
         $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->

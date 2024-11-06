@@ -30,8 +30,8 @@ class ResUserPrivilege
         if (Auth::check() && Auth::user()->user_priv == 10 || Auth::user()->user_priv == 11 || (Auth::user()->user_priv == 6 && Auth::user()->facility_id) 
             || (Auth::user()->user_priv == 7 || Auth::user()->user_priv == 3 && $fname === 'DSO') || Auth::user()->user_priv == 8) {
             $allowedRoute = [
-                'surveillance',
-                'surveillance/*'
+                'survelance',
+                'survelance/*'
             ];
 
             foreach($allowedRoute as $route){
@@ -42,7 +42,7 @@ class ResUserPrivilege
              // Return a 403 Forbidden response for all other routes
             //  return response()->json(['message' => 'Forbidden'], 403);
             // return Redirect::route('restrictAccess');
-            return Redirect::route('surveillance');
+            return Redirect::route('survelance');
 
         }
         return $next($request);

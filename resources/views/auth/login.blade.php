@@ -78,7 +78,7 @@
         <br />
         <h3><b>PHILIPPINE HEALTH AGENDA</b></h3>
         <!-- <h4><b>CHECK-UP SYSTEM</b></h4> -->
-        <h4><b>TSEKAP SYSTEM</b></h4>
+        <h4><b>INJURY SYSTEM</b></h4>
         {{--<a href="#"><b>PHA</b> CHECK-UP</a>--}}
     </div><!-- /.login-logo -->
 
