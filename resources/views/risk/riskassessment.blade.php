@@ -309,15 +309,15 @@
                     </div>
                 </div>
                 <div class="additional-inputs" >
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="physicianName">Physician Name:</label>
                             <input type="text" class="form-control" id="physicianName" placeholder="Enter physician name">
                         </div>
-                        <div class="col-md-3" style="right: -10%">
+                        <div class="col-md-4">
                             <label for="reason">Reason:</label>
                             <input type="text" class="form-control" id="reason" placeholder="Enter reason">
                         </div>
-                        <div class="col-md-3" style="right: -20%">
+                        <div class="col-md-4">
                             <label for="facility">What Facility:</label>
                             <input type="text" class="form-control" id="facility" placeholder="Enter facility"> 
                         </div>
