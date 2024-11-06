@@ -376,7 +376,7 @@ Route::get('logout',function(){
 //for resu 
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
 
-Route::get('survelance', 'resu\IndexController@index')->name('survelance');
+    Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
@@ -390,7 +390,7 @@ Route::post('update-body-parts/{id}', 'resu\InjuryController@updateBodyparts')->
 Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
 Route::get('injury-external-edit/{id}', 'resu\InjuryController@editExternalInjury')->name('injury-external-edit');
-Route::post('injury-external-update/{id}','resu\InjuryController@updateExternalInjury')->name('injury-external-update');
+Route::post('injury-external-upJapdate/{id}','resu\InjuryController@updateExternalInjury')->name('injury-external-update');
 Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->name('delete-external');
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
@@ -454,3 +454,5 @@ Route::get('/RiskAssessment', function () {
 
 //risk get profile verification
 Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
+Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
+Route::post('/patient-risk-form', 'risk\RiskProfileController@SubmitRiskPForm')->name('patient-risk-form');

@@ -27,7 +27,7 @@ class RiskClientVerificationController extends Controller
             $profile = $profile->where('lname','like',"%$lname%");
         }
         if($req->dob){
-            $profile = $profile->where('dob',"$dob%");
+            $profile = $profile->where('dob',"%$dob%");
         }
         $profiles = $profile->orderBy('lname', 'asc')
         ->limit(20)
