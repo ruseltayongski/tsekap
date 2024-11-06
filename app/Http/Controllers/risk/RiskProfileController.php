@@ -37,11 +37,9 @@ class RiskProfileController extends Controller
         $user = Auth::user();
 
         $riskprofile = new RiskProfile();
-        
-        $unique_id = $req->fname . $req->mname . $req->lname . $req->suffix . $req->barangay . $user->muncity; // Ensure $user->muncity is accessible
-        $riskprofile->unique_id = $unique_id;
 
         // Assign all the necessary values
+        $riskprofile->profile_id = $req->profile_id? $req->profile_id : null;
         $riskprofile->fname = $req->fname;
         $riskprofile->mname = $req->mname;
         $riskprofile->lname = $req->lname;
@@ -62,13 +60,13 @@ class RiskProfileController extends Controller
         $riskprofile->ethnicity = $req->ethnicity;
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
-        $riskprofile->facility_id_updated = $req->facility_id; // Ensure this is not null
+        $riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
     
         // Save the profile
         $riskprofile->save();
     
         // Redirect after saving
-        return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
+        return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');  
     }
     
 }

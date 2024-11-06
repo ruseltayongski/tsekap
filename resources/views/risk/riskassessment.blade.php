@@ -30,10 +30,10 @@
         </h2>
         <div class="page-divider"></div>
         <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}"> -->
-            <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
-            <div class="form-step" id="form-step-1">
+            <div class="form-step" id="form-step-1" style="display: block">
                 <div class="row">
                     <div class="col-md-12 col-divider">
                         <!-- <h4 class="patient-font" style="background-color: #727DAB;color: white;padding: 3px;margin-top: -28px; ">Patient Informations</h4> -->
@@ -41,7 +41,7 @@
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Health Facility</label>
                                 <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}">
-                                <input type="hidden" name="facility_id_updated" id="facility_id_updated" value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}"> 
+                                <input type="hidden" name="facility_id_updated" id="facility_id_updated" value="{{ json_decode($facility, true)[0]['id'] ?? 'N/A' }}"> 
                             </div> 
                                  @php
                                     use Carbon\Carbon;
@@ -63,7 +63,7 @@
                         </div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;">I. PATIENT'S INFORMATION</h4>
                         <div class="row">
-                            <input type="hidden" class="form-control" name="profile_id" id="profile_id" value="">
+                            <input type="hidden" name="profile_id" id="profile_id">
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="">
@@ -177,6 +177,8 @@
                                 <label class="mr-2">Indigenous Person?</label><br>
                                 <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
                                 <label for="indigenous_person" class="ml-2">Yes</label>
+                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
+                                <label for="indigenous_person" class="ml-2">No</label>
                                 <br>
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
@@ -191,10 +193,9 @@
                             </div>
                         </div>
                         <br>
-                        <!-- <div class="col-md-12 text-center" style="margin-top: 20px;">
+                        <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="submit" class="btn btn-success mx-2">Submit</button>
-                        </div> -->
-                    </div>  
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <div>
@@ -328,8 +329,8 @@
                         </div>
                  </div>
             </div>
-         <!-- PAST MEDICAL HISTORY -->
-         <div class="form-step" id="form-step-2" style="display: none;">
+            <!-- PAST MEDICAL HISTORY -->
+            <div class="form-step" id="form-step-2" style="display: none">
              <div class="row">
                     <div class="col-md-12">
                         <div>
@@ -555,7 +556,7 @@
                     </div>
                 </div>
              </div>             
-             <div class="form-step" id="form-step-3" style="display: none;">
+             <div class="form-step" id="form-step-3" style="display: none">
                 <div class="row">                 
                 <!-- risk factors -->
                 <div class="col-md-12">
@@ -687,7 +688,7 @@
                        
             </div>
 
-            <div class="form-step" id="form-step-4" style="display: none;">
+            <div class="form-step" id="form-step-4" style="display: none">
             <div class="row">
                 <div class="col-md-12">
                     <div>
@@ -826,7 +827,7 @@
                     </div>
                 </div>
 
-            <div class="form-step" id="form-step-5" style="display: none;">
+            <div class="form-step" id="form-step-5" style="display: none">
             <div class="row">
                 <div class="col-md-12">
                     <div>

@@ -863,20 +863,21 @@ $(document).ready(function () {
       },
       data: {id: id},
       success: function (record) {
-        console.log(record);
-        $('#profile_id').val(record.profileId || '');
-        $('#lname').val(record.lname || '');  // Set last name
-        $('#fname').val(record.fname || '');  // Set first name
-        $('#mname').val(record.mname || '');  // Set middle name
+        
+        $('#profile_id').val(id || '').trigger("change");
+        $('#lname').val(record.lname || '').trigger("change");  // Set last name
+        $('#fname').val(record.fname || '').trigger("change");  // Set first name
+        $('#mname').val(record.mname || '').trigger("change");  // Set middle name
         $('#suffix').val(record.suffix || '').trigger("chosen:updated");
-        $('#contact').val(record.contact || '');
+        $('#contact').val(record.contact || '').trigger("change");
         $('#dateofbirth').val(record.dob || '').trigger("change");
         $('#sex').val(record.sex || '').trigger("chosen:updated");
         $('#civil_status').val(record.civil_status || '').trigger("chosen:updated");
-        $('#religion').val(record.religion || '');
+        $('#religion').val(record.religion || '').trigger("change");
         $('#height').val(record.height || '').trigger("change");
         $('#weight').val(record.weight || '').trigger("change");
-        $('#phic_id').val(record.phicId || '');
+        $('#phic_id').val(record.phicId || '').trigger("change");
+        $('#facility_id_updated').trigger("change");
 
         setDropdownValue('#province', record.province_id || '', function() {
           setDropdownValue('#municipal', record.muncity_id || '', function() {
