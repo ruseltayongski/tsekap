@@ -224,7 +224,7 @@ class PatientInjuryController extends Controller
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
         $profile->type_of_patient = $request->typePatient;
-        $profile->name_of_encoder = $user->fname.''.$user->lname;
+        $profile->name_of_encoder = $user->fname.' '.$user->lname;
         $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->

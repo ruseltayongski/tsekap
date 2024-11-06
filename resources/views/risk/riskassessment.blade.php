@@ -9,7 +9,7 @@
  use App\Province;
  
  $user = Auth::user();
- 
+   $facilities = Facility::select('id', 'name')->get();
  $facility = Facility::select('id','name','address','hospital_type')
  ->where('id', $user->facility_id)    
  ->get();
@@ -30,7 +30,7 @@
         </h2>
         <div class="page-divider"></div>
         <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}"> -->
-        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-form') }}">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('patient-risk-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <div class="form-step" id="form-step-1">
@@ -205,97 +205,97 @@
                         <br>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center; ">
-                                <table class="table table-bordered" >
+                        <table class="table table-bordered" >
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">                                                                       
                                    <tr>
                                         <td>2.1 Chest Pain</td>
                                         <td>
-                                            <input type="checkbox" class="healthCheckbox" id="dfbYes" value="Yes" onclick="toggleCheckbox('dfbYes', 'dfbNo')"> Yes
-                                            <input type="checkbox" class="healthCheckbox" id="dfbNo" value="No" onclick="toggleCheckbox('dfbNo', 'dfbYes')"> No
+                                            <input type="checkbox" class="healthCheckbox" id="chpYes" name="chest_pain" value="Yes" onclick="toggleCheckbox('chpYes', 'chpNo')"> Yes
+                                            <input type="checkbox" class="healthCheckbox" id="chpNo" name="chest_pain" value="No" onclick="toggleCheckbox('chpNo', 'chpYes')"> No
                                         </td>
                                     </tr>
                                 <tr>
                                     <td>2.2 Difficulty of Breathing</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="dfbYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="dfbNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="dfbYes" name="difficulty_breathing" value="Yes" onclick="toggleCheckbox('dfbYes', 'dfbNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="dfbNo" name="difficulty_breathing" value="No" onclick="toggleCheckbox('dfbNo', 'dfbYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.3 Loss of Consciousness</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="lossConYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="lossConNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="lossConYes"  name="loss_of_consciousness" value="Yes" onclick="toggleCheckbox('lossConYes', 'lossConNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="lossConNo"  name="loss_of_consciousness" value="No" onclick="toggleCheckbox('lossConNo', 'lossConYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.4 Slurred Speech</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="slurredYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="slurredNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="slurredYes" name ="slurred_speech" value="Yes" onclick="toggleCheckbox('dfbYes', 'dfbNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="slurredNo" name ="slurred_speech" value="No" onclick="toggleCheckbox('dfbYes', 'dfbNo')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.5 Facial Asymmetry</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="facialYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="facialNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="facialYes" name= "facial_asymmetry" value="Yes" onclick="toggleCheckbox('facialYes', 'facialNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="facialNo" name= "facial_asymmetry" value="No" onclick="toggleCheckbox('facialNo', 'facialYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                 <td>2.6 Weakness/Numbness on arm <br> of the left on one side of the body</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="weaknumbYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="weaknumbNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbYes" name="weakness_numbness" value="Yes" onclick="toggleCheckbox('weaknumbYes', 'weaknumbNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbNo" name="weakness_numbness" value="No" onclick="toggleCheckbox('weaknumbNo', 'weaknumbYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.7 Disoriented as to time, <br> place and person</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="disYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="disNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="disYes" name="disoriented" value="Yes" onclick="toggleCheckbox('disYes', 'disNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="disNo" name="disoriented" value="No" onclick="toggleCheckbox('disNo', 'disYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.8 Chest Retractions</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="chestRetractYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="chestRetractNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractYes"  name="chest_retractions" value="Yes" onclick="toggleCheckbox('chestRetractYes', 'chestRetractNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractNo" name="chest_retractions" value="No" onclick="toggleCheckbox('chestRetractNo', 'chestRetractYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.9 Seizure or Convulsion</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="seizureYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="seizuredNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="seizureYes" name="seizures" value="Yes" onclick="toggleCheckbox('seizureYes', 'seizuredNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="seizuredNo" name="seizures" value="No" onclick="toggleCheckbox('seizuredNo', 'seizureYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.10 Act of self-harm or suicide</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="selfharmYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="selfharmNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="selfharmYes" name="self_harm" value="Yes" onclick="toggleCheckbox('selfharmYes', 'selfharmNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="selfharmNo" name="self_harm" value="No" onclick="toggleCheckbox('selfharmNo', 'selfharmYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.11 Agitated and/or aggressive behavior</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="agitatedYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="agitatedNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedYes" name="agitated_behavior"value="Yes" onclick="toggleCheckbox('agitatedYes', 'agitatedNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedNo" name="agitated_behavior" value="No" onclick="toggleCheckbox('agitatedNo', 'agitatedYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.12 Eye Injury/ Foreign Body on the eye</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes" name="eye_injury" value="Yes" onclick="toggleCheckbox('eyeInjuryYes', 'eyeInjuryNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo" name="eye_injury" value="No" onclick="toggleCheckbox('eyeInjuryNo', 'eyeInjuryYes')"> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.13 Severe Injuries</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="severeYes" value="Yes"> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="severeNo" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="healthCheckbox" id="severeYes" value="Yes" name="severe_injuries" onclick="toggleCheckbox('severeYes', 'severeNo')"> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="severeNo" value="No" name="severe_injuries" onclick="toggleCheckbox('severeNo', 'severeYes')"> No
                                     </td>
                                     </tr>
                             </tbody>
@@ -305,17 +305,22 @@
                 <div class="additional-inputs">
                         <div class="col-md-3">
                             <label for="physicianName">Physician Name:</label>
-                            <input type="text" class="form-control" id="physicianName" placeholder="Enter physician name">
+                            <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name">
                         </div>
                         <div class="col-md-3" style="right: -10%">
                             <label for="reason">Reason:</label>
-                            <input type="text" class="form-control" id="reason" placeholder="Enter reason">
+                            <input type="text" class="form-control" id="reason" name="reason" placeholder="Enter reason">
                         </div>
-                        <div class="col-md-3" style="right: -20%">
+                        <div class="col-md-3" style="margin-right: 100; width: 50%;">
                             <label for="facility">What Facility:</label>
-                            <input type="text" class="form-control" id="facility" placeholder="Enter facility"> 
-                            <!-- Dropdown Menu -->
+                            <select name="facility" id="facility" class="form-control" style="width: 100%; max-width: 100%;">
+                                <option value="">Select Facility...</option>
+                                @foreach($facilities as $fact)
+                                    <option value="{{ $fact->id }}">{{ $fact->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
+                        
                 </div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
