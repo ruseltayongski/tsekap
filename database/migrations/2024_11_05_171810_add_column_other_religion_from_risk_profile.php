@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropUniqueIdFromRiskProfile extends Migration
+class AddColumnOtherReligionFromRiskProfile extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,8 @@ class DropUniqueIdFromRiskProfile extends Migration
      */
     public function up()
     {
-        //
         Schema::table('risk_profile', function (Blueprint $table) {
-            $table->dropColumn('unique_id');
+            $table->string('other_religion', 30)->nullable()->after('religion');
         });
     }
 
@@ -26,8 +25,5 @@ class DropUniqueIdFromRiskProfile extends Migration
     public function down()
     {
         //
-        Schema::table('risk_profile', function (Blueprint $table) {
-            $table->dropColumn('unique_id');
-        });
     }
 }

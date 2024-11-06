@@ -4,7 +4,8 @@
 Homestead.yaml
 Homestead.json
 .env
-/config/database.php
+
+config/database.php
 /app/Http/Controllers/AphroditeConnCtrl.php
 .idea/encodings.xml
 .idea/modules.xml

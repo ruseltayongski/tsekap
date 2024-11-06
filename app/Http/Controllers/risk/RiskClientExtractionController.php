@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\risk;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Profile;
-use App\RiskProfile;
-use App\ResuReportFacility;
 
 class RiskClientExtractionController extends Controller
 {
@@ -20,6 +17,7 @@ class RiskClientExtractionController extends Controller
                                     'civil_status','religion','contact','height','weight','phicID',)
                     ->where('id', $id)
                     ->first();
+
         // Check if profile exists
         if ($profile) {
             // Remove trailing whitespace from lname

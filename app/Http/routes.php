@@ -377,6 +377,7 @@ Route::get('logout',function(){
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
 
     Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
+    Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
@@ -455,4 +456,4 @@ Route::get('/RiskAssessment', function () {
 //risk get profile verification
 Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
 Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
-Route::post('/patient-risk-form', 'risk\RiskProfileController@SubmitRiskPForm')->name('patient-risk-form');
+Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');

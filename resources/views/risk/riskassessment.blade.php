@@ -117,8 +117,39 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="religion" id="religion" value="">
+                                <select class="form-control chosen-select" name="religion" id="religion" onchange="showOtherReligionField()">
+                                    <option value="">Select religion</option>
+                                    <option value="Roman Catholic">Roman Catholic</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
+                                    <option value="Evangelical">Evangelical</option>
+                                    <option value="Seventh-day Adventist">Seventh-day Adventist</option>
+                                    <option value="Aglipayan Church">Aglipayan/Iglesia Filipina Independiente</option>
+                                    <option value="Bible Baptist Church">Bible Baptist Church</option>
+                                    <option value="United Church of Christ in the Philippines">United Church of Christ in the Philippines</option>
+                                    <option value="Jehovah’s Witnesses">Jehovah’s Witnesses</option>
+                                    <option value="Church of Christ">Church of Christ</option>
+                                    <option value="Latter-Day Saints">Latter-Day Saints</option>
+                                    <option value="Assemblies of God">Assemblies of God</option>
+                                    <option value="Kingdom of Jesus Christ">Kingdom of Jesus Christ</option>
+                                    <option value="Baptists">Baptists</option>
+                                    <option value="Methodists">Methodists</option>
+                                    <option value="Episcopal Church in the Philippines">Episcopal Church in the Philippines</option>
+                                    <option value="Hinduism">Hinduism</option>
+                                    <option value="Buddhism">Buddhism</option>
+                                    <option value="Judaism">Judaism</option>
+                                    <option value="Baha'i">Baha'i</option>
+                                    <option value="Jainism">Jainism</option>
+                                    <option value="Others">Others</option>
+                                </select> 
                             </div>
+                            
+                            <!-- This div will only appear if Others in religion is selected -->
+							<div class="col-md-3" id="other-religion-div" style="display:none;">
+								<label for="other_religion">Specify Other Religion <span class="text-danger">*</span></label>
+								<input type="text" class="form-control" name="other_religion" id="other_religion" placeholder="Please specify religion">
+							</div>
+
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="contact" id="contact" value="">
@@ -174,8 +205,8 @@
                                 </select>
                             </div>
                             <div class="col-md-3 d-flex align-items-center">
-                                <label class="mr-2">Indigenous Person?</label><br>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
+                                <label class="mr-2">Indigenous Person:</label><br>
+                                <input type="checkbox" name="indigenous_person" id="indigenous_person">
                                 <label for="indigenous_person" class="ml-2">Yes</label>
                                 <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
                                 <label for="indigenous_person" class="ml-2">No</label>
@@ -183,11 +214,11 @@
                             </div>
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status:</label><br>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
+                                <input type="checkbox" name="employment_status" id="employment_status">
                                 <label for="employment_status" class="ml-2">Employed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
+                                <input type="checkbox" name="employment_status" id="employment_status">
                                 <label for="employment_status" class="ml-2">Unemployed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
+                                <input type="checkbox" name="employment_status" id="employment_status">
                                 <label for="employment_status" class="ml-2">Self-Employed</label>
                                 <br>
                             </div>
@@ -639,7 +670,7 @@
                                         5.5 Weight (kg) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="weight" value=""> 
+                                        <input type="text" class="textbox" id="weight" value="" oninput="calculateBMI()"> 
                                     </td>
                                 </tr>
                                 
@@ -648,7 +679,7 @@
                                         5.6 Height (cm) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="height" value=""> 
+                                        <input type="text" class="textbox" id="height" value="" oninput="calculateBMI()"> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -656,7 +687,7 @@
                                         5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="BMI" value=""> 
+                                        <input type="text" class="textbox" id="BMI" value="" readonly><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" value=""></span></i></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -949,7 +980,64 @@
     </div>
 </div>
 
-<script>
+<script language="javascript" type="text/javascript">
+
+    function bmiResultToStr(bmi){
+        let strVal = ""
+        if (bmi < 18.5) {
+            strVal = "Underweight";
+        } 
+        else if (bmi < 24.9) {
+            strVal = "Normal weight";
+        } 
+        else if (bmi < 29.9) {
+            strVal = "Overweight";
+        } 
+        else if (bmi < 34.9) {
+            strVal = "Obesity class 1";
+        } 
+        else if (bmi < 39.9) {
+            strVal = "Obesity class 2";
+        } 
+        else if (bmi > 40) {
+            strVal = "Obesity class 3";
+        } 
+        else {
+            strVal = "Error...";
+        }
+
+        return strVal;
+    }
+    
+    function calculateBMI(){
+        let weight = parseFloat(document.getElementById('weight').value);
+        let height = parseFloat(document.getElementById('height').value);
+
+        if(weight > 0 && height > 0){
+            let heightInMeters = height / 100;
+            let bmi = weight / (heightInMeters * heightInMeters);
+            
+            // set BMI values
+            document.getElementById('BMI').value = bmi.toFixed(2);
+            document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
+        }
+        else{
+            document.getElementById('BMI').value = "";
+            document.getElementById('bmiStrVal').textContent = "";
+        }
+    }
+
+	function showOtherReligionField() {
+    	let religionSelect = document.getElementById("religion");
+    	let otherReligionDiv = document.getElementById("other-religion-div");
+    	if (religionSelect.value === "Others") {
+     	   otherReligionDiv.style.display = "block";
+   	 	} 
+		else {
+  	      otherReligionDiv.style.display = "none";
+   		}
+	}
+
 //  var baseUrl = "{{ url('sublist-patient') }}";
 //     function toggleCheckbox(checkbox) 
 //             { //BEHAVIOR SET-UP FOR CHECKBOX
