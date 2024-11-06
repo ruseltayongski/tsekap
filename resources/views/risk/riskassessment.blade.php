@@ -307,17 +307,17 @@
                     </div>
                 </div>
                 <div class="additional-inputs">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label for="physicianName">Physician Name:</label>
                             <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name">
                         </div>
-                        <div class="col-md-3" style="right: -10%">
+                        <div class="col-md-4">
                             <label for="reason">Reason:</label>
                             <input type="text" class="form-control" id="reason" name="reason" placeholder="Enter reason">
                         </div>
-                        <div class="col-md-3" style="margin-right: 100; width: 50%;">
+                        <div class="col-md-4">
                             <label for="facility">What Facility:</label>
-                            <select name="facility" id="facility" class="form-control" style="width: 100%; max-width: 100%;">
+                            <select  class="form-control chosen-select" name="facility" id="facility" style="width: 100%; max-width: 100%;">
                                 <option value="">Select Facility...</option>
                                 @foreach($facilities as $fact)
                                     <option value="{{ $fact->id }}">{{ $fact->name }}</option>
