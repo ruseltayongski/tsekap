@@ -194,16 +194,53 @@
                                 <label for="pwd_id">Persons with Disability ID Card No. if applicable:</label>
                                 <input type="text" class="form-control" name="pwd_id" id="pwd_id" value=""><br>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity:</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity">
+                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
                                     <option value="">Select an Option</option>
-                                    <option value="bisaya">Bisaya</option>
-                                    <option value="badjao">Badjao</option>
-                                    <option value="waray">Waray</option>
-                                    <option value="ati">Ati</option>
+                                    <option value="Cebuano">Cebuano</option> 
+                                    <option value="Bisaya">Bisaya</option>
+                                    <option value="Tagalog">Tagalog</option>
+                                    <option value="Waray">Waray</option>
+                                    <option value="Ilonggo">Illongo</option>
+                                    <option value="Bicolano">Bicolano</option>
+                                    <option value="Kampampangan">Kapampangan</option> 
+                                    <option value="Maguindanao">Maguindanao</option>
+                                    <option value="Pangasinan">Pangasinan</option>
+                                    <option value="Waray">Waray</option>
+                                    <option value="Ilonggo">Illongo</option>
+                                    <option value="Bicolano">Bicolano</option>
+                                    <option value="Badjao">Badjao</option>
+                                    <option value="Tausug">Tausug</option>
+                                    <option value="Maranao">Maranao</option>
+                                    <option value="Thai">Thai</option> 
+                                    <option value="Vietnamese">Vietnamese</option>
+                                    <option value="Indonesian">Indonesian</option>
+                                    <option value="Malaysian">Malaysian</option> 
+                                    <option value="Singaporean">Singaporean</option> 
+                                    <option value="Australian">Australian</option>
+                                    <option value="Chinese">Chinese</option> 
+                                    <option value="Indian">Indian</option>
+                                    <option value="American">American</option>
+                                    <option value="Canadian">Canadian</option>
+                                    <option value="Swiss">Swiss</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Korean">Korean</option>
+                                    <option value="British">British</option> 
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="French">French</option>
+                                    <option value="German">German</option>
+                                    <option value="Russian">Russian</option> 
+                                    <option value="Others">Others</option>
                                 </select>
                             </div>
+                            
+                            <!-- This div will only appear if Others in ethnicity is selected -->
+							<div class="col-md-3" id="other-ethnicity-div" style="display:none;">
+								<label for="other_ethnicity">Specify Other Ethnicity<span class="text-danger">*</span></label>
+								<input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity">
+							</div>
                             <div class="col-md-3 d-flex align-items-center">
                                 <label class="mr-2">Indigenous Person:</label><br>
                                 <input type="checkbox" name="indigenous_person" id="indigenous_person">
@@ -212,6 +249,8 @@
                                 <label for="indigenous_person" class="ml-2">No</label>
                                 <br>
                             </div>
+                            <div class="row"><br/></div>
+                            <br/>
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status:</label><br>
                                 <input type="checkbox" name="employment_status" id="employment_status">
@@ -222,7 +261,7 @@
                                 <label for="employment_status" class="ml-2">Self-Employed</label>
                                 <br>
                             </div>
-                        </div>
+                        </br>
                         <br>
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="submit" class="btn btn-success mx-2">Submit</button>
@@ -1035,6 +1074,17 @@
    	 	} 
 		else {
   	      otherReligionDiv.style.display = "none";
+   		}
+	}
+
+    function showOtherEthnicityField() {
+    	let ethnicitySelect = document.getElementById("ethnicity");
+    	let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
+    	if (ethnicitySelect.value === "Others") {
+     	   otherEthnicityDiv.style.display = "block";
+   	 	} 
+		else {
+  	      otherEthnicityDiv.style.display = "none";
    		}
 	}
 
