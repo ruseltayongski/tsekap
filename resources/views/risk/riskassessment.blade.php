@@ -721,123 +721,138 @@
                                 6.1 Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
                             </th>
                         </tr>
-
-                        <?php 
-                        // PHP array to define sections and inputs
-                        $sections = [
-                            "Blood Sugar" => [
-                                ["label" => "FBS Result", "type" => "text"],
-                                ["label" => "RBS Result", "type" => "text"],
-                                ["label" => "Date Taken", "type" => "date"]
-                            ],
-                            "Check if DM clinical symptoms are present" => [
-                                ["label" => "Polyphagia", "type" => "checkbox"],
-                                ["label" => "Polydipsia", "type" => "checkbox"],
-                                ["label" => "Polyuria", "type" => "checkbox"]
-                            ],
-                            "Lipid Profile" => [
-                                ["label" => "Total Cholesterol", "type" => "text"],
-                                ["label" => "HDL", "type" => "text"],
-                                ["label" => "LDL", "type" => "text"],
-                                ["label" => "VLDL", "type" => "text"],
-                                ["label" => "Triglyceride", "type" => "text"],
-                                ["label" => "Date Taken", "type" => "date"]
-                            ],
-                            "Urinalysis/ Urine Dipstick Test" => [
-                                ["label" => "Protein", "type" => "text"],
-                                ["label" => "Date Taken", "type" => "date"],
-                                ["label" => "Ketones", "type" => "text"],
-                                ["label" => "Date Taken", "type" => "date"]
-                            ]
-                        ];
-                        // Loop through the sections to generate the table rows
-                        foreach ($sections as $section => $inputs): ?>
-                            <tr>
-                                <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
-                                    <?= $section ?>
-                                </td>
-                                <td style="border: 1px solid #000; padding: 10px;">
-                                    <?php if ($inputs[0]['type'] === 'checkbox'): ?>
-                                        <div class="checkbox-group" style="display: flex; gap: 10px;">
-                                            <?php foreach ($inputs as $input): ?>
-                                                <label>
-                                                    <input type="checkbox" name="{{ strtolower(str_replace(' ', '_', $input['label'])) }}">
-                                                    <?= $input['label'] ?>
-                                                </label>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <?php foreach ($inputs as $input): ?>
-                                            <div style="margin-bottom: 10px;">
-                                                <label><?= $input['label'] ?>:</label>
-                                                <input type="{{ $input['type'] }}" name="{{ strtolower(str_replace(' ', '_', $input['label'])) }}" 
-                                                style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Blood Sugar
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <div style="margin-bottom: 10px;">
+                                    <label>FBS Result:</label>
+                                    <input type="text" name="fbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>RBS Result:</label>
+                                    <input type="text" name="rbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Date Taken:</label>
+                                    <input type="date" name="bloodSugar_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="<?= date('Y-m-d') ?>">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Check if DM clinical symptoms are present
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <input type="checkbox" name="dm_symptoms[]" value="polyphagia"> Polyphagia
+                                <input type="checkbox" name="dm_symptoms[]" value="polydipsia"> Polydipsia
+                                <input type="checkbox" name="dm_symptoms[]" value="polyuria"> Polyuria
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Lipid Profile
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <div style="margin-bottom: 10px;">
+                                    <label>Total Cholesterol:</label>
+                                    <input type="text" name="lipid_cholesterol" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>HDL:</label>
+                                    <input type="text" name="lipid_hdl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>LDL:</label>
+                                    <input type="text" name="lipid_ldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>VLDL::</label>
+                                    <input type="text" name="lipid_vldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Triglyceride:</label>
+                                    <input type="text" name="lipid_triglyceride" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Date Taken:</label>
+                                    <input type="date" name="lipid_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="<?= date('Y-m-d') ?>">
+                                </div>
+                            </td>
+                        </tr>
+                       
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Urinalysis/ Urine Dipstick Test
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <div style="margin-bottom: 10px;">
+                                    <label>Protein::</label>
+                                    <input type="text" name="uri_protein" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Date Taken::</label>
+                                    <input type="date" name="uri_protein_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="<?= date('Y-m-d') ?>">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Ketones:</label>
+                                    <input type="text" name="uri_ketones" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                                <div style="margin-bottom: 10px;">
+                                    <label>Date Taken:</label>
+                                    <input type="date" name="uri_ketones_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="<?= date('Y-m-d') ?>">
+                                </div>
+                            </td>
+                        </tr>
+                        
                         <tr>
                             <th colspan="2" style="border: 1px solid #000; padding: 10px; background-color: #f2f2f2;">
                                 6.2 Chronic Respiratory Disease (Asthma and COPD)
                             </th>
                         </tr>
-
-                        <?php 
-                // PHP array to define sections and inputs
-                    $sections = [
-                        "CHECK all applicable" => [
-                            ["label" => "Breathlessness (or a 'need for air')", "type" => "checkbox"],
-                            ["label" => "Chronic cough", "type" => "checkbox"],
-                            ["label" => "Sputum (mucous) production", "type" => "checkbox"],
-                            ["label" => "Chest tightness", "type" => "checkbox"],
-                            ["label" => "Wheezing", "type" => "checkbox"]
-                        ],
-                        "If YES to any of the symptoms, obtain peak expiratory flow rate (PEFR). 
-                        Give inhaled salbutamol, then repeat after 15 minutes." => [
-                            "RESULTS" => [
-                                ["label" => ">20% change from baseline (consider Probable Asthma)", "type" => "checkbox"],
-                                ["label" => "<20% change from baseline (consider Probable COPD)", "type" => "checkbox"]
-                            ]
-                        ]
-                    ];
-
-                    // Loop through the sections to generate the table rows
-                    foreach ($sections as $section => $inputs): ?>
                         <tr>
-                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold; width: 25%;">
-                                <?= $section ?>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                CHECK all applicable
                             </td>
-                            <td style="border: 1px solid #000; padding: 10px;">
-                                <div class="checkbox-group" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                                <?php if (is_array($inputs) && isset($inputs['RESULTS'])): ?>
-                                            <p><strong>Results:</strong></p>
-                                            <div class="checkbox-group" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                                <?php foreach ($inputs['RESULTS'] as $input): ?>
-                                                    <label style="display: flex; align-items: center; gap: 5px;">
-                                                        <input type="<?= $input['type'] ?>" name="<?= strtolower(str_replace(' ', '_', $input['label'])) ?>"> 
-                                                        <?= $input['label'] ?> 
-                                                    </label>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php else: ?>
-                                            <div class="checkbox-group" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                                <?php foreach ($inputs as $input): ?>
-                                                    <label style="display: flex; align-items: center; gap: 5px;">
-                                                        <input type="<?= $input['type'] ?>" name="<?= strtolower(str_replace(' ', '_', $input['label'])) ?>"> 
-                                                        <?= $input['label'] ?> 
-                                                    </label>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        <?php endif; ?>
+                            <td style="border: 1px solid #000; padding: 10px; ">
+                                <div class="checkbox-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                    <label style="margin-right: 20px;">
+                                        <input type="checkbox" name="symptom_breathlessness" value="1"> Breathlessness (or a 'need for air')
+                                    </label>
+                                    <label style="margin-right: 20px;">
+                                        <input type="checkbox" name="symptom_sputum_production" value="1"> Sputum (mucous) production
+                                    </label>
+                                    <label style="margin-right: 20px;">
+                                        <input type="checkbox" name="symptom_chronic_cough" value="1"> Chronic cough
+                                    </label>
+                                    <label style="margin-right: 20px;">
+                                        <input type="checkbox" name="symptom_chest_tightness" value="1"> Chest tightness
+                                    </label>
+                                    <label style="margin-right: 20px;">
+                                        <input type="checkbox" name="symptom_wheezing" value="1"> Wheezing
+                                    </label>
                                 </div>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                If YES to any of the symptoms, obtain peak expiratory flow rate (PEFR).
+                                <br> Give inhaled salbutamol, then repeat after 15 minutes.
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <div class="checkbox-group" style="display: flex; flex-direction: column; gap: 5px;">
+                                    <label>
+                                        <input type="checkbox" name="pefr_above_20_percent" value="1"> &gt; 20% change from baseline (consider Probable Asthma)
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" name="pefr_below_20_percent" value="1"> &lt; 20% change from baseline (consider Probable COPD)
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                     </div>
-
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
                             <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
@@ -845,7 +860,7 @@
                     </div>
                 </div>
 
-            <div class="form-step" id="form-step-5" style="display: none;">
+        <div class="form-step" id="form-step-5" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
                     <div>

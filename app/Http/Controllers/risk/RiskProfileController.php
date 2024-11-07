@@ -115,15 +115,74 @@ class RiskProfileController extends Controller
         $riskform->rf_waistCircum = $req->input('rf_waist', '');
         $riskform->rf_bloodPressure = $req->input('rf_bloodPressure', '');
 
-         //RISK SCREENING
+        //RISK SCREENING
            // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
-              $riskForm->fbs_result = $req->input('fbs_result', '');
-              $riskForm->rbs_result = $req->input('rbs_result', '');
-              $riskForm->date_taken_fbs_rbs = $req->input('date_taken_fbs_rbs', '');
 
-              
+           $dmSymptoms = $req->input('dm_symptoms', []);
 
+           $riskform->rs_bloodSugar_fbs = $req->input('fbs_result', ' ');
+           $riskform->rs_bloodSugar_rbs = $req->input('rbs_result', ' ');
+           $riskform->rs_bloodSugar_date_taken = $req->input('bloodSugar_date_taken', '');
+           $riskform->rs_bloodSugar_symptoms = implode(', ', $dmSymptoms);
+           $riskform->rs_lipid_cholesterol = $req->input('lipid_cholesterol', ''); 
+           $riskform->rs_lipid_hdl = $req->input('lipid_hdl', ''); 
+           $riskform->rs_lipid_ldl = $req->input('lipid_ldl', ''); 
+           $riskform->rs_lipid_vldl = $req->input('lipid_vldl', ''); 
+           $riskform->rs_lipid_triglyceride = $req->input('lipid_triglyceride', ''); 
+           $riskform->rs_lipid_date_taken = $req->input('lipid_date_taken', date('Y-m-d'));
+           $riskform->rs_urine_protein = $req->input('uri_protein', '');
+           $riskform->rs_urine_protein_date_taken = $req->input('uri_protein_date_taken', date('Y-m-d'));
+           $riskform->rs_urine_ketones = $req->input('uri_ketones', '');
+           $riskform->rs_urine_ketones_date_taken = $req->input('uri_ketones_date_taken', date('Y-m-d'));
+          
+          $symptoms = [];
 
+          // Check each checkbox and add the label to the array if selected
+          if ($req->has('symptom_breathlessness')) {
+              $symptoms[] = 'Breathlessness (or a \'need for air\')';
+          }
+          if ($req->has('symptom_sputum_production')) {
+              $symptoms[] = 'Sputum (mucous) production';
+          }
+          if ($req->has('symptom_chronic_cough')) {
+              $symptoms[] = 'Chronic cough';
+          }
+          if ($req->has('symptom_chest_tightness')) {
+              $symptoms[] = 'Chest tightness';
+          }
+          if ($req->has('symptom_wheezing')) {
+              $symptoms[] = 'Wheezing';
+          }
+
+          // Convert the array into a comma-separated string
+          $riskform->rs_Chronic_Respiratory_Disease = implode(', ', $symptoms);  // Store as a string
+
+          // For PEFR checkboxes, similarly store the selected labels as a comma-separated string
+          $pefr = [];
+          if ($req->has('pefr_above_20_percent')) {
+              $pefr[] = '20% change from baseline (consider Probable Asthma)';
+          }
+          if ($req->has('pefr_below_20_percent')) {
+              $pefr[] = '20% change from baseline (consider Probable COPD)';
+          }
+
+          // Convert the array into a comma-separated string for PEFR
+          $riskform->rs_if_yes_any_symptoms = implode(', ', $pefr);  // Store as a string
+          // Anti-Hypertensives: Store selected option and any specify text
+          $riskform->mngm_med_hypertension = $req->input('anti_hypertensives');
+          $riskform->mngm_med_hypertension_specify = $req->input('anti_hypertensives_specify');
+      
+          // Anti-Diabetes: Store selected option and any specify text, and type
+          $riskform->mngm_med_diabetes = $req->input('anti_diabetes');
+          $riskform->mngm_med_diabetes_options = $req->input('anti_diabetes_type');
+          $riskform->mngm_med_diabetes_specify = $req->input('anti_diabetes_specify');
+      
+          // Follow-up Date
+          $riskform->mngm_date_follow_up = $req->input('follow_up_date');
+      
+          // Remarks (Text area)
+          $riskform->mngm_remarks = $req->input('remarks');
+      
 
          // Save the data
          $riskform->save();
