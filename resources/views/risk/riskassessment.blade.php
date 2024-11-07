@@ -998,34 +998,40 @@
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
                                             <label>
-                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>" onchange="toggleAntiHypertensivesOptions()"> <?= $option ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
-                                    <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
-                                         style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                
+                                    <div id="antiHypertensivesOptions" style="display: none;">
+                                        <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
+                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
                                 </div>
                                 <br/>
-                                <!-- Anti-Diabetes -->
+                                <!-- Anti-Diabetes Section -->
                                 <div style="margin: 10px;">
                                     <label style="font-weight: bold;">b. Anti-Diabetes:</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
                                             <label>
-                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>" onchange="toggleAntiDiabetesOptions()"> <?= $option ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
- 
-                                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
-                                        <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
-                                            <label>
-                                                <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
-                                            </label>
-                                        <?php endforeach; ?>
+
+                                    <div id="antiDiabetesOptions" style="display: none;">
+                                        <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                            <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
+                                                <label>
+                                                    <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+
+                                        <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
+                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                     </div>
-                                    <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
-                                        style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
                             </td>
                         </tr>
@@ -1061,6 +1067,36 @@
 </div>
 
 <script language="javascript" type="text/javascript">
+
+    // controls the anti-hypertensive options
+    const toggleAntiHypertensivesOptions = () => {
+        const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
+        const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
+
+        const antiHypertensivesOptionsDiv = document.getElementById('antiHypertensivesOptions');
+
+        if (antiHypertensivesSelected && (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown')) {
+            antiHypertensivesOptionsDiv.style.display = 'block';
+        } else {
+            antiHypertensivesOptionsDiv.style.display = 'none';
+        }
+    }
+
+    // controls the anti-diabetic options
+    const toggleAntiDiabetesOptions = () => {
+        const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
+        const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
+
+        const antiDiabetesOptionsDiv = document.getElementById('antiDiabetesOptions');
+
+        if (antiDiabetesSelected && (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown')) {
+            antiDiabetesOptionsDiv.style.display = 'block';
+        } else {
+            antiDiabetesOptionsDiv.style.display = 'none';
+        }
+    }
+
+
     // controls the other religion field
 	const showOtherReligionField = () => {
     	let religionSelect = document.getElementById("religion");
