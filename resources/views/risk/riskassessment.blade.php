@@ -68,15 +68,15 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                                <input type="text" class="form-control" name="lname" maxlength="25" id="lname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="fname">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="fname" id="fname" value="">
+                                <input type="text" class="form-control" name="fname" maxlength="25" id="fname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="mname">Middle Name </label>
-                                <input type="text" class="form-control" name="mname" id="mname" value="">
+                                <input type="text" class="form-control" name="mname" maxlength="25" id="mname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="suffix">Suffix</label>
@@ -124,19 +124,18 @@
                                     <option value="Roman Catholic">Roman Catholic</option>
                                     <option value="Islam">Islam</option>
                                     <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
-                                    <option value="Evangelical">Evangelical</option>
                                     <option value="Seventh-day Adventist">Seventh-day Adventist</option>
-                                    <option value="Aglipayan Church">IFI/Aglipayan</option>
+                                    <option value="Iglesia Filipina Independiente">Iglesia Filipina Independiente/Aglipayan</option>
                                     <option value="Bible Baptist Church">Bible Baptist Church</option>
-                                    <option value="United Church of Christ in the Philippines">UCCP/Born-Again Church</option>
+                                    <option value="UCCP">United Church of Christ in The Philippines</option>
                                     <option value="Jehovah’s Witnesses">Jehovah’s Witnesses</option>
                                     <option value="Church of Christ">Church of Christ</option>
-                                    <option value="Latter-Day Saints">Latter-Day Saints/Mormons</option>
+                                    <option value="Latter-Day Saints">Latter-Day Saints</option>
                                     <option value="Assemblies of God">Assemblies of God</option>
                                     <option value="Kingdom of Jesus Christ">Kingdom of Jesus Christ</option>
+                                    <option value="Evangelical">Evangelical</option>
                                     <option value="Baptists">Baptists</option>
                                     <option value="Methodists">Methodists</option>
-                                    <option value="Episcopal Church in the Philippines">Episcopal Church</option>
                                     <option value="Hinduism">Hinduism</option>
                                     <option value="Buddhism">Buddhism</option>
                                     <option value="Judaism">Judaism</option>
@@ -149,12 +148,12 @@
                             <!-- This div will only appear if Others is selected -->
                             <div class="col-md-3" id="other-religion-div" style="display:none;">
                                 <label for="other_religion">Specify Other Religion <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="other_religion" id="other_religion" placeholder="Please specify">
+                                <input type="text" class="form-control" name="other_religion" id="other_religion" maxlength="50" placeholder="Please specify">
                             </div>
 
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="contact" id="contact" value="">
+                                <input type="text" class="form-control" name="contact" id="contact" maxlength="11" value="">
                             </div>
                             <div class="row"></div>
                             <div class="col-md-4">
@@ -178,23 +177,23 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="street">Street</label>
-                                <input type="text" class="form-control" name="street" id="street" value="">
+                                <input type="text" class="form-control" name="street" id="street" maxlength="25" value="">
                             </div>
                             <div class="col-md-4">
                                 <label for="purok">Purok</label>
-                                <input type="text" class="form-control" name="purok" id="purok" value="">
+                                <input type="text" class="form-control" name="purok" id="purok" maxlength="25" value="">
                             </div>
                             <div class="col-md-4">
                                 <label for="sitio">Sitio</label>
-                                <input type="text" class="form-control" name="sitio" id="sitio" value="">
+                                <input type="text" class="form-control" name="sitio" id="sitio" maxlength="25" value="">
                             </div>
                             <div class="col-md-5">
                                 <label for="phic_id">PhilHealth No.</label>
-                                <input type="text" class="form-control" name="phic_id" id="phic_id" value=""><br>
+                                <input type="text" class="form-control" name="phic_id" id="phic_id" maxlength="12" value=""><br>
                             </div>
                             <div class="col-md-7">
                                 <label for="pwd_id">Persons with Disability ID Card No. if applicable:</label>
-                                <input type="text" class="form-control" name="pwd_id" id="pwd_id" value=""><br>
+                                <input type="text" class="form-control" name="pwd_id" id="pwd_id" maxlength="13" value=""><br>
                             </div>
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity</label>
@@ -784,7 +783,6 @@
                 </div>
                        
             </div>
-
         <div class="form-step" id="form-step-4" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
@@ -992,10 +990,10 @@
                     <tbody>
                      <!-- Medications Section -->
                         <tr>
-                            <td style="font-weight: bold;">Medications</td>
+                            <td style="font-weight: bold; padding: 10px;">Medications</td>
                             <td>
                                 <!-- Anti-Hypertensives -->
-                                <div>
+                                <div style="margin: 10px;">
                                     <label style="font-weight: bold;">a. Anti-Hypertensives:</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
@@ -1007,9 +1005,9 @@
                                     <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
                                          style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
-
+                                <br/>
                                 <!-- Anti-Diabetes -->
-                                <div style="margin-top: 10px;">
+                                <div style="margin: 10px;">
                                     <label style="font-weight: bold;">b. Anti-Diabetes:</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
@@ -1018,7 +1016,7 @@
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
-
+ 
                                     <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
                                             <label>
@@ -1033,7 +1031,7 @@
                         </tr>
                         <!-- Date of Follow-up Section -->
                         <tr>
-                            <td style="font-weight: bold;">Date of Follow-up</td>
+                            <td style="font-weight: bold; padding: 10px;">Date of Follow-up</td>
                             <td>
                                 <input type="date" name="follow_up_date" value="<?= date('Y-m-d') ?>" 
                                     style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
@@ -1042,7 +1040,7 @@
 
                         <!-- Remarks Section -->
                         <tr>
-                            <td style="font-weight: bold;">Remarks</td>
+                            <td style="font-weight: bold; padding: 10px;">Remarks</td>
                             <td>
                                 <textarea name="remarks" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
                             </td>
@@ -1063,7 +1061,6 @@
 </div>
 
 <script language="javascript" type="text/javascript">
-    
     // controls the other religion field
 	const showOtherReligionField = () => {
     	let religionSelect = document.getElementById("religion");
