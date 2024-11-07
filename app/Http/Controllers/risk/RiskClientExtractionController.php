@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Profile;
+use App\RiskProfile;
 
 class RiskClientExtractionController extends Controller
 {

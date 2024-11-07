@@ -17,10 +17,12 @@ class CreateTableRiskForm extends Migration
             // Asses Redflag
             $table->increments('id'); // Auto-incrementing primary key
             $table->string('risk_profile_id',255)->nullable();
+            $table->string('ar_chestpain', 8)->nullable();
             $table->string('ar_diffBreath', 8)->nullable();
             $table->string('ar_lossOfConsciousness', 8)->nullable();
             $table->string('ar_slurredSpeech', 8)->nullable();
             $table->string('ar_facialAsymmetry', 8)->nullable();
+            $table->string('ar_weaknessNumbness', 8)->nullable();
             $table->string('ar_disoriented', 8)->nullable();
             $table->string('ar_chestRetraction', 8)->nullable();
             $table->string('ar_seizureConvulsion', 8)->nullable();
@@ -28,6 +30,7 @@ class CreateTableRiskForm extends Migration
             $table->string('ar_agitatedBehaivior', 8)->nullable();
             $table->string('ar_eyeInjury', 8)->nullable();
             $table->string('ar_severeInjuries', 8)->nullable();
+         
 
             //referral
             $table->string('ar_refer_physicianName', 100)->nullable();
@@ -92,12 +95,14 @@ class CreateTableRiskForm extends Migration
             $table->date('rs_urine_protein_date_taken')->nullable();
             $table->string('rs_urine_ketones', 5)->nullable();
             $table->date('rs_urine_ketones_date_taken')->nullable();
-            $table->string('rs_respiratory', 5)->nullable();
+            $table->string('rs_Chronic_Respiratory_Disease', 100)->nullable();
+            $table->string('rs_if_yes_any_symptoms', 100)->nullable();
 
             // Management (mngm_)
             $table->string('mngm_med_hypertension', 5)->nullable();
             $table->string('mngm_med_hypertension_specify', 100)->nullable();
             $table->string('mngm_med_diabetes', 5)->nullable();
+            $table->string('mngm_med_diabetes_options', 5)->nullable();
             $table->string('mngm_med_diabetes_specify', 100)->nullable();
             $table->date('mngm_date_follow_up')->nullable();
             $table->text('mngm_remarks')->nullable();
