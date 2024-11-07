@@ -10,7 +10,9 @@ use App\Facility;
 use App\Barangay;
 use App\Muncity;
 use App\Province;
-use App\Profile;
+use App\RiskProfile;
+use App\RiskFormAssesment;
+
 
 class RiskProfileController extends Controller     
 {
@@ -33,10 +35,10 @@ class RiskProfileController extends Controller
             ->get();
         return response()->json($barangay);
     }
-    
+
     public function SubmitRiskPForm(Request $req)
     {
-        //$user = Auth::user();
+        $user = Auth::user();
         $facilities = Facility::all();
         $facility = Facility::select('id','name','address','hospital_type')
         ->where('id', $user->facility_id)    
@@ -47,7 +49,36 @@ class RiskProfileController extends Controller
               $facilities = $fact;
           }
 
-        $riskform = new RiskFormAssesment();  
+          $riskprofile = new RiskProfile();
+
+          // Assign all the necessary values
+          $riskprofile->profile_id = $req->profile_id? $req->profile_id : null;
+          $riskprofile->fname = $req->fname;
+          $riskprofile->mname = $req->mname? $req->mname : null ;
+          $riskprofile->lname = $req->lname;
+          $riskprofile->suffix = $req->suffix? $req->suffix : null;
+          $riskprofile->sex = $req->sex;
+          $riskprofile->dob = $req->dateofbirth;
+          $riskprofile->age = $req->age;
+          $riskprofile->province_id = $req->province;
+          $riskprofile->municipal_id = $req->municipal;
+          $riskprofile->barangay_id = $req->barangay;
+          $riskprofile->sitio = $req->sitio? $req->sitio : null;
+          $riskprofile->street = $req->street? $req->street : null;
+          $riskprofile->purok = $req->purok? $req->purok : null;
+          $riskprofile->phic_id = $req->phic_id? $req->phic_id : null; // Ensure you use the correct field name here
+          $riskprofile->civil_status = $req->civil_status;
+          $riskprofile->religion = $req->religion;
+          $riskprofile->other_religion = $req->other_religion ? $req -> other_religion : null;
+          $riskprofile->pwd_id = $req->pwd_id? $req->pwd_id : null;
+          $riskprofile->ethnicity = $req->ethnicity;
+          $riskprofile->other_ethnicity = $req -> other_ethnicity ? $req -> other_ethnicity : null;
+          $riskprofile->indigenous_person = $req->indigenous_person;
+          $riskprofile->employment_status = $req->employment_status;
+          //$riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
+
+          $riskprofile->save();
+         $riskform = new RiskFormAssesment();  
 
          // Health assessment checkbox fields
           $riskform->ar_chestpain = $req->input('chest_pain', 'No');
@@ -185,7 +216,6 @@ class RiskProfileController extends Controller
          // Save the data
          $riskform->save();
         // Redirect after saving
-        return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');  
+        return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
-    
 }
