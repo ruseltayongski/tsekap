@@ -34,6 +34,22 @@ class RiskProfileController extends Controller
     
     public function SubmitRiskPForm(Request $req)
     {
+        // Define the fields to check for duplication
+        $duplicateCheck = [
+          'fname' => $req->fname,
+          'lname' => $req->lname,
+          'mname' => $req->mname,
+          'dob' => $req->dateofbirth
+        ];
+
+        // Check for duplicate in the RiskProfile table
+        $existingRiskProfile = RiskProfile::where($duplicateCheck)->first();
+
+        if ($existingRiskProfile) {
+          // Redirect with an error message if a duplicate is found
+          return redirect()->back()->with('error', 'Duplicate risk profile exists with the same data.');
+        }
+
         $user = Auth::user();
 
         $riskprofile = new RiskProfile();

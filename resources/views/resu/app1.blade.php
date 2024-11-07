@@ -218,11 +218,8 @@
             version 3.1
         </p>
         <p>Copyright &copy; 2024 DOH-RO7 All right reserved</p>
-
     </div>
 </footer>
-
-<!-- @include('modal') -->
 
         <!-- Bootstrap core JavaScript
     ================================================== -->

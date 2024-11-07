@@ -1,7 +1,7 @@
 @extends('resu/app1')
 @section('content')
-@include('risk/riskSidebar')
-@include('risk.risk_check_profile.riskCheckProfile');
+<!-- @include('risk/riskSidebar') -->
+@include('risk.risk_check_profile.riskCheckProfile')
 
 <?php
  use App\Muncity;
@@ -21,7 +21,8 @@
  $muncities = Muncity::select('id', 'description')->get();
 
 ?>
-    <div class="col-md-8 wrapper" style="flex-direction: column; justify-content: center; align-items: center; padding-bottom: 5%">
+    <div class="col-md-12 wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="col-md-8 wrapper" style="padding-bottom: 5%">
        <div class="alert alert-jim">
         <h2 class="page-header"  style="text-align: center">
             <i class="fa fa-user"></i>&nbsp; PHILPEN RISK ASSESSMENT FORM (REVISED 2022)
@@ -33,7 +34,7 @@
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}">
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
-            <div class="form-step" id="form-step-1" style="display: block">
+            <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
                         <!-- <h4 class="patient-font" style="background-color: #727DAB;color: white;padding: 3px;margin-top: -28px; ">Patient Informations</h4> -->
@@ -193,9 +194,6 @@
                             </div>
                         </div>
                         <br>
-                        <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <button type="submit" class="btn btn-success mx-2">Submit</button>
-                        </div>
                     </div>
                     <div class="col-md-12">
                         <div>
@@ -207,7 +205,6 @@
                         <div style="display: flex; justify-content: end">
                             <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
                         </div>
-                        <!-- <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button> -->
                         <br>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center; ">
@@ -324,7 +321,6 @@
                 </div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
                              <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
                         </div>
                  </div>
@@ -948,6 +944,7 @@
         </form>
     </div>
 </div>
+</div>
 
 <script>
 //  var baseUrl = "{{ url('sublist-patient') }}";
@@ -1023,6 +1020,27 @@
     function toggleCheckbox(currentId, otherId) {
         document.getElementById(otherId).checked = false;
     }
+    
+    // Lobibox notifications
+    document.addEventListener('DOMContentLoaded', function() {
+        @if (session('success'))
+            Lobibox.notify('success', {
+                title: 'Success',
+                msg: "{{ session('success') }}",
+                rounded: true,
+                delay: 5000
+            });
+        @endif
+
+        @if (session('error'))
+            Lobibox.notify('error', {
+                title: 'Error',
+                msg: "{{ session('error') }}",
+                rounded: true,
+                delay: 5000
+            });
+        @endif
+    });
 </script>
 @endsection
 
