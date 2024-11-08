@@ -74,6 +74,7 @@ class RiskProfileController extends Controller
         $riskprofile->sex = $req->sex;
         $riskprofile->dob = $req->dateofbirth;
         $riskprofile->age = $req->age;
+        $riskprofile->contact = $req->contact;
         $riskprofile->province_id = $req->province;
         $riskprofile->municipal_id = $req->municipal;
         $riskprofile->barangay_id = $req->barangay;

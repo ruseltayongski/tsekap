@@ -157,7 +157,7 @@
 
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="contact" id="contact" maxlength="11" value="">
+                                <input type="text" class="form-control" name="contact" id="contact" maxlength="11">
                             </div>
                             <div class="row"></div>
                             <div class="col-md-4">
@@ -672,7 +672,7 @@
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
-                                   <tr>     
+                                <tr>     
                                     <td>5.1 Tobacco Use</td>
                                     <td>
                                         <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
@@ -683,38 +683,8 @@
                                             If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
                                         </p>
                                     </td>
-                                   <tr>     
-                                    <td>5.1 Tobacco Use</td>
-                                    <td>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" value="Exposure to secondhand smoke"> Exposure to secondhand smoke <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" value="Former tobacco user"> Former tobacco user (stopped smoking > 1 year) <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" value="Current tobacco user"> Current tobacco user (currently smoking or stopped smoking) <br> <br>
-                                        <p style="font-style: italic; font-size: 15px;">
-                                            If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
-                                        </p>
-                                    </td>
-                                       
-                                    </tr>
                                 <tr>
                                     <td>5.2 Alcohol Intake</td>
-                                <td>
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" value="No"> Never Consumed 
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
-                                    
-                                    <br><br>
-                                    <label id="bingeLabel" style="opacity: 0.5;">
-                                        <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge" name="ncd_alcoholBinge"value="Yes">
-                                        Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
-                                    </label>
-                                    <br><br>
-
-                                    <p style="font-style: italic; font-size: 15px;">
-                                        If NO, congratulate the patient. The patient is at a lower risk of drinking alcohol.<br>
-                                        If YES, proceed using AUDIT SCREENING TOOL (Form 2) to assess alcohol consumption and alcohol problems. 
-                                        If binge drinker, provide brief advice and/or extended brief advice. The patient is on the higher risk category level of drinking or in harmful use of alcohol.
-                                    </p>
-                                </td>
                                 <td>
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" value="No"> Never Consumed 
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
@@ -1164,24 +1134,6 @@
             });
         });
     }); 
-
-    // BMI calculation function
-    const calculateBMI = () => {
-        let weight = parseFloat(document.getElementById('weight').value);
-        let height = parseFloat(document.getElementById('height').value);
-
-        if (weight > 0 && height > 0) {
-            let heightInMeters = height / 100;
-            let bmi = weight / (heightInMeters * heightInMeters);
-            
-            // Set BMI values in the UI
-            document.getElementById('BMI').value = bmi.toFixed(2);
-            document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
-        } else {
-            document.getElementById('BMI').value = "";
-            document.getElementById('bmiStrVal').textContent = "";
-        }
-    }
 
     // Toggle checkbox behavior (mutual exclusivity)
     const toggleCheckbox = (yesId, noId) => {
