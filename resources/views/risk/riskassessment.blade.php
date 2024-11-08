@@ -10,6 +10,7 @@
  
  $user = Auth::user();
    $facilities = Facility::select('id', 'name')->get();
+   $facilities = Facility::select('id', 'name')->get();
  $facility = Facility::select('id','name','address','hospital_type')
  ->where('id', $user->facility_id)    
  ->get();
@@ -71,15 +72,15 @@
                             <input type="hidden" name="profile_id" id="profile_id">
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                                <input type="text" class="form-control" name="lname" maxlength="25" id="lname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="fname">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="fname" id="fname" value="">
+                                <input type="text" class="form-control" name="fname" maxlength="25" id="fname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="mname">Middle Name </label>
-                                <input type="text" class="form-control" name="mname" id="mname" value="">
+                                <input type="text" class="form-control" name="mname" maxlength="25" id="mname" value="">
                             </div>
                             <div class="col-md-3">
                                 <label for="suffix">Suffix</label>
@@ -122,11 +123,41 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="religion" id="religion" value="">
+                                <select class="form-control chosen-select" name="religion" id="religion" onchange="showOtherReligionField()">
+                                    <option value="">Select Religion</option>
+                                    <option value="Roman Catholic">Roman Catholic</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Iglesia ni Cristo">Iglesia ni Cristo</option>
+                                    <option value="Seventh-day Adventist">Seventh-day Adventist</option>
+                                    <option value="Iglesia Filipina Independiente">Iglesia Filipina Independiente/Aglipayan</option>
+                                    <option value="Bible Baptist Church">Bible Baptist Church</option>
+                                    <option value="UCCP">United Church of Christ in The Philippines</option>
+                                    <option value="Jehovah’s Witnesses">Jehovah’s Witnesses</option>
+                                    <option value="Church of Christ">Church of Christ</option>
+                                    <option value="Latter-Day Saints">Latter-Day Saints</option>
+                                    <option value="Assemblies of God">Assemblies of God</option>
+                                    <option value="Kingdom of Jesus Christ">Kingdom of Jesus Christ</option>
+                                    <option value="Evangelical">Evangelical</option>
+                                    <option value="Baptists">Baptists</option>
+                                    <option value="Methodists">Methodists</option>
+                                    <option value="Hinduism">Hinduism</option>
+                                    <option value="Buddhism">Buddhism</option>
+                                    <option value="Judaism">Judaism</option>
+                                    <option value="Baha'i">Baha'i</option>
+                                    <option value="Jainism">Jainism</option>
+                                    <option value="Others">Others</option>
+                                </select>
                             </div>
+                            
+                            <!-- This div will only appear if Others is selected -->
+                            <div class="col-md-3" id="other-religion-div" style="display:none;">
+                                <label for="other_religion">Specify Other Religion <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="other_religion" id="other_religion" maxlength="50" placeholder="Please specify">
+                            </div>
+
                             <div class="col-md-3">
                                 <label for="contact">Contact Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="contact" id="contact" value="">
+                                <input type="text" class="form-control" name="contact" id="contact" maxlength="11" value="">
                             </div>
                             <div class="row"></div>
                             <div class="col-md-4">
@@ -139,7 +170,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="municipal">Municipal <span class="text-danger">*</span></label>
+                                <label for="municipal">Municipality/City <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal" id="municipal">
                                 </select>
                             </div>
@@ -150,54 +181,102 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="street">Street</label>
-                                <input type="text" class="form-control" name="street" id="street" value="">
+                                <input type="text" class="form-control" name="street" id="street" maxlength="25" value="">
                             </div>
                             <div class="col-md-4">
                                 <label for="purok">Purok</label>
-                                <input type="text" class="form-control" name="purok" id="purok" value="">
+                                <input type="text" class="form-control" name="purok" id="purok" maxlength="25" value="">
                             </div>
                             <div class="col-md-4">
                                 <label for="sitio">Sitio</label>
-                                <input type="text" class="form-control" name="sitio" id="sitio" value="">
+                                <input type="text" class="form-control" name="sitio" id="sitio" maxlength="25" value="">
                             </div>
                             <div class="col-md-5">
                                 <label for="phic_id">PhilHealth No.</label>
-                                <input type="text" class="form-control" name="phic_id" id="phic_id" value=""><br>
+                                <input type="text" class="form-control" name="phic_id" id="phic_id" maxlength="12" value=""><br>
                             </div>
                             <div class="col-md-7">
                                 <label for="pwd_id">Persons with Disability ID Card No. if applicable:</label>
-                                <input type="text" class="form-control" name="pwd_id" id="pwd_id" value=""><br>
+                                <input type="text" class="form-control" name="pwd_id" id="pwd_id" maxlength="13" value=""><br>
                             </div>
                             <div class="col-md-3">
-                                <label for="ethnicity">Ethnicity:</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity">
-                                    <option value="">Select an Option</option>
-                                    <option value="bisaya">Bisaya</option>
-                                    <option value="badjao">Badjao</option>
-                                    <option value="waray">Waray</option>
-                                    <option value="ati">Ati</option>
+                                <label for="ethnicity">Ethnicity</label>
+                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
+                                    <option value="">Select Ethnicity</option>
+                                    <option value="Cebuano">Cebuano</option> 
+                                    <option value="Bisaya">Bisaya</option>
+                                    <option value="Tagalog">Tagalog</option>
+                                    <option value="Waray">Waray</option>
+                                    <option value="Ilonggo">Illongo</option>
+                                    <option value="Bicolano">Bicolano</option>
+                                    <option value="Kampampangan">Kapampangan</option> 
+                                    <option value="Maguindanao">Maguindanao</option>
+                                    <option value="Pangasinan">Pangasinan</option>
+                                    <option value="Waray">Waray</option>
+                                    <option value="Ilonggo">Illongo</option>
+                                    <option value="Bicolano">Bicolano</option>
+                                    <option value="Badjao">Badjao</option>
+                                    <option value="Tausug">Tausug</option>
+                                    <option value="Maranao">Maranao</option>
+                                    <option value="Thai">Thai</option> 
+                                    <option value="Vietnamese">Vietnamese</option>
+                                    <option value="Indonesian">Indonesian</option>
+                                    <option value="Malaysian">Malaysian</option> 
+                                    <option value="Singaporean">Singaporean</option> 
+                                    <option value="Australian">Australian</option>
+                                    <option value="Chinese">Chinese</option> 
+                                    <option value="Indian">Indian</option>
+                                    <option value="American">American</option>
+                                    <option value="Canadian">Canadian</option>
+                                    <option value="Swiss">Swiss</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="Korean">Korean</option>
+                                    <option value="British">British</option> 
+                                    <option value="Spanish">Spanish</option>
+                                    <option value="French">French</option>
+                                    <option value="German">German</option>
+                                    <option value="Russian">Russian</option> 
+                                    <option value="Others">Others</option>
                                 </select>
                             </div>
+                            
+                            <!-- This div will only appear if Others is selected -->
+                            <div class="col-md-3" id="other-ethnicity-div" style="display:none;">
+                                <label for="other_ethnicity">Specify Other Ethnicity <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity">
+                            </div> 
                             <div class="col-md-3 d-flex align-items-center">
-                                <label class="mr-2">Indigenous Person?</label><br>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
-                                <label for="indigenous_person" class="ml-2">Yes</label>
-                                <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
-                                <label for="indigenous_person" class="ml-2">No</label>
-                                <br>
+                                <label class="mr-2">Indigenous Person</label><br>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
+                                    <label for="indigenous_person" class="ml-2">Yes</label>
+                                </span>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
+                                    <label for="indigenous_person" class="ml-2">No</label>
+                                </span>
+                                <br/>
                             </div>
+                            <div class="row"></div>
+                            <br/> 
                             <div class="col-md-6 d-flex align-items-center">
-                                <label class="mr-2">Employment Status:</label><br>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
-                                <label for="employment_status" class="ml-2">Employed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
-                                <label for="employment_status" class="ml-2">Unemployed</label>
-                                <input type="checkbox" name="employment_status" id="employment_status" value="employed">
-                                <label for="employment_status" class="ml-2">Self-Employed</label>
+                                <label class="mr-2">Employment Status</label><br>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="employment_status" id="employment_status" value="employed">
+                                    <label for="employment_status" class="ml-2">Employed</label>
+                                </span>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="employment_status" id="employment_status" value="unemployed">
+                                    <label for="employment_status" class="ml-2">Unemployed</label>
+                                </span>
+                                <span style="padding-right: 10px;">
+                                    <input type="checkbox" name="employment_status" id="employment_status" value="self-employed">
+                                    <label for="employment_status" class="ml-2">Self-Employed</label>                                   
+                                </span> 
                                 <br>
                             </div>
                         </div>
-                        <br>
+                        <br/><br/>
                     </div>
                     <div class="col-md-12">
                         <div>
@@ -604,10 +683,38 @@
                                             If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
                                         </p>
                                     </td>
+                                   <tr>     
+                                    <td>5.1 Tobacco Use</td>
+                                    <td>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" value="Exposure to secondhand smoke"> Exposure to secondhand smoke <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" value="Former tobacco user"> Former tobacco user (stopped smoking > 1 year) <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" value="Current tobacco user"> Current tobacco user (currently smoking or stopped smoking) <br> <br>
+                                        <p style="font-style: italic; font-size: 15px;">
+                                            If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
+                                        </p>
+                                    </td>
                                        
                                     </tr>
                                 <tr>
                                     <td>5.2 Alcohol Intake</td>
+                                <td>
+                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" value="No"> Never Consumed 
+                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
+                                    
+                                    <br><br>
+                                    <label id="bingeLabel" style="opacity: 0.5;">
+                                        <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge" name="ncd_alcoholBinge"value="Yes">
+                                        Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
+                                    </label>
+                                    <br><br>
+
+                                    <p style="font-style: italic; font-size: 15px;">
+                                        If NO, congratulate the patient. The patient is at a lower risk of drinking alcohol.<br>
+                                        If YES, proceed using AUDIT SCREENING TOOL (Form 2) to assess alcohol consumption and alcohol problems. 
+                                        If binge drinker, provide brief advice and/or extended brief advice. The patient is on the higher risk category level of drinking or in harmful use of alcohol.
+                                    </p>
+                                </td>
                                 <td>
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" value="No"> Never Consumed 
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
@@ -914,48 +1021,54 @@
                     <tbody>
                      <!-- Medications Section -->
                         <tr>
-                            <td style="font-weight: bold;">Medications</td>
+                            <td style="font-weight: bold; padding: 10px;">Medications</td>
                             <td>
                                 <!-- Anti-Hypertensives -->
-                                <div>
+                                <div style="margin: 10px;">
                                     <label style="font-weight: bold;">a. Anti-Hypertensives:</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
                                             <label>
-                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>" onchange="toggleAntiHypertensivesOptions()"> <?= $option ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
-                                    <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
-                                         style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                
+                                    <div id="antiHypertensivesOptions" style="display: none;">
+                                        <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
+                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
                                 </div>
-
-                                <!-- Anti-Diabetes -->
-                                <div style="margin-top: 10px;">
+                                <br/>
+                                <!-- Anti-Diabetes Section -->
+                                <div style="margin: 10px;">
                                     <label style="font-weight: bold;">b. Anti-Diabetes:</label>
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
                                         <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
                                             <label>
-                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>"> <?= $option ?>
+                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>" onchange="toggleAntiDiabetesOptions()"> <?= $option ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
 
-                                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
-                                        <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
-                                            <label>
-                                                <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
-                                            </label>
-                                        <?php endforeach; ?>
+                                    <div id="antiDiabetesOptions" style="display: none;">
+                                        <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                            <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
+                                                <label>
+                                                    <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+
+                                        <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
+                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                     </div>
-                                    <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
-                                        style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
                             </td>
                         </tr>
                         <!-- Date of Follow-up Section -->
                         <tr>
-                            <td style="font-weight: bold;">Date of Follow-up</td>
+                            <td style="font-weight: bold; padding: 10px;">Date of Follow-up</td>
                             <td>
                                 <input type="date" name="follow_up_date" value="<?= date('Y-m-d') ?>" 
                                     style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
@@ -964,7 +1077,7 @@
 
                         <!-- Remarks Section -->
                         <tr>
-                            <td style="font-weight: bold;">Remarks</td>
+                            <td style="font-weight: bold; padding: 10px;">Remarks</td>
                             <td>
                                 <textarea name="remarks" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
                             </td>
@@ -985,7 +1098,106 @@
 </div>
 </div>
 
-<script>
+<script language="javascript" type="text/javascript">
+
+    // controls the anti-hypertensive options
+    const toggleAntiHypertensivesOptions = () => {
+        const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
+        const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
+
+        const antiHypertensivesOptionsDiv = document.getElementById('antiHypertensivesOptions');
+
+        if (antiHypertensivesSelected && (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown')) {
+            antiHypertensivesOptionsDiv.style.display = 'block';
+        } else {
+            antiHypertensivesOptionsDiv.style.display = 'none';
+        }
+    }
+
+    // controls the anti-diabetic options
+    const toggleAntiDiabetesOptions = () => {
+        const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
+        const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
+
+        const antiDiabetesOptionsDiv = document.getElementById('antiDiabetesOptions');
+
+        if (antiDiabetesSelected && (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown')) {
+            antiDiabetesOptionsDiv.style.display = 'block';
+        } else {
+            antiDiabetesOptionsDiv.style.display = 'none';
+        }
+    }
+
+    // controls the other religion field
+	const showOtherReligionField = () => {
+    	let religionSelect = document.getElementById("religion");
+    	let otherReligionDiv = document.getElementById("other-religion-div");
+    	if (religionSelect.value === "Others") {
+     	   otherReligionDiv.style.display = "block";
+   	 	} 
+		else {
+  	      otherReligionDiv.style.display = "none";
+   		}
+	}
+
+    // controls the other ethnicity field
+    const showOtherEthnicityField = () => {
+    	let ethnicitySelect = document.getElementById("ethnicity");
+    	let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
+    	if (ethnicitySelect.value === "Others") {
+     	   otherEthnicityDiv.style.display = "block";
+   	 	} 
+		else {
+  	      otherEthnicityDiv.style.display = "none";
+   		}
+	}
+
+    // Get all checkboxes with the name 'employment_status'
+    const employmentStatusCheckboxes = document.querySelectorAll('input[name="employment_status"]');
+
+    // controls the functionality for the employment checkbox
+    employmentStatusCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            // When one checkbox is checked, uncheck all others
+            employmentStatusCheckboxes.forEach((box) => {
+                if (box !== this) box.checked = false;
+            });
+        });
+    }); 
+
+    // BMI calculation function
+    const calculateBMI = () => {
+        let weight = parseFloat(document.getElementById('weight').value);
+        let height = parseFloat(document.getElementById('height').value);
+
+        if (weight > 0 && height > 0) {
+            let heightInMeters = height / 100;
+            let bmi = weight / (heightInMeters * heightInMeters);
+            
+            // Set BMI values in the UI
+            document.getElementById('BMI').value = bmi.toFixed(2);
+            document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
+        } else {
+            document.getElementById('BMI').value = "";
+            document.getElementById('bmiStrVal').textContent = "";
+        }
+    }
+
+    // Toggle checkbox behavior (mutual exclusivity)
+    const toggleCheckbox = (yesId, noId) => {
+        document.getElementById(yesId).addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById(noId).checked = false;
+            }
+        });
+
+        document.getElementById(noId).addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById(yesId).checked = false;
+            }
+        });
+    }
+    
     // Function to classify BMI result
     function bmiResultToStr(bmi) {
         let strVal = "";
@@ -1025,21 +1237,6 @@
         }
     }
 
-    // Toggle checkbox behavior (mutual exclusivity)
-    function toggleCheckbox(yesId, noId) {
-        document.getElementById(yesId).addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById(noId).checked = false;
-            }
-        });
-
-        document.getElementById(noId).addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById(yesId).checked = false;
-            }
-        });
-    }
-
     // Initialize checkbox toggling for each condition
     document.addEventListener('DOMContentLoaded', () => {
         // Toggle checkboxes for all conditions
@@ -1073,7 +1270,6 @@
         toggleCheckbox('alcoholYes', 'alcoholNever');
         toggleCheckbox('physicalYes', 'physicalNo');
         toggleCheckbox('nutritionDietYes', 'nutritionDietNo');
-
 
         // Show/hide additional inputs based on checkbox state
         const additionalInputs = document.querySelector('.additional-inputs');
