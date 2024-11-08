@@ -11,6 +11,9 @@ use App\Barangay;
 use App\Muncity;
 use App\Province;
 use App\RiskProfile;
+use App\Profile;
+use App\ResuProfileInjury;
+use App\ResuReportFacility;
 use App\RiskFormAssesment;
 
 
@@ -51,6 +54,7 @@ class RiskProfileController extends Controller
 
 
           $riskprofile = new RiskProfile();
+          $profile_id = new Profile();
 
           // Assign all the necessary values
           $riskprofile->profile_id = $req->profile_id? $req->profile_id : null;
@@ -80,6 +84,7 @@ class RiskProfileController extends Controller
          $riskform = new RiskFormAssesment();  
 
          // Health assessment checkbox fields
+          $riskform->risk_profile_id = $riskprofile->id; //passing id
           $riskform->ar_chestpain = $req->input('chest_pain', 'No');
           $riskform->ar_diffBreath = $req->input('difficulty_breathing', 'No');
           $riskform->ar_lossOfConsciousness = $req->input('loss_of_consciousness', 'No');
@@ -217,4 +222,86 @@ class RiskProfileController extends Controller
         // Redirect after saving
         return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
+
+     public function PatientRiskFormList(Request $request) { 
+                $user = Auth::user();
+                $keyword = $request->input('keyword');
+            
+                $query = RiskProfile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'civil_status','barangay_id', 'municipal_id', 'province_id', 'facility_id_updated','created_at')
+                    ->with([
+                        'facility' => function($query){
+                            $query->select('id', 'name');
+                        },
+                        'province' => function($query){
+                            $query->select('id', 'description');
+                        },
+                        'muncity' => function($query){
+                            $query->select('id', 'province_id', 'description');
+                        },
+                        'barangay' => function($query){
+                            $query->select('id','muncity_id', 'description');
+                        },
+                    ])
+                    ->orderby('id', 'desc');
+
+                if($user->user_priv == 6){ // for facility view
+                    if(!empty($keyword)){ //search functionality
+                        $query->where('facility_id_updated', $user->facility_id)
+                        ->where(function ($q) use ($keyword){
+                            $q->where('fname', 'like', "%$keyword%")
+                                ->orWhere('lname', 'like', "%$keyword%")
+                                ->orWhereHas('province', function ($q) use ($keyword){
+                                    $q->where('description','like', "%$keyword%");
+                                })
+                                ->orWhereHas('muncity', function ($q) use ($keyword){
+                                    $q->where('description', 'like', "%$keyword%");
+                                });
+                        });
+                    }
+                    $riskprofiles = $query->where('facility_id_updated', $user->facility_id)->simplePaginate(15);
+                    
+                } else if($user->user_priv == 7){ //Region view
+                    if(!empty($keyword)){ //search functionality
+                        $query->where(function ($q) use ($keyword){
+                            $q->where('fname', 'like', "%$keyword%")
+                                ->orWhere('lname', 'like', "%$keyword%")
+                                ->orWhereHas('province', function ($q) use ($keyword){
+                                    $q->where('description', 'like', "%$keyword%");
+                                })
+                                ->orWhereHas('muncity', function ($q) use ($keyword){
+                                    $q->where('description', 'like', "%$keyword%");
+                                });
+                        });
+                    }
+                    $riskprofiles = $query->simplePaginate(15);
+                
+                } else if($user->user_priv == 3){ //provincial
+                    if(!empty($keyword)){ //search functionality
+                        $query->where('province_id', $user->province)
+                            ->whereNotIn('province_id',['63','76','80'])    
+                        ->where(function ($q) use ($keyword){
+                            $q->where('fname', 'like', "%$keyword%")
+                                ->orWhere('lname', 'like', "%$keyword%")
+                                ->orWhereHas('muncity', function ($q) use ($keyword){
+                                    $q->where('description', 'like', "%$keyword%");
+                                });
+                        });
+                    }
+
+                    $riskprofiles = $query->where('province_id', $user->province)
+                        ->whereNotIn('province_id',['63','76','80'])
+                        ->simplePaginate(15);
+                }          
+
+                if ($request->ajax()) {
+                    return view('risk.riskprofilelist', compact('riskprofiles','user'))->render();
+                }
+
+                return view('risk.risklist', [
+                    'user_priv' => $user,
+                    'riskprofiles' => $riskprofiles, // Ensure the correct variable name is used
+                ]);
+            }
+
+        
 }

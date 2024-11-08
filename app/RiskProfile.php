@@ -24,7 +24,7 @@ class RiskProfile extends Model
     }
 
     public function muncity(){
-        return $this->belongsTo(Muncity::class, 'muncity_id');
+        return $this->belongsTo(Muncity::class, 'municipal_id');
     }
 
     public function barangay(){
@@ -33,6 +33,6 @@ class RiskProfile extends Model
 
     public function facility()
     {
-        return $this->belongsTo(Facility::class, 'facility_updated_at', 'id');
+        return $this->belongsTo(Facility::class, 'facility_id_updated', 'id');
     }   
 }
