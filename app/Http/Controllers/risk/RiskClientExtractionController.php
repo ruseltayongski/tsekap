@@ -7,7 +7,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Profile;
 use App\RiskProfile;
-use App\ResuReportFacility;
 
 class RiskClientExtractionController extends Controller
 {
