@@ -375,78 +375,82 @@ $(document).ready(function () {
     BarangayData(muncityId, "#barangay_injury");
   });
 
-  //display age base the birth date
-  // function calculateAge(dateOfBirth) {
-  //   const today = new Date();
-  //   const birthDate = new Date(dateOfBirth);
-  //   let age = today.getFullYear() - birthDate.getFullYear();
-  //   const monthDiff = today.getMonth() - birthDate.getMonth();
+  //display age base the birth date risk
+  function calculateAgeRisk(dateOfBirth) {
+    const today = new Date();
+    const birthDate = new Date(dateOfBirth);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
 
-  //   // If the birth month is in future compared to current month
-  //   if (
-  //     monthDiff < 0 ||
-  //     (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  //   ) {
-  //     age--;
+    // If the birth month is in future compared to current month
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  }
+
+  $("#dateofbirth").on("change", function () {
+    const dob = $(this).val();
+    const ageField = $("#age");
+
+    if (dob) {
+      const age = calculateAgeRisk(dob);
+      ageField.val(age);
+    } else {
+      ageField.val("");
+    }
+  });
+
+  //   function calculateAge(dateOfBirth, date_injury) {
+  //     const today = date_injury ? new Date(date_injury) : new Date(); 
+  //     const birthDate = new Date(dateOfBirth);
+
+  //     if (isNaN(birthDate)) {
+  //       console.error("Invalid Date of Birth");
+  //       return "Invalid date";
+  //     }
+
+  //     let years = today.getFullYear() - birthDate.getFullYear();
+  //     let months = today.getMonth() - birthDate.getMonth();
+  //     let days = today.getDate() - birthDate.getDate();
+
+  //     // Adjust years and months if today's date is before the birth date in the year
+  //     if (months < 0 || (months === 0 && days < 0)) {
+  //       years--;
+  //       months += 12;
+  //     }
+
+  //     // Adjust days and months if today's day is before the birth day in the month
+  //     if (days < 0) {
+  //       months--;
+  //       const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of the previous month
+  //       days += lastMonth.getDate();
+  //     }
+
+  //     if (years === 0) {
+  //       return `${months} month${months !== 1 ? 's' : ''} old`;
+  //     } else {
+  //       return `${years} year${years !== 1 ? 's' : ''} old`;
+  //     }
   //   }
 
-  //   return age;
-  // }
-
+  // // Event listener for date changes
   // $("#dateofbirth").on("change", function () {
   //   const dob = $(this).val();
   //   const ageField = $("#age");
-
   //   if (dob) {
-  //     const age = calculateAge(dob);
-  //     ageField.val(age);
+  //       const parsedDob = new Date(dob);
+  //       const ageString = calculateAge(parsedDob);
+  //       console.log(ageString);
+  //       ageField.val(ageString);
   //   } else {
-  //     ageField.val("");
+  //       ageField.val("");
   //   }
   // });
-
-      function calculateAge(dateOfBirth, date_injury ) {
-        const today = new Date(); 
-        const birthDate = new Date(dateOfBirth); // Parse the input as a Date object
-        if (isNaN(birthDate)) {
-            console.error("Invalid Date of Birth");
-            return "Invalid date"; 
-        }
-        
-        let years = today.getFullYear() - birthDate.getFullYear();
-        let months = today.getMonth() - birthDate.getMonth();
-        
-        if (months < 0 || (months === 0 && today.getDate() < birthDate.getDate())) {
-            years--;
-            months = (months + 12) % 12; 
-        }
-        if (today.getDate() < birthDate.getDate()) {
-            months--;
-            if (months < 0) {
-                months = 11;
-                years--;
-            }
-        }
-        // return `${years} year${years !== 1 ? 's' : ''}, ${months} month${months !== 1 ? 's' : ''}`;
-          if (years === 0) {
-                return `${months} month${months !== 1 ? 's' : ''} old`;
-             } else {
-                return `${years} year${years !== 1 ? 's' : ''} old`;
-             }
-    }
-    // Event listener for date changes
-    $("#dateofbirth").on("change", function () {
-        const dob = $(this).val(); 
-        const ageField = $("#age");
-        if (dob) {
-            const parsedDob = new Date(dob); 
-            const ageString = calculateAge(parsedDob); 
-            console.log(ageString); 
-            ageField.val(ageString); 
-        } else {
-            ageField.val(""); 
-        }
-    });
 
   // for enabled and disabled Nature Injury for adding patient
   var BurnCheckbox = $("#InjuredBurn");

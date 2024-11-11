@@ -675,7 +675,7 @@
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
                                    <tr>     
-                                    <td>5.1 Tobacco Use</td>
+                                    <td><span id="tobacco-use-label">5.1 Tobacco Use</span></td>
                                     <td>
                                         <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
                                         <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" value="Exposure to secondhand smoke"> Exposure to secondhand smoke <br>
@@ -688,7 +688,7 @@
                                        
                                     </tr>
                                 <tr>
-                                    <td>5.2 Alcohol Intake</td>
+                                    <td><span id="alcohol-intake-label">5.2 Alcohol Intake</span></td>
                                 <td>
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" value="No"> Never Consumed 
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
@@ -708,7 +708,7 @@
                                 </td>
                                 </tr>
                                 <tr>
-                                    <td>5.3 Physical Activity </td>
+                                    <td><span id="physical-activity-label">5.3 Physical Activity</span></td>
                                     <td>
                                         Does the patient do at least 2.5 hours a week of moderate-intensity physical activity?  <br><br>
                                         <input type="checkbox" class="physicalCheckbox" id="physicalYes" name="ncd_physical" value="Yes"> Yes
@@ -722,7 +722,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>5.4 Nutrition and Dietary Assessment </td>
+                                    <td><span id="nutrition-and-dietary-assessment-label">5.4 Nutrition and Dietary Assessment</span></td>
                                     <td>
                                          Does the patient eat high fat, high salt food,(processed/fast food such as instant <br> noodles, burgers, fries, dried fish),
                                         "ihaw-ihaw/fried" (e.g isaw, barbecue, liver, chicken skin)and high sugar food and drinks (e.g chocolates, cakes, pastries, softdrinks) weekly? <br><br><br>
@@ -739,7 +739,7 @@
                                         5.5 Weight (kg) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="weight" value="" name="rf_weight"oninput="calculateBMI()"> 
+                                        <input type="text" class="textbox" id="weight" value="" name="rf_weight" oninput="calculateBMI()"> 
                                     </td>
                                 </tr>
                                 
@@ -779,6 +779,7 @@
                         </table>
                     </div>
                 </div>
+                <div id="error-message-step-3" style="color: red; display: none;">Please fill out all required fields.</div>
                 <div class="row">
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
@@ -851,7 +852,7 @@
                                     <input type="text" name="lipid_ldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
                                 <div style="margin-bottom: 10px;">
-                                    <label>VLDL::</label>
+                                    <label>VLDL:</label>
                                     <input type="text" name="lipid_vldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
                                 <div style="margin-bottom: 10px;">
@@ -871,11 +872,11 @@
                             </td>
                             <td style="border: 1px solid #000; padding: 10px;">
                                 <div style="margin-bottom: 10px;">
-                                    <label>Protein::</label>
+                                    <label>Protein:</label>
                                     <input type="text" name="uri_protein" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
                                 <div style="margin-bottom: 10px;">
-                                    <label>Date Taken::</label>
+                                    <label>Date Taken:</label>
                                     <input type="date" name="uri_protein_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="<?= date('Y-m-d') ?>">
                                 </div>
                                 <div style="margin-bottom: 10px;">
@@ -935,6 +936,7 @@
                             </td>
                         </tr>
                     </table>
+                    <div id="error-message-step-4" style="color: red; display: none;">Please fill out all required fields.</div>
                     </div>
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
@@ -994,52 +996,52 @@
                     </thead>
                     <tbody>
                      <!-- Medications Section -->
-                        <tr>
-                            <td style="font-weight: bold; padding: 10px;">Medications</td>
-                            <td>
-                                <!-- Anti-Hypertensives -->
-                                <div style="margin: 10px;">
-                                    <label style="font-weight: bold;">a. Anti-Hypertensives:</label>
+                     <tr>
+                        <td style="font-weight: bold; padding: 10px;">Medications</td>
+                        <td>
+                            <!-- Anti-Hypertensives -->
+                            <div style="margin: 10px;">
+                                <label id="anti-hypertensives-label" style="font-weight: bold;">a. Anti-Hypertensives:</label>
+                                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                    <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
+                                        <label>
+                                            <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>" onchange="toggleAntiHypertensivesOptions()"> <?= $option ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                
+                                <div id="antiHypertensivesOptions" style="display: none;">
+                                    <input type="text" id="anti_hypertensives_specify" name="anti_hypertensives_specify" placeholder="Specify medicine" 
+                                        style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                </div>
+                            </div>
+                            <br/>
+                            <!-- Anti-Diabetes Section -->
+                            <div style="margin: 10px;">
+                                <label id="anti-diabetes-label" style="font-weight: bold;">b. Anti-Diabetes:</label>
+                                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                                    <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
+                                        <label>
+                                            <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>" onchange="toggleAntiDiabetesOptions()"> <?= $option ?>
+                                        </label>
+                                    <?php endforeach; ?>
+                                </div>
+                
+                                <div id="antiDiabetesOptions" style="display: none;">
                                     <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <?php foreach ($management['Medications']['Anti-Hypertensives']['options'] as $option): ?>
+                                        <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
                                             <label>
-                                                <input type="radio" name="anti_hypertensives" value="<?= strtolower($option) ?>" onchange="toggleAntiHypertensivesOptions()"> <?= $option ?>
+                                                <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
-                                
-                                    <div id="antiHypertensivesOptions" style="display: none;">
-                                        <input type="text" name="anti_hypertensives_specify" placeholder="Specify medicine" 
-                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                    </div>
+                
+                                    <input type="text" id="anti_diabetes_specify" name="anti_diabetes_specify" placeholder="Specify medicine" 
+                                        style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                 </div>
-                                <br/>
-                                <!-- Anti-Diabetes Section -->
-                                <div style="margin: 10px;">
-                                    <label style="font-weight: bold;">b. Anti-Diabetes:</label>
-                                    <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                        <?php foreach ($management['Medications']['Anti-Diabetes']['options'] as $option): ?>
-                                            <label>
-                                                <input type="radio" name="anti_diabetes" value="<?= strtolower($option) ?>" onchange="toggleAntiDiabetesOptions()"> <?= $option ?>
-                                            </label>
-                                        <?php endforeach; ?>
-                                    </div>
-
-                                    <div id="antiDiabetesOptions" style="display: none;">
-                                        <div style="display: flex; gap: 10px; margin-top: 5px;">
-                                            <?php foreach ($management['Medications']['Anti-Diabetes']['sub-options'] as $subOption): ?>
-                                                <label>
-                                                    <input type="radio" name="anti_diabetes_type" value="<?= strtolower(str_replace(' ', '_', $subOption)) ?>"> <?= $subOption ?>
-                                                </label>
-                                            <?php endforeach; ?>
-                                        </div>
-
-                                        <input type="text" name="anti_diabetes_specify" placeholder="Specify medicine" 
-                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                            </div>
+                        </td>
+                    </tr>
                         <!-- Date of Follow-up Section -->
                         <tr>
                             <td style="font-weight: bold; padding: 10px;">Date of Follow-up</td>
@@ -1059,219 +1061,17 @@
                     </tbody>
                 </table>
             </table>
-                    </div>
-                    <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                            <button type="submit" class="btn btn-success mx-2">Submit</button>
-                        </div>
-                    </div>
+            </div>
+            <div id="error-message-step-5" style="color: red; display: none;">Please fill out all required fields.</div>
+                <div class="col-md-12 text-center" style="margin-top: 20px;">
+                    <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
+                    <button type="submit" class="btn btn-success mx-2" onclick="validateStep5()">Submit</button>
                 </div>
+            </div>
+            </div>
         </form>
     </div>
 </div>
-
-<!--Validation Functions-->
-
-<!-- Step 1 validation -->
-<script language="javascript" type="text/javascript">
-    // Function to reset the error styles (remove red borders and hide error message)
-    const resetErrorStyles = () => {
-        // Remove red border from all fields
-        document.getElementById('lname').style.borderColor = '';
-        document.getElementById('fname').style.borderColor = '';
-        document.getElementById('sex').style.borderColor = '';
-        document.getElementById('contact').style.borderColor = '';
-        document.getElementById('dateofbirth').style.borderColor = '';
-        document.getElementById('age').style.borderColor = '';
-        document.getElementById('civil_status').style.borderColor = '';
-        document.getElementById('religion').style.borderColor = '';
-        document.getElementById('ethnicity').style.borderColor = '';
-        document.getElementById('other_religion').style.borderColor = '';
-        document.getElementById('other_ethnicity').style.borderColor = '';
-        document.getElementById('province').style.borderColor = '';
-        document.getElementById('municipal').style.borderColor = '';
-        document.getElementById('barangay').style.borderColor = '';
-
-        document.getElementById('no_selected_indigenous_person').style.color = '';
-        document.getElementById('no_selected_indigenous_person').textContent = '';
-        
-        document.getElementById('no_selected_employment_status').style.color = '';
-        document.getElementById('no_selected_employment_status').textContent = '';
-        
-        // Hide the error message
-        document.getElementById('error-message').style.display = 'none';
-    };
-
-    const validateStep1 = () => {
-        // Get the values of the fields
-        const lname = document.getElementById('lname').value;
-        const fname = document.getElementById('fname').value;
-        const sex = document.getElementById('sex').value;
-        const age = document.getElementById('age').value;
-        const contact = document.getElementById('contact').value;
-        const dateofbirth = document.getElementById('dateofbirth').value;
-        const ethnicity = document.getElementById('ethnicity').value;
-        const otherEthnicity = document.getElementById('other_ethnicity').value;
-        const civilStatus = document.getElementById('civil_status').value;
-        const religion = document.getElementById('religion').value;
-        const otherReligion = document.getElementById('other_religion').value;
-        const province = document.getElementById('province').value;
-        const municipal = document.getElementById('municipal').value;
-        const barangay = document.getElementById('barangay').value;
-
-        // indigenous person checkboxes
-        const indigenousPersonYes = document.getElementById('indigenous_person_yes').checked;
-        const indigenousPersonNo = document.getElementById('indigenous_person_no').checked;
-
-        // employment status checkboxes
-        const employmentStatusEmployed = document.getElementById('employment_status_employed').checked;
-        const employmentStatusUnemployed = document.getElementById('employment_status_unemployed').checked;
-        const employmentStatusSelfEmployed = document.getElementById('employment_status_self_employed').checked;
-
-        // Reset previous error styles and message
-        resetErrorStyles();
-
-        const extractNumbers = (str) => {
-            return str.replace(/\D/g, '');
-        };
-
-        let errorMessage = "<strong>Please review and check these fields:</strong> <br/>";
-        let isValid = true;
-
-        // Check if any of the required fields are empty
-        if (!lname) {
-            document.getElementById('lname').style.borderColor = 'red';
-            errorMessage += "Last Name<br>";
-            isValid = false;
-        }
-
-        if (!fname) {
-            document.getElementById('fname').style.borderColor = 'red';
-            errorMessage += "First Name<br>";
-            isValid = false;
-        }
-
-        if (!sex) {
-            document.getElementById('sex').style.borderColor = 'red';
-            errorMessage += "Sex<br>";
-            isValid = false;
-        }
-
-        if (!religion) {
-            document.getElementById('religion').style.borderColor = 'red';
-            errorMessage += "Religion<br>";
-            isValid = false;
-        }
-
-        if (!ethnicity) {
-            document.getElementById('ethnicity').style.borderColor = 'red';
-            errorMessage += "Ethnicity<br>";
-            isValid = false;
-        }
-
-        if (!contact) {
-            document.getElementById('contact').style.borderColor = 'red';
-            errorMessage += "Contact<br>";
-            isValid = false;
-        }
-
-        if (!dateofbirth) {
-            document.getElementById('dateofbirth').style.borderColor = 'red';
-            errorMessage += "Date of Birth<br>";
-            isValid = false;
-        }
-
-        // Age validation
-        if (Number(extractNumbers(age)) < 20) {
-            document.getElementById('age').style.borderColor = 'red';
-            errorMessage += "<strong>Patient is not eligible for this form.</strong><i>(under 20)</i><br>";
-            isValid = false;
-        }
-
-        if (!civilStatus) {
-            document.getElementById('civil_status').style.borderColor = 'red';
-            errorMessage += "Civil Status<br>";
-            isValid = false;
-        }
-
-        if (!province) {
-            document.getElementById('province').style.borderColor = 'red';
-            errorMessage += "Province<br>";
-            isValid = false;
-        }
-
-        if (!municipal) {
-            document.getElementById('municipal').style.borderColor = 'red';
-            errorMessage += "Municipality/City<br>";
-            isValid = false;
-        } 
-
-        if (!barangay) {
-            document.getElementById('barangay').style.borderColor = 'red';
-            errorMessage += "Barangay<br>";
-            isValid = false;
-        }
-
-        if (ethnicity === "Others" && !otherEthnicity) {
-            document.getElementById('other_ethnicity').style.borderColor = 'red';
-            errorMessage += "Other Ethnicity is required when 'Others' is selected.<br>";
-            isValid = false;
-        }
-
-        if (religion === "Others" && !otherReligion) {
-            document.getElementById('other_religion').style.borderColor = 'red';
-            errorMessage += "Other Religion is required when 'Others' is selected.<br>";
-            isValid = false;
-        }
-
-        if (!indigenousPersonYes && !indigenousPersonNo) {
-            document.getElementById('no_selected_indigenous_person').style.color = 'red';
-            document.getElementById('no_selected_indigenous_person').textContent = 'Please select one.';
-            errorMessage += "Please tick an option in 'Indigenous Person' field.<br>";
-            isValid = false;
-        }
-
-        if (!employmentStatusEmployed && !employmentStatusUnemployed && !employmentStatusSelfEmployed) {
-            document.getElementById('no_selected_employment_status').style.color = 'red';
-            document.getElementById('no_selected_employment_status').textContent = 'Please select one.';
-            errorMessage += "Please tick an option in 'Employment Status' field.<br>";
-            isValid = false;
-        }
-
-        // If there is an error, display the specific error message
-        if (!isValid) {
-            document.getElementById('error-message').style.display = 'block';
-            document.getElementById('error-message').innerHTML = errorMessage;
-            return;  // Prevent moving to the next step if validation fails
-        }
-
-        // If validation passes, hide the error message and proceed
-        document.getElementById('error-message').style.display = 'none';  // Hide the error message
-        console.log("Step 1 is validated");
-        showNextStep();  // Assuming showNextStep() handles the page transition
-    };
-</script>
-
-<script language="javascript" type="text/javascript">
-    const validateStep2 = () => {
-        console.log("Step 2 is validated");
-        showNextStep();
-    }
-</script>
-
-<script language="javascript" type="text/javascript">
-    const validateStep3 = () => {
-        console.log("Step 3 is validated");
-        showNextStep();
-    }
-</script>
-
-<script language="javascript" type="text/javascript">
-    const validateStep4 = () => {
-        console.log("Step 4 is validated");
-        showNextStep();
-    }
-</script>
 
 <!--Internal JS-->
 <script language="javascript" type="text/javascript">
@@ -1444,11 +1244,13 @@
                 additionalInputs.style.display = anyChecked ? 'block' : 'none';
             });
         });
+
         const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+
         tobaccoCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
                 const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
-                
+                tobaccoCheckboxCount = checkedCheckboxes.length;
                 if (checkedCheckboxes.length >= 2) {
                     // Disable all unchecked checkboxes if two are checked
                     tobaccoCheckboxes.forEach(cb => {
@@ -1462,6 +1264,7 @@
                 }
             });
         });
+
         const alcoholYes = document.getElementById('alcoholYes');
         const bingeLabel = document.getElementById('bingeLabel');
 
@@ -1525,6 +1328,434 @@
         });
     });
 });
+</script>
+
+<!--Validation Functions-->
+
+<!-- Step 1 validation -->
+<script language="javascript" type="text/javascript">
+    // Function to reset the error styles (remove red borders and hide error message)
+    const resetErrorStep1Styles = () => {
+        // Remove red border from all fields
+        document.getElementById('lname').style.borderColor = '';
+        document.getElementById('fname').style.borderColor = '';
+        document.getElementById('sex').style.borderColor = '';
+        document.getElementById('contact').style.borderColor = '';
+        document.getElementById('dateofbirth').style.borderColor = '';
+        document.getElementById('age').style.borderColor = '';
+        document.getElementById('civil_status').style.borderColor = '';
+        document.getElementById('religion').style.borderColor = '';
+        document.getElementById('ethnicity').style.borderColor = '';
+        document.getElementById('other_religion').style.borderColor = '';
+        document.getElementById('other_ethnicity').style.borderColor = '';
+        document.getElementById('province').style.borderColor = '';
+        document.getElementById('municipal').style.borderColor = '';
+        document.getElementById('barangay').style.borderColor = '';
+
+        document.getElementById('no_selected_indigenous_person').style.color = '';
+        document.getElementById('no_selected_indigenous_person').textContent = '';
+        
+        document.getElementById('no_selected_employment_status').style.color = '';
+        document.getElementById('no_selected_employment_status').textContent = '';
+        
+        // Hide the error message
+        document.getElementById('error-message').style.display = 'none';
+    };
+
+    const validateStep1 = () => {
+        // Get the values of the fields
+        const lname = document.getElementById('lname').value;
+        const fname = document.getElementById('fname').value;
+        const sex = document.getElementById('sex').value;
+        const age = document.getElementById('age').value;
+        const contact = document.getElementById('contact').value;
+        const dateofbirth = document.getElementById('dateofbirth').value;
+        const ethnicity = document.getElementById('ethnicity').value;
+        const otherEthnicity = document.getElementById('other_ethnicity').value;
+        const civilStatus = document.getElementById('civil_status').value;
+        const religion = document.getElementById('religion').value;
+        const otherReligion = document.getElementById('other_religion').value;
+        const province = document.getElementById('province').value;
+        const municipal = document.getElementById('municipal').value;
+        const barangay = document.getElementById('barangay').value;
+
+        // indigenous person checkboxes
+        const indigenousPersonYes = document.getElementById('indigenous_person_yes').checked;
+        const indigenousPersonNo = document.getElementById('indigenous_person_no').checked;
+
+        // employment status checkboxes
+        const employmentStatusEmployed = document.getElementById('employment_status_employed').checked;
+        const employmentStatusUnemployed = document.getElementById('employment_status_unemployed').checked;
+        const employmentStatusSelfEmployed = document.getElementById('employment_status_self_employed').checked;
+
+        // Reset previous error styles and message
+        resetErrorStep1Styles();
+
+        const extractNumbers = (str) => {
+            return str.replace(/\D/g, '');
+        };
+
+        let errorMessage = "<strong>Please review and check these fields:</strong> <br/>";
+        let isValid = true;
+
+        // Check if any of the required fields are empty
+        if (!lname) {
+            document.getElementById('lname').style.borderColor = 'red';
+            errorMessage += "Last Name<br>";
+            isValid = false;
+        }
+
+        if (!fname) {
+            document.getElementById('fname').style.borderColor = 'red';
+            errorMessage += "First Name<br>";
+            isValid = false;
+        }
+
+        if (!sex) {
+            document.getElementById('sex').style.borderColor = 'red';
+            errorMessage += "Sex<br>";
+            isValid = false;
+        }
+
+        if (!religion) {
+            document.getElementById('religion').style.borderColor = 'red';
+            errorMessage += "Religion<br>";
+            isValid = false;
+        }
+
+        if (!ethnicity) {
+            document.getElementById('ethnicity').style.borderColor = 'red';
+            errorMessage += "Ethnicity<br>";
+            isValid = false;
+        }
+
+        if (!contact) {
+            document.getElementById('contact').style.borderColor = 'red';
+            errorMessage += "Contact<br>";
+            isValid = false;
+        }
+
+        if (!dateofbirth) {
+            document.getElementById('dateofbirth').style.borderColor = 'red';
+            errorMessage += "Date of Birth<br>";
+            isValid = false;
+        }
+
+        // Age validation
+        if (Number(extractNumbers(age)) < 20) {
+            document.getElementById('age').style.borderColor = 'red';
+            errorMessage += "<strong>Patient is not eligible for this form.</strong><i> (Under 20)</i><br>";
+            isValid = false;
+        }
+
+        if (!civilStatus) {
+            document.getElementById('civil_status').style.borderColor = 'red';
+            errorMessage += "Civil Status<br>";
+            isValid = false;
+        }
+
+        if (!province) {
+            document.getElementById('province').style.borderColor = 'red';
+            errorMessage += "Province<br>";
+            isValid = false;
+        }
+
+        if (!municipal) {
+            document.getElementById('municipal').style.borderColor = 'red';
+            errorMessage += "Municipality/City<br>";
+            isValid = false;
+        } 
+
+        if (!barangay) {
+            document.getElementById('barangay').style.borderColor = 'red';
+            errorMessage += "Barangay<br>";
+            isValid = false;
+        }
+
+        if (ethnicity === "Others" && !otherEthnicity) {
+            document.getElementById('other_ethnicity').style.borderColor = 'red';
+            errorMessage += "Other Ethnicity is required when 'Others' is selected.<br>";
+            isValid = false;
+        }
+
+        if (religion === "Others" && !otherReligion) {
+            document.getElementById('other_religion').style.borderColor = 'red';
+            errorMessage += "Other Religion is required when 'Others' is selected.<br>";
+            isValid = false;
+        }
+
+        if (!indigenousPersonYes && !indigenousPersonNo) {
+            document.getElementById('no_selected_indigenous_person').style.color = 'red';
+            document.getElementById('no_selected_indigenous_person').textContent = 'Please select one.';
+            errorMessage += "Please tick an option in 'Indigenous Person' field.<br>";
+            isValid = false;
+        }
+
+        if (!employmentStatusEmployed && !employmentStatusUnemployed && !employmentStatusSelfEmployed) {
+            document.getElementById('no_selected_employment_status').style.color = 'red';
+            document.getElementById('no_selected_employment_status').textContent = 'Please select one.';
+            errorMessage += "Please tick an option in 'Employment Status' field.<br>";
+            isValid = false;
+        }
+
+        // If there is an error, display the specific error message
+        if (!isValid) {
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').innerHTML = errorMessage;
+            return;  // Prevent moving to the next step if validation fails
+        }
+
+        // If validation passes, hide the error message and proceed
+        document.getElementById('error-message').style.display = 'none';  // Hide the error message
+        console.log("Step 1 is validated");
+        showNextStep();  // Assuming showNextStep() handles the page transition
+    };
+</script>
+
+<!-- Step 2 validation -->
+<script language="javascript" type="text/javascript">
+    const validateStep2 = () => {
+        console.log("Step 2 is validated");
+        showNextStep();
+    }
+</script>
+
+<!-- Step 3 validation -->
+<script language="javascript" type="text/javascript">
+    // Function to reset the error styles (remove red borders and hide error message)
+    const resetErrorStep3Styles = () => {
+        // Remove red border from all fields
+        document.getElementById('weight').style.borderColor = '';
+        document.getElementById('height').style.borderColor = '';
+        document.getElementById('waist').style.borderColor = '';
+        document.getElementById('bloodPressure').style.borderColor = '';
+        document.getElementById('tobacco-use-label').style.color = ''
+        
+        // Hide the error message
+        document.getElementById('error-message-step-3').style.display = 'none';
+    };
+
+    const validateStep3 = () => {
+        // Get the values of the fields
+        const weight = document.getElementById('weight').value;
+        const height = document.getElementById('height').value;
+        const waist = document.getElementById('waist').value;
+        const bloodPressure = document.getElementById('bloodPressure').value;
+
+        // Reset previous error styles and message
+        resetErrorStep3Styles();
+
+        let errorMessage = "<strong>Please review and check these fields:</strong><br/>";
+        let isValid = true;
+
+        // Check if any of the required fields are empty
+        if (!weight) {
+            document.getElementById('weight').style.borderColor = 'red';
+            errorMessage += "Weight<br>";
+            isValid = false;
+        }
+
+        if (!height) {
+            document.getElementById('height').style.borderColor = 'red';
+            errorMessage += "Height<br>";
+            isValid = false;
+        }
+
+        if (!waist) {
+            document.getElementById('waist').style.borderColor = 'red';
+            errorMessage += "Waist<br>";
+            isValid = false;
+        }
+
+        if (!bloodPressure) {
+            document.getElementById('bloodPressure').style.borderColor = 'red';
+            errorMessage += "Blood Pressure<br>";
+            isValid = false;
+        }
+
+        // tobacco
+        const getTobaccoCheckboxCount = () => {
+            const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+
+            const updateCheckboxCount = () => {
+                const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
+                return checkedCheckboxes.length;
+            }
+
+
+            tobaccoCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCheckboxCount);
+            });
+
+            return updateCheckboxCount();
+        }
+
+        if(getTobaccoCheckboxCount() <= 0){
+            document.getElementById('tobacco-use-label').style.color = 'red';
+            errorMessage += "Please review tobacco use fields.<br>";
+            isValid = false;
+        }
+
+        // alcohol
+        const getAlcoholCheckboxCount = () => {
+            const alcoholCheckboxes = document.querySelectorAll('.alcoholCheckbox');
+
+            const updateCheckboxCount = () => {
+                const checkedCheckboxes = Array.from(alcoholCheckboxes).filter(cb => cb.checked);
+                return checkedCheckboxes.length;
+            }
+
+
+            alcoholCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCheckboxCount);
+            });
+
+            return updateCheckboxCount();
+        }
+
+        if(getAlcoholCheckboxCount() <= 0){
+            document.getElementById('alcohol-intake-label').style.color = 'red';
+            errorMessage += "Please review alcohol intake fields.<br>";
+            isValid = false;
+        }
+
+        // physical activity
+        const getPhysicalActivityCheckboxCount = () => {
+            const physicalActivityCheckboxes = document.querySelectorAll('.physicalCheckbox');
+
+            const updateCheckboxCount = () => {
+                const checkedCheckboxes = Array.from(physicalActivityCheckboxes).filter(cb => cb.checked);
+                return checkedCheckboxes.length;
+            }
+
+
+            physicalActivityCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCheckboxCount);
+            });
+
+            return updateCheckboxCount();
+        }
+
+        if(getPhysicalActivityCheckboxCount() <= 0){
+            document.getElementById('physical-activity-label').style.color = 'red';
+            errorMessage += "Please review physical activity fields.<br>";
+            isValid = false;
+        }
+
+        // nutrition and dietary assessment
+        const getNutritionAndDietaryCheckboxCount = () => {
+            const nutritionAndDietaryCheckboxes = document.querySelectorAll('.nutritionDietCheckbox');
+
+            const updateCheckboxCount = () => {
+                const checkedCheckboxes = Array.from(nutritionAndDietaryCheckboxes).filter(cb => cb.checked);
+                return checkedCheckboxes.length;
+            }
+
+
+            nutritionAndDietaryCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCheckboxCount);
+            });
+
+            return updateCheckboxCount();
+        }
+
+        if(getNutritionAndDietaryCheckboxCount() <= 0){
+            document.getElementById('nutrition-and-dietary-assessment-label').style.color = 'red';
+            errorMessage += "Please review nutrition and dietary fields.<br>";
+            isValid = false;
+        }
+
+
+        // If there is an error, display the specific error message
+        if (!isValid) {
+            document.getElementById('error-message-step-3').style.display = 'block';
+            document.getElementById('error-message-step-3').innerHTML = errorMessage;
+            return;  // Prevent moving to the next step if validation fails
+        }
+
+        // If validation passes, hide the error message and proceed
+        document.getElementById('error-message-step-3').style.display = 'none';  // Hide the error message
+        console.log("Step 3 is validated");
+        showNextStep();  // Assuming showNextStep() handles the page transition
+    };
+</script>
+
+<script language="javascript" type="text/javascript">
+    const validateStep4 = () => {
+        console.log("Step 4 is validated");
+        showNextStep();
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    const resetErrorStep5Styles = () => {
+        // Remove red border from all fields
+        document.getElementById('anti_hypertensives_specify').style.borderColor = '';
+        document.getElementById('anti_diabetes_specify').style.borderColor = '';
+
+        document.getElementById('anti-hypertensives-label').style.color = '';
+        document.getElementById('anti-diabetes-label').style.color = '';
+        // Hide the error message
+        document.getElementById('error-message-step-5').style.display = 'none';
+    };
+
+    const validateStep5 = () => {
+        let errorMessage = "";
+        let isValid = true;
+
+        // Reset previous error styles and message
+        resetErrorStep5Styles();
+
+        const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
+        const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
+        const antiHypertensivesSpecifyMedicine = document.getElementById('anti_hypertensives_specify').value.trim();
+
+        if(!antiHypertensivesSelected){
+            document.getElementById('anti-hypertensives-label').style.color = red;
+            errorMessage += "Please select an option for anti-hypertensives.<br>";
+            isValid = false;
+        }
+
+        if (antiHypertensivesSelected && 
+            (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown') &&
+            (antiHypertensivesSpecifyMedicine === "" || antiHypertensivesSpecifyMedicine === null)) {
+            document.getElementById('anti_hypertensives_specify').style.borderColor = 'red';
+            errorMessage += "Please specify the anti-hypertensive medicine when 'Yes' or 'Unknown' is selected.<br>";
+            isValid = false;
+        }
+
+        const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
+        const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
+        const antiDiabetesSpecifyMedicine = document.getElementById('anti_diabetes_specify').value.trim();
+
+        if(!antiDiabetesSelected){
+            document.getElementById('anti-diabetes-label').style.color = 'red';            
+            errorMessage += "Please select an option for anti-diabetes.<br>";
+            isValid = false;
+        }
+
+        if (antiDiabetesSelected && 
+            (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown') &&
+            (antiDiabetesSpecifyMedicine === "" || antiDiabetesSpecifyMedicine === null)) {
+            document.getElementById('anti_diabetes_specify').style.borderColor = 'red';
+            errorMessage += "Please specify the anti-diabetes medicine when 'Yes' or 'Unknown' is selected.<br>";
+            isValid = false;
+        }
+
+        // If there is an error, display the specific error message
+        if (!isValid) {
+            document.getElementById('error-message-step-5').style.display = 'block';
+            document.getElementById('error-message-step-5').innerHTML = errorMessage;
+            return false;  // Prevent moving to the next step if validation fails
+        }
+
+        // If validation passes, hide the error message and proceed
+        document.getElementById('error-message-step-5').style.display = 'none';  // Hide the error message
+        console.log("Step 5 is validated");
+
+        // Submit the form
+        document.getElementById('form-submit').submit();
+    };
 </script>
 
 @endsection
