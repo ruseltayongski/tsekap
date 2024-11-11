@@ -435,9 +435,6 @@
                                 <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <!-- <th>Description</th>
-                                    <th>Option (Yes / No)</th>
-                                    <th>Details</th> -->
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
@@ -559,9 +556,6 @@
                                 <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <!-- <th>Description</th>
-                                    <th>Option (Yes / No)</th>
-                                    <th>Details</th> -->
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
@@ -677,9 +671,6 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <!-- <th>Description</th>
-                                    <th>Option (Yes / No)</th>
-                                    <th>Details</th> -->
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
@@ -1161,19 +1152,10 @@
         }
 
         if (!sex) {
-            // Adding border color change here for the select element
             document.getElementById('sex').style.borderColor = 'red';
             errorMessage += "Sex<br>";
             isValid = false;
         }
-
-        // Age validation
-        if (Number(extractNumbers(age)) < 20) {
-            document.getElementById('age').style.borderColor = 'red';
-            errorMessage += "<strong>Patient is not eligible for this form.</strong><br>";
-            isValid = false;
-        }
-
 
         if (!religion) {
             document.getElementById('religion').style.borderColor = 'red';
@@ -1196,6 +1178,13 @@
         if (!dateofbirth) {
             document.getElementById('dateofbirth').style.borderColor = 'red';
             errorMessage += "Date of Birth<br>";
+            isValid = false;
+        }
+
+        // Age validation
+        if (Number(extractNumbers(age)) < 20) {
+            document.getElementById('age').style.borderColor = 'red';
+            errorMessage += "<strong>Patient is not eligible for this form.</strong><i>(under 20)</i><br>";
             isValid = false;
         }
 
@@ -1223,14 +1212,12 @@
             isValid = false;
         }
 
-        // If "Others" is selected for ethnicity, validate the "Other Ethnicity" field
         if (ethnicity === "Others" && !otherEthnicity) {
             document.getElementById('other_ethnicity').style.borderColor = 'red';
             errorMessage += "Other Ethnicity is required when 'Others' is selected.<br>";
             isValid = false;
         }
 
-        // If "Others" is selected for religion, validate the "Other Religion" field
         if (religion === "Others" && !otherReligion) {
             document.getElementById('other_religion').style.borderColor = 'red';
             errorMessage += "Other Religion is required when 'Others' is selected.<br>";
@@ -1238,8 +1225,6 @@
         }
 
         if (!indigenousPersonYes && !indigenousPersonNo) {
-            // document.getElementById('indigenous_person_yes').style.borderColor = 'red';
-            // document.getElementById('indigenous_person_no').style.borderColor = 'red';
             document.getElementById('no_selected_indigenous_person').style.color = 'red';
             document.getElementById('no_selected_indigenous_person').textContent = 'Please select one.';
             errorMessage += "Please tick an option in 'Indigenous Person' field.<br>";
@@ -1247,14 +1232,11 @@
         }
 
         if (!employmentStatusEmployed && !employmentStatusUnemployed && !employmentStatusSelfEmployed) {
-            // document.getElementById('indigenous_person_yes').style.borderColor = 'red';
-            // document.getElementById('indigenous_person_no').style.borderColor = 'red';
             document.getElementById('no_selected_employment_status').style.color = 'red';
             document.getElementById('no_selected_employment_status').textContent = 'Please select one.';
             errorMessage += "Please tick an option in 'Employment Status' field.<br>";
             isValid = false;
         }
-
 
         // If there is an error, display the specific error message
         if (!isValid) {
@@ -1293,7 +1275,6 @@
 
 <!--Internal JS-->
 <script language="javascript" type="text/javascript">
-
     // controls the anti-hypertensive options
     const toggleAntiHypertensivesOptions = () => {
         const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
@@ -1543,15 +1524,12 @@
             }
         });
     });
-
-    // form validations:
-
 });
 </script>
 
 @endsection
 
-<style>
+<style type="text/css">
     .json-display-style {
         background-color: black;
         color: yellow;
