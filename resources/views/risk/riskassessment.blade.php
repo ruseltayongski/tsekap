@@ -72,15 +72,15 @@
                             <input type="hidden" name="profile_id" id="profile_id">
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="lname" maxlength="25" id="lname" value="">
+                                <input type="text" class="form-control" name="lname" maxlength="25" id="lname" value="" required>
                             </div>
                             <div class="col-md-3">
                                 <label for="fname">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="fname" maxlength="25" id="fname" value="">
+                                <input type="text" class="form-control" name="fname" maxlength="25" id="fname" value="" required>
                             </div>
                             <div class="col-md-3">
                                 <label for="mname">Middle Name </label>
-                                <input type="text" class="form-control" name="mname" maxlength="25" id="mname" value="">
+                                <input type="text" class="form-control" name="mname" maxlength="25" id="mname" value="" required>
                             </div>
                             <div class="col-md-3">
                                 <label for="suffix">Suffix</label>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="sex">Sex <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="sex" id="sex">
+                                <select class="form-control" name="sex" id="sex" required>
                                     <option value="">Select sex</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -105,7 +105,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date of Birth <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateofbirth">
+                                <input type="date" class="form-control" id="dateofbirth" name="dateofbirth" required>
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age <span class="text-danger"></span></label>
@@ -113,7 +113,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="civil_status" id="civil_status">
+                                <select class="form-control" name="civil_status" id="civil_status" required>
                                     <option value="">Select status</option>
                                     <option value="Single">Single</option>
                                     <option value="Married">Married</option>
@@ -121,9 +121,10 @@
                                     <option value="Legally Separated">Legally Separated</option>
                                 </select>
                             </div>
+
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="religion" id="religion" onchange="showOtherReligionField()">
+                                <select class="form-control" name="religion" id="religion" onchange="showOtherReligionField()" required>
                                     <option value="">Select Religion</option>
                                     <option value="Roman Catholic">Roman Catholic</option>
                                     <option value="Islam">Islam</option>
@@ -149,10 +150,10 @@
                                 </select>
                             </div>
                             
-                            <!-- This div will only appear if Others is selected -->
+                            <!-- This div will only appear if "Others" is selected -->
                             <div class="col-md-3" id="other-religion-div" style="display:none;">
                                 <label for="other_religion">Specify Other Religion <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="other_religion" id="other_religion" maxlength="50" placeholder="Please specify">
+                                <input type="text" class="form-control" name="other_religion" id="other_religion" maxlength="50" placeholder="Please specify" required>
                             </div>
 
                             <div class="col-md-3">
@@ -162,7 +163,7 @@
                             <div class="row"></div>
                             <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="province" id="province">
+                                <select class="form-control" name="province" id="province" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -171,12 +172,12 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="municipal">Municipality/City <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="municipal" id="municipal">
+                                <select class="form-control" name="municipal" id="municipal" required>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="barangay" id="barangay">
+                                <select class="form-control" name="barangay" id="barangay" required>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -201,20 +202,17 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
+                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()" required>
                                     <option value="">Select Ethnicity</option>
                                     <option value="Cebuano">Cebuano</option> 
                                     <option value="Bisaya">Bisaya</option>
                                     <option value="Tagalog">Tagalog</option>
                                     <option value="Waray">Waray</option>
-                                    <option value="Ilonggo">Illongo</option>
+                                    <option value="Ilonggo">Ilonggo</option>
                                     <option value="Bicolano">Bicolano</option>
                                     <option value="Kampampangan">Kapampangan</option> 
                                     <option value="Maguindanao">Maguindanao</option>
                                     <option value="Pangasinan">Pangasinan</option>
-                                    <option value="Waray">Waray</option>
-                                    <option value="Ilonggo">Illongo</option>
-                                    <option value="Bicolano">Bicolano</option>
                                     <option value="Badjao">Badjao</option>
                                     <option value="Tausug">Tausug</option>
                                     <option value="Maranao">Maranao</option>
@@ -240,39 +238,49 @@
                                 </select>
                             </div>
                             
-                            <!-- This div will only appear if Others is selected -->
+                            <!-- This div will only appear if "Others" is selected -->
                             <div class="col-md-3" id="other-ethnicity-div" style="display:none;">
                                 <label for="other_ethnicity">Specify Other Ethnicity <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity">
-                            </div> 
+                                <input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity" required>
+                            </div>
+
                             <div class="col-md-3 d-flex align-items-center">
                                 <label class="mr-2">Indigenous Person</label><br>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="indigenous_person" id="indigenous_person" value="no">
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person_yes" value="Yes" onclick="toggleCheckbox('indigenous_person_yes', 'indigenous_person_no')">
                                     <label for="indigenous_person" class="ml-2">Yes</label>
                                 </span>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="indigenous_person" id="indigenous_person" value="yes">
+                                    <input type="checkbox" name="indigenous_person" id="indigenous_person_no" value="No" onclick="toggleCheckbox('indigenous_person_no', 'indigenous_person_yes')">
                                     <label for="indigenous_person" class="ml-2">No</label>
+                                </span>
+                                <!--Shows if there is selected option or not-->
+                                <span style="padding-right: 10px;">
+                                    <p id="no_selected_indigenous_person" style="font-weight: 300; color: red;" class="ml-2"></p>
                                 </span>
                                 <br/>
                             </div>
+                            
                             <div class="row"></div>
                             <br/> 
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status</label><br>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status" value="employed">
+                                    <input type="checkbox" name="employment_status" id="employment_status_employed" value="Employed">
                                     <label for="employment_status" class="ml-2">Employed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status" value="unemployed">
+                                    <input type="checkbox" name="employment_status" id="employment_status_unemployed" value="Unemployed">
                                     <label for="employment_status" class="ml-2">Unemployed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status" value="self-employed">
+                                    <input type="checkbox" name="employment_status" id="employment_status_self_employed" value="Self-employed">
                                     <label for="employment_status" class="ml-2">Self-Employed</label>                                   
                                 </span> 
+                                 <!--Shows if there is selected option or not-->
+                                <span style="padding-right: 10px;">
+                                    <p id="no_selected_employment_status" style="font-weight: 300; color: red;" class="ml-2"></p>
+                                </span>
                                 <br>
                             </div>
                         </div>
@@ -389,34 +397,37 @@
                     </div>
                 </div>
                 <div class="additional-inputs">
-                        <div class="col-md-4">
-                            <label for="physicianName">Physician Name:</label>
-                            <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="reason">Reason:</label>
-                            <input type="text" class="form-control" id="reason" name="reason" placeholder="Enter reason">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="facility">What Facility:</label>
-                            <select  class="form-control chosen-select" name="facility" id="facility" style="width: 100%; max-width: 100%;">
-                                <option value="">Select Facility...</option>
-                                @foreach($facilities as $fact)
-                                    <option value="{{ $fact->id }}">{{ $fact->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
+                    <div class="col-md-4">
+                        <label for="physicianName">Physician Name:</label>
+                        <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="reason">Reason:</label>
+                        <input type="text" class="form-control" id="reason" name="reason" placeholder="Enter reason">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="facility">What Facility:</label>
+                        <select class="form-control chosen-select" name="facility" id="facility" style="width: 100%; max-width: 100%;">
+                            <option value="">Select Facility...</option>
+                            @foreach($facilities as $fact)
+                                <option value="{{ $fact->id }}">{{ $fact->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-                <div class="row">   
+                <div id="error-message" style="color: red; display: none;">Please fill out all required fields.</div>
+                <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                             <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                            <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
+                             <button type="button" id="first-page-button" class="btn btn-primary mx-2" onclick="validateStep1()">Next</button>
                         </div>
                  </div>
             </div>
-            <!-- PAST MEDICAL HISTORY -->
-            <div class="form-step" id="form-step-2" style="display: none">
+
+        <!-- # STEP 2 # -->
+         <div class="form-step" id="form-step-2" style="display: none;">
              <div class="row">
+                <!-- PAST MEDICAL HISTORY -->
                     <div class="col-md-12">
                         <div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY <span class="text-danger">*</span></h4>
@@ -629,7 +640,7 @@
                                    
                                 </tr>
                                 <tr>
-                                    <td>4.10 Mental, Neuroligical and Substance Abuse Disorder</td>
+                                    <td>4.10 Mental, Neurological and Substance Abuse Disorder</td>
                                     <td>
                                         <input type="checkbox" class="mnsadCheckbox" id="fh_mnsadYes" name="fm_mnsad" value="Yes"> Yes
                                         <input type="checkbox" class="mnsadCheckbox" id="fh_mnsadNo" name="fm_mnsad" value="No" style="margin-left: flex"> No
@@ -650,11 +661,13 @@
                 <div class="row">
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
-                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                        <button type="button" class="btn btn-primary mx-2" onclick="validateStep2()">Next</button>
                     </div>
                 </div>
              </div>             
-             <div class="form-step" id="form-step-3" style="display: none">
+
+             <!-- # STEP 3 # -->
+             <div class="form-step" id="form-step-3" style="display: none;">
                 <div class="row">                 
                 <!-- risk factors -->
                 <div class="col-md-12">
@@ -778,12 +791,12 @@
                 <div class="row">
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                         <button type="button" class="btn btn-primary mx-2"  onclick="showPreviousStep()">Previous</button>
-                        <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                        <button type="button" class="btn btn-primary mx-2" onclick="validateStep3()">Next</button>
                     </div>
                 </div>
-                       
             </div>
 
+        <!-- # STEP 4 #-->    
         <div class="form-step" id="form-step-4" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
@@ -934,7 +947,7 @@
                     </div>
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
-                            <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                            <button type="button" class="btn btn-primary mx-2" onclick="validateStep4()">Next</button>
                         </div>
                     </div>
                 </div>
@@ -1054,8 +1067,7 @@
                         </tr>
                     </tbody>
                 </table>
-
-                    </table>
+            </table>
                     </div>
                     <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <button type="button" class="btn btn-primary mx-2" onclick="showPreviousStep()">Previous</button>
@@ -1068,6 +1080,219 @@
 </div>
 </div>
 
+<!--Validation Functions-->
+
+<!-- Step 1 validation -->
+<script language="javascript" type="text/javascript">
+    // Function to reset the error styles (remove red borders and hide error message)
+    const resetErrorStyles = () => {
+        // Remove red border from all fields
+        document.getElementById('lname').style.borderColor = '';
+        document.getElementById('fname').style.borderColor = '';
+        document.getElementById('sex').style.borderColor = '';
+        document.getElementById('contact').style.borderColor = '';
+        document.getElementById('dateofbirth').style.borderColor = '';
+        document.getElementById('age').style.borderColor = '';
+        document.getElementById('civil_status').style.borderColor = '';
+        document.getElementById('religion').style.borderColor = '';
+        document.getElementById('ethnicity').style.borderColor = '';
+        document.getElementById('other_religion').style.borderColor = '';
+        document.getElementById('other_ethnicity').style.borderColor = '';
+        document.getElementById('province').style.borderColor = '';
+        document.getElementById('municipal').style.borderColor = '';
+        document.getElementById('barangay').style.borderColor = '';
+
+        document.getElementById('no_selected_indigenous_person').style.color = '';
+        document.getElementById('no_selected_indigenous_person').textContent = '';
+        
+        document.getElementById('no_selected_employment_status').style.color = '';
+        document.getElementById('no_selected_employment_status').textContent = '';
+        
+        // Hide the error message
+        document.getElementById('error-message').style.display = 'none';
+    };
+
+    const validateStep1 = () => {
+        // Get the values of the fields
+        const lname = document.getElementById('lname').value;
+        const fname = document.getElementById('fname').value;
+        const sex = document.getElementById('sex').value;
+        const age = document.getElementById('age').value;
+        const contact = document.getElementById('contact').value;
+        const dateofbirth = document.getElementById('dateofbirth').value;
+        const ethnicity = document.getElementById('ethnicity').value;
+        const otherEthnicity = document.getElementById('other_ethnicity').value;
+        const civilStatus = document.getElementById('civil_status').value;
+        const religion = document.getElementById('religion').value;
+        const otherReligion = document.getElementById('other_religion').value;
+        const province = document.getElementById('province').value;
+        const municipal = document.getElementById('municipal').value;
+        const barangay = document.getElementById('barangay').value;
+
+        // indigenous person checkboxes
+        const indigenousPersonYes = document.getElementById('indigenous_person_yes').checked;
+        const indigenousPersonNo = document.getElementById('indigenous_person_no').checked;
+
+        // employment status checkboxes
+        const employmentStatusEmployed = document.getElementById('employment_status_employed').checked;
+        const employmentStatusUnemployed = document.getElementById('employment_status_unemployed').checked;
+        const employmentStatusSelfEmployed = document.getElementById('employment_status_self_employed').checked;
+
+        // Reset previous error styles and message
+        resetErrorStyles();
+
+        const extractNumbers = (str) => {
+            return str.replace(/\D/g, '');
+        };
+
+        let errorMessage = "<strong>Please review and check these fields:</strong> <br/>";
+        let isValid = true;
+
+        // Check if any of the required fields are empty
+        if (!lname) {
+            document.getElementById('lname').style.borderColor = 'red';
+            errorMessage += "Last Name<br>";
+            isValid = false;
+        }
+
+        if (!fname) {
+            document.getElementById('fname').style.borderColor = 'red';
+            errorMessage += "First Name<br>";
+            isValid = false;
+        }
+
+        if (!sex) {
+            // Adding border color change here for the select element
+            document.getElementById('sex').style.borderColor = 'red';
+            errorMessage += "Sex<br>";
+            isValid = false;
+        }
+
+        // Age validation
+        if (Number(extractNumbers(age)) < 20) {
+            document.getElementById('age').style.borderColor = 'red';
+            errorMessage += "<strong>Patient is not eligible for this form.</strong><br>";
+            isValid = false;
+        }
+
+
+        if (!religion) {
+            document.getElementById('religion').style.borderColor = 'red';
+            errorMessage += "Religion<br>";
+            isValid = false;
+        }
+
+        if (!ethnicity) {
+            document.getElementById('ethnicity').style.borderColor = 'red';
+            errorMessage += "Ethnicity<br>";
+            isValid = false;
+        }
+
+        if (!contact) {
+            document.getElementById('contact').style.borderColor = 'red';
+            errorMessage += "Contact<br>";
+            isValid = false;
+        }
+
+        if (!dateofbirth) {
+            document.getElementById('dateofbirth').style.borderColor = 'red';
+            errorMessage += "Date of Birth<br>";
+            isValid = false;
+        }
+
+        if (!civilStatus) {
+            document.getElementById('civil_status').style.borderColor = 'red';
+            errorMessage += "Civil Status<br>";
+            isValid = false;
+        }
+
+        if (!province) {
+            document.getElementById('province').style.borderColor = 'red';
+            errorMessage += "Province<br>";
+            isValid = false;
+        }
+
+        if (!municipal) {
+            document.getElementById('municipal').style.borderColor = 'red';
+            errorMessage += "Municipality/City<br>";
+            isValid = false;
+        } 
+
+        if (!barangay) {
+            document.getElementById('barangay').style.borderColor = 'red';
+            errorMessage += "Barangay<br>";
+            isValid = false;
+        }
+
+        // If "Others" is selected for ethnicity, validate the "Other Ethnicity" field
+        if (ethnicity === "Others" && !otherEthnicity) {
+            document.getElementById('other_ethnicity').style.borderColor = 'red';
+            errorMessage += "Other Ethnicity is required when 'Others' is selected.<br>";
+            isValid = false;
+        }
+
+        // If "Others" is selected for religion, validate the "Other Religion" field
+        if (religion === "Others" && !otherReligion) {
+            document.getElementById('other_religion').style.borderColor = 'red';
+            errorMessage += "Other Religion is required when 'Others' is selected.<br>";
+            isValid = false;
+        }
+
+        if (!indigenousPersonYes && !indigenousPersonNo) {
+            // document.getElementById('indigenous_person_yes').style.borderColor = 'red';
+            // document.getElementById('indigenous_person_no').style.borderColor = 'red';
+            document.getElementById('no_selected_indigenous_person').style.color = 'red';
+            document.getElementById('no_selected_indigenous_person').textContent = 'Please select one.';
+            errorMessage += "Please tick an option in 'Indigenous Person' field.<br>";
+            isValid = false;
+        }
+
+        if (!employmentStatusEmployed && !employmentStatusUnemployed && !employmentStatusSelfEmployed) {
+            // document.getElementById('indigenous_person_yes').style.borderColor = 'red';
+            // document.getElementById('indigenous_person_no').style.borderColor = 'red';
+            document.getElementById('no_selected_employment_status').style.color = 'red';
+            document.getElementById('no_selected_employment_status').textContent = 'Please select one.';
+            errorMessage += "Please tick an option in 'Employment Status' field.<br>";
+            isValid = false;
+        }
+
+
+        // If there is an error, display the specific error message
+        if (!isValid) {
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').innerHTML = errorMessage;
+            return;  // Prevent moving to the next step if validation fails
+        }
+
+        // If validation passes, hide the error message and proceed
+        document.getElementById('error-message').style.display = 'none';  // Hide the error message
+        console.log("Step 1 is validated");
+        showNextStep();  // Assuming showNextStep() handles the page transition
+    };
+</script>
+
+<script language="javascript" type="text/javascript">
+    const validateStep2 = () => {
+        console.log("Step 2 is validated");
+        showNextStep();
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    const validateStep3 = () => {
+        console.log("Step 3 is validated");
+        showNextStep();
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+    const validateStep4 = () => {
+        console.log("Step 4 is validated");
+        showNextStep();
+    }
+</script>
+
+<!--Internal JS-->
 <script language="javascript" type="text/javascript">
 
     // controls the anti-hypertensive options
@@ -1099,28 +1324,34 @@
     }
 
     // controls the other religion field
-	const showOtherReligionField = () => {
-    	let religionSelect = document.getElementById("religion");
-    	let otherReligionDiv = document.getElementById("other-religion-div");
-    	if (religionSelect.value === "Others") {
-     	   otherReligionDiv.style.display = "block";
-   	 	} 
-		else {
-  	      otherReligionDiv.style.display = "none";
-   		}
-	}
+    const showOtherReligionField = () => {
+        let religionSelect = document.getElementById("religion");
+        let otherReligionDiv = document.getElementById("other-religion-div");
+        let otherReligionInput = document.getElementById("other_religion");
+
+        if (religionSelect.value === "Others") {
+            otherReligionDiv.style.display = "block";
+            otherReligionInput.required = true; // Make the 'Other' religion input required
+        } else {
+            otherReligionDiv.style.display = "none";
+            otherReligionInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
 
     // controls the other ethnicity field
     const showOtherEthnicityField = () => {
-    	let ethnicitySelect = document.getElementById("ethnicity");
-    	let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
-    	if (ethnicitySelect.value === "Others") {
-     	   otherEthnicityDiv.style.display = "block";
-   	 	} 
-		else {
-  	      otherEthnicityDiv.style.display = "none";
-   		}
-	}
+        let ethnicitySelect = document.getElementById("ethnicity");
+        let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
+        let otherEthnicityInput = document.getElementById("other_ethnicity");
+
+        if (ethnicitySelect.value === "Others") {
+            otherEthnicityDiv.style.display = "block";
+            otherEthnicityInput.required = true; // Make the 'Other' ethnicity input required
+        } else {
+            otherEthnicityDiv.style.display = "none";
+            otherEthnicityInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
 
     // Get all checkboxes with the name 'employment_status'
     const employmentStatusCheckboxes = document.querySelectorAll('input[name="employment_status"]');
@@ -1316,8 +1547,12 @@
 
     // Function to toggle "No" checkboxes for all conditions
     function checkAllNo() {
-        const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
-        const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
+        // Select all checkboxes with value="No" and exclude those with name="indigenous_person"
+        const noCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"][value="No"]'))
+            .filter(checkbox => checkbox.name !== 'indigenous_person');
+        
+        // Check if all relevant "No" checkboxes are already checked
+        const allChecked = noCheckboxes.every(checkbox => checkbox.checked);
 
         // Toggle the state of all "No" checkboxes
         noCheckboxes.forEach(checkbox => {
