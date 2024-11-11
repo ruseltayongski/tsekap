@@ -1140,12 +1140,14 @@
         document.getElementById(yesId).addEventListener('change', function () {
             if (this.checked) {
                 document.getElementById(noId).checked = false;
+                document.getElementById(noId).dispatchEvent(new Event('change'));
             }
         });
 
         document.getElementById(noId).addEventListener('change', function () {
             if (this.checked) {
                 document.getElementById(yesId).checked = false;
+                document.getElementById(yesId).dispatchEvent(new Event('change'));
             }
         });
     }
@@ -1328,28 +1330,24 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-    // Handle multiple checkboxes and their corresponding input fields
-    const conditions = [
-        { checkboxId: 'cancerYes', detailsInputId: 'cancerDetailsInput' },
-        { checkboxId: 'allergiesYes', detailsInputId: 'allergiesDetailsInput' },
-        { checkboxId: 'mnsYes', detailsInputId: 'mnsDetailsInput' },
-        { checkboxId: 'diabetesYes', detailsInputId: 'diabetesDetailsInput' },
-        { checkboxId: 'surgicalhistoryYes', detailsInputId: 'surgicalDetailsInput' }
-    ];
+        // Handle multiple checkboxes and their corresponding input fields
+        const conditions = [
+            { checkboxId: 'pm_cancerYes', detailsInputId: 'cancerDetailsInput' },
+            { checkboxId: 'pm_allergiesYes', detailsInputId: 'allergiesDetailsInput' },
+            { checkboxId: 'pm_mnsYes', detailsInputId: 'mnsDetailsInput' },
+            { checkboxId: 'pm_diabetesYes', detailsInputId: 'diabetesDetailsInput' },
+            { checkboxId: 'pm_surgicalhistoryYes', detailsInputId: 'surgicalDetailsInput' }
+        ];
 
-    conditions.forEach(condition => {
-        const checkbox = document.getElementById(condition.checkboxId);
-        const detailsInput = document.getElementById(condition.detailsInputId);
+        conditions.forEach(condition => {
+            const checkbox = document.getElementById(condition.checkboxId);
+            const detailsInput = document.getElementById(condition.detailsInputId);
 
-        checkbox.addEventListener('change', function() {
-            if (checkbox.checked) {
-                detailsInput.style.display = 'block';  // Show the text box
-            } else {
-                detailsInput.style.display = 'none';  // Hide the text box
-            }
+            checkbox.addEventListener('change', function() {
+                checkbox.checked ? detailsInput.style.display = "block" : detailsInput.style.display = "none";
+            });
         });
     });
-});
     
     // Lobibox notifications
     document.addEventListener('DOMContentLoaded', function() {
