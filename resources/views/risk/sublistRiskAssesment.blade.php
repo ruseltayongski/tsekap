@@ -235,24 +235,24 @@
                                     <option value="Badjao" {{ $profile->ethnicity == 'Badjao' ? 'selected' : '' }} >Badjao</option>
                                     <option value="Tausug" {{ $profile->ethnicity == 'Tausug' ? 'selected' : '' }} >Tausug</option>
                                     <option value="Maranao" {{ $profile->ethnicity == 'Maranao' ? 'selected' : '' }} >Maranao</option>
-                                    {{-- <option value="Thai" {{ $profile->ethnicity == 'Kampampangan' ? 'selected' : '' }}>Kapampangan>Thai</option> 
-                                    <option value="Vietnamese" {{ $profile->ethnicity == 'Kampampangan' ? 'selected' : '' }}>Kapampangan>Vietnamese</option>
-                                    <option value="Indonesian">Indonesian</option>
-                                    <option value="Malaysian">Malaysian</option> 
-                                    <option value="Singaporean">Singaporean</option> 
-                                    <option value="Australian">Australian</option>
-                                    <option value="Chinese">Chinese</option> 
-                                    <option value="Indian">Indian</option>
-                                    <option value="American">American</option>
-                                    <option value="Canadian">Canadian</option>
-                                    <option value="Swiss">Swiss</option>
-                                    <option value="Japanese">Japanese</option>
-                                    <option value="Korean">Korean</option>
-                                    <option value="British">British</option> 
-                                    <option value="Spanish">Spanish</option>
-                                    <option value="French">French</option>
-                                    <option value="German">German</option>
-                                    <option value="Russian">Russian</option>  --}}
+                                    <option value="Thai" {{ $profile->ethnicity == 'Thai' ? 'selected' : '' }}>Thai</option> 
+                                    <option value="Vietnamese" {{ $profile->ethnicity == 'Vietnamese' ? 'selected' : '' }}>Vietnamese</option>
+                                    <option value="Indonesian" {{ $profile->ethnicity == 'Indonesian' ? 'selected' : '' }}>Indonesian</option>
+                                    <option value="Malaysian" {{ $profile->ethnicity == 'Malaysian' ? 'selected' : '' }}>Malaysian</option> 
+                                    <option value="Singaporean" {{ $profile->ethnicity == 'Singaporean' ? 'selected' : '' }}>Singaporean</option> 
+                                    <option value="Australian" {{ $profile->ethnicity == 'Australian' ? 'selected' : '' }}>Australian</option>
+                                    <option value="Chinese" {{ $profile->ethnicity == 'Chinese' ? 'selected' : '' }}>Chinese</option> 
+                                    <option value="Indian" {{ $profile->ethnicity == 'Indian' ? 'selected' : '' }}>Indian</option>
+                                    <option value="American" {{ $profile->ethnicity == 'American' ? 'selected' : '' }}>American</option>
+                                    <option value="Canadian" {{ $profile->ethnicity == 'Canadian' ? 'selected' : '' }}>Canadian</option>
+                                    <option value="Swiss" {{ $profile->ethnicity == 'Swiss' ? 'selected' : '' }}>Swiss</option>
+                                    <option value="Japanese" {{ $profile->ethnicity == 'Japanese' ? 'selected' : '' }}>Japanese</option>
+                                    <option value="Korean" {{ $profile->ethnicity == 'Korean' ? 'selected' : '' }}>Korean</option>
+                                    <option value="British" {{ $profile->ethnicity == 'British' ? 'selected' : '' }}>British</option> 
+                                    <option value="Spanish" {{ $profile->ethnicity == 'Spanish' ? 'selected' : '' }}>Spanish</option>
+                                    <option value="French" {{ $profile->ethnicity == 'French' ? 'selected' : '' }}>French</option>
+                                    <option value="German" {{ $profile->ethnicity == 'German' ? 'selected' : '' }}>German</option>
+                                    <option value="Russian" {{ $profile->ethnicity == 'Russian' ? 'selected' : '' }}>Russian</option> 
                                     <option value="Others" {{ $profile->ethnicity == 'Others' ? 'selected' : '' }} readonly>Others</option>
                                    
                                 </select>
