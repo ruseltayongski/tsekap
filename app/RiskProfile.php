@@ -7,6 +7,7 @@ use App\Profile;
 use App\Province;
 use App\Muncity;
 use App\Barangay;
+use App\RiskFormAssesment;
 
 class RiskProfile extends Model
 {
@@ -35,4 +36,8 @@ class RiskProfile extends Model
     {
         return $this->belongsTo(Facility::class, 'facility_id_updated', 'id');
     }   
+    public function riskForm()
+    {
+        return $this->hasOne(RiskFormAssesment::class, 'risk_profile_id', 'id');
+    }
 }

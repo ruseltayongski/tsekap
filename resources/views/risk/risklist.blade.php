@@ -2,7 +2,7 @@
     use Carbon\Carbon;
     use App\Facility;
     use App\ResuReportFacility;
-    $priv_fact = Auth::user()->facility_id;
+    $priv_fact = Auth::user()->facility_id_updated;
 @endphp
 
 @extends('resu/app1')
@@ -76,7 +76,7 @@
                             @foreach($riskprofiles as $profile)
                                 <tr>
                                     <td nowrap="TRUE">
-                                        <a href="{{ asset('sublist-patient/'.$p->id) }}" class="btn btn-xs btn-success">
+                                        <a href="{{ asset('sublist-risk-patient/'.$profile->id) }}" class="btn btn-xs btn-success">
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                     </td>
@@ -96,7 +96,7 @@
                         </tbody>
                     </table>
                     <div class="text-center">
-                        {{ $riskprofiles->links() }} <!-- This should now work as $riskprofiles is the correct variable -->
+                        {{ $riskprofiles->links () }} <!-- This should now work as $riskprofiles is the correct variable -->
                     </div>
                 </div>
             </div>

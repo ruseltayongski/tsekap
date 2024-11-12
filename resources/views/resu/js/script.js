@@ -405,7 +405,7 @@ $(document).ready(function () {
   //   }
   // });
 
-      function calculateAge(dateOfBirth, date_injury ) {
+      function calculateAge(dateOfBirth) {
         const today = new Date(); 
         const birthDate = new Date(dateOfBirth); // Parse the input as a Date object
         if (isNaN(birthDate)) {
@@ -691,12 +691,12 @@ $(document).ready(function () {
   var checkmodal = $("#checkProfiles").modal("show");
   console.log("modal", checkmodal);
 
-  // $("#riskCheckProfile").modal({
-  //   backdrop: "static",
-  //   keyboard: false,
-  // });
+  $("#riskCheckProfile").modal({
+    backdrop: "static",
+    keyboard: false,
+  });
 
-  // var riskcheckmodal = $("#riskCheckProfileModal").modal("show");
+  // var riskcheckmodal = $("#riskCheckProfile").modal("show"); 
   // console.log("modal", riskcheckmodal);
 
 
@@ -800,7 +800,6 @@ $(document).ready(function () {
 
   function fetchRiskProfiles(data) {
     $(".loading").show();
-
     $.ajax({     //check profiles
       url: "get/riskCheckProfile",
       method: "GET",
@@ -810,6 +809,7 @@ $(document).ready(function () {
       data: data,
       success: function (record) {
         let content = "";
+        let closeButton = "";
         if (record.length > 0) {
           content +=
             '<table class="table table-hover table-striped">' +
@@ -834,7 +834,8 @@ $(document).ready(function () {
           });
 
           content += "</tbody></table>";
-          $("#riskCheckProfileModal").find(".modal-body").html(content);
+          $("#riskCheckProfile").find(".searched-body").html(content);
+
         } else {
           alert("No matching profiles found.");
           console.log("where is my data", data);
@@ -842,7 +843,6 @@ $(document).ready(function () {
           $("#mname").val(data.mname);
           $("#lname").val(data.lname);
           $("#dateofbirth").val(data.dob);
-          $("#riskCheckProfiles").hide();
         }
         $(".loading").hide(); // Hide loading indicator
       },
@@ -864,19 +864,21 @@ $(document).ready(function () {
       },
       data: {id: id},
       success: function (record) {
-        console.log(record);
-        $('#lname').val(record.lname || '');  // Set last name
-        $('#fname').val(record.fname || '');  // Set first name
-        $('#mname').val(record.mname || '');  // Set middle name
+        
+        $('#profile_id').val(id || '').trigger("change");
+        $('#lname').val(record.lname || '').trigger("change");  // Set last name
+        $('#fname').val(record.fname || '').trigger("change");  // Set first name
+        $('#mname').val(record.mname || '').trigger("change");  // Set middle name
         $('#suffix').val(record.suffix || '').trigger("chosen:updated");
-        $('#contact').val(record.contact || '');
+        $('#contact').val(record.contact || '').trigger("change");
         $('#dateofbirth').val(record.dob || '').trigger("change");
         $('#sex').val(record.sex || '').trigger("chosen:updated");
         $('#civil_status').val(record.civil_status || '').trigger("chosen:updated");
-        $('#religion').val(record.religion || '');
+        $('#religion').val(record.religion || '').trigger("change");
         $('#height').val(record.height || '').trigger("change");
         $('#weight').val(record.weight || '').trigger("change");
-        $('#phic_id').val(record.phicId || '');
+        $('#phic_id').val(record.phicId || '').trigger("change");
+        $('#facility_id_updated').trigger("change");
 
         setDropdownValue('#province', record.province_id || '', function() {
           setDropdownValue('#municipal', record.muncity_id || '', function() {
@@ -886,7 +888,7 @@ $(document).ready(function () {
           });
         })
 
-        $("#riskCheckProfileModal").modal("hide");
+        $("#riskCheckProfile").modal("hide");
         $(".loading").hide(); // Hide loading indicator
       },
       error: function () {
@@ -909,7 +911,6 @@ $(document).ready(function () {
   });
 
   $(".btn-riskCheckProfiles").on("click", function () {
-    $("#riskCheckProfileModal").modal("show");
     const data = {
       fname: $(".fname").val(),
       mname: $(".mname").val(),
@@ -925,6 +926,36 @@ $(document).ready(function () {
 
     fetchSpecificProfile(id);
   });
+
+  $(document).ready(function() {
+    // Function to handle the "Check" button click
+    $('.btn-riskCheckProfiles').on('click', function() {
+        // Hide the first modal body and footer
+        $('.default-body').hide();
+        $('.default-footer').hide();
+
+        // Show the second modal body and footer
+        $('.searched-body').show();
+        $('.searched-footer').show();
+    });
+
+    // Function to handle the "Return" button click
+    $('.btn-return-verify').on('click', function() {
+        // Hide the second modal body and footer
+        $('.searched-body').hide();
+        $('.searched-footer').hide();
+
+        // Show the first modal body and footer again
+        $('.default-body').show();
+        $('.default-footer').show();
+    });
+  });
+  // $(document).on('click', '.btn-risk-profile', function() {
+  //   var id = $(this).data('id');
+  //   console.log(id);
+
+  //   insertRiskProfile(id);
+  // });
 
   // Helper function to set dropdown values with callbacks
   function setDropdownValue(selector, value, callback) {
