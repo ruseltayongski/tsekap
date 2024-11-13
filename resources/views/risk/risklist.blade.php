@@ -9,7 +9,7 @@
 @section('content')
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header">Manage Risk Patient List {{ $not_updated ? '(NOT UPDATED)' : "" }}</h2>
+            <h2 class="page-header">Risk Patient Assessment List {{ $not_updated ? '(NOT UPDATED)' : "" }}</h2>
             @if(Session::has('deng_add'))
                 <div class="alert alert-success">
                     <font class="text-success">
@@ -70,6 +70,7 @@
                                 <th>Municipal<br>&nbsp;</th>
                                 <th>Barangay<br>&nbsp;</th>
                                 <th>Date Inputted<br>&nbsp;</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -91,6 +92,7 @@
                                     <td>{{ $profile->muncity->description ?? 'N/A' }}</td>
                                     <td>{{ $profile->barangay->description ?? 'N/A' }}</td>
                                     <td>{{ $profile->created_at ? \Carbon\Carbon::parse($profile->created_at)->format('F j, Y') : 'N/A' }}</td>
+                                  
                                 </tr>
                             @endforeach
                         </tbody>

@@ -52,6 +52,7 @@ class CreateTableRiskForm extends Migration
             $table->string('pmh_specify_MNandSDisorder', 100)->nullable();
             $table->string('pmh_visionProblems', 5)->nullable();
             $table->string('pmh_previous_Surgical', 5)->nullable();
+            $table->string('pmh_specify_previous_Surgical', 100)->nullable();   
             $table->string('pmh_thyroidDisorders', 5)->nullable();
             $table->string('pmh_kidneyDisorders', 5)->nullable();
 
@@ -69,7 +70,7 @@ class CreateTableRiskForm extends Migration
             $table->string('fm_COPD', 5)->nullable();
 
             // Risk Factors (rf_)
-            $table->string('rf_tobbacoUse', 5)->nullable();
+            $table->string('rf_tobbacoUse', 100)->nullable();
             $table->string('rf_alcoholIntake', 5)->nullable();
             $table->string('rf_alcoholBingeDrinker', 5)->nullable();
             $table->string('rf_physicalActivity', 5)->nullable();
@@ -102,7 +103,7 @@ class CreateTableRiskForm extends Migration
             $table->string('mngm_med_hypertension', 5)->nullable();
             $table->string('mngm_med_hypertension_specify', 100)->nullable();
             $table->string('mngm_med_diabetes', 5)->nullable();
-            $table->string('mngm_med_diabetes_options', 5)->nullable();
+            $table->string('mngm_med_diabetes_options', 50)->nullable();
             $table->string('mngm_med_diabetes_specify', 100)->nullable();
             $table->date('mngm_date_follow_up')->nullable();
             $table->text('mngm_remarks')->nullable();

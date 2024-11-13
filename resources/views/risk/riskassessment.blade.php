@@ -1,7 +1,7 @@
 @extends('resu/app1')
 @section('content')
 <!-- @include('risk/riskSidebar') -->
- {{-- @include('risk.risk_check_profile.riskCheckProfile')  --}}
+ @include('risk.risk_check_profile.riskCheckProfile') 
 
 <?php
  use App\Muncity;
@@ -1367,7 +1367,7 @@
             });
         });
     });
-});
+
 </script>
 
 <!--Validation Functions-->

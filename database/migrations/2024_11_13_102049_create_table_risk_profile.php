@@ -15,7 +15,6 @@ class CreateTableRiskProfile extends Migration
         Schema::create('risk_profile', function (Blueprint $table) {
             $table->increments('id'); // Primary key with auto-increment
             $table->integer('profile_id')->nullable(); // Foreign key, nullable
-            $table->integer('unique_id')->nullable(); // Foreign key, nullable
             $table->string('lname', 50); // Last name
             $table->string('fname', 50); // First name
             $table->string('mname', 50)->nullable(); // Middle name, nullable
@@ -25,7 +24,8 @@ class CreateTableRiskProfile extends Migration
             $table->integer('age'); // Age
             $table->string('civil_status', 30); // Civil status
             $table->string('religion', 30); // Religion
-            $table->integer('contact'); // Contact number
+            $table->string('other_religion', 50)->nullable();;
+            $table->string('contact');
             $table->integer('province_id'); // Province ID
             $table->integer('municipal_id'); // Municipal ID
             $table->integer('barangay_id'); // Barangay ID
@@ -34,7 +34,8 @@ class CreateTableRiskProfile extends Migration
             $table->string('sitio', 50)->nullable(); // Sitio, nullable
             $table->integer('phic_id')->nullable(); // PHIC ID, nullable
             $table->integer('pwd_id')->nullable(); // PWD ID, nullable
-            $table->string('ethnicity', 30); // Ethnicity
+            $table->string('ethnicity', 30); // Ethnicity    
+            $table->string('other_ethnicity', 30)->nullable();
             $table->string('indigenous_person', 5); // Indigenous person
             $table->string('employment_status', 20); // Employment status
             $table->integer('facility_id_updated');

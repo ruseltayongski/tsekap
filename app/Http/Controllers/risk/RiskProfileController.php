@@ -130,6 +130,7 @@ class RiskProfileController extends Controller
         $riskform->pmh_specify_MNandSDisorder = $req->input('pm_mnsad_details', '');
         $riskform->pmh_visionProblems = $req->input('pm_vision', 'No');
         $riskform->pmh_previous_Surgical = $req->input('pm_psh', 'No');
+        $riskform->pmh_specify_previous_Surgical = $req->input('pm_psh_details', 'No');
         $riskform->pmh_thyroidDisorders = $req->input('pm_thyroid', 'No');
         $riskform->pmh_kidneyDisorders = $req->input('pm_kidney', 'No');
         
@@ -353,6 +354,7 @@ class RiskProfileController extends Controller
                     'pmh_specify_allergies', 
                     'pmh_MNandSDisorder', 
                     'pmh_specify_MNandSDisorder', 
+                    'pmh_specify_previous_Surgical',
                     'pmh_visionProblems', 
                     'pmh_previous_Surgical','pmh_thyroidDisorders', 'pmh_kidneyDisorders',
                     'fm_hypertension','fm_stroke','fm_heartDisease','fm_diabetesMel',

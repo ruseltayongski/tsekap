@@ -267,12 +267,12 @@
                                 <label class="mr-2">Indigenous Person</label><br>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person_yes" id="indigenous_person_yes" value="yes" 
-                                        {{ $profile->indigenous_person == 'yes' ? 'checked' : '' }} onclick="toggleCheckbox('yes')">
+                                        {{ $profile->indigenous_person == 'Yes' ? 'checked' : '' }} onclick="toggleCheckbox('yes')">
                                     <label for="indigenous_person_yes" class="ml-2">Yes</label>
                                 </span>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person_no" id="indigenous_person_no" value="no" 
-                                        {{ $profile->indigenous_person == 'no' ? 'checked' : '' }} onclick="toggleCheckbox('no')">
+                                        {{ $profile->indigenous_person == 'No' ? 'checked' : '' }} onclick="toggleCheckbox('no')">
                                     <label for="indigenous_person_no" class="ml-2">No</label>
                                 </span>
                             </div>
@@ -282,18 +282,18 @@
                             <div class="col-md-6 d-flex align-items-center">
                                 <label class="mr-2">Employment Status</label><br>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status_employed" value="employed" 
-                                        {{ $profile->employment_status == 'employed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('employed')">
+                                    <input type="checkbox" name="employment_status" id="employment_status_employed" value="Employed" 
+                                        {{ $profile->employment_status == 'Employed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('Employed')">
                                     <label for="employment_status_employed" class="ml-2">Employed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status_unemployed" value="unemployed" 
-                                        {{ $profile->employment_status == 'unemployed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('unemployed')">
+                                    <input type="checkbox" name="employment_status" id="employment_status_unemployed" value="Unemployed" 
+                                        {{ $profile->employment_status == 'Unemployed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('Unemployed')">
                                     <label for="employment_status_unemployed" class="ml-2">Unemployed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
-                                    <input type="checkbox" name="employment_status" id="employment_status_self_employed" value="self-employed" 
-                                        {{ $profile->employment_status == 'self-employed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('self-employed')">
+                                    <input type="checkbox" name="employment_status" id="employment_status_self_employed" value="Self-Employed" 
+                                        {{ $profile->employment_status == 'Self-Employed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('Self-Employed')">
                                     <label for="employment_status_self_employed" class="ml-2">Self-Employed</label>                                   
                                 </span> 
                             </div>
@@ -478,7 +478,7 @@
                                         <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesYes" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesNo" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pm_diabetes_details"  value="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pm_diabetes_details"  placeholder="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly></textarea>
                                
                                     </td>
                                 </tr>
@@ -488,7 +488,7 @@
                                         <input type="checkbox" class="cancerCheckbox" id="pm_cancerYes" name= "pm_cancer"{{ $profile->riskForm->pmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="cancerCheckbox" id="pm_cancerNo"  name= "pm_cancer" {{ $profile->riskForm->pmh_cancer == 'No' ? 'checked' : '' }}> No
                                        <br/>    
-                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pm_cancer_details"  value="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly></textarea>
+                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pm_cancer_details"  placeholder="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly></textarea>
                                     </td>
                                 </tr>
                             </tr>
@@ -515,7 +515,7 @@
                                         <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesYes" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesNo" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pm_allergies_details"  value="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pm_allergies_details"  placeholder="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly></textarea>
                                     </td>
                                    
                                 </tr>
@@ -525,7 +525,7 @@
                                         <input type="checkbox" class="mnsCheckbox" id="pm_mnsYes" name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="mnsCheckbox" id="pm_mnsNo"  name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pm_mnsad_details"  value="{{ $profile->riskForm->pmh_specify_MNandSDisorder ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pm_mnsad_details"  placeholder="{{ $profile->riskForm->pmh_specify_MNandSDisorder ?? '' }}" readonly></textarea>
                                     </td>
                                    
                                 </tr>
@@ -543,7 +543,7 @@
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryYes" {{ $profile->riskForm->pmh_previous_Surgical == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryNo" {{ $profile->riskForm->pmh_previous_Surgical == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pm_psh_details"  readonly></textarea>
+                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pm_psh_details" placeholder="{{ $profile->riskForm->pmh_specify_previous_Surgical ?? '' }}" readonly></textarea>
                                    
                                     </td>
                                     
@@ -869,7 +869,7 @@
                                     {{ in_array('polydipsia', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> Polydipsia
                         
                                 <input type="checkbox" name="rs_bloodSugar_symptoms[]" value="symptom3" 
-                                    {{ in_array('polyuria', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> polyuria
+                                    {{ in_array('polyuria', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> Polyuria
                             </td>
                         </tr>
                         
@@ -1149,9 +1149,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleEmploymentStatus(selectedStatus) 
     {
-        document.getElementById('employment_status_employed').checked = (selectedStatus === 'employed');
-        document.getElementById('employment_status_unemployed').checked = (selectedStatus === 'unemployed');
-        document.getElementById('employment_status_self_employed').checked = (selectedStatus === 'self-employed');
+        document.getElementById('employment_status_employed').checked = (selectedStatus === 'Employed');
+        document.getElementById('employment_status_unemployed').checked = (selectedStatus === 'Unemployed');
+        document.getElementById('employment_status_self_employed').checked = (selectedStatus === 'Self-Employed');
     }
 
 
