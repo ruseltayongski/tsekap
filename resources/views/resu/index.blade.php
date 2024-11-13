@@ -1,124 +1,69 @@
 @extends('resu/app1')
+
 @section('content')
 
-<div class="col-md-8 wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; left: 45%; max-width: 100px;">
-        <div class="alert alert-jim">
-            <h2 class="page-header"><i class="fa fa-home"></i> Home</h2>
-            <!-- <div class="page-divider"></div> -->
-
-            <div class="col-sm-6 col-xs-12">
-                <div class="small-box bg-aqua">
-                    <!-- <div class="inner">
-                        <h3 class="countBarangay">
-                           
-                            <i class="fa fa-refresh"></i>
-                        </h3>
-                        <p>No. of Barangay</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-building"></i>
-                    </div>
-                     <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
-                 </div> -->
-
-             <!-- <div class="col-sm-6 col-xs-12">
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3 class="countNotUpdated">
-                            <i class="fa fa-refresh"></i>
-                        </h3>
-                        <p>No. of Profiles NOT UPDATED</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <a href="{{ asset('#') }}" class="small-box-footer">&nbsp;</a>
+<div class="container">
+    <div class="row justify-content-center" style="align-center: 50%">
+        <div class="col-md-6 wrapper">
+            <div class="alert alert-jim">
+                <h2 class="page-header"><i class="fa fa-folder"></i> Patient Injury Form </h2>
+                <div class="page-divider"></div>
+        
+                <div class="form-group-section">
+                    <h3 class="section-header">Another Section</h3>
+                   
+                    <img src="{{ asset('resources/img/patientInjuryLogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
+                    <p>Section-specific information can go here.</p>
+                    <a href="#" class="btn btn-primary mt-3">View List</a>
+                    <a href="#" class="btn btn-primary mt-3">Add Patient Injury</a>
                 </div>
-             </div> -->
-
-            <div class="clearfix"></div>
-            <!-- <div class="col-sm-6 col-xs-12">
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3 class="target_2022"><i class="fa fa-refresh"></i></h3>
-                        <p>Target Population (2022)</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-line-chart"></i>
-                    </div>
-                    <a href="{{ asset('#') }}">
-                       <i class="fa"></i>
-                    </a>
-                    {{--<a href="{{ asset('#') }}" class="small-box-footer">--}}
-                        {{--Target Poor ( <font class="old_target"><i class="fa fa-refresh fa-spin"></i></font> )--}}
-                    {{--</a>--}}
-                </div>
-            </div> -->
-
-            <!-- <div class="col-sm-6 col-xs-12">
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3 class="countPopulation_2022"><i class="fa fa-refresh "></i></h3>
-                        <p>Population Profiled (2022)</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <div class="small-box-footer" style="text-align: left">&emsp;
-                        <span class="profilePercentage_2022"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                    </div>
-                </div>
-            </div> -->            
-
-            <div class="col-sm-6 col-xs-12">
-                    <span class="info-box-icon">
-                        <i class="fa fa-line-chart"></i></span>
-                    <div class="info-box-content">
-                        <!-- <span class="info-box-text">TARGET POPULATION (2018)</span>
-                        <span class="info-box-number target_2018"><i class="fa fa-refresh"></i></span> -->
-                    </div><!-- /.info-box-content -->
-                
             </div>
-
-            <div class="col-sm-6 col-xs-12">
-                
-                    <!-- <span class="info-box-icon"><i class="fa fa-users"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">POPULATION PROFILED (2018)</span>
-                        <span class="info-box-number countPopulation_2018"><i class="fa fa-refresh fa-spin"></i></span>
-                        <div class="progress">
-                            <div class="progress-bar profilePercentageBar_2018"></div>
-                        </div>
-                        <span class="progress-description">
-                    <span class="profilePercentage_2018"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion
-                  </span> -->
-                    </div><!-- /.info-box-content -->
-            
-            </div>
-            asdasd  
-
-            {{--<div class="col-sm-6 col-xs-12">--}}
-                {{--<div class="info-box bg-green">--}}
-                    {{--<span class="info-box-icon"><i class="fa fa-stethoscope"></i></span>--}}
-                    {{--<div class="info-box-content">--}}
-                        {{--<span class="info-box-text">Availed 3 MUST Services</span>--}}
-                        {{--<span class="info-box-number validServices"><i class="fa fa-refresh fa-spin"></i></span>--}}
-                        {{--<div class="progress">--}}
-                            {{--<div class="progress-bar servicePercentageBar"></div>--}}
-                        {{--</div>--}}
-                  {{--<span class="progress-description">--}}
-                    {{--<span class="servicePercentage"><i class="fa fa-refresh fa-spin"></i></span>% Goal Completion--}}
-                  {{--</span>--}}
-                    {{--</div><!-- /.info-box-content -->--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
-            <div class="clearfix"></div>
-            <!-- <h3 class="page-header">Monthly
-                <small>Progress</small>
-            </h3>
-            <canvas id="montlyProgress" width="400" height="200"></canvas> -->
         </div>
-    </div>
-  
+        
+
+        <div class="col-md-6 wrapper">
+            <div class="alert alert-jim">
+                <h2 class="page-header"><i class="fa fa-folder"></i> Risk Assessment Form </h2>
+                <div class="page-divider"></div>
+                <div class="form-group-section">
+                    <h3 class="section-header">Another Section</h3>
+                    <img src="{{ asset('resources/img/patientlogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
+                    <p>Section-specific information can go here.</p>
+                    <a href="#" class="btn btn-primary mt-3">View List</a>
+                    <a href="#" class="btn btn-primary mt-3">Add Risk Assessment</a>
+                </div>
+            </div>
+        </div>
+        
+</div>
+
 @endsection
+
+<style>
+    .wrapper {
+        max-width: 1000px; /* Adjust width as needed */
+        margin: 20px auto;
+    }
+    .alert-jim {
+        text-align: center;
+    }
+    .form-group-section {
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+        background-color: #f9f9f9;
+    }
+    .form-group-section:last-child {
+        border-bottom: none;
+    }
+    .section-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #555;
+        margin-bottom: 10px;
+    }
+    .page-divider {
+        border-bottom: 2px solid #ccc;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+</style>

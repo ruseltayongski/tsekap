@@ -118,7 +118,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <!-- <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li> -->
-                <li><a href=""><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li>
             @if($priv==10)
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Injury<span class="caret"></span></a>
