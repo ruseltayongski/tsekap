@@ -1,4 +1,4 @@
-<div class="modal fade" id="riskCheckProfile" role="dialog">
+<div class="modal fade" id="riskCheckProfile" tabIndex="-1" role="dialog">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -25,7 +25,17 @@
                 </table>
             </div>
             <div class="modal-footer default-footer">
-                <button type="button" class="btn btn-success btn-riskCheckProfiles"><i class="fa fa-search"></i> Check</button> 
+                <button type="button" class="btn btn-success btn-riskCheckProfiles"><i class="fa fa-search"></i> Check</button>
+                <script>
+                    document.addEventListener('keypress', function(event) {
+                        if (event.key === 'Enter') {
+                            const button = document.querySelector('.btn-riskCheckProfiles');
+                            if (button) {
+                                button.click();
+                            }
+                        }
+                    });
+                </script>
             </div>
             <div class="modal-body searched-body" style="display: none;">
                 

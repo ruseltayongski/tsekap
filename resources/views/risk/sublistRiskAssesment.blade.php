@@ -11,7 +11,7 @@
    $facilities = Facility::select('id', 'name')->get();
    $facilities = Facility::select('id', 'name')->get();
  $facility = Facility::select('id','name','address','hospital_type')
- ->where('id', $user->facility_id)    
+ ->where('id', $profile->facility_id_updated)    
  ->get();
 
  use Carbon\Carbon;
@@ -87,7 +87,7 @@
                         
                             <div class="col-md-3">
                                 <label for="suffix">Suffix</label>
-                                <select class="form-control chosen-select" name="suffix" id="suffix" disabled>
+                                <select class="form-control " name="suffix" id="suffix" disabled>
                                     <option value="">Select suffix</option>
                                     <option value="Jr." {{ $profile->suffix == 'Jr.' ? 'selected' : '' }}>Jr.</option>
                                     <option value="Sr." {{ $profile->suffix == 'Sr.' ? 'selected' : '' }}>Sr.</option>
@@ -108,7 +108,7 @@
                             
                             <div class="col-md-3">
                                 <label for="sex">Sex <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="sex" id="sex">
+                                <select class="form-control" name="sex" id="sex" disabled>
                                     <option value="">Select sex</option>
                                     <option value="Male" {{ $profile->sex == 'Male' ? 'selected' : '' }}>Male</option>
                                     <option value="Female" {{ $profile->sex == 'Female' ? 'selected' : '' }}>Female</option>
@@ -125,7 +125,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="civil_status" id="civil_status">
+                                <select class="form-control" name="civil_status" id="civil_status" disabled>
                                     <option value="">Select status</option>
                                     <option value="Single" {{ $profile->civil_status == 'Single' ? 'selected' : '' }}>Single</option>
                                     <option value="Married" {{ $profile->civil_status == 'Married' ? 'selected' : '' }}>Married</option>
@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="religion" id="religion" onchange="showOtherReligionField()">
+                                <select class="form-control" name="religion" id="religion" onchange="showOtherReligionField()" disabled>
                                     <option value="">Select Religion</option>
                                     <option value="Roman Catholic" {{ $profile->religion == 'Roman Catholic' ? 'selected' : '' }}>Roman Catholic</option>
                                     <option value="Islam" {{ $profile->religion == 'Islam' ? 'selected' : '' }}>Islam</option>
@@ -174,7 +174,7 @@
                             <div class="row"></div>
                             <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="province" id="province">
+                                <select class="form-control" name="province" id="province" disabled>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}" {{ $profile->province_id == $prov->id ? 'selected' : ''}}>{{ $prov->description }}</option>
@@ -183,7 +183,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="municipal">Municipality/City <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="municipal" id="municipal">
+                                <select class="form-control" name="municipal" id="municipal" disabled>
                                     <option value="">Select Muncity</option>
                                     @foreach($muncities as $mun)
                                     <option value="{{ $mun->id }}" {{ $profile->municipal_id == $mun->id ? 'selected' : ''}}>{{ $mun->description }}</option>
@@ -192,7 +192,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="barangay" id="barangay">
+                                <select class="form-control" name="barangay" id="barangay" disabled>
                                     <option value="">Select Barangay</option>
                                     @foreach($barangay as $bar)
                                     <option value="{{ $bar->id }}" {{ $profile->barangay_id == $bar->id ? 'selected' : ''}}>{{ $bar->description }}</option>
@@ -221,7 +221,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
+                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()" disabled>
                                     <option value="">Select Ethnicity</option>
                                     <option value="Cebuano" {{ $profile->ethnicity == 'Cebuano' ? 'selected' : '' }}>Cebuano</option> 
                                     <option value="Bisaya" {{ $profile->ethnicity == 'Bisaya' ? 'selected' : '' }}>Bisaya</option>
@@ -267,12 +267,12 @@
                                 <label class="mr-2">Indigenous Person</label><br>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person_yes" id="indigenous_person_yes" value="yes" 
-                                        {{ $profile->indigenous_person == 'Yes' ? 'checked' : '' }} onclick="toggleCheckbox('yes')">
+                                        {{ $profile->indigenous_person == 'Yes' ? 'checked' : '' }}>
                                     <label for="indigenous_person_yes" class="ml-2">Yes</label>
                                 </span>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person_no" id="indigenous_person_no" value="no" 
-                                        {{ $profile->indigenous_person == 'No' ? 'checked' : '' }} onclick="toggleCheckbox('no')">
+                                        {{ $profile->indigenous_person == 'No' ? 'checked' : '' }}>
                                     <label for="indigenous_person_no" class="ml-2">No</label>
                                 </span>
                             </div>
@@ -294,7 +294,7 @@
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="employment_status" id="employment_status_self_employed" value="Self-Employed" 
                                         {{ $profile->employment_status == 'Self-Employed' ? 'checked' : '' }} onclick="toggleEmploymentStatus('Self-Employed')">
-                                    <label for="employment_status_self_employed" class="ml-2">Self-Employed</label>                                   
+                                    <label for="emp_status_self_employed" class="ml-2">Self-Employed</label>                                   
                                 </span> 
                             </div>
                             
@@ -307,9 +307,6 @@
                             <p style="font-style: italic; font-size: 15px;">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
-                        </div>
-                        <div style="display: flex; justify-content: end">
-                            <button type="button" class="btn btn-sm btn-primary" onclick="checkAllNo()">Check All No</button>
                         </div>
                         <br>
                     </div>
@@ -422,7 +419,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="facility">What Facility:</label>
-                            <select class="form-control chosen-select" name="facility" id="facility" style="width: 100%; max-width: 100%;" readonly>
+                            <select class="form-control" name="facility" id="facility" style="width: 100%; max-width: 100%;" disabled>
                                 <option value="">Select Facility...</option>
                                 @foreach($facilities as $fact)
                                     <option value="{{ $fact->id }}" {{ $profile->riskForm->ar_refer_facility == $fact->id ? 'selected' : '' }}>
@@ -478,7 +475,7 @@
                                         <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesYes" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesNo" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pm_diabetes_details"  placeholder="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pm_diabetes_details"  placeholder="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly disabled></textarea>
                                
                                     </td>
                                 </tr>
@@ -488,7 +485,7 @@
                                         <input type="checkbox" class="cancerCheckbox" id="pm_cancerYes" name= "pm_cancer"{{ $profile->riskForm->pmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="cancerCheckbox" id="pm_cancerNo"  name= "pm_cancer" {{ $profile->riskForm->pmh_cancer == 'No' ? 'checked' : '' }}> No
                                        <br/>    
-                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pm_cancer_details"  placeholder="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly></textarea>
+                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pm_cancer_details"  placeholder="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly disabled></textarea>
                                     </td>
                                 </tr>
                             </tr>
@@ -515,7 +512,7 @@
                                         <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesYes" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesNo" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pm_allergies_details"  placeholder="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pm_allergies_details"  placeholder="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly disabled></textarea>
                                     </td>
                                    
                                 </tr>
@@ -525,7 +522,7 @@
                                         <input type="checkbox" class="mnsCheckbox" id="pm_mnsYes" name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="mnsCheckbox" id="pm_mnsNo"  name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pm_mnsad_details"  placeholder="{{ $profile->riskForm->pmh_specify_MNandSDisorder ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pm_mnsad_details"  placeholder="{{ $profile->riskForm->pmh_specify_MNandSDisorder ?? '' }}" readonly disabled></textarea>
                                     </td>
                                    
                                 </tr>
@@ -543,7 +540,7 @@
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryYes" {{ $profile->riskForm->pmh_previous_Surgical == 'Yes' ? 'checked' : '' }}> Yes
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryNo" {{ $profile->riskForm->pmh_previous_Surgical == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pm_psh_details" placeholder="{{ $profile->riskForm->pmh_specify_previous_Surgical ?? '' }}" readonly></textarea>
+                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pm_psh_details" placeholder="{{ $profile->riskForm->pmh_specify_previous_Surgical ?? '' }}" readonly disabled></textarea>
                                    
                                     </td>
                                     
@@ -728,7 +725,7 @@
                                     <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" {{ $profile->riskForm->rf_alcoholIntake == 'Yes' ? 'checked' : '' }}> Yes, drinks alcohol
                                     
                                     <br><br>
-                                    <label id="bingeLabel" style="opacity: 0.5;">
+                                    <label id="bingeLabel" class="ml-2">
                                         <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge" name="ncd_alcoholBinge" {{ $profile->riskForm->rf_alcoholBingeDrinker == 'Yes' ? 'checked' : '' }}>
                                         Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
                                     </label>
@@ -773,7 +770,7 @@
                                         5.5 Weight (kg) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="weight" name="rf_weight"oninput="calculateBMI()" value="{{ $profile->riskForm->rf_weight ?? '' }}" readonly> 
+                                        <input type="text" class="textbox" id="weight" name="rf_weight" oninput="calculateBMI()" value="{{ $profile->riskForm->rf_weight ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
                                 
@@ -782,7 +779,7 @@
                                         5.6 Height (cm) 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="height"  name="rf_height" oninput="calculateBMI()" value="{{ $profile->riskForm->rf_height ?? '' }}" readonly> 
+                                        <input type="text" class="textbox" id="height"  name="rf_height" oninput="calculateBMI()" value="{{ $profile->riskForm->rf_height ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -790,7 +787,7 @@
                                         5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="BMI" value="{{ $profile->riskForm->rf_bodyMass ?? '' }}" name="rf_BMI" readonly><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" ></span></i></p>
+                                        <input type="text" class="textbox" id="BMI" value="{{ $profile->riskForm->rf_bodyMass ?? '' }}" name="rf_BMI" readonly disabled><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" ></span></i></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -798,7 +795,7 @@
                                         5.8 Waist Circumference (cm): F < 80cm M < 90
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="waist" name ="rf_waist" value="{{ $profile->riskForm->rf_waistCircum ?? '' }}" readonly> 
+                                        <input type="text" class="textbox" id="waist" name ="rf_waist" value="{{ $profile->riskForm->rf_waistCircum ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
                                 <tr>
@@ -806,7 +803,7 @@
                                         5.9 Blood Pressure (mmHg)
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="bloodPressure" name="rf_bloodPressure" value="{{ $profile->riskForm->rf_bloodPressure ?? '' }}" readonly> 
+                                        <input type="text" class="textbox" id="bloodPressure" name="rf_bloodPressure" value="{{ $profile->riskForm->rf_bloodPressure ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
                             </tbody>
@@ -845,15 +842,15 @@
                             <td style="border: 1px solid #000; padding: 10px;">
                                 <div style="margin-bottom: 10px;">
                                     <label>FBS Result:</label>
-                                    <input type="text" name="fbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_fbs ?? '' }}"readonly>
+                                    <input type="text" name="fbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_fbs ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>RBS Result:</label>
-                                    <input type="text" name="rbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_rbs ?? '' }}" readonly>
+                                    <input type="text" name="rbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_rbs ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Date Taken:</label>
-                                    <input type="date" name="bloodSugar_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_date_taken ?? '' }}" readonly>
+                                    <input type="date" name="bloodSugar_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_date_taken ?? '' }}" readonly disabled>
                                 </div>
                             </td>
                         </tr>
@@ -880,27 +877,27 @@
                             <td style="border: 1px solid #000; padding: 10px;">
                                 <div style="margin-bottom: 10px;">
                                     <label>Total Cholesterol:</label>
-                                    <input type="text" name="lipid_cholesterol" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_cholesterol ?? '' }}" readonly>
+                                    <input type="text" name="lipid_cholesterol" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_cholesterol ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>HDL:</label>
-                                    <input type="text" name="lipid_hdl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_hdl ?? '' }}" readonly>
+                                    <input type="text" name="lipid_hdl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_hdl ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>LDL:</label>
-                                    <input type="text" name="lipid_ldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_ldl ?? '' }}" readonly>
+                                    <input type="text" name="lipid_ldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_ldl ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>VLDL:</label>
-                                    <input type="text" name="lipid_vldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_vldl ?? '' }}" readonly>
+                                    <input type="text" name="lipid_vldl" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_vldl ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Triglyceride:</label>
-                                    <input type="text" name="lipid_triglyceride" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_triglyceride ?? '' }}" readonly>
+                                    <input type="text" name="lipid_triglyceride" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_triglyceride ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Date Taken:</label>
-                                    <input type="date" name="lipid_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_date_taken ?? '' }}" readonly>
+                                    <input type="date" name="lipid_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_lipid_date_taken ?? '' }}" readonly disabled>
                                 </div>
                             </td>
                         </tr>
@@ -912,19 +909,19 @@
                             <td style="border: 1px solid #000; padding: 10px;">
                                 <div style="margin-bottom: 10px;">
                                     <label>Protein:</label>
-                                    <input type="text" name="uri_protein" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_protein ?? '' }}" readonly>
+                                    <input type="text" name="uri_protein" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_protein ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Date Taken:</label>
-                                    <input type="date" name="uri_protein_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_protein_date_taken ?? '' }}" readonly>
+                                    <input type="date" name="uri_protein_date_taken"  style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_protein_date_taken ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Ketones:</label>
-                                    <input type="text" name="uri_ketones" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_ketones ?? '' }}" readonly>
+                                    <input type="text" name="uri_ketones" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_ketones ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Date Taken:</label>
-                                    <input type="date" name="uri_ketones_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_ketones_date_taken ?? '' }}" readonly>
+                                    <input type="date" name="uri_ketones_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_urine_ketones_date_taken ?? '' }}" readonly disabled>
                                 </div>
                             </td>
                         </tr>
@@ -958,7 +955,7 @@
                                     </label>
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_wheezing" 
-                                        {{ in_array('Wheezing', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease     ?? '')) ? 'checked' : '' }}> Wheezing
+                                        {{ in_array('Wheezing', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Wheezing
                                     </label>
                                 </div>
                             </td>
@@ -972,11 +969,11 @@
                                 <div class="checkbox-group" style="display: flex; flex-direction: column; gap: 5px;">
                                     <label>
                                         <input type="checkbox" name="pefr_above_20_percent" 
-                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms     ?? '')) ? 'checked' : '' }}> &gt; 20% change from baseline (consider Probable Asthma)
+                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms ?? '')) ? 'checked' : '' }}> &gt; 20% change from baseline (consider Probable Asthma)
                                     </label>
                                     <label>
                                         <input type="checkbox" name="pefr_below_20_percent" 
-                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms     ?? '')) ? 'checked' : '' }}> &lt; 20% change from baseline (consider Probable COPD)
+                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms ?? '')) ? 'checked' : '' }}> &lt; 20% change from baseline (consider Probable COPD)
                                     </label>
                                 </div>
                             </td>
@@ -1019,16 +1016,16 @@
                                         @foreach (['Yes', 'No', 'Unknown'] as $option)
                                             <label>
                                                 <input type="radio" name="anti_hypertensives" value="{{ strtolower($option) }}" 
-                                                    {{ $profile->riskForm->mngm_med_hypertension === strtolower($option) ? 'checked' : '' }}> {{ $option }}
+                                                    {{ $profile->riskForm->mngm_med_hypertension === strtolower($option) ? 'checked' : '' }} disabled> {{ $option }}
                                             </label>
                                         @endforeach
-                                    </div>
+                                    </div>  
         
                                     <div id="antiHypertensivesOptions" style="display: {{ $profile->riskForm->mngm_med_hypertension === 'yes' ? 'block' : 'none' }}">
                                         <input type="text" name="anti_hypertensives_specify" value="{{ $profile->riskForm->mngm_med_hypertension_specify }}" 
                                             placeholder="Specify medicine" 
                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" 
-                                            readonly>
+                                            readonly disabled>
                                     </div>
                                 </div>
         
@@ -1039,7 +1036,7 @@
                                         @foreach (['Yes', 'No', 'Unknown'] as $option)
                                             <label>
                                                 <input type="radio" name="anti_diabetes" value="{{ strtolower($option) }}" 
-                                                    {{ $profile->riskForm->mngm_med_diabetes === strtolower($option) ? 'checked' : '' }}> {{ $option }}
+                                                    {{ $profile->riskForm->mngm_med_diabetes === strtolower($option) ? 'checked' : '' }} disabled> {{ $option }}
                                             </label>
                                         @endforeach
                                     </div>
@@ -1054,7 +1051,7 @@
                                                     $storedValue = strtolower(str_replace(' ', '_', $profile->riskForm->mngm_med_diabetes_options));
                                                 @endphp
                                                 <input type="radio" name="anti_diabetes_type" value="{{ $optionValue }}" 
-                                                    {{ $storedValue === $optionValue ? 'checked' : '' }}> {{ $subOption }}
+                                                    {{ $storedValue === $optionValue ? 'checked' : '' }} disabled> {{ $subOption }}
                                             </label>
                                         @endforeach
                                         
@@ -1063,7 +1060,7 @@
                                         <input type="text" name="anti_diabetes_specify" value="{{ $profile->riskForm->mngm_med_diabetes_specify }}" 
                                             placeholder="Specify medicine" 
                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                            readonly>
+                                            readonly disabled>
                                     </div>
                                 </div>
                             </td>
@@ -1074,7 +1071,7 @@
                             <td style="font-weight: bold; padding: 10px;">Date of Follow-up</td>
                             <td>
                                 <input type="date" name="follow_up_date" value="{{ $profile->riskForm->mngm_date_follow_up }}" 
-                                    style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;" readonly>
+                                    style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;" readonly disabled>
                             </td>
                         </tr>
         
@@ -1082,7 +1079,7 @@
                         <tr>
                             <td style="font-weight: bold; padding: 10px;">Remarks</td>
                             <td>
-                                <textarea name="remarks" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly>{{ $profile->riskForm->mngm_remarks }} </textarea>
+                                <textarea name="remarks" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly disabled>{{ $profile->riskForm->mngm_remarks }} </textarea>
                             </td>
                         </tr>
                     </tbody>
@@ -1101,327 +1098,325 @@
 </div>
 </div>
 
-<script language="javascript" type="text/javascript">
+<!-- <script language="javascript" type="text/javascript">
 
+    document.addEventListener('DOMContentLoaded', function() {
+            const dobField = document.getElementById('dob');
+            if (dobField.value) {
+                $(dobField).trigger('change');
+            }
+        });
 
+        // controls the anti-hypertensive options
+        const toggleAntiHypertensivesOptions = () => {
+            const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
+            const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
 
-document.addEventListener('DOMContentLoaded', function() {
-        const dobField = document.getElementById('dob');
-        if (dobField.value) {
-            $(dobField).trigger('change');
+            const antiHypertensivesOptionsDiv = document.getElementById('antiHypertensivesOptions');
+
+            if (antiHypertensivesSelected && (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown')) {
+                antiHypertensivesOptionsDiv.style.display = 'block';
+            } else {
+                antiHypertensivesOptionsDiv.style.display = 'none';
+            }
         }
-    });
 
-    // controls the anti-hypertensive options
-    const toggleAntiHypertensivesOptions = () => {
-        const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
-        const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
-
-        const antiHypertensivesOptionsDiv = document.getElementById('antiHypertensivesOptions');
-
-        if (antiHypertensivesSelected && (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown')) {
-            antiHypertensivesOptionsDiv.style.display = 'block';
-        } else {
-            antiHypertensivesOptionsDiv.style.display = 'none';
+        function toggleCheckbox2(selected) {
+            if (selected === 'yes') {
+                document.getElementById('indigenous_person_no').checked = false;
+            } else if (selected === 'no') {
+                document.getElementById('indigenous_person_yes').checked = false;
+            } else if (sellected === 'yes'){
+                document.getElementById('indigenous_person_no').checked = false;
+            }
+            
         }
-    }
 
-    function toggleCheckbox2(selected) {
-        if (selected === 'yes') {
-            document.getElementById('indigenous_person_no').checked = false;
-        } else if (selected === 'no') {
-            document.getElementById('indigenous_person_yes').checked = false;
-        } else if (sellected === 'yes'){
-            document.getElementById('indigenous_person_no').checked = false;
+        // function toggleCheckbox(selectedId, oppositeId) {
+        //     const selectedCheckbox = document.getElementById(selectedId);
+        //     const oppositeCheckbox = document.getElementById(oppositeId);
+            
+        //     if (selectedCheckbox.checked) {
+        //         oppositeCheckbox.checked = false;
+        //     }
+        // }
+
+
+        function toggleEmploymentStatus(selectedStatus) 
+        {
+            document.getElementById('employment_status_employed').checked = (selectedStatus === 'Employed');
+            document.getElementById('employment_status_unemployed').checked = (selectedStatus === 'Unemployed');
+            document.getElementById('employment_status_self_employed').checked = (selectedStatus === 'Self-Employed');
+        }
+
+
+        // controls the anti-diabetic options
+        const toggleAntiDiabetesOptions = () => {
+            const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
+            const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
+
+            const antiDiabetesOptionsDiv = document.getElementById('antiDiabetesOptions');
+
+            if (antiDiabetesSelected && (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown')) {
+                antiDiabetesOptionsDiv.style.display = 'block';
+            } else {
+                antiDiabetesOptionsDiv.style.display = 'none';
+            }
+        }
+
+        // controls the other religion field
+        const showOtherReligionField = () => {
+            let religionSelect = document.getElementById("religion");
+            let otherReligionDiv = document.getElementById("other-religion-div");
+            if (religionSelect.value === "Others") {
+            otherReligionDiv.style.display = "block";
+            } 
+            else {
+            otherReligionDiv.style.display = "none";
+            }
+        }
+
+        // controls the other ethnicity field
+        const showOtherEthnicityField = () => {
+            let ethnicitySelect = document.getElementById("ethnicity");
+            let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
+            if (ethnicitySelect.value === "Others") {
+            otherEthnicityDiv.style.display = "block";
+            } 
+            else {
+            otherEthnicityDiv.style.display = "none";
+            }
+        }
+
+        // Get all checkboxes with the name 'employment_status'
+        const employmentStatusCheckboxes = document.querySelectorAll('input[name="employment_status"]');
+
+        // controls the functionality for the employment checkbox
+        employmentStatusCheckboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', function() {
+                // When one checkbox is checked, uncheck all others
+                employmentStatusCheckboxes.forEach((box) => {
+                    if (box !== this) box.checked = false;
+                });
+            });
+        }); 
+
+        // Toggle checkbox behavior (mutual exclusivity)
+        const toggleCheckbox = (yesId, noId) => {
+            document.getElementById(yesId).addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById(noId).checked = false;
+                }
+            });
+
+            document.getElementById(noId).addEventListener('change', function () {
+                if (this.checked) {
+                    document.getElementById(yesId).checked = false;
+                }
+            });
         }
         
-    }
-
-    function toggleCheckbox(selectedId, oppositeId) {
-    const selectedCheckbox = document.getElementById(selectedId);
-    const oppositeCheckbox = document.getElementById(oppositeId);
-    
-    if (selectedCheckbox.checked) {
-        oppositeCheckbox.checked = false;
-    }
-}
-
-
-    function toggleEmploymentStatus(selectedStatus) 
-    {
-        document.getElementById('employment_status_employed').checked = (selectedStatus === 'Employed');
-        document.getElementById('employment_status_unemployed').checked = (selectedStatus === 'Unemployed');
-        document.getElementById('employment_status_self_employed').checked = (selectedStatus === 'Self-Employed');
-    }
-
-
-    // controls the anti-diabetic options
-    const toggleAntiDiabetesOptions = () => {
-        const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
-        const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
-
-        const antiDiabetesOptionsDiv = document.getElementById('antiDiabetesOptions');
-
-        if (antiDiabetesSelected && (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown')) {
-            antiDiabetesOptionsDiv.style.display = 'block';
-        } else {
-            antiDiabetesOptionsDiv.style.display = 'none';
-        }
-    }
-
-    // controls the other religion field
-	const showOtherReligionField = () => {
-    	let religionSelect = document.getElementById("religion");
-    	let otherReligionDiv = document.getElementById("other-religion-div");
-    	if (religionSelect.value === "Others") {
-     	   otherReligionDiv.style.display = "block";
-   	 	} 
-		else {
-  	      otherReligionDiv.style.display = "none";
-   		}
-	}
-
-    // controls the other ethnicity field
-    const showOtherEthnicityField = () => {
-    	let ethnicitySelect = document.getElementById("ethnicity");
-    	let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
-    	if (ethnicitySelect.value === "Others") {
-     	   otherEthnicityDiv.style.display = "block";
-   	 	} 
-		else {
-  	      otherEthnicityDiv.style.display = "none";
-   		}
-	}
-
-    // Get all checkboxes with the name 'employment_status'
-    const employmentStatusCheckboxes = document.querySelectorAll('input[name="employment_status"]');
-
-    // controls the functionality for the employment checkbox
-    employmentStatusCheckboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', function() {
-            // When one checkbox is checked, uncheck all others
-            employmentStatusCheckboxes.forEach((box) => {
-                if (box !== this) box.checked = false;
-            });
-        });
-    }); 
-
-    // Toggle checkbox behavior (mutual exclusivity)
-    const toggleCheckbox = (yesId, noId) => {
-        document.getElementById(yesId).addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById(noId).checked = false;
-            }
-        });
-
-        document.getElementById(noId).addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById(yesId).checked = false;
-            }
-        });
-    }
-    
-    // Function to classify BMI result
-    function bmiResultToStr(bmi) {
-        let strVal = "";
-        if (bmi < 18.5) {
-            strVal = "Underweight";
-        } else if (bmi < 24.9) {
-            strVal = "Normal weight";
-        } else if (bmi < 29.9) {
-            strVal = "Overweight";
-        } else if (bmi < 34.9) {
-            strVal = "Obesity class 1";
-        } else if (bmi < 39.9) {
-            strVal = "Obesity class 2";
-        } else if (bmi >= 40) {
-            strVal = "Obesity class 3";
-        } else {
-            strVal = "Error...";
-        }
-        return strVal;
-    }
-
-    // BMI calculation function
-    function calculateBMI() {
-        let weight = parseFloat(document.getElementById('weight').value);
-        let height = parseFloat(document.getElementById('height').value);
-
-        if (weight > 0 && height > 0) {
-            let heightInMeters = height / 100;
-            let bmi = weight / (heightInMeters * heightInMeters);
-            
-            // Set BMI values in the UI
-            document.getElementById('BMI').value = bmi.toFixed(2);
-            document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
-        } else {
-            document.getElementById('BMI').value = "";
-            document.getElementById('bmiStrVal').textContent = "";
-        }
-    }
-
-    // Initialize checkbox toggling for each condition
-    document.addEventListener('DOMContentLoaded', () => {
-        // Toggle checkboxes for all conditions
-        toggleCheckbox('pm_hypertensionYes', 'pm_hypertensionNo');
-        toggleCheckbox('pm_heartsdiseaseYes', 'pm_heartdiseaseNo');
-        toggleCheckbox('pm_diabetesYes', 'pm_diabetesNo');
-        toggleCheckbox('pm_cancerYes', 'pm_cancerNo');
-        toggleCheckbox('pm_codYes', 'pm_codNo');
-        toggleCheckbox('pm_asthmaYes', 'pm_asthmaNo');
-        toggleCheckbox('pm_allergiesYes', 'pm_allergiesNo');
-        toggleCheckbox('pm_mnsYes', 'pm_mnsNo');
-        toggleCheckbox('pm_visionYes', 'pm_visionNo');
-        toggleCheckbox('pm_surgicalhistoryYes', 'pm_surgicalhistoryNo');
-        toggleCheckbox('pm_thyroidYes', 'pm_thyroidNo');
-        toggleCheckbox('pm_kidneyYes', 'pm_kidneyNo');
-
-        //family history
-        toggleCheckbox('fh_hyperYes', 'fh_hyperNo');
-        toggleCheckbox('fh_strokeYes', 'fh_strokeNo');
-        toggleCheckbox('fh_heartdisYes', 'fh_heartdisNo');
-        toggleCheckbox('fh_diabetesmelYes', 'fh_diabetesmelNo');
-        toggleCheckbox('fh_asthmaYes', 'fh_asthmaNo');
-        toggleCheckbox('fh_cancer_Yes', 'fh_cancer_No');
-        toggleCheckbox('fh_kidney_diYes', 'fh_kidney_disNo');
-        toggleCheckbox('fh_degreerelativeYes', 'fh_degreerelativeNo');
-        toggleCheckbox('fh_familytbYes', 'fh_familytbNo');
-        toggleCheckbox('fh_mnsadYes', 'fh_mnsadNo');
-        toggleCheckbox('fh_COPYes', 'fh_COPNo');
-
-        //NCD RISK FACTORS
-        toggleCheckbox('alcoholYes', 'alcoholNever');
-        toggleCheckbox('physicalYes', 'physicalNo');
-        toggleCheckbox('nutritionDietYes', 'nutritionDietNo');
-
-        // Show/hide additional inputs based on checkbox state
-        const additionalInputs = document.querySelector('.additional-inputs');
-        additionalInputs.style.display = 'none';  // Hide by default
-
-        const healthCheckboxes = document.querySelectorAll('.healthCheckbox');
-        healthCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                const anyChecked = Array.from(healthCheckboxes).some(cb => cb.checked && cb.id.endsWith('Yes'));
-                additionalInputs.style.display = anyChecked ? 'block' : 'none';
-            });
-        });
-        // const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
-        // tobaccoCheckboxes.forEach(checkbox => {
-        //     checkbox.addEventListener('change', function() {
-        //         const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
-                
-        //         if (checkedCheckboxes.length >= 2) {
-        //             // Disable all unchecked checkboxes if two are checked
-        //             tobaccoCheckboxes.forEach(cb => {
-        //                 if (!cb.checked) {
-        //                     cb.disabled = true;
-        //                 }
-        //             });
-        //         } else {
-        //             // Re-enable all checkboxes if fewer than two are checked
-        //             tobaccoCheckboxes.forEach(cb => cb.disabled = false);
-        //         }
-        //     });
-        // });
-        const alcoholYes = document.getElementById('alcoholYes');
-        const alcoholNo = document.getElementById('alcoholNever');
-        const bingeLabel = document.getElementById('bingeLabel');
-
-        // Check initial state
-        bingeLabel.style.opacity = alcoholYes.checked ? '1' : '0.5';
-
-        // Event listener to toggle opacity
-        alcoholYes.addEventListener('change', function() {
-            if (alcoholYes.checked) {
-                bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
+        // Function to classify BMI result
+        function bmiResultToStr(bmi) {
+            let strVal = "";
+            if (bmi < 18.5) {
+                strVal = "Underweight";
+            } else if (bmi < 24.9) {
+                strVal = "Normal weight";
+            } else if (bmi < 29.9) {
+                strVal = "Overweight";
+            } else if (bmi < 34.9) {
+                strVal = "Obesity class 1";
+            } else if (bmi < 39.9) {
+                strVal = "Obesity class 2";
+            } else if (bmi >= 40) {
+                strVal = "Obesity class 3";
             } else {
-                bingeLabel.style.opacity = '0.5';  // Translucent when unchecked
-                document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
+                strVal = "Error...";
             }
-        });
-        // Event listener for "No" option to toggle opacity and uncheck binge question
-        alcoholNo.addEventListener('change', function() {
-            if (alcoholNo.checked) {
-                bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
-                document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
+            return strVal;
+        }
+
+        // BMI calculation function
+        function calculateBMI() {
+            let weight = parseFloat(document.getElementById('weight').value);
+            let height = parseFloat(document.getElementById('height').value);
+
+            if (weight > 0 && height > 0) {
+                let heightInMeters = height / 100;
+                let bmi = weight / (heightInMeters * heightInMeters);
+                
+                // Set BMI values in the UI
+                document.getElementById('BMI').value = bmi.toFixed(2);
+                document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
+            } else {
+                document.getElementById('BMI').value = "";
+                document.getElementById('bmiStrVal').textContent = "";
             }
+        }
+
+        // Initialize checkbox toggling for each condition
+        document.addEventListener('DOMContentLoaded', () => {
+            // Toggle checkboxes for all conditions
+            toggleCheckbox('pm_hypertensionYes', 'pm_hypertensionNo');
+            toggleCheckbox('pm_heartsdiseaseYes', 'pm_heartdiseaseNo');
+            toggleCheckbox('pm_diabetesYes', 'pm_diabetesNo');
+            toggleCheckbox('pm_cancerYes', 'pm_cancerNo');
+            toggleCheckbox('pm_codYes', 'pm_codNo');
+            toggleCheckbox('pm_asthmaYes', 'pm_asthmaNo');
+            toggleCheckbox('pm_allergiesYes', 'pm_allergiesNo');
+            toggleCheckbox('pm_mnsYes', 'pm_mnsNo');
+            toggleCheckbox('pm_visionYes', 'pm_visionNo');
+            toggleCheckbox('pm_surgicalhistoryYes', 'pm_surgicalhistoryNo');
+            toggleCheckbox('pm_thyroidYes', 'pm_thyroidNo');
+            toggleCheckbox('pm_kidneyYes', 'pm_kidneyNo');
+
+            //family history
+            toggleCheckbox('fh_hyperYes', 'fh_hyperNo');
+            toggleCheckbox('fh_strokeYes', 'fh_strokeNo');
+            toggleCheckbox('fh_heartdisYes', 'fh_heartdisNo');
+            toggleCheckbox('fh_diabetesmelYes', 'fh_diabetesmelNo');
+            toggleCheckbox('fh_asthmaYes', 'fh_asthmaNo');
+            toggleCheckbox('fh_cancer_Yes', 'fh_cancer_No');
+            toggleCheckbox('fh_kidney_diYes', 'fh_kidney_disNo');
+            toggleCheckbox('fh_degreerelativeYes', 'fh_degreerelativeNo');
+            toggleCheckbox('fh_familytbYes', 'fh_familytbNo');
+            toggleCheckbox('fh_mnsadYes', 'fh_mnsadNo');
+            toggleCheckbox('fh_COPYes', 'fh_COPNo');
+
+            //NCD RISK FACTORS
+            toggleCheckbox('alcoholYes', 'alcoholNever');
+            toggleCheckbox('physicalYes', 'physicalNo');
+            toggleCheckbox('nutritionDietYes', 'nutritionDietNo');
+
+            // Show/hide additional inputs based on checkbox state
+            const additionalInputs = document.querySelector('.additional-inputs');
+            additionalInputs.style.display = 'none';  // Hide by default
+
+            const healthCheckboxes = document.querySelectorAll('.healthCheckbox');
+            healthCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const anyChecked = Array.from(healthCheckboxes).some(cb => cb.checked && cb.id.endsWith('Yes'));
+                    additionalInputs.style.display = anyChecked ? 'block' : 'none';
+                });
+            });
+            // const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+            // tobaccoCheckboxes.forEach(checkbox => {
+            //     checkbox.addEventListener('change', function() {
+            //         const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
+                    
+            //         if (checkedCheckboxes.length >= 2) {
+            //             // Disable all unchecked checkboxes if two are checked
+            //             tobaccoCheckboxes.forEach(cb => {
+            //                 if (!cb.checked) {
+            //                     cb.disabled = true;
+            //                 }
+            //             });
+            //         } else {
+            //             // Re-enable all checkboxes if fewer than two are checked
+            //             tobaccoCheckboxes.forEach(cb => cb.disabled = false);
+            //         }
+            //     });
+            // });
+            const alcoholYes = document.getElementById('alcoholYes');
+            const alcoholNo = document.getElementById('alcoholNever');
+            const bingeLabel = document.getElementById('bingeLabel');
+
+            // Check initial state
+            bingeLabel.style.opacity = alcoholYes.checked ? '1' : '0.5';
+
+            // Event listener to toggle opacity
+            alcoholYes.addEventListener('change', function() {
+                if (alcoholYes.checked) {
+                    bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
+                } else {
+                    bingeLabel.style.opacity = '0.5';  // Translucent when unchecked
+                    document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
+                }
+            });
+            // Event listener for "No" option to toggle opacity and uncheck binge question
+            alcoholNo.addEventListener('change', function() {
+                if (alcoholNo.checked) {
+                    bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
+                    document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
+                }
+            });
+
+            // checkbox.addEventListener('change', function() {
+            //     const checkedBoxes = document.querySelectorAll('.tobaccoCheckbox:checked');
+            //     if (checkedBoxes.length > 2) {
+            //         this.checked = false;
+            //         alert("You can select a maximum of 2 options.");
+            //     }
+            // });
+
+            document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const neverUsed = document.getElementById('q1'); // Option 1
+                    const secondhandExposure = document.getElementById('q2'); // Option 2
+                    const formerUser = document.getElementById('q3'); // Option 3
+                    const currentUser = document.getElementById('q4'); // Option 4
+
+                    if (this.checked) {
+                        // If "Never Used" is selected, uncheck "Former User" and "Current User"
+                        if (this === neverUsed) {
+                            formerUser.checked = false;
+                            currentUser.checked = false;
+                        }
+                        // If "Former User" is selected, uncheck "Never Used" and "Current User"
+                        else if (this === formerUser) {
+                            neverUsed.checked = false;
+                            currentUser.checked = false;
+                        }
+                        // If "Current User" is selected, uncheck "Never Used" and "Former User"
+                        else if (this === currentUser) {
+                            neverUsed.checked = false;
+                            formerUser.checked = false;
+                        }
+                    }
+                });
+            });
         });
 
-        // checkbox.addEventListener('change', function() {
-        //     const checkedBoxes = document.querySelectorAll('.tobaccoCheckbox:checked');
-        //     if (checkedBoxes.length > 2) {
-        //         this.checked = false;
-        //         alert("You can select a maximum of 2 options.");
-        //     }
-        // });
+        // Function to toggle "No" checkboxes for all conditions
+        function checkAllNo() {
+            const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
+            const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
 
-        document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
+            // Toggle the state of all "No" checkboxes
+            noCheckboxes.forEach(checkbox => {
+                checkbox.checked = !allChecked;
+            });
+
+            // Hide additional inputs if all "No" are checked
+            const additionalInputs = document.querySelector('.additional-inputs');
+            additionalInputs.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        // Handle multiple checkboxes and their corresponding input fields
+        const conditions = [
+            { checkboxId: 'cancerYes', detailsInputId: 'cancerDetailsInput' },
+            { checkboxId: 'allergiesYes', detailsInputId: 'allergiesDetailsInput' },
+            { checkboxId: 'mnsYes', detailsInputId: 'mnsDetailsInput' },
+            { checkboxId: 'diabetesYes', detailsInputId: 'diabetesDetailsInput' },
+            { checkboxId: 'surgicalhistoryYes', detailsInputId: 'surgicalDetailsInput' }
+        ];
+
+        conditions.forEach(condition => {
+            const checkbox = document.getElementById(condition.checkboxId);
+            const detailsInput = document.getElementById(condition.detailsInputId);
+
             checkbox.addEventListener('change', function() {
-                const neverUsed = document.getElementById('q1'); // Option 1
-                const secondhandExposure = document.getElementById('q2'); // Option 2
-                const formerUser = document.getElementById('q3'); // Option 3
-                const currentUser = document.getElementById('q4'); // Option 4
-
-                if (this.checked) {
-                    // If "Never Used" is selected, uncheck "Former User" and "Current User"
-                    if (this === neverUsed) {
-                        formerUser.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Former User" is selected, uncheck "Never Used" and "Current User"
-                    else if (this === formerUser) {
-                        neverUsed.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Current User" is selected, uncheck "Never Used" and "Former User"
-                    else if (this === currentUser) {
-                        neverUsed.checked = false;
-                        formerUser.checked = false;
-                    }
+                if (checkbox.checked) {
+                    detailsInput.style.display = 'block';  // Show the text box
+                } else {
+                    detailsInput.style.display = 'none';  // Hide the text box
                 }
             });
         });
     });
-
-    // Function to toggle "No" checkboxes for all conditions
-    function checkAllNo() {
-        const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
-        const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
-
-        // Toggle the state of all "No" checkboxes
-        noCheckboxes.forEach(checkbox => {
-            checkbox.checked = !allChecked;
-        });
-
-        // Hide additional inputs if all "No" are checked
-        const additionalInputs = document.querySelector('.additional-inputs');
-        additionalInputs.style.display = 'none';
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-    // Handle multiple checkboxes and their corresponding input fields
-    const conditions = [
-        { checkboxId: 'cancerYes', detailsInputId: 'cancerDetailsInput' },
-        { checkboxId: 'allergiesYes', detailsInputId: 'allergiesDetailsInput' },
-        { checkboxId: 'mnsYes', detailsInputId: 'mnsDetailsInput' },
-        { checkboxId: 'diabetesYes', detailsInputId: 'diabetesDetailsInput' },
-        { checkboxId: 'surgicalhistoryYes', detailsInputId: 'surgicalDetailsInput' }
-    ];
-
-    conditions.forEach(condition => {
-        const checkbox = document.getElementById(condition.checkboxId);
-        const detailsInput = document.getElementById(condition.detailsInputId);
-
-        checkbox.addEventListener('change', function() {
-            if (checkbox.checked) {
-                detailsInput.style.display = 'block';  // Show the text box
-            } else {
-                detailsInput.style.display = 'none';  // Hide the text box
-            }
-        });
-    });
-});
-    
+        
     // Lobibox notifications
     document.addEventListener('DOMContentLoaded', function() {
         @if (session('success'))
@@ -1442,5 +1437,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         @endif
     });
-</script>
+
+</script> -->
 @endsection
+
+<style>
+    input[type="checkbox"], .ml-2, .checkbox-group {
+        pointer-events: none;
+    }
+</style>

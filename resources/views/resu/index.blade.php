@@ -14,8 +14,8 @@
                    
                     <img src="{{ asset('resources/img/patientInjuryLogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
                     <p>Section-specific information can go here.</p>
-                    <a href="#" class="btn btn-primary mt-3">View List</a>
-                    <a href="#" class="btn btn-primary mt-3">Add Patient Injury</a>
+                    <a href="patientInjury" class="btn btn-primary mt-3">View List</a>
+                    <a href="patient-form" class="btn btn-primary mt-3">Add Patient Injury</a>
                 </div>
             </div>
         </div>
@@ -29,8 +29,8 @@
                     <h3 class="section-header">Another Section</h3>
                     <img src="{{ asset('resources/img/patientlogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
                     <p>Section-specific information can go here.</p>
-                    <a href="#" class="btn btn-primary mt-3">View List</a>
-                    <a href="#" class="btn btn-primary mt-3">Add Risk Assessment</a>
+                    <a href="patientRisk" class="btn btn-primary mt-3">View List</a>
+                    <a href="RiskAssessment" class="btn btn-primary mt-3">Add Risk Assessment</a>
                 </div>
             </div>
         </div>

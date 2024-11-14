@@ -16,21 +16,18 @@ use App\RiskFormAssesment;
 class RiskProfileController extends Controller     
 {
     public function getMunicipal($provinceid){
-
         $muncity = Muncity::where('province_id', $provinceid)
-          ->select('id','province_id','description')
-          ->whereNotIn('id',['63','76','80'])
-          ->get(); 
-         
+            ->select('id','province_id','description')
+            ->get();
         return response()->json($muncity);
-      }
+    }
   
-      public function getBarangay($muncity_id){
-          $barangay = Barangay::where('muncity_id',$muncity_id)
-              ->select('id','muncity_id','description')
-              ->get();
-          return response()->json($barangay);
-      }
+    public function getBarangay($muncity_id){
+        $barangay = Barangay::where('muncity_id',$muncity_id)
+            ->select('id','muncity_id','description')
+            ->get();
+        return response()->json($barangay);
+    }
 
     public function SubmitRiskPForm(Request $req)
     {
@@ -74,7 +71,7 @@ class RiskProfileController extends Controller
         $riskprofile->dob = $req->dateofbirth;
         $riskprofile->age = $req->age;
         $riskprofile->contact = $req->contact;
-        $riskprofile->province_id = $req->province;
+        $riskprofile->province_id = $req->province_risk;
         $riskprofile->municipal_id = $req->municipal;
         $riskprofile->barangay_id = $req->barangay;
         $riskprofile->sitio = $req->sitio? $req->sitio : null;
@@ -289,8 +286,7 @@ class RiskProfileController extends Controller
         
         } else if($user->user_priv == 3){ //provincial
             if(!empty($keyword)){ //search functionality
-                $query->where('province_id', $user->province)
-                    ->whereNotIn('province_id',['63','76','80'])    
+                $query->where('province_id', $user->province) 
                 ->where(function ($q) use ($keyword){
                     $q->where('fname', 'like', "%$keyword%")
                         ->orWhere('lname', 'like', "%$keyword%")
@@ -301,7 +297,6 @@ class RiskProfileController extends Controller
             }
 
             $riskprofiles = $query->where('province_id', $user->province)
-                ->whereNotIn('province_id',['63','76','80'])
                 ->simplePaginate(15);
         }          
 
@@ -325,7 +320,6 @@ class RiskProfileController extends Controller
         $facility = Facility::select('id','name','address','hospital_type')->get();
 
             $selectedMuncity = Muncity::select('id','description')
-            ->whereIn('id', ['63','76','80'])
             ->get();
         $province = Province::select('id','description')->get();
 
@@ -384,8 +378,6 @@ class RiskProfileController extends Controller
         ])->find($id);
 
         $tobaccoUseArray = explode(', ', $profile->riskForm->rf_tobbacoUse ?? []);
-      
-        //dd($profile);
      
         return view('risk.sublistRiskAssesment',[
             'profile' => $profile,

@@ -289,6 +289,47 @@ $(document).ready(function () {
     });
   }
 
+  // for risk assessment profile form
+  function MunicipalDataRisk(provinceId, muncity, muncity_id = null) {
+    $(muncity)
+      .empty()
+      .append('<option value="0" selected>Select Municipal</option>'); // Reset municipal dropdown
+    // console.log("update province Id", provinceId);
+    if (provinceId) {
+      $.ajax({
+        url: "get/municipalRisk/" + provinceId,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          console.log("data province", provinceId)
+          if (data && data.length > 0) {
+            $.each(data, function (key, value) {
+              if (value.id && value.description) {
+                $(muncity).append(
+                  '<option value="' +
+                    value.id +
+                    '">' +
+                    value.description +
+                    "</option>"
+                );
+              }
+            });
+            if (muncity_id) {
+              $(muncity).val(muncity_id);
+              $(muncity).trigger("chosen:updated");
+              console.log("chosen", $(muncity).trigger("chosen:updated"));
+            } else {
+              $(muncity).trigger("chosen:updated");
+            }
+          }
+        },
+        error: function (textStatus, errorThrown) {
+          console.log("AJAX error: " + textStatus + " : " + errorThrown);
+        },
+      });
+    }
+  }
+
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();
@@ -299,6 +340,11 @@ $(document).ready(function () {
   $("#provinceId").change(function () {
     var provinceId = $(this).val();
     MunicipalData(provinceId, "#municipal_injury");
+  });
+
+  $("#province_risk").change(function () {
+    var provinceId = $(this).val();
+    MunicipalDataRisk(provinceId, "#municipal");
   });
 
   $("#municipal").change(function () {
@@ -884,7 +930,7 @@ $(document).ready(function () {
         $('#phic_id').val(record.phicId || '').trigger("change");
         $('#facility_id_updated').trigger("change");
 
-        setDropdownValue('#province', record.province_id || '', function() {
+        setDropdownValue('#province_risk', record.province_id || '', function() {
           setDropdownValue('#municipal', record.muncity_id || '', function() {
               setDropdownValue('#barangay', record.barangay_id || '', function() {
                   console.log("All dropdowns set!");
@@ -1058,51 +1104,51 @@ $(document).ready(function () {
 });
 
 // for deleteing nature
-document.addEventListener("DOMContentLoaded", function () {
-  document
-  .querySelectorAll('input[type="checkbox"]')
-  .forEach(function (checkbox) {
-    checkbox.addEventListener("change", function () {
-      // When checkbox is unchecked
-      if (!this.checked) {
-        let csrfToken = document
-          .querySelector('meta[name="csrf-token"]')
-          .getAttribute("content");
-        let natureId = this.value;
-        let preadmissionId = document.getElementById(
-          "preadmission_id_update"
-        ).value;
-        let category = this.getAttribute("data-category");
-        console.log("nature_id", natureId, "preadmissionId", preadmissionId);
+// document.addEventListener("DOMContentLoaded", function () {
+//   document
+//   .querySelectorAll('input[type="checkbox"]')
+//   .forEach(function (checkbox) {
+//     checkbox.addEventListener("change", function () {
+//       // When checkbox is unchecked
+//       if (!this.checked) {
+//         let csrfToken = document
+//           .querySelector('meta[name="csrf-token"]')
+//           .getAttribute("content");
+//         let natureId = this.value;
+//         let preadmissionId = document.getElementById(
+//           "preadmission_id_update"
+//         ).value; 
+//         let category = this.getAttribute("data-category");
+//         console.log("nature_id", natureId, "preadmissionId", preadmissionId);
 
-        // Confirm action but do not delete
-        // Lobibox.confirm({
-        //   title: "Confirm Action",
-        //   msg: "You have unchecked this option. Do you want to proceed without deletion?",
-        //   buttons: {
-        //     yes: {
-        //       class: "btn btn-success",
-        //       text: "Yes",
-        //       closeOnClick: true,
-        //     },
-        //     no: {
-        //       class: "btn btn-danger",
-        //       text: "No",
-        //       closeOnClick: true,
-        //     },
-        //   },
-        //   callback: function (lobibox, type) {
-        //     if (type == "yes") {
-        //       // Instead of deleting, perform any other logic here, like updating the state
-        //       console.log("Checkbox unchecked, no deletion performed.");
-        //       // If you need to trigger some update, do it here.
-        //     } else {
-        //       // If user cancels, you can also reverse the checkbox state
-        //       checkbox.checked = true;
-        //     }
-        //   },
-        // });
-      }
-    });
-  });
-});
+//         // Confirm action but do not delete
+//         // Lobibox.confirm({
+//         //   title: "Confirm Action",
+//         //   msg: "You have unchecked this option. Do you want to proceed without deletion?",
+//         //   buttons: {
+//         //     yes: {
+//         //       class: "btn btn-success",
+//         //       text: "Yes",
+//         //       closeOnClick: true,
+//         //     },
+//         //     no: {
+//         //       class: "btn btn-danger",
+//         //       text: "No",
+//         //       closeOnClick: true,
+//         //     },
+//         //   },
+//         //   callback: function (lobibox, type) {
+//         //     if (type == "yes") {
+//         //       // Instead of deleting, perform any other logic here, like updating the state
+//         //       console.log("Checkbox unchecked, no deletion performed.");
+//         //       // If you need to trigger some update, do it here.
+//         //     } else {
+//         //       // If user cancels, you can also reverse the checkbox state
+//         //       checkbox.checked = true;
+//         //     }
+//         //   },
+//         // });
+//       }
+//     });
+//   });
+// });

@@ -4,27 +4,17 @@
  @include('risk.risk_check_profile.riskCheckProfile') 
 
 <?php
- use App\Muncity;
  use App\Facility;
  use App\Province;
  
  $user = Auth::user();
-   $facilities = Facility::select('id', 'name')->get();
-   $facilities = Facility::select('id', 'name')->get();
+ $facilities = Facility::select('id', 'name')->get();
+ $facilities = Facility::select('id', 'name')->get();
  $facility = Facility::select('id','name','address','hospital_type')
- ->where('id', $user->facility_id)    
- ->get();
+    ->where('id', $user->facility_id)    
+    ->get();
 
-    //use Carbon\Carbon;
-    //$dob = Carbon::parse($profile->dob);
  $province = Province::select('id', 'description')->get();
-
-    $muncities = Muncity::select('id', 'description')->get();
-    function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
-        similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-        return $percent >= 80; // You can adjust the threshold as needed
-    }
-
 ?>
     <div class="col-md-12 wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <div class="col-md-8 wrapper" style="padding-bottom: 5%">
@@ -38,7 +28,6 @@
         <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}"> -->
         <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}">
             {{ csrf_field() }}
-            <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <div class="form-step" id="form-step-1">
                 <div class="row">
                     <div class="col-md-12 col-divider">
@@ -124,7 +113,7 @@
 
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
-                                <select class="form-control" name="religion" id="religion" onchange="showOtherReligionField()" required>
+                                <select class="form-control " name="religion" id="religion" onchange="showOtherReligionField()" required>
                                     <option value="">Select Religion</option>
                                     <option value="Roman Catholic">Roman Catholic</option>
                                     <option value="Islam">Islam</option>
@@ -162,8 +151,8 @@
                             </div>
                             <div class="row"></div>
                             <div class="col-md-4">
-                                <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control" name="province" id="province" required>
+                                <label for="province_risk">Province/HUC <span class="text-danger">*</span></label>
+                                <select class="form-control" name="province_risk" id="province_risk" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -1206,6 +1195,8 @@
     // Initialize checkbox toggling for each condition
     document.addEventListener('DOMContentLoaded', () => {
         // Toggle checkboxes for all conditions
+
+        //past medical history
         toggleCheckbox('pm_hypertensionYes', 'pm_hypertensionNo');
         toggleCheckbox('pm_heartsdiseaseYes', 'pm_heartdiseaseNo');
         toggleCheckbox('pm_diabetesYes', 'pm_diabetesNo');
@@ -1388,7 +1379,7 @@
         document.getElementById('ethnicity').style.borderColor = '';
         document.getElementById('other_religion').style.borderColor = '';
         document.getElementById('other_ethnicity').style.borderColor = '';
-        document.getElementById('province').style.borderColor = '';
+        document.getElementById('province_risk').style.borderColor = '';
         document.getElementById('municipal').style.borderColor = '';
         document.getElementById('barangay').style.borderColor = '';
 
@@ -1415,7 +1406,7 @@
         const civilStatus = document.getElementById('civil_status').value;
         const religion = document.getElementById('religion').value;
         const otherReligion = document.getElementById('other_religion').value;
-        const province = document.getElementById('province').value;
+        const province = document.getElementById('province_risk').value;
         const municipal = document.getElementById('municipal').value;
         const barangay = document.getElementById('barangay').value;
 
@@ -1495,7 +1486,7 @@
         }
 
         if (!province) {
-            document.getElementById('province').style.borderColor = 'red';
+            document.getElementById('province_risk').style.borderColor = 'red';
             errorMessage += "Province<br>";
             isValid = false;
         }
