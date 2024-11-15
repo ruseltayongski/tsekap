@@ -191,7 +191,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="ethnicity">Ethnicity</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()" required>
+                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
                                     <option value="">Select Ethnicity</option>
                                     <option value="Cebuano">Cebuano</option> 
                                     <option value="Bisaya">Bisaya</option>
@@ -234,14 +234,14 @@
                             </div>
 
                             <div class="col-md-3 d-flex align-items-center">
-                                <label class="mr-2">Indigenous Person</label><br>
+                                <label class="mr-2">Indigenous Person <span class="text-danger">*</span></label><br>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person" id="indigenous_person_yes" value="Yes" onclick="toggleCheckbox('indigenous_person_yes', 'indigenous_person_no')">
-                                    <label for="indigenous_person" class="ml-2">Yes</label>
+                                    <label for="indigenous_person_yes" class="ml-2">Yes</label>
                                 </span>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="indigenous_person" id="indigenous_person_no" value="No" onclick="toggleCheckbox('indigenous_person_no', 'indigenous_person_yes')">
-                                    <label for="indigenous_person" class="ml-2">No</label>
+                                    <label for="indigenous_person_no" class="ml-2">No</label>
                                 </span>
                                 <!--Shows if there is selected option or not-->
                                 <span style="padding-right: 10px;">
@@ -252,19 +252,19 @@
                             
                             <div class="row"></div>
                             <br/> 
-                            <div class="col-md-6 d-flex align-items-center">
-                                <label class="mr-2">Employment Status</label><br>
+                            <div class="col-md-6 d-flex align-items-center">    
+                                <label class="mr-2">Employment Status <span class="text-danger">*</span></label><br>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="employment_status" id="employment_status_employed" value="Employed">
-                                    <label for="employment_status" class="ml-2">Employed</label>
+                                    <label for="employment_status_employed" class="ml-2">Employed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="employment_status" id="employment_status_unemployed" value="Unemployed">
-                                    <label for="employment_status" class="ml-2">Unemployed</label>
+                                    <label for="employment_status_unemployed" class="ml-2">Unemployed</label>
                                 </span>
                                 <span style="padding-right: 10px;">
                                     <input type="checkbox" name="employment_status" id="employment_status_self_employed" value="Self-employed">
-                                    <label for="employment_status" class="ml-2">Self-Employed</label>                                   
+                                    <label for="employment_status_self_employed" class="ml-2">Self-Employed</label>                                   
                                 </span> 
                                  <!--Shows if there is selected option or not-->
                                 <span style="padding-right: 10px;">
@@ -277,7 +277,7 @@
                     </div>
                     <div class="col-md-12">
                         <div>
-                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
+                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS</h4>
                             <p style="font-style: italic; font-size: 15px;">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
@@ -419,7 +419,7 @@
                 <!-- PAST MEDICAL HISTORY -->
                     <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY <span class="text-danger">*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -540,7 +540,7 @@
 
                     <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">IV. FAMILY HISTORY <span class="text-danger">*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">IV. FAMILY HISTORY</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -655,7 +655,7 @@
                 <!-- risk factors -->
                 <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">V. NCD RISK FACTORS <span class="text-danger">*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">V. NCD RISK FACTORS</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -756,14 +756,6 @@
                                         <input type="text" class="textbox" id="waist" name ="rf_waist" value=""> 
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        5.9 Blood Pressure (mmHg)
-                                    </td>
-                                    <td>
-                                        <input type="text" class="textbox" id="bloodPressure" name="rf_bloodPressure"value=""> 
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -783,7 +775,7 @@
                 <div class="col-md-12">
                     <div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
-                            V. RISK SCREENING <span class="text-danger">*</span>
+                            VI. RISK SCREENING <span class="text-danger">*</span>
                         </h4>
                     </div>
                 </div>
@@ -793,6 +785,36 @@
                             <th colspan="2" style="border: 1px solid #000; padding: 10px; background-color: #f2f2f2;">
                                 6.1 Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
                             </th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Blood Pressure
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <label>First Measurement</label>
+                                <div style="display:flex">
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Systolic:</label>
+                                        <input type="text" name="systolic_t1" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"> 
+                                    </div>
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Diastolic:</label>
+                                        <input type="text" name="diastolic_t1" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
+                                </div>
+                                <br>
+                                <label>Second Measurement</label>
+                                <div style="display:flex">
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Systolic:</label>
+                                        <input type="text" name="systolic_t2" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"> 
+                                    </div>
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Diastolic:</label>
+                                        <input type="text" name="diastolic_t2" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -939,7 +961,7 @@
                 <div class="col-md-12">
                     <div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
-                            VII. MANAGEMENT <span class="text-danger">*</span>
+                            VII. MANAGEMENT
                         </h4>
                     </div>
                 </div>
@@ -1376,7 +1398,7 @@
         document.getElementById('age').style.borderColor = '';
         document.getElementById('civil_status').style.borderColor = '';
         document.getElementById('religion').style.borderColor = '';
-        document.getElementById('ethnicity').style.borderColor = '';
+        // document.getElementById('ethnicity').style.borderColor = '';
         document.getElementById('other_religion').style.borderColor = '';
         document.getElementById('other_ethnicity').style.borderColor = '';
         document.getElementById('province_risk').style.borderColor = '';
@@ -1454,11 +1476,11 @@
             isValid = false;
         }
 
-        if (!ethnicity) {
-            document.getElementById('ethnicity').style.borderColor = 'red';
-            errorMessage += "Ethnicity<br>";
-            isValid = false;
-        }
+        // if (!ethnicity) {
+        //     document.getElementById('ethnicity').style.borderColor = 'red';
+        //     errorMessage += "Ethnicity<br>";
+        //     isValid = false;
+        // }
 
         if (!contact) {
             document.getElementById('contact').style.borderColor = 'red';
@@ -1559,7 +1581,6 @@
         document.getElementById('weight').style.borderColor = '';
         document.getElementById('height').style.borderColor = '';
         document.getElementById('waist').style.borderColor = '';
-        document.getElementById('bloodPressure').style.borderColor = '';
         document.getElementById('tobacco-use-label').style.color = ''
         
         // Hide the error message
@@ -1571,7 +1592,6 @@
         const weight = document.getElementById('weight').value;
         const height = document.getElementById('height').value;
         const waist = document.getElementById('waist').value;
-        const bloodPressure = document.getElementById('bloodPressure').value;
 
         // Reset previous error styles and message
         resetErrorStep3Styles();
@@ -1595,12 +1615,6 @@
         if (!waist) {
             document.getElementById('waist').style.borderColor = 'red';
             errorMessage += "Waist<br>";
-            isValid = false;
-        }
-
-        if (!bloodPressure) {
-            document.getElementById('bloodPressure').style.borderColor = 'red';
-            errorMessage += "Blood Pressure<br>";
             isValid = false;
         }
 
@@ -1742,7 +1756,7 @@
         const antiHypertensivesSpecifyMedicine = document.getElementById('anti_hypertensives_specify').value.trim();
 
         if(!antiHypertensivesSelected){
-            document.getElementById('anti-hypertensives-label').style.color = red;
+            document.getElementById('anti-hypertensives-label').style.color = 'red';
             errorMessage += "Please select an option for anti-hypertensives.<br>";
             isValid = false;
         }
@@ -1928,4 +1942,4 @@
         opacity: 1;
     }
 
-</style>
+</style>    

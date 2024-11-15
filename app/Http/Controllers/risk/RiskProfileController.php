@@ -156,13 +156,16 @@ class RiskProfileController extends Controller
         $riskform->rf_height = $req->input('rf_height', '');
         $riskform->rf_bodyMass = $req->input('rf_BMI', '');
         $riskform->rf_waistCircum = $req->input('rf_waist', '');
-        $riskform->rf_bloodPressure = $req->input('rf_bloodPressure', '');
 
         //RISK SCREENING
         // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
 
         $dmSymptoms = $req->input('dm_symptoms', []);
 
+        $riskform->rs_systolic_t1 = $req->input('systolic_t1', ' ');
+        $riskform->rs_diastolic_t1 = $req->input('diastolic_t1', ' ');
+        $riskform->rs_systolic_t2 = $req->input('systolic_t2', ' ');
+        $riskform->rs_diastolic_t2 = $req->input('diastolic_t2', ' ');
         $riskform->rs_bloodSugar_fbs = $req->input('fbs_result', ' ');
         $riskform->rs_bloodSugar_rbs = $req->input('rbs_result', ' ');
         $riskform->rs_bloodSugar_date_taken = $req->input('bloodSugar_date_taken', '');
@@ -182,7 +185,7 @@ class RiskProfileController extends Controller
 
         // Check each checkbox and add the label to the array if selected
         if ($req->has('symptom_breathlessness')) {
-            $symptoms[] = 'Breathlessness (or a \'need for air\')';
+            $symptoms[] = 'Breathlessness';
         }
         if ($req->has('symptom_sputum_production')) {
             $symptoms[] = 'Sputum (mucous) production';
@@ -304,9 +307,7 @@ class RiskProfileController extends Controller
             return view('risk.riskprofilelist', compact('riskprofiles','user'))->render();
         }
 
-        // dd($user, $riskprofiles);
-        //dd($query->get());
-        //dd($user->user_priv);
+
         return view('risk.risklist', [
             'user_priv' => $user,
             'riskprofiles' => $riskprofiles, // Ensure the correct variable name is used
@@ -358,7 +359,8 @@ class RiskProfileController extends Controller
                     'fm_MNandSDisorder', 'fm_COPD', 
                     'rf_tobbacoUse', 'rf_alcoholIntake', 'rf_alcoholBingeDrinker', 
                     'rf_physicalActivity','rf_nutritionDietary','rf_weight','rf_height','rf_bodyMass','rf_waistCircum',
-                    'rf_bloodPressure',
+                    'rs_systolic_t1', 'rs_diastolic_t1',
+                    'rs_systolic_t2', 'rs_diastolic_t2',
                     'rs_bloodSugar_fbs','rs_bloodSugar_rbs',
                     'rs_bloodSugar_date_taken',
                     'rs_bloodSugar_symptoms', 'rs_lipid_cholesterol',

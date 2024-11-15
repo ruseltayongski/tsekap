@@ -303,7 +303,7 @@
                     </div>
                     <div class="col-md-12">
                         <div>
-                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS <span class="text-danger">*</span></h4>
+                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">II. ASSESS FOR RED FLAGS</h4>
                             <p style="font-style: italic; font-size: 15px;">
                                 If YES to ANY, REFER IMMEDIATELY to a Physician for further management and/or referral to the next level of care. If ALL answers are NO, proceed to Part III.
                             </p>
@@ -442,7 +442,7 @@
              <div class="row">
                     <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY <span class="text-danger">*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">III. PAST MEDICAL HISTORY</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -566,7 +566,7 @@
 
                     <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">IV. FAMILY HISTORY <span class="text-danger" >*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">IV. FAMILY HISTORY</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -682,7 +682,7 @@
                 <!-- risk factors -->
                 <div class="col-md-12">
                         <div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">V. NCD RISK FACTORS <span class="text-danger">*</span></h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">V. NCD RISK FACTORS</h4>
                         </div>
                     </div>
                     <div class="col-md-12" style="display: flex; align-items: center;">
@@ -798,14 +798,6 @@
                                         <input type="text" class="textbox" id="waist" name ="rf_waist" value="{{ $profile->riskForm->rf_waistCircum ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        5.9 Blood Pressure (mmHg)
-                                    </td>
-                                    <td>
-                                        <input type="text" class="textbox" id="bloodPressure" name="rf_bloodPressure" value="{{ $profile->riskForm->rf_bloodPressure ?? '' }}" readonly disabled> 
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -824,7 +816,7 @@
                 <div class="col-md-12">
                     <div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
-                            V. RISK SCREENING <span class="text-danger">*</span>
+                            V. RISK SCREENING
                         </h4>
                     </div>
                 </div>
@@ -834,6 +826,36 @@
                             <th colspan="2" style="border: 1px solid #000; padding: 10px; background-color: #f2f2f2;">
                                 6.1 Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
                             </th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
+                                Blood Pressure
+                            </td>
+                            <td style="border: 1px solid #000; padding: 10px;">
+                                <label>First Measurement</label>
+                                <div style="display:flex">
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Systolic:</label>
+                                        <input type="text" name="systolic_t1" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_systolic_t1 ?? '' }}" readonly disabled> 
+                                    </div>
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Diastolic:</label>
+                                        <input type="text" name="diastolic_t1" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_diastolic_t1 ?? '' }}" readonly disabled>
+                                    </div>
+                                </div>
+                                <br>
+                                <label>Second Measurement</label>
+                                <div style="display:flex">
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Systolic:</label>
+                                        <input type="text" name="systolic_t2" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_systolic_t2 ?? '' }}" readonly disabled> 
+                                    </div>
+                                    <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
+                                        <label>Diastolic:</label>
+                                        <input type="text" name="diastolic_t2" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_diastolic_t2 ?? '' }}" readonly disabled>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -992,7 +1014,7 @@
                 <div class="col-md-12">
                     <div>
                         <h4 class="patient-font mt-4" style="background-color: #727DAB; color: white; padding: 3px; margin-top: -10px;">
-                            VII. MANAGEMENT <span class="text-danger">*</span>
+                            VII. MANAGEMENT
                         </h4>
                     </div>
                 </div>

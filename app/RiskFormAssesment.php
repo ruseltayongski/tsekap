@@ -27,9 +27,6 @@ class RiskFormAssesment extends Model
         'ar_severeInjuries',
         // other fields...
     ];
-    
-
-
     public function risk_profile_Id(){
         return $this->belongsTo(RiskProfile::class, "id");
     }
