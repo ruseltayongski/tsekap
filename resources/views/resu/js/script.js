@@ -378,9 +378,9 @@ $(document).ready(function () {
   console.log("Document ready!");
 
   if ($("#update_provinceId").length) {
-    console.log("Element #update_provinceId is present.");
+    //console.log("Element #update_provinceId is present.");
   } else {
-    console.error("Element #update_provinceId is not found!");
+    //console.error("Element #update_provinceId is not found!");
   }
 
   //Address place injury
@@ -401,7 +401,7 @@ $(document).ready(function () {
       placemunicipalId
     );
   } else {
-    console.error("placeprovinceId is not set!");
+    //console.error("placeprovinceId is not set!");
   }
 
   if (placemunicipalId !== null && placemunicipalId !== undefined) {
@@ -413,7 +413,7 @@ $(document).ready(function () {
 
     BarangayData(placemunicipalId, "#update_barangay_injury", placebarangayId);
   } else {
-    console.error("placemunicipalId is not set!");
+    //console.error("placemunicipalId is not set!");
   }
 
   $("#municipal_injury").change(function () {

@@ -14,7 +14,8 @@
                 <div class="form-group-section">
                     <!-- <h3 class="section-header">Another Section</h3> -->
                     <img src="{{ asset('resources/img/patientInjuryLogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
-                    <p>Section-specific information can go here.</p>
+                    {{-- <p>Section-specific information can go here.</p> --}}
+                    <br/> <br/> <br/>
                     <a href="patientInjury" class="btn btn-primary mt-3">View List</a>
                     <a href="patient-form" class="btn btn-primary mt-3">Add Patient Injury</a>
                 </div>
@@ -29,7 +30,8 @@
                 <div class="form-group-section">
                     <!-- <h3 class="section-header">Another Section</h3> -->
                     <img src="{{ asset('resources/img/patientlogo.png') }}" alt="Patient Logo" class="img-fluid mb-3" style="width: 100px; height: auto;">
-                    <p>Section-specific information can go here.</p>
+                    {{-- <p>Section-specific information can go here.</p> --}}
+                    <br/> <br/> <br/>
                     <a href="patientRisk" class="btn btn-primary mt-3">View List</a>
                     <!-- <a href="RiskAssessment" class="btn btn-primary mt-3">Add Risk Assessment</a> -->
                     @if ($user->user_priv == 6)
