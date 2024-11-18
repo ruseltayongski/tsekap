@@ -106,7 +106,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="age" name="age" value="" readonly>
+                                <input type="text" class="form-control" id="ages" name="ages" value="" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>

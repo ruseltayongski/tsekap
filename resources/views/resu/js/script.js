@@ -451,52 +451,52 @@ $(document).ready(function () {
     }
   });
 
-  //   function calculateAge(dateOfBirth, date_injury) {
-  //     const today = date_injury ? new Date(date_injury) : new Date(); 
-  //     const birthDate = new Date(dateOfBirth);
+    function calculateAge(dateOfBirth, date_injury) {
+      const today = date_injury ? new Date(date_injury) : new Date(); 
+      const birthDate = new Date(dateOfBirth);
 
-  //     if (isNaN(birthDate)) {
-  //       console.error("Invalid Date of Birth");
-  //       return "Invalid date";
-  //     }
+      if (isNaN(birthDate)) {
+        console.error("Invalid Date of Birth");
+        return "Invalid date";
+      }
 
-  //     let years = today.getFullYear() - birthDate.getFullYear();
-  //     let months = today.getMonth() - birthDate.getMonth();
-  //     let days = today.getDate() - birthDate.getDate();
+      let years = today.getFullYear() - birthDate.getFullYear();
+      let months = today.getMonth() - birthDate.getMonth();
+      let days = today.getDate() - birthDate.getDate();
 
-  //     // Adjust years and months if today's date is before the birth date in the year
-  //     if (months < 0 || (months === 0 && days < 0)) {
-  //       years--;
-  //       months += 12;
-  //     }
+      // Adjust years and months if today's date is before the birth date in the year
+      if (months < 0 || (months === 0 && days < 0)) {
+        years--;
+        months += 12;
+      }
 
-  //     // Adjust days and months if today's day is before the birth day in the month
-  //     if (days < 0) {
-  //       months--;
-  //       const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of the previous month
-  //       days += lastMonth.getDate();
-  //     }
+      // Adjust days and months if today's day is before the birth day in the month
+      if (days < 0) {
+        months--;
+        const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of the previous month
+        days += lastMonth.getDate();
+      }
 
-  //     if (years === 0) {
-  //       return `${months} month${months !== 1 ? 's' : ''} old`;
-  //     } else {
-  //       return `${years} year${years !== 1 ? 's' : ''} old`;
-  //     }
-  //   }
+      if (years === 0) {
+        return `${months} month${months !== 1 ? 's' : ''} old`;
+      } else {
+        return `${years} year${years !== 1 ? 's' : ''} old`;
+      }
+    }
 
-  // // Event listener for date changes
-  // $("#dateofbirth").on("change", function () {
-  //   const dob = $(this).val();
-  //   const ageField = $("#age");
-  //   if (dob) {
-  //       const parsedDob = new Date(dob);
-  //       const ageString = calculateAge(parsedDob);
-  //       console.log(ageString);
-  //       ageField.val(ageString);
-  //   } else {
-  //       ageField.val("");
-  //   }
-  // });
+  // Event listener for date changes
+  $("#dateofbirth").on("change", function () {
+    const dob = $(this).val();
+    const ageField = $("#ages");
+    if (dob) {
+        const parsedDob = new Date(dob);
+        const ageString = calculateAge(parsedDob);
+        console.log(ageString);
+        ageField.val(ageString);
+    } else {
+        ageField.val("");
+    }
+  });
 
   // for enabled and disabled Nature Injury for adding patient
   var BurnCheckbox = $("#InjuredBurn");
