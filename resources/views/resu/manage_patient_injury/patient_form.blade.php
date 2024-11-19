@@ -8,6 +8,7 @@
  use App\ResuTransportAccident;
  use App\ResuHospitalFacility;
  use App\Muncity;
+ use App\Province;
 
  //use Carbon\Carbon;
  //$dob = Carbon::parse($profile->dob);
@@ -20,6 +21,8 @@
  $hospital_type = ResuHospitalFacility::all();
 
  $muncities = Muncity::select('id', 'description')->get();
+ 
+ $province = Province::select('id', 'description')->get();
 
  function isSimilar($str1, $str2) { // this is for Hospital/Facility Data function
      similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
@@ -82,11 +85,11 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="lname" id="lname" value="">
+                                <input type="text" class="form-control" name="lname" id="lname" value="" required>
                             </div>
                             <div class="col-md-2">
                                 <label for="fname">First Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="fname" id="fname" value="">
+                                <input type="text" class="form-control" name="fname" id="fname" value="" required>
                             </div>
                             <div class="col-md-2">
                                 <label for="mname">Middle Name <span class="text-danger">*</span></label>
@@ -94,7 +97,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
-                                <select class="form-control chosen-select" name="sex" id="sex">
+                                <select class="form-control chosen-select" name="sex" id="sex" required>
                                     <option value="">Select sex</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -102,7 +105,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="dateofbirth">Date Of Birth <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth">
+                                <input type="date" class="form-control" id="dateofbirth" name="dateBirth" required>
                             </div>
                             <div class="col-md-3">
                                 <label for="age">Age <span class="text-danger">*</span></label>
@@ -110,7 +113,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="province" id="province">
+                                <select class="form-control chosen-select" name="province" id="province" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -119,12 +122,12 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="municipal" id="municipal">
+                                <select class="form-control chosen-select" name="municipal" id="municipal" required>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="barangay" id="barangay">
+                                <select class="form-control chosen-select" name="barangay" id="barangay" required>
                                 </select>
                             </div>
                             <div class="col-md-9">
@@ -139,7 +142,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="provinceInjury" id="provinceId">
+                                <select class="form-control chosen-select" name="provinceInjury" id="provinceId" >
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                           <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -148,7 +151,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury">
+                                <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury" >
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -173,12 +176,13 @@
                         </div>
                     </div>
                 </div>
+                <div id="error-message" style="color: red; display: none;">Please fill out all required fields.</div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
                             <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
-                            <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button>
+                             <button type="button" id="first-page-button" class="btn btn-primary mx-2" onclick="validateStep1()">Next</button>
                         </div>
-                    </div>
+                 </div>
             </div>
             <div class="form-step" id="form-step-2" style="display: none;">
                 <div class="row">
@@ -921,47 +925,121 @@
             }
         });
    }
+</script>
 
-//    function validateAndNextStep() {
-//     // Get all the required input fields
-//     const requiredFields = [
-//         { id: 'hospital_no', name: 'Hospital Case No' },
-//         { id: 'fname', name: 'First Name' },
-//         { id: 'lname', name: 'Last Name' },
-//         { id: 'mname', name: 'Middle Name' },
-      
-//     ];
+<!--Validation Functions-->
 
-//     let allFieldsValid = true;
-//     requiredFields.forEach(field => {
-//         const inputElement = document.getElementById(field.id);
-//         const value = inputElement.value.trim(); // Trim to remove extra spaces
-//         if (value === '') {
-//             allFieldsValid = false; // Set flag to false if any field is empty
-//             inputElement.style.borderColor = 'red'; // Highlight empty field in red
-//         } else {
-//             inputElement.style.borderColor = ''; // Reset border if filled
-//         }
-//     });   
+<!-- Step 1 validation -->
+<script>
+    const resetErrorStep1Styles = () => {
+        const fields = [
+            'hospital_no', 'lname', 'fname', 'mname', 'sex', 'dateofbirth', 'ages', 
+            'province', 'municipal', 'barangay', 'phil_no',
+            'provinceId', 'municipal_injury', 'barangay_injury', 'purok_injury',
+            'date_injury', 'time_injury', 'date_consultation', 'time_consultation'
+        ];
 
-//         if (!allFieldsValid) {
-//             // Alert user if any field is empty
-//             alert('Please fill out all required fields.');
-//             return;
-//         }        
-//         // If all fields are filled, proceed to the next step
-//         document.getElementById('form-step-1').style.display = 'none'; 
-//         document.getElementById('form-step-2').style.display = 'block';
-//     }
+        fields.forEach((id) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.style.borderColor = ''; // Reset border color
+                element.classList.remove('is-invalid'); // Remove invalid class if present
+            }
+        });
 
-//         document.getElementById('form-submit').addEventListener('submit', function (e) {
-//             // Check if the form is valid
-//             if (!this.checkValidity()) {
-//                 e.preventDefault(); 
-//                 this.reportValidity();
-//             }
-//         });
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) errorMessage.style.display = 'none'; // Hide the error message
+    };
 
+    const validateStep1 = () => {
+        resetErrorStep1Styles(); // Reset all error styles first
+
+        const requiredFields = [
+            { id: 'hospital_no', label: 'Hospital Case No.' },
+            { id: 'lname', label: 'Last Name' },
+            { id: 'fname', label: 'First Name' },
+            { id: 'sex', label: 'Sex' },
+            { id: 'dateofbirth', label: 'Date of Birth' },
+            { id: 'ages', label: 'Age' },
+            { id: 'province', label: 'Province/HUC' },
+            { id: 'municipal', label: 'Municipality' },
+            { id: 'barangay', label: 'Barangay' },
+        ];
+
+        let errorMessage = "<strong>Please review and check these fields:</strong><br/>";
+        let isValid = true;
+
+        // Loop through required fields and validate them
+        requiredFields.forEach(({ id, label }) => {
+            const element = document.getElementById(id);
+            if (element && (!element.value || element.value.trim() === '')) {
+                element.style.borderColor = 'red'; // Highlight field in red
+                element.classList.add('is-invalid'); // Add invalid class
+                errorMessage += `${label}<br>`;
+                isValid = false;
+            }
+        });
+
+        // Check for specific date and time fields
+        const dateInjury = document.getElementById('date_injury');
+        const timeInjury = document.getElementById('time_injury');
+        const dateConsult = document.getElementById('date_consultation');
+        const timeConsult = document.getElementById('time_consultation');
+
+        if (dateInjury && !dateInjury.value) {
+            dateInjury.style.borderColor = 'red';
+            dateInjury.classList.add('is-invalid');
+            errorMessage += "Date of Injury<br>";
+            isValid = false;
+        }
+
+        if (timeInjury && !timeInjury.value) {
+            timeInjury.style.borderColor = 'red';
+            timeInjury.classList.add('is-invalid');
+            errorMessage += "Time of Injury<br>";
+            isValid = false;
+        }
+
+        if (dateConsult && !dateConsult.value) {
+            dateConsult.style.borderColor = 'red';
+            dateConsult.classList.add('is-invalid');
+            errorMessage += "Date of Consultation<br>";
+            isValid = false;
+        }
+
+        if (timeConsult && !timeConsult.value) {
+            timeConsult.style.borderColor = 'red';
+            timeConsult.classList.add('is-invalid');
+            errorMessage += "Time of Consultation<br>";
+            isValid = false;
+        }
+
+        // If validation fails, display the error message
+        if (!isValid) {
+            const errorMessageElement = document.getElementById('error-message');
+            if (errorMessageElement) {
+                errorMessageElement.style.display = 'block';
+                errorMessageElement.innerHTML = errorMessage;
+            }
+            return; // Stop further execution if there are errors
+        }
+
+        // If validation passes, hide the error message and proceed
+        const errorMessageElement = document.getElementById('error-message');
+        if (errorMessageElement) errorMessageElement.style.display = 'none';
+
+        console.log("Step 1 is validated.");
+        showNextStep(); // Assuming this function handles page transitions
+    };
+
+</script>
+
+<!-- Step 2 validation -->
+<script language="javascript" type="text/javascript">
+    const validateStep2 = () => {
+        console.log("Step 2 is validated");
+        showNextStep();
+    }
 </script>
 @endsection
 <!-- @include('resu.manage_patient_injury.checkProfile') -->
@@ -1089,5 +1167,6 @@
         25% { transform: translateX(-5px); }
         75% { transform: translateX(5px); }
     }
+   
 
 </style>
