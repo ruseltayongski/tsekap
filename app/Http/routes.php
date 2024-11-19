@@ -373,10 +373,10 @@ Route::get('logout',function(){
     \Illuminate\Support\Facades\Session::flush();
     return redirect('login');
 });
+
 //for resu 
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
-
-    Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
+Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
@@ -395,7 +395,7 @@ Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->na
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
-Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
+// Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
@@ -412,9 +412,9 @@ Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 
 //add patient injury
-Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
-Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
-Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
+// Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+// Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+// Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
 
 //accident type
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
@@ -432,7 +432,7 @@ Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
 
 //delete nature injury categories
-Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
+// Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
 
 Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
 Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
