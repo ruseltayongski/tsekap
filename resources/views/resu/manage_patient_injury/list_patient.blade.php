@@ -91,6 +91,7 @@
                         <thead>
                             <tr>
                                 <th></th>
+                                <th></th>
                                 @if($user_priv->user_priv !== 6)
                                     <th>Facility Name <br>&nbsp;</th>
                                 @endif
@@ -128,6 +129,15 @@
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                     </td>
+                                    <td nowrap="TRUE">
+                                        <form action="{{ route('patient.delete', $p->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                    
                                     @if($user_priv->user_priv !== 6)
                                         <td>
                                             @if($p->reportFacility && $p->reportFacility->facility)

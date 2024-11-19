@@ -28,7 +28,6 @@ class PatientInjuryController extends Controller
     //
     public function PatientInjured(Request $request){ 
         $user = Auth::user();
-     
         $keyword = $request->input('keyword');
      
         $query = ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
@@ -1018,5 +1017,18 @@ class PatientInjuryController extends Controller
         return response()->json($transport_id);
 
     }
-    
+        public function destroy($id)
+        {
+            try {
+                $patient = ResuProfileInjury::findOrFail($id);
+                $patient->delete();
+
+                $preadmission = ResuPreadmission::findOrFail($id);
+                $preadmission->delete();
+        
+                return redirect()->route('patientInjury')->with('success', 'Patient record deleted successfully.');
+            } catch (\Exception $e) {
+                return redirect()->route('patientInjury')->with('error', 'Error occurred while deleting the record.');
+            }
+        }
 }
