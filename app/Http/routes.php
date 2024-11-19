@@ -76,7 +76,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function(){
     Route::post('users/save','UserCtrl@save');
     Route::post('users/update','UserCtrl@update');
     Route::get('users/info/{id}','UserCtrl@info');
-    Route::get('users/assign/{id}','UserCtrl@assign');
+    Route::get('users/assign/{id}','UserCtrl@assign');   
     //end users
 
     //location
@@ -374,41 +374,54 @@ Route::get('logout',function(){
     return redirect('login');
 });
 
-
 //for resu 
 Route::get('restrictAccess', 'resu\IndexController@forbidden')->name('restrictAccess'); // user can't access base on the user type
-
-Route::get('survelance', 'resu\IndexController@index')->name('survelance');
+Route::get('surveillance', 'resu\IndexController@index')->name('surveillance');
 Route::get('listinjury', 'resu\InjuryController@index');
 Route::get('bodyparts', 'resu\InjuryController@bodypart');
-
 Route::post('add-nature-injury', 'resu\InjuryController@addinjury')->name('add-nature-injury');
+Route::post('injury-delete', 'resu\InjuryController@deleteInjury')->name('injury-delete');
+Route::get('injury-edit/{id}', 'resu\InjuryController@editInjury')->name('injury-edit');
+Route::post('injury-update/{id}', 'resu\InjuryController@updateInjury')->name('injury-update');
+
 Route::post('add-bodypart', 'resu\InjuryController@addbodypart')->name('add-bodypart');
+Route::get('edit-body-parts/{id}', 'resu\InjuryController@editBodyParts')->name('edit-body-parts');
+Route::post('update-body-parts/{id}', 'resu\InjuryController@updateBodyparts')->name('update-body-parts');
 Route::get('external-injury', 'resu\InjuryController@listExternal')->name('external-injury');
 Route::post('add-external', 'resu\InjuryController@addExternal')->name('add-external');
+Route::get('injury-external-edit/{id}', 'resu\InjuryController@editExternalInjury')->name('injury-external-edit');
+Route::post('injury-external-upJapdate/{id}','resu\InjuryController@updateExternalInjury')->name('injury-external-update');
+Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->name('delete-external');
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
-Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
+// Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
+Route::post('/delete-body-parts', 'resu\InjuryController@deleteBodyPart')->name('delete-body-parts');
+
 //check profile resu client
 Route::get('get/checkprofiles', 'resu\ClientVerifyController@CheckClients')->name('get.checkprofiles');
+
 //get municipal && province
 Route::get('sublist-patient/get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('sublist-patient/get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 
 Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
+
 //add patient injury
-Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
-Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+// Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+// Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+// Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
 
 //accident type
-
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
 Route::post('add-accident-type', 'resu\InjuryController@AddAccidenttype')->name("add-accident-type");
+Route::post('delete-accident-type','resu\InjuryController@deleteAccidentType')->name("delete-accident-type");
+Route::get('edit-accident-type/{id}','resu\InjuryController@editAccidentType')->name("edit-accident-type");
+Route::post('update-accident-type/{id}','resu\InjuryController@updateAccidentType')->name("update-accident-type");
 
 Route::get('hospital', 'resu\HospitalController@index')->name('hospital');
 Route::post('add-hospital', 'resu\HospitalController@SaveHospital')->name('add-hospital');
@@ -417,12 +430,34 @@ Route::get('viewSafety', 'resu\InjuryController@safetyView')->name("viewSafety")
 Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 //for tsekap route
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
+
 //delete nature injury categories
-Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
+// Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
 
 Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
 Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
 
 // users
-Route::get('viewUsers', 'resu\UsersCtrl@index');
+Route::get('viewUsers', 'resu\UsersCtrl@index')->name('resu.admin.view_Users');
 Route::post('add-users', 'resu\UsersCtrl@AddUsers');
+Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');
+Route::post('/admin/delete_user', 'resu\UsersCtrl@deleteUser')->name('resu.admin.delete_user');
+Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User');
+
+// csv files patient injury
+Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');
+
+
+//risk assessment 
+Route::get('/RiskAssessment', function () {
+    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+})->name('riskassessment');
+
+//risk get profile verification
+Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
+Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
+Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
+
+Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
+Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
+Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');

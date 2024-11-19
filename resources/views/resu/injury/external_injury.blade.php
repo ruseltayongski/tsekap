@@ -12,6 +12,8 @@
                                 <thead>
                                 <tr>
                                     <th>External Name</th>  
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -20,7 +22,17 @@
                                         <td>
                                             <font class="text-success text-bold">{{ $ex->name }}</font>
                                         </td>
-                                        
+                                        <td>
+                                             <a href="{{ route('injury-external-edit', ['id' => $ex->id]) }}" class="btn btn-primary">Edit</a>
+                                        </td>
+                                        <td>
+                                            <!-- <form action="{{ route('delete-external') }}" method="POST">
+                                            {{ csrf_field() }}
+                                                <input type="hidden" name="name" value="{{ $ex->name }}">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this injury?')">Delete</button>
+                                            </form> -->
+                                        </td>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -101,7 +101,7 @@
     </div>
     <div class="header" style="background-color:#727DAB;padding:15px;">
         <div class="container">
-            <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" />
+            <img src="{{ asset('resources/img/banner_tsekap2023v1.png') }}" class="img-responsive" style="padding-left: 100px;" />
         </div>
     </div>
     <div class="container">
@@ -112,11 +112,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"></a>
+            {{-- <a class="navbar-brand" href="#"></a> --}}
         </div>
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <!-- <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li> -->
                 <li><a href="{{ url('/home') }}"><i class="fa fa-home"></i> Home</a></li>
             @if($priv==10)
                 <li class="dropdown">
@@ -144,7 +145,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Parameters<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-wrench"></i> System Users<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ asset('/viewUsers')  }}"><i class="fa fa-users"></i>&nbsp;&nbsp; Users</a></li>
                         <!-- @if(Auth::user()->user_priv==1)
@@ -161,14 +162,13 @@
                 </li>
             @else
             <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Patient Injury<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Form<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Manage Patient Injury</a></li>
+                        {{-- <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Patient Injury Form</a></li> --}}
+                        <li> <a href="{{ url('patientRisk') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Risk Assessment Form</a></li>
                     </ul>
                 </li>
             @endif
-                
-
                 <li class="dropdown">
                     <!-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-line-chart"></i> Report<span class="caret"></span></a> -->
                     <ul class="dropdown-menu">
@@ -194,11 +194,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ asset('/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li>
-                        <li class="divider"></li>
+                        
                         <li><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </li>
+                  {{-- <li><a href="{{ asset('/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li> --}}
 
             </ul>
             {{--<ul class="nav navbar-nav navbar-right">--}}
@@ -207,22 +207,19 @@
         </div><!--/.nav-collapse -->
     </div>
 </nav>
-
 <div class="container-fluid">
     <div class="loading"></div>
     @yield('content')
     <div class="clearfix"></div>
 </div> <!-- /container -->
-<footer class="footer">
-    <div class="container">
+<footer class="footer" style="background-color:#2F4054; padding-right: 100%; padding-left: -5%">
+    <div class="container"style= "color: black;" >
         <p class="pull-right">
             version 3.1
         </p>
-        <p>Copyright &copy; 2023 DOH-RO7 All rights reserved</p>
-
+        <p>Copyright &copy; 2024 DOH-RO7 All right reserved</p>
     </div>
 </footer>
-@include('modal')
 
         <!-- Bootstrap core JavaScript
     ================================================== -->

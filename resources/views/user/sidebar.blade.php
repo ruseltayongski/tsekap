@@ -15,7 +15,8 @@ $provinces = $provinces->get();
         <div class="panel-body">
             <form method="POST" action="{{ asset('users') }}">
                 {{ csrf_field() }}
-                <div class="form-group">
+                <!-- Search users -->
+                <div class="form-group">  
                     <label>Search User</label>
                     <input type="text" style="width: 100%;" class="form-control" placeholder="Input name..." name="keyword" value="{{ $keyword }}" autofocus>
                 </div>

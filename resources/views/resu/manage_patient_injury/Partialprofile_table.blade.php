@@ -12,6 +12,8 @@
         $province = null;
         $muncity = null;
         $barangay = null;
+        $ad = $p->preadmission;   
+
         if($p->preadmission->POIProvince_id == $p->province->id){
             $province = $p->province->description;
         }
@@ -21,6 +23,10 @@
         if($p->preadmission->POIBarangay_id == $p->barangay->id){
             $barangay = $p->barangay->description;
         }
+        $preprovince = $ad->POIProvince_id ? $ad->province->description : 'N/A';
+        $premuncity = $ad->POImuncity_id ? $ad->muncity->description : 'N/A';
+        $prebarangay = $ad->POIBarangay_id ? $ad->barangay->description : 'N/A';
+
     @endphp
     <tr>
         <td nowrap="TRUE">
@@ -54,7 +60,7 @@
         <td>{{ $p->province ? $p->province->description : 'N/A' }}</td>
         <td>{{ $p->muncity ? $p->muncity->description : 'N/A' }}</td>
         <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
-        <td>{{ $province. ' , ' . $muncity. ' , ' . $barangay. ' , ' . $p->preadmission->POIPurok }}</td>
+        <td>{{ $preprovince. ' , ' . $premuncity. ' , ' . $prebarangay. ' , ' . $p->preadmission->POIPurok }}</td>
         <td>{{ $p->preadmission->dateInjury . ' '. $p->preadmission->timeInjury }}</td>
         @if($user->user_priv !== 6)
             <td>{{ $p->nameof_encoder }}</td>

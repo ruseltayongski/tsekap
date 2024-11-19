@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\ResuTransport;
+use App\ResuSafety;
 class ResuSafetyTransport extends Model
 {
     //

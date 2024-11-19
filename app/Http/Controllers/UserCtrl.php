@@ -36,6 +36,7 @@ class UserCtrl extends Controller
                                 ->orwhere('contact','like',"%$keyword%");
                         })
             ->where('id','!=',$id);
+
         if($user->user_priv==3){
             $users = $users->where('user_priv','!=',1)
                         ->where('province',$user->province);
@@ -191,8 +192,6 @@ class UserCtrl extends Controller
             Session::put('tryPass',$try);
             return redirect()->back()->with('status','notequal');
         }
-
-
     }
 
     static function validateBrgy()

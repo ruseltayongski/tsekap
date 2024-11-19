@@ -14,6 +14,8 @@
                                 <thead>
                                 <tr>
                                     <th>Nature Injury Name</th>  
+                                    <th></th>  
+                                    <th></th>  
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -22,7 +24,16 @@
                                         <td>
                                             <font class="text-success text-bold">{{ $injury->name }}</font>
                                         </td>
-                                        
+                                        <td>
+                                            <a href="{{ route('injury-edit', ['id' => $injury->id]) }}" class="btn btn-primary">Edit</a><!-- Edit link -->
+                                        </td>
+                                        <td>
+                                            <!-- <form action="{{ route('injury-delete') }}" method="POST">
+                                            {{ csrf_field() }}
+                                                <input type="hidden" name="name" value="{{ $injury->name }}">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this injury?')">Delete</button>
+                                            </form> -->
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

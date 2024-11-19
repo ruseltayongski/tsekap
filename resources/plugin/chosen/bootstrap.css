@@ -1202,7 +1202,7 @@ a.bg-danger:hover {
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;  
 }
 ul,
 ol {
@@ -2335,17 +2335,25 @@ output {
   color: #555555;
 }
 .form-control {
-  display: block;
+  display: block;  /* Block ensures proper width usage */
   width: 100%;
-  height: 34px;
+  max-height: 60px;  /* Optional: Set a max height for layout control */
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
-  background-image: none;
   border: 1px solid #cccccc;
   border-radius: 4px;
+
+  overflow-x: auto;  /* Auto will only show scrollbar when necessary */
+  overflow-y: hidden;  /* Ensure no vertical scroll */
+
+  white-space: nowrap;  /* Prevent wrapping of child elements */
+  box-sizing: border-box;  /* Include padding/border in width calculation */
+
+  -webkit-overflow-scrolling: touch;  /* Ensure smooth scrolling on mobile */
+
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -6360,7 +6368,7 @@ button.close {
   left: -9000px;
 }
 .chosen-container-multi .chosen-choices {
-  background-color: #ffffff;
+   /* background-color: #ffffff;
   border: 1px solid #cccccc;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
@@ -6372,21 +6380,51 @@ button.close {
   height: auto !important;
   height: 1%;
   margin: 0;
-  overflow: hidden;
+  overflow-x: auto;
   padding: 0;
-  position: relative;
+  position: relative;  */
+  
+  /* max-width: 300px; /* Set a fixed width */
+  /*
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  cursor: text;
+
+ 
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden; 
+  gap: 5px;
+  
+  height: auto;
+  padding: 5px;
+  white-space: nowrap; 
+  box-sizing: border-box; */
+
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 5px;
+  gap: 5px;
+  border: none;
 }
 .chosen-container-multi .chosen-choices li {
-  float: left;
+  display: inline-block;
+  margin: 0 5px;
   list-style: none;
 }
 .chosen-container-multi .chosen-choices .search-field {
+   display: inline-block; 
   margin: 0;
   padding: 0;
   white-space: nowrap;
 }
 .chosen-container-multi .chosen-choices .search-field input[type="text"] {
-  background: transparent !important;
+  /* background: transparent !important;
   border: 0 !important;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -6394,7 +6432,12 @@ button.close {
   height: 32px;
   margin: 0;
   padding: 4px;
-  outline: 0;
+  outline: 0; */
+  flex: 1;
+  min-width: 50px;
+  background: transparent;
+  border: none;
+  outline: none;
 }
 .chosen-container-multi .chosen-choices .search-field .default {
   color: #999;

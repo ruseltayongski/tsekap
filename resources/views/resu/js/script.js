@@ -72,28 +72,27 @@ $(document).ready(function () {
     $('.Transport-group input[type="text"]').val("");
   }
 
-  $("#Transport").change(function () {
-    if ($(this).is(":checked")) {
-      $(".Transport-group").show();
-
-      Lobibox.alert("info", {
-        msg: "Transport/Vehicular Accident is checked. Please fill up the other fields in the <strong>Next option!</strong>",
-        buttons: {
-          ok: {
-            class: "btn btn-info",
-            text: "OK",
-            closeOnClick: true,
-          },
-        },
-        modal: true,
-        centered: true,
+      $("#Transport").change(function () {
+        if ($(this).is(":checked")) {
+          $(".Transport-group").show();
+          Lobibox.alert("info", {
+            msg: "Transport/Vehicular Accident is checked. Please fill up the other fields in the <strong>Next Options!</strong>",
+            buttons: {
+              ok: {
+                class: "btn btn-info",
+                text: "Ok",
+                closeOnClick: true,
+              },
+            },
+            modal: true,
+            centered:true,
+          });
+        } else {
+          $(".Transport-group").hide();
+          $('.Transport-group input[type="checkbox"]').prop("checked", false);
+          $('.Transport-group input[type="text"]').val("");
+        }
       });
-    } else {
-      $(".Transport-group").hide();
-      $('.Transport-group input[type="checkbox"]').prop("checked", false);
-      $('.Transport-group input[type="text"]').val("");
-    }
-  });
 
   // function toggleCollision() {
   //   if ($("#Collision").is(":checked")) {
@@ -204,7 +203,7 @@ $(document).ready(function () {
         type: "GET",
         dataType: "json",
         success: function (data) {
-          console.log("data province", provinceId);
+          console.log("data province", provinceId)
           if (data && data.length > 0) {
             $.each(data, function (key, value) {
               if (value.id && value.description) {
@@ -226,29 +225,29 @@ $(document).ready(function () {
             }
           }
           //this is HUC muncities not provinceId
-          if (provinceId == 63 || provinceId == 76 || provinceId == 80) {
-            var muncities = JSON.parse(
-              document.getElementById("muncities-data").value
-            );
-            muncities.forEach(function (mun) {
-              if (mun.id == provinceId) {
-                $(muncity).append(
-                  '<option value="' +
-                    mun.id +
-                    '" >' +
-                    mun.description +
-                    "</option>"
-                );
-              }
-            });
+          // if (provinceId == 63 || provinceId == 76 || provinceId == 80) {
+          //   var muncities = JSON.parse(
+          //     document.getElementById("muncities-data").value
+          //   );
+          //   muncities.forEach(function (mun) {
+          //     if (mun.id == provinceId) {
+          //       $(muncity).append(
+          //         '<option value="' +
+          //           mun.id +
+          //           '" >' +
+          //           mun.description +
+          //           "</option>"
+          //       );
+          //     }
+          //   });
 
-            if (provinceId) {
-              $(muncity).val(provinceId);
-              $(muncity).trigger("chosen:updated");
-            } else {
-              $(muncity).trigger("chosen:updated");
-            }
-          }
+          //   if (provinceId) {
+          //     $(muncity).val(provinceId);
+          //     $(muncity).trigger("chosen:updated");
+          //   } else {
+          //     $(muncity).trigger("chosen:updated");
+          //   }
+          // }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log(JSON.stringify(jqXHR));
@@ -290,6 +289,47 @@ $(document).ready(function () {
     });
   }
 
+  // for risk assessment profile form
+  function MunicipalDataRisk(provinceId, muncity, muncity_id = null) {
+    $(muncity)
+      .empty()
+      .append('<option value="0" selected>Select Municipal</option>'); // Reset municipal dropdown
+    // console.log("update province Id", provinceId);
+    if (provinceId) {
+      $.ajax({
+        url: "get/municipalRisk/" + provinceId,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          console.log("data province", provinceId)
+          if (data && data.length > 0) {
+            $.each(data, function (key, value) {
+              if (value.id && value.description) {
+                $(muncity).append(
+                  '<option value="' +
+                    value.id +
+                    '">' +
+                    value.description +
+                    "</option>"
+                );
+              }
+            });
+            if (muncity_id) {
+              $(muncity).val(muncity_id);
+              $(muncity).trigger("chosen:updated");
+              console.log("chosen", $(muncity).trigger("chosen:updated"));
+            } else {
+              $(muncity).trigger("chosen:updated");
+            }
+          }
+        },
+        error: function (textStatus, errorThrown) {
+          console.log("AJAX error: " + textStatus + " : " + errorThrown);
+        },
+      });
+    }
+  }
+
   //display municipal city
   $("#province").change(function () {
     var provinceId = $(this).val();
@@ -302,13 +342,18 @@ $(document).ready(function () {
     MunicipalData(provinceId, "#municipal_injury");
   });
 
+  $("#province_risk").change(function () {
+    var provinceId = $(this).val();
+    MunicipalDataRisk(provinceId, "#municipal");
+  });
+
   $("#municipal").change(function () {
     var muncityId = $(this).val();
     console.log("barangay muncity id:", muncityId);
     BarangayData(muncityId, "#barangay");
   });
 
-  //this is upate portion permanent Address
+  //this is update portion permanent Address
   var provinceId = $("#update-province").val();
   var municipalId = $("#update-municipal").data("selected");
   var barangayId = $("#update-barangay").data("selected");
@@ -333,9 +378,9 @@ $(document).ready(function () {
   console.log("Document ready!");
 
   if ($("#update_provinceId").length) {
-    console.log("Element #update_provinceId is present.");
+    //console.log("Element #update_provinceId is present.");
   } else {
-    console.error("Element #update_provinceId is not found!");
+    //console.error("Element #update_provinceId is not found!");
   }
 
   //Address place injury
@@ -356,7 +401,7 @@ $(document).ready(function () {
       placemunicipalId
     );
   } else {
-    console.error("placeprovinceId is not set!");
+    //console.error("placeprovinceId is not set!");
   }
 
   if (placemunicipalId !== null && placemunicipalId !== undefined) {
@@ -368,7 +413,7 @@ $(document).ready(function () {
 
     BarangayData(placemunicipalId, "#update_barangay_injury", placebarangayId);
   } else {
-    console.error("placemunicipalId is not set!");
+    //console.error("placemunicipalId is not set!");
   }
 
   $("#municipal_injury").change(function () {
@@ -376,8 +421,8 @@ $(document).ready(function () {
     BarangayData(muncityId, "#barangay_injury");
   });
 
-  //display age base the birth date
-  function calculateAge(dateOfBirth) {
+  //display age base the birth date risk
+  function calculateAgeRisk(dateOfBirth) {
     const today = new Date();
     const birthDate = new Date(dateOfBirth);
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -399,10 +444,57 @@ $(document).ready(function () {
     const ageField = $("#age");
 
     if (dob) {
-      const age = calculateAge(dob);
+      const age = calculateAgeRisk(dob);
       ageField.val(age);
     } else {
       ageField.val("");
+    }
+  });
+
+    function calculateAge(dateOfBirth, date_injury) {
+      const today = date_injury ? new Date(date_injury) : new Date(); 
+      const birthDate = new Date(dateOfBirth);
+
+      if (isNaN(birthDate)) {
+        console.error("Invalid Date of Birth");
+        return "Invalid date";
+      }
+
+      let years = today.getFullYear() - birthDate.getFullYear();
+      let months = today.getMonth() - birthDate.getMonth();
+      let days = today.getDate() - birthDate.getDate();
+
+      // Adjust years and months if today's date is before the birth date in the year
+      if (months < 0 || (months === 0 && days < 0)) {
+        years--;
+        months += 12;
+      }
+
+      // Adjust days and months if today's day is before the birth day in the month
+      if (days < 0) {
+        months--;
+        const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0); // Last day of the previous month
+        days += lastMonth.getDate();
+      }
+
+      if (years === 0) {
+        return `${months} month${months !== 1 ? 's' : ''} old`;
+      } else {
+        return `${years} year${years !== 1 ? 's' : ''} old`;
+      }
+    }
+
+  // Event listener for date changes
+  $("#dateofbirth").on("change", function () {
+    const dob = $(this).val();
+    const ageField = $("#ages");
+    if (dob) {
+        const parsedDob = new Date(dob);
+        const ageString = calculateAge(parsedDob);
+        console.log(ageString);
+        ageField.val(ageString);
+    } else {
+        ageField.val("");
     }
   });
 
@@ -649,6 +741,15 @@ $(document).ready(function () {
   var checkmodal = $("#checkProfiles").modal("show");
   console.log("modal", checkmodal);
 
+  $("#riskCheckProfile").modal({
+    backdrop: "static",
+    keyboard: false,
+  });
+
+  // var riskcheckmodal = $("#riskCheckProfile").modal("show"); 
+  // console.log("modal", riskcheckmodal);
+
+
   // $("#checkProfiles").modal({ backdrop: "static", keyboard: false });
   // $.validator.setDefaults({
   //   errorElement: "span",
@@ -686,7 +787,7 @@ $(document).ready(function () {
   function fetchProfiles(data) {
     $(".loading").show();
 
-    $.ajax({
+    $.ajax({     //check profiles
       url: "get/checkprofiles",
       method: "GET",
       headers: {
@@ -704,7 +805,7 @@ $(document).ready(function () {
             "<th>Middle Name</th>" +
             "<th>Last Name</th>" +
             "<th>Date of Birth</th>" +
-            "<th>Update</th>" +
+            // "<th>Update</th>" +
             "</tr></thead>" +
             "<tbody>";
           jQuery.each(record, function (i, val) {
@@ -720,10 +821,10 @@ $(document).ready(function () {
               val.lname +
               "</td>" +
               "<td>" +
-              val.dob +
-              "</td>" +
-              `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
-              "</tr>";
+              val.dob 
+            //   "</td>" +
+            //  `<td><a class="btn btn-xs btn-success" href="${baseUrl}/${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+            //   "</tr>";
           });
 
           content += "</tbody></table>";
@@ -746,6 +847,107 @@ $(document).ready(function () {
     });
   }
 
+
+  function fetchRiskProfiles(data) {
+    $(".loading").show();
+    $.ajax({     //check profiles
+      url: "get/riskCheckProfile",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: data,
+      success: function (record) {
+        let content = "";
+        let closeButton = "";
+        if (record.length > 0) {
+          content +=
+            '<table class="table table-hover table-striped">' +
+            "<thead>" +
+            "<tr>" +
+            "<th>First Name</th>" +
+            "<th>Middle Name</th>" +
+            "<th>Last Name</th>" +
+            "<th>Date of Birth</th>" +
+            "<th>Action</th>" +
+            "</tr></thead>" +
+            "<tbody>";
+          jQuery.each(record, function (i, val) {
+            content +=
+              "<tr>" +
+              "<td>" + val.fname + "</td>" +
+              "<td>" + (val.mname || "") + "</td>" + // Handle null values
+              "<td>" + val.lname + "</td>" +
+              "<td>" + val.dob + "</td>" +
+              `<td><a class="btn btn-xs btn-success btn-risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+              "</tr>";
+          });
+
+          content += "</tbody></table>";
+          $("#riskCheckProfile").find(".searched-body").html(content);
+
+        } else {
+          alert("No matching profiles found.");
+          console.log("where is my data", data);
+          $("#fname").val(data.fname);
+          $("#mname").val(data.mname);
+          $("#lname").val(data.lname);
+          $("#dateofbirth").val(data.dob);
+        }
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profiles.");
+      },
+    });
+  }
+
+  function fetchSpecificProfile(id) {
+    $(".loading").show();
+
+    $.ajax({     //check profiles
+      url: "get/riskGetSpecificProfile",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: {id: id},
+      success: function (record) {
+        
+        $('#profile_id').val(id || '').trigger("change");
+        $('#lname').val(record.lname || '').trigger("change");  // Set last name
+        $('#fname').val(record.fname || '').trigger("change");  // Set first name
+        $('#mname').val(record.mname || '').trigger("change");  // Set middle name
+        $('#suffix').val(record.suffix || '').trigger("chosen:updated");
+        $('#contact').val(record.contact || '').trigger("change");
+        $('#dateofbirth').val(record.dob || '').trigger("change");
+        $('#sex').val(record.sex || '').trigger("chosen:updated");
+        $('#civil_status').val(record.civil_status || '').trigger("chosen:updated");
+        $('#religion').val(record.religion || '').trigger("change");
+        $('#height').val(record.height || '').trigger("change");
+        $('#weight').val(record.weight || '').trigger("change");
+        $('#phic_id').val(record.phicId || '').trigger("change");
+        $('#facility_id_updated').trigger("change");
+
+        setDropdownValue('#province_risk', record.province_id || '', function() {
+          setDropdownValue('#municipal', record.muncity_id || '', function() {
+              setDropdownValue('#barangay', record.barangay_id || '', function() {
+                  console.log("All dropdowns set!");
+              });
+          });
+        })
+
+        $("#riskCheckProfile").modal("hide");
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profile.");
+      },
+    });
+  }
+
   // Event listener for the 'Check' button
   $(".btn-checkProfiles").on("click", function () {
     const data = {
@@ -758,6 +960,60 @@ $(document).ready(function () {
     fetchProfiles(data);
   });
 
+  $(".btn-riskCheckProfiles").on("click", function () {
+    const data = {
+      fname: $(".fname").val(),
+      mname: $(".mname").val(),
+      lname: $(".lname").val(),
+      dob: $(".dob").val(),
+    };
+    fetchRiskProfiles(data);
+  });
+
+  $(document).on('click', '.btn-risk-update-profile', function() {
+    var id = $(this).data('id');
+    console.log(id);
+
+    fetchSpecificProfile(id);
+  });
+
+  $(document).ready(function() {
+    // Function to handle the "Check" button click
+    $('.btn-riskCheckProfiles').on('click', function() {
+        // Hide the first modal body and footer
+        $('.default-body').hide();
+        $('.default-footer').hide();
+
+        // Show the second modal body and footer
+        $('.searched-body').show();
+        $('.searched-footer').show();
+    });
+
+    // Function to handle the "Return" button click
+    $('.btn-return-verify').on('click', function() {
+        // Hide the second modal body and footer
+        $('.searched-body').hide();
+        $('.searched-footer').hide();
+
+        // Show the first modal body and footer again
+        $('.default-body').show();
+        $('.default-footer').show();
+    });
+  });
+  // $(document).on('click', '.btn-risk-profile', function() {
+  //   var id = $(this).data('id');
+  //   console.log(id);
+
+  //   insertRiskProfile(id);
+  // });
+
+  // Helper function to set dropdown values with callbacks
+  function setDropdownValue(selector, value, callback) {
+    $(selector).val(value).trigger("chosen:updated").trigger("change");
+    // Add a delay before executing the callback
+    setTimeout(callback, 500); // Adjust delay if necessary
+}
+  
   // $(".btn-checkProfiles").on("click", function () {
   //   $(".loading").show();
   //   var content = "";
@@ -848,65 +1104,51 @@ $(document).ready(function () {
 });
 
 // for deleteing nature
-document.addEventListener("DOMContentLoaded", function () {
-  document
-    .querySelectorAll('input[type="checkbox"]')
-    .forEach(function (checkbox) {
-      checkbox.addEventListener("change", function () {
-        if (!this.checked) {
-          let csrfToken = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content");
-          let natureId = this.value;
-          let preadmissionId = document.getElementById(
-            "preadmission_id_update"
-          ).value;
-          let category = this.getAttribute("data-category");
-          console.log("nature_id", natureId, "preadmissionId", preadmissionId);
+// document.addEventListener("DOMContentLoaded", function () {
+//   document
+//   .querySelectorAll('input[type="checkbox"]')
+//   .forEach(function (checkbox) {
+//     checkbox.addEventListener("change", function () {
+//       // When checkbox is unchecked
+//       if (!this.checked) {
+//         let csrfToken = document
+//           .querySelector('meta[name="csrf-token"]')
+//           .getAttribute("content");
+//         let natureId = this.value;
+//         let preadmissionId = document.getElementById(
+//           "preadmission_id_update"
+//         ).value; 
+//         let category = this.getAttribute("data-category");
+//         console.log("nature_id", natureId, "preadmissionId", preadmissionId);
 
-          Lobibox.confirm({
-            title: "Confirm Deletion",
-            msg: "Are you sure you want to delete this data?",
-            buttons: {
-              yes: {
-                class: "btn btn-success",
-                text: "Yes",
-                closeOnClick: true,
-              },
-              no: {
-                class: "btn btn-danger",
-                text: "No",
-                closeOnClick: true,
-              },
-            },
-
-            callback: function (lobibox, type) {
-              if (type == "yes") {
-                $.ajax({
-                  url: deleteNatureUrl,
-                  type: "POST",
-                  headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                  },
-                  data: {
-                    nature_id: natureId,
-                    preadmission_id: preadmissionId,
-                    category: category,
-                  },
-                  success: function (response) {
-                    console.log("Nature deleted successfully", response);
-                  },
-                  error: function (xhr) {
-                    // Handle error, e.g., show an error message
-                    console.error(
-                      "An error occurred while deleting the nature"
-                    );
-                  },
-                });
-              }
-            },
-          });
-        }
-      });
-    });
-});
+//         // Confirm action but do not delete
+//         // Lobibox.confirm({
+//         //   title: "Confirm Action",
+//         //   msg: "You have unchecked this option. Do you want to proceed without deletion?",
+//         //   buttons: {
+//         //     yes: {
+//         //       class: "btn btn-success",
+//         //       text: "Yes",
+//         //       closeOnClick: true,
+//         //     },
+//         //     no: {
+//         //       class: "btn btn-danger",
+//         //       text: "No",
+//         //       closeOnClick: true,
+//         //     },
+//         //   },
+//         //   callback: function (lobibox, type) {
+//         //     if (type == "yes") {
+//         //       // Instead of deleting, perform any other logic here, like updating the state
+//         //       console.log("Checkbox unchecked, no deletion performed.");
+//         //       // If you need to trigger some update, do it here.
+//         //     } else {
+//         //       // If user cancels, you can also reverse the checkbox state
+//         //       checkbox.checked = true;
+//         //     }
+//         //   },
+//         // });
+//       }
+//     });
+//   });
+// });

@@ -1,8 +1,6 @@
 @extends('resu/app1')
 @section('content')
-
     @include('resu.accident.accidentSide')
-
     <div class="col-md-9 wrapper">
                 <div class="alert alert-jim">
                     <h2 class="page-header">Accident Type</h2>
@@ -12,6 +10,8 @@
                                 <thead>
                                 <tr>
                                     <th>Description</th>  
+                                    <th></th>
+                                   
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -20,14 +20,22 @@
                                         <td>
                                             <font class="text-success text-bold">{{$act_type->description}}</font>
                                         </td>
-                                        
+                                        <td>
+                                        <a href=" {{ route('edit-accident-type', ['id' => $act_type->id]) }}" class="btn btn-primary">Edit</a>
+                                        </td>
+                                        <!-- <td>
+                                            <form action="{{ route('delete-accident-type') }}" method="POST">
+                                                    {{ csrf_field() }}
+                                                    <input type="hidden" name="id" value="{{ $act_type->id }}">
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this accident?')">Delete</button>
+                                             </form>
+                                        </td> -->
                                     </tr>
                                  @endforeach
                                 </tbody>
                             </table>
                         </div>
                         {{ $accidentType->links() }}
-
                 </div>
             </div>
 

@@ -36,7 +36,6 @@
                     <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4><b>PHILIPPINE HEALTH AGENDA CHECK-UP SYSTEM</b></h4>
                 </div><br>
-
                 <div class="">
                     <div style="font-size:1.1em;">
                         {{--<i class="fa fa-phone"></i> <b class="text-warning">Main Contact Person:</b>--}}
@@ -78,7 +77,8 @@
         <img style="height: 95px;" src="{{ asset('resources/img/tsekap-logo.png') }}" />
         <br />
         <h3><b>PHILIPPINE HEALTH AGENDA</b></h3>
-        <h4><b>CHECK-UP SYSTEM</b></h4>
+        <!-- <h4><b>CHECK-UP SYSTEM</b></h4> -->
+        <h4><b>TSEKAP SYSTEM</b></h4>
         {{--<a href="#"><b>PHA</b> CHECK-UP</a>--}}
     </div><!-- /.login-logo -->
 
