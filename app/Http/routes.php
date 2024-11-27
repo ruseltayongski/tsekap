@@ -364,6 +364,9 @@ Route::group(['middleware' => 'checkUserPrivilege'], function(){
 Route::get('user/change/password','ParameterCtrl@password');
 Route::post('user/change/password','ParameterCtrl@changePassword');
 
+//reset password
+// Route::post('/reset-password', 'resu\UsersCtrl@resetPassword')->name('reset-password');
+
 Route::get('change/password','UserCtrl@password');
 Route::post('change/password','UserCtrl@changePassword');
 
@@ -395,7 +398,7 @@ Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->na
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
-// Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
+Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
 Route::get('/body-parts', 'resu\InjuryController@Listbodyparts')->name('body-parts');
@@ -412,9 +415,11 @@ Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 
 //add patient injury
-// Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
-// Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
-// Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
+Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
+
+
 
 //accident type
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");
@@ -432,7 +437,7 @@ Route::post('addSafety', 'resu\InjuryController@Savesafety')->name("addSafety");
 Route::get('user/population/head','ClientCtrl@addHeadProfile');
 
 //delete nature injury categories
-// Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
+Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
 
 Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
 Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
@@ -443,6 +448,9 @@ Route::post('add-users', 'resu\UsersCtrl@AddUsers');
 Route::post('users-search','resu\UsersCtrl@SearchUsers')->name('users-search');
 Route::post('/admin/delete_user', 'resu\UsersCtrl@deleteUser')->name('resu.admin.delete_user');
 Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User');
+
+
+
 
 // csv files patient injury
 Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');

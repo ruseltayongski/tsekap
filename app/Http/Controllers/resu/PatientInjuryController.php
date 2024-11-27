@@ -215,14 +215,16 @@ class PatientInjuryController extends Controller
         $profile->fname = $request->fname;
         $profile->mname = $request->mname;
         $profile->lname = $request->lname;
+        $profile->suffix = $request->suffix;
         $profile->sex = $request->sex;
         $profile->dob = $request->dateBirth;
         $profile->province_id = $request->province;
         $profile->muncity_id = $request->municipal;
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
+        $profile->contact = $request->contact;
         $profile->type_of_patient = $request->typePatient;
-        $profile->name_of_encoder = $user->fname.' '.$user->lname;
+        $profile->name_of_encoder = $user->fname." ".$user->lname;
         $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->
@@ -479,7 +481,7 @@ class PatientInjuryController extends Controller
 
         $province_selectedMun = $province->merge($selectedMuncity);
 
-         $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
+         $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'suffix', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'contact', 'type_of_patient','report_facilityId')
         // $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
              ->with([
             'preadmission' => function ($query) { //sub list manage patient injury

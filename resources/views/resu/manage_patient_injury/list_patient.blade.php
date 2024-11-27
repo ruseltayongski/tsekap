@@ -39,13 +39,20 @@
                         <div class="form-group">
                             <div class="clearfix"></div>
                         </div>
-                        @if($user_priv->user_priv == 7)
+                        @if($user_priv->user_priv == 7) {{--for region can download--}}
                         <div class="form-group">
-                                <a href="{{ route('export.csv') }}" class="btn btn-info col-xs-12">
+                                <a href="{{ route('export.csv') }}" class="btn btn-info col-xs-12"> 
                                     <i class="fa fa-download"></i> Download CSV
                                 </a>
                             <div class="clearfix"></div>
-                        </div>                
+                        </div>    
+                        @elseif($user_priv->user_priv == 10) {{--for DSO download--}}
+                        <div class="form-group">
+                                <a href="{{ route('export.csv') }}" class="btn btn-info col-xs-12"> 
+                                    <i class="fa fa-download"></i> Download CSV
+                                </a>
+                            <div class="clearfix"></div>
+                        </div>               
                         {{-- <!-- Date Filters -->
                             <div class="form-group">
                                 <label for="start-date">Start Date:</label>
@@ -95,6 +102,7 @@
                                 @if($user_priv->user_priv !== 6)
                                     <th>Facility Name <br>&nbsp;</th>
                                 @endif
+                            
                                 <th>Full Name<br>&nbsp;</th>
                                 <th>Age<br>&nbsp;</th>
                                 <th>Sex<br>&nbsp;</th>
@@ -148,7 +156,7 @@
                                         </td>
                                     @endif
                                     <td class="{{ $p->head == 'YES' ? 'text-bold text-primary' : '' }}">
-                                        {{ $p->fname . ' ' . $p->mname . ' ' . $p->lname . ' ' . $p->suffix }}
+                                        {{ $p->fname . ' ' . $p->mname . ' . ' . $p->lname . ' ' . $p->suffix }}
                                     </td>
                                     <!-- <td>
                                         @php
