@@ -699,19 +699,19 @@
                                     <td>5.1 Tobacco Use</td>
                                     <td>
                                         <!-- Never Used (proceed to Q2) checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]">
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Never') !== false ? 'checked' : '' }}>
                                         Never Used (proceed to Q2) <br>
-                                
-                                        <!-- Exposure to secondhand smoke checkbox (this will be checked) -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" checked>
+
+                                        <!-- Exposure to secondhand smoke checkbox -->
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Exposure') !== false ? 'checked' : '' }}>
                                         Exposure to secondhand smoke <br>
                                 
-                                        <!-- Former tobacco user checkbox (this will be checked) -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" checked>
+                                        <!-- Former tobacco user checkbox -->
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Former') !== false ? 'checked' : '' }}>
                                         Former tobacco user (stopped smoking > 1 year) <br>
                                 
                                         <!-- Current tobacco user checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]">
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Current') !== false ? 'checked' : '' }}>
                                         Current tobacco user (currently smoking or stopped smoking) <br><br>
                                 
                                         <p style="font-style: italic; font-size: 15px;">

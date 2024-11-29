@@ -414,6 +414,7 @@ Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 //add patient injury
 Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
 Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
 
 //accident type
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name("accidentType");

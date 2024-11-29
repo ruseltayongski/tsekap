@@ -6,6 +6,7 @@
 
 <div class="container">
     <div class="row justify-content-center" style="align-center: 50%">
+        <!-- Patient Injury Form Section -->
         <div class="col-md-6 wrapper">
             <div class="alert alert-jim">
                 <h2 class="page-header"><i class="fa fa-folder"></i> Patient Injury Form </h2>
