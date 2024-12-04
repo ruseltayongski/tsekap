@@ -112,7 +112,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"></a>
+            {{-- <a class="navbar-brand" href="#"></a> --}}
         </div>
 
         <div id="navbar" class="navbar-collapse collapse">
@@ -164,7 +164,7 @@
             <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-medkit"></i> Form<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Patient Injury Form</a></li>
+                        {{-- <li><a href="{{ url('patientInjury') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Patient Injury Form</a></li> --}}
                         <li> <a href="{{ url('patientRisk') }}"><i class="fa fa-medkit"></i>&nbsp;&nbsp; Risk Assessment Form</a></li>
                     </ul>
                 </li>
@@ -194,11 +194,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ asset('/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li>
-                        <li class="divider"></li>
+                        
                         <li><a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i>&nbsp;&nbsp; Logout</a></li>
                     </ul>
                 </li>
+                  {{-- <li><a href="{{ asset('/change/password')  }}"><i class="fa fa-unlock"></i>&nbsp;&nbsp; Change Password</a></li> --}}
 
             </ul>
             {{--<ul class="nav navbar-nav navbar-right">--}}

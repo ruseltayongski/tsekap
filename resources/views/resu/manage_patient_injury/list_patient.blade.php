@@ -45,8 +45,23 @@
                                     <i class="fa fa-download"></i> Download CSV
                                 </a>
                             <div class="clearfix"></div>
-                        </div>
+                        </div>                
+                        {{-- <!-- Date Filters -->
+                            <div class="form-group">
+                                <label for="start-date">Start Date:</label>
+                                <input type="date" class="form-control" id="start-date" name="start_date" placeholder="Start Date">
+                            </div>
+                            <div class="form-group">
+                                <label for="end-date">End Date:</label>
+                                <input type="date" class="form-control" id="end-date" name="end_date" placeholder="End Date">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="search-button" class="btn btn-default col-xs-12">
+                                    <i class="fa fa-search"></i> Search
+                                </button>
+                            </div>   --}}
                         @endif
+
                         @if($user_priv->user_priv == 6)
                             <div class="form-group">
                                 <a class="btn btn-info col-xs-12" href="{{ url('patient-form') }}">
@@ -54,6 +69,7 @@
                                 </a>
                                 <div class="clearfix"></div>
                             </div>
+                            
                         @endif
                         <br><br> 
                         <!-- <div class="form-group">
@@ -74,6 +90,7 @@
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th></th>
                                 @if($user_priv->user_priv !== 6)
                                     <th>Facility Name <br>&nbsp;</th>
@@ -112,6 +129,15 @@
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                     </td>
+                                    <td nowrap="TRUE">
+                                        <form action="{{ route('patient.delete', $p->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                    
                                     @if($user_priv->user_priv !== 6)
                                         <td>
                                             @if($p->reportFacility && $p->reportFacility->facility)
