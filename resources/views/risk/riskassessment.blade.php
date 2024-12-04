@@ -745,7 +745,7 @@
                                         5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="BMI" value="" name="rf_BMI"readonly><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" value=""></span></i></p>
+                                        <input type="text" class="textbox" id="BMI" value="" name="rf_BMI" readonly><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" value=""></span></i></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1354,6 +1354,7 @@
         // Toggle the state of all "No" checkboxes
         noCheckboxes.forEach(checkbox => {
             checkbox.checked = !allChecked;
+            checkbox.dispatchEvent(new Event('change'));
         });
 
         // Hide additional inputs if all "No" are checked
