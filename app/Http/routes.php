@@ -3,6 +3,7 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 }
 
+
 Route::auth();
 Route::group(['middleware' => 'checkUserPrivilege'], function(){
     Route::get('/', 'HomeCtrl@index');
@@ -461,3 +462,19 @@ Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm'
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
 Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
+
+
+// Tsekap V2 Endpoints
+use App\Http\Middleware\CorsMiddleware;
+
+// Less-protected endpoints (no XSRF token validation)
+Route::group(['middleware' => ['less-protected-api']], function () {
+    // System
+    Route::get('v2/api/rev1', 'TsekapV2\SystemController@api')->middleware(CorsMiddleware::class);
+});
+
+// Protected endpoints (with XSRF token validation)
+Route::group(['middleware' => ['api']], function () {
+    // Data
+    Route::get('v2/api/rev1/riskassessment', 'TsekapV2\RiskAssessmentForm\DataController@api')->middleware(CorsMiddleware::class);
+});
