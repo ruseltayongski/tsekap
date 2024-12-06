@@ -2,47 +2,44 @@
 
 namespace App\Http\Controllers\TsekapV2\RiskAssessmentForm;
 
-use Illuminate\Http\Request;
+use Exception;
 
 use App\Muncity;
+use App\Facility;
+use App\Province;
 use App\Barangay;
 use App\RiskProfile;
-use App\Facility;
 use App\RiskFormAssesment;
-
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Input;
+
+use Illuminate\Http\Request;
 
 class DataController extends Controller
 { 
     // function to call once an endpoint is invoked
-    public function api(Request $fieldsuest){
-        $action = $fieldsuest -> get('r');
+    public function api(Request $request){
+        $action = $request -> get('r');
         // switch statement as to what is needed to be done
         
         switch($action){
             case 'getMuncity':
-                return $this->getMuncity();
+                return $this->getMuncity($request);
             case 'getBarangay':
-                return $this->getBarangay();
+                return $this->getBarangay($request);
             case 'getPatientRiskFormList':
-                return $this->getPatientRiskFormList();
-            case 'createRecord':
-                return $this->getVersion($fieldsuest);
-            case 'readRecord':
-                return $this->getVersion($fieldsuest);
-            case 'updateRecord':
-                return $this->getVersion($fieldsuest);
-            case 'deleteRecord':
-                return $this->getVersion($fieldsuest); 
+                return $this->getPatientRiskFormList($request);
+            case 'submitPatientRiskForm':
+                return $this->submitRiskForm($request);
+            case 'sublistRiskPatient':
+                return $this->sublistRiskPatient($request);        
         }
     }
 
     // # ---------- AUXILIARY FUNCTIONS ----------- # //
     
     // get municipality/city
-    public function getMuncity(){
-        $provinceId = Input::get('province_id');
+    public function getMuncity(Request $request){
+        $provinceId = $request->get('province_id');
 
         $muncity = Muncity::where('province_id', $provinceId)
             ->select('id','province_id','description')
@@ -52,8 +49,8 @@ class DataController extends Controller
     }
 
     // get barangay
-    public function getBarangay(){
-        $muncityId = Input::get('muncity_id');
+    public function getBarangay(Request $request){
+        $muncityId = $request->get('muncity_id');
 
         $barangay = Barangay::where('muncity_id',$muncityId)
             ->select('id','muncity_id','description')
@@ -62,9 +59,9 @@ class DataController extends Controller
     }
 
     // get patient risk form list
-    public function getPatientRiskFormList() {
-        $user = Input::get('user');
-        $keyword = Input::get('keyword');
+    public function getPatientRiskFormList(Request $request) {
+        $user = $request->get('user');
+        $keyword = $request->get('keyword');
 
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);
@@ -143,12 +140,85 @@ class DataController extends Controller
         return response()->json($riskprofiles, 200);
     }
 
-    public function submitRiskForm(){
-        $user = Input::get('user');
-        $fields = Input::get('fields'); 
-        $facility = Facility::select('id','name','address','hospital_type')
-        ->where('id', $user->facility_id)    
-        ->get();
+    public function sublistRiskPatient(Request $request){
+        $user = $request->get('user');
+        $fields = $request->get('fields');
+
+        if(!$user){
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        $id = $fields->id;
+        $facility = Facility::select('id','name','address','hospital_type')->get();
+
+        $selectedMuncity = Muncity::select('id','description')->get();
+        $province = Province::select('id','description')->get();
+
+        $provinceSelectedMun = $province->merge($selectedMuncity);
+
+        $profile = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'suffix', 'sex',  'age',
+                                        'civil_status','religion','other_religion','contact','municipal_id', 'province_id', 
+                                         'barangay_id','street','purok','sitio','phic_id', 'pwd_id','ethnicity','other_ethnicity',
+                                         'indigenous_person','employment_status', 'facility_id_updated','created_at')
+             ->with([
+            'riskForm' => function ($query) {
+                $query->select('id','risk_profile_id','ar_chestpain','ar_diffBreath',
+                    'ar_lossOfConsciousness','ar_slurredSpeech','ar_facialAsymmetry',
+                    'ar_weaknessNumbness','ar_disoriented','ar_chestRetraction',
+                    'ar_seizureConvulsion', 'ar_actSelfHarmSuicide','ar_agitatedBehaivior',
+                    'ar_eyeInjury', 'ar_severeInjuries','ar_refer_physicianName',
+                    'ar_refer_reason','ar_refer_facility', 'pmh_hypertension',
+                    'pmh_heartDisease', 
+                    'pmh_diabetes', 
+                    'pmh_specify_diabetes',
+                    'pmh_cancer',
+                    'pmh_specify_cancer',
+                    'pmh_COPD', 
+                    'pmh_asthma',
+                    'pmh_allergies', 
+                    'pmh_specify_allergies', 
+                    'pmh_MNandSDisorder', 
+                    'pmh_specify_MNandSDisorder', 
+                    'pmh_specify_previous_Surgical',
+                    'pmh_visionProblems', 
+                    'pmh_previous_Surgical','pmh_thyroidDisorders', 'pmh_kidneyDisorders',
+                    'fm_hypertension','fm_stroke','fm_heartDisease','fm_diabetesMel',
+                    'fm_asthma','fm_cancer', 
+                    'fm_kidneyDisease', 'fm_firstDegreRelative', 
+                    'fm_havingTB5years', 
+                    'fm_MNandSDisorder', 'fm_COPD', 
+                    'rf_tobbacoUse', 'rf_alcoholIntake', 'rf_alcoholBingeDrinker', 
+                    'rf_physicalActivity','rf_nutritionDietary','rf_weight','rf_height','rf_bodyMass','rf_waistCircum',
+                    'rs_systolic_t1', 'rs_diastolic_t1',
+                    'rs_systolic_t2', 'rs_diastolic_t2',
+                    'rs_bloodSugar_fbs','rs_bloodSugar_rbs',
+                    'rs_bloodSugar_date_taken',
+                    'rs_bloodSugar_symptoms', 'rs_lipid_cholesterol',
+                    'rs_lipid_hdl',
+                    'rs_lipid_ldl',
+                    'rs_lipid_vldl',
+                    'rs_lipid_triglyceride',
+                    'rs_lipid_date_taken',
+                    'rs_urine_protein','rs_urine_protein_date_taken',
+                    'rs_urine_ketones','rs_urine_ketones_date_taken',
+                    'rs_Chronic_Respiratory_Disease', 'rs_if_yes_any_symptoms','mngm_med_hypertension','mngm_med_hypertension_specify', 'mngm_med_diabetes', 
+                    'mngm_med_diabetes_options',
+                    'mngm_med_diabetes_specify',
+                    'mngm_date_follow_up',
+                    'mngm_remarks'); 
+            }
+        ])->find($id);
+
+        return response()->json(['profile' => $profile, 'facility' => $facility, 'province' => $provinceSelectedMun], 200);
+    }
+
+    public function submitRiskForm(Request $request){
+        $user = $request->get('user');
+        $fields = $request->get('fields'); 
+        
+        if(!$user){
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
 
         // Check for duplicate in the RiskProfile table
         $existingRiskProfile = RiskProfile::where('fname', '=', $fields->fname)
@@ -159,180 +229,185 @@ class DataController extends Controller
 
         if ($existingRiskProfile) {
         // Redirect with an error message if a duplicate is found
-            return redirect()->back()->with('error', 'Duplicate risk profile exists with the same data.');
+            return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
         }
 
-        $riskprofile = new RiskProfile();
+        try{
+            $riskprofile = new RiskProfile();
 
-        // Assign all the necessary values
-        $riskprofile->profile_id = $fields->profile_id? $fields->profile_id : null;
-        $riskprofile->fname = $fields->fname;
-        $riskprofile->mname = $fields->mname? $fields->mname : null ;
-        $riskprofile->lname = $fields->lname;
-        $riskprofile->suffix = $fields->suffix? $fields->suffix : null;
-        $riskprofile->sex = $fields->sex;
-        $riskprofile->dob = $fields->dateofbirth;
-        $riskprofile->age = $fields->age;
-        $riskprofile->contact = $fields->contact;
-        $riskprofile->province_id = $fields->province_risk;
-        $riskprofile->municipal_id = $fields->municipal;
-        $riskprofile->barangay_id = $fields->barangay;
-        $riskprofile->sitio = $fields->sitio? $fields->sitio : null;
-        $riskprofile->street = $fields->street? $fields->street : null;
-        $riskprofile->purok = $fields->purok? $fields->purok : null;
-        $riskprofile->phic_id = $fields->phic_id? $fields->phic_id : null; // Ensure you use the correct field name here
-        $riskprofile->civil_status = $fields->civil_status;
-        $riskprofile->religion = $fields->religion;
-        $riskprofile->other_religion = $fields->other_religion ? $fields -> other_religion : null;
-        $riskprofile->pwd_id = $fields->pwd_id? $fields->pwd_id : null;
-        $riskprofile->ethnicity = $fields->ethnicity;
-        $riskprofile->other_ethnicity = $fields -> other_ethnicity ? $fields -> other_ethnicity : null;
-        $riskprofile->indigenous_person = $fields->indigenous_person;
-        $riskprofile->employment_status = $fields->employment_status;
-        $riskprofile->facility_id_updated = $fields->facility_id_updated; // Ensure this is not null
-    
-        // Save the profile
-        $riskprofile->save();
-        $riskform = new RiskFormAssesment();
-
-        // Health assessment checkbox fields
-        $riskform->risk_profile_id = $riskprofile->id;
-        $riskform->ar_chestpain = $fields->input('chest_pain', 'No');
-        $riskform->ar_diffBreath = $fields->input('difficulty_breathing', 'No');
-        $riskform->ar_lossOfConsciousness = $fields->input('loss_of_consciousness', 'No');
-        $riskform->ar_slurredSpeech = $fields->input('slurred_speech', 'No');
-        $riskform->ar_facialAsymmetry = $fields->input('facial_asymmetry', 'No');
-        $riskform->ar_weaknessNumbness = $fields->input('weakness_numbness', 'No');
-        $riskform->ar_disoriented = $fields->input('disoriented', 'No');
-        $riskform->ar_chestRetraction = $fields->input('chest_retractions', 'No');
-        $riskform->ar_seizureConvulsion = $fields->input('seizures', 'No');
-        $riskform->ar_actSelfHarmSuicide = $fields->input('self_harm', 'No');
-        $riskform->ar_agitatedBehaivior = $fields->input('agitated_behavior', 'No');
-        $riskform->ar_eyeInjury = $fields->input('eye_injury', 'No');
-        $riskform->ar_severeInjuries = $fields->input('severe_injuries', 'No');
-        $riskform->ar_refer_physicianName = $fields->input('physician_name');
-        $riskform->ar_refer_reason = $fields->input('reason');
-        $riskform->ar_refer_facility = $fields->input('facility');
-
-
-        //PAST MEDICAL HISTORY 
-        $riskform->pmh_hypertension = $fields->input('pm_hypertension', 'No');
-        $riskform->pmh_heartDisease = $fields->input('pm_heartDisease', 'No');
-        $riskform->pmh_diabetes = $fields->input('pm_diabetes', 'No');
-        $riskform->pmh_specify_diabetes = $fields->input('pm_diabetes_details', '');
-        $riskform->pmh_cancer = $fields->input('pm_cancer', 'No');
-        $riskform->pmh_specify_cancer = $fields->input('pm_cancer_details', '');
-        $riskform->pmh_COPD = $fields->input('pm_COPD', 'No');
-        $riskform->pmh_asthma = $fields->input('pm_asthma', 'No');
-        $riskform->pmh_allergies = $fields->input('pm_allergies', 'No');
-        $riskform->pmh_specify_allergies = $fields->input('pm_allergies_details', '');
-        $riskform->pmh_MNandSDisorder = $fields->input('pm_mnsad', 'No');
-        $riskform->pmh_specify_MNandSDisorder = $fields->input('pm_mnsad_details', '');
-        $riskform->pmh_visionProblems = $fields->input('pm_vision', 'No');
-        $riskform->pmh_previous_Surgical = $fields->input('pm_psh', 'No');
-        $riskform->pmh_specify_previous_Surgical = $fields->input('pm_psh_details', 'No');
-        $riskform->pmh_thyroidDisorders = $fields->input('pm_thyroid', 'No');
-        $riskform->pmh_kidneyDisorders = $fields->input('pm_kidney', 'No');
+            // Assign all the necessary values
+            $riskprofile->profile_id = $fields->profile_id? $fields->profile_id : null;
+            $riskprofile->fname = $fields->fname;
+            $riskprofile->mname = $fields->mname? $fields->mname : null;
+            $riskprofile->lname = $fields->lname;
+            $riskprofile->suffix = $fields->suffix? $fields->suffix : null;
+            $riskprofile->sex = $fields->sex;
+            $riskprofile->dob = $fields->dateofbirth;
+            $riskprofile->age = $fields->age;
+            $riskprofile->contact = $fields->contact;
+            $riskprofile->province_id = $fields->province_risk;
+            $riskprofile->municipal_id = $fields->municipal;
+            $riskprofile->barangay_id = $fields->barangay;
+            $riskprofile->sitio = $fields->sitio? $fields->sitio : null;
+            $riskprofile->street = $fields->street? $fields->street : null;
+            $riskprofile->purok = $fields->purok? $fields->purok : null;
+            $riskprofile->phic_id = $fields->phic_id? $fields->phic_id : null; // Ensure you use the correct field name here
+            $riskprofile->civil_status = $fields->civil_status;
+            $riskprofile->religion = $fields->religion;
+            $riskprofile->other_religion = $fields->other_religion ? $fields -> other_religion : null;
+            $riskprofile->pwd_id = $fields->pwd_id? $fields->pwd_id : null;
+            $riskprofile->ethnicity = $fields->ethnicity;
+            $riskprofile->other_ethnicity = $fields -> other_ethnicity ? $fields -> other_ethnicity : null;
+            $riskprofile->indigenous_person = $fields->indigenous_person;
+            $riskprofile->employment_status = $fields->employment_status;
+            $riskprofile->facility_id_updated = $fields->facility_id_updated; // Ensure this is not null
         
-        //FAMILY HISTORY
-        $riskform->fm_hypertension = $fields->input('fm_hypertension','No');
-        $riskform->fm_stroke = $fields->input('fm_stroke','No');
-        $riskform->fm_heartDisease = $fields->input('fm_heart','No');
-        $riskform->fm_diabetesMel = $fields->input('fm_diabetes','No');
-        $riskform->fm_asthma = $fields->input('fm_asthma','No');
-        $riskform->fm_cancer = $fields->input('fm_cancer','No');
-        $riskform->fm_kidneyDisease = $fields->input('fm_kidney','No');
-        $riskform->fm_firstDegreRelative = $fields->input('fm_degree','No');
-        $riskform->fm_havingTB5years = $fields->input('fm_famtb','No');
-        $riskform->fm_MNandSDisorder = $fields->input('fm_mnsad','No');
-        $riskform->fm_COPD = $fields->input('fm_cop','No');
+            // Save the profile
+            $riskprofile->save();
+            $riskform = new RiskFormAssesment();
 
-        // NCD RISK FACTORS 
-        $tobaccoUsed = $fields->input('tobaccoUse', []); 
-        $tobaccoUseLimited = array_slice($tobaccoUsed, 0, 2); 
-        $riskform->rf_tobbacoUse = implode(', ', $tobaccoUseLimited); 
-        $riskform->rf_alcoholIntake = $fields->input('ncd_alcohol', 'No'); 
-        $riskform->rf_alcoholBingeDrinker = $fields->input('ncd_alcoholBinge', 'No');
-        $riskform->rf_physicalActivity = $fields->input('ncd_physical', 'No'); 
-        $riskform->rf_nutritionDietary = $fields->input('ncd_nutrition', 'No'); 
-        $riskform->rf_weight = $fields->input('rf_weight', '');
-        $riskform->rf_height = $fields->input('rf_height', '');
-        $riskform->rf_bodyMass = $fields->input('rf_BMI', '');
-        $riskform->rf_waistCircum = $fields->input('rf_waist', '');
+            // Health assessment checkbox fields
+            $riskform->risk_profile_id = $riskprofile->id;
+            $riskform->ar_chestpain = $fields->chest_pain;
+            $riskform->ar_diffBreath = $fields->difficulty_breathing;
+            $riskform->ar_lossOfConsciousness = $fields->loss_of_consciousness;
+            $riskform->ar_slurredSpeech = $fields->slurred_speech;
+            $riskform->ar_facialAsymmetry = $fields->facial_asymmetry;
+            $riskform->ar_weaknessNumbness = $fields->weakness_numbness;
+            $riskform->ar_disoriented = $fields->disoriented;
+            $riskform->ar_chestRetraction = $fields->chest_retractions;
+            $riskform->ar_seizureConvulsion = $fields->seizures;
+            $riskform->ar_actSelfHarmSuicide = $fields->self_harm;
+            $riskform->ar_agitatedBehaivior = $fields->agitated_behavior;
+            $riskform->ar_eyeInjury = $fields->eye_injury;
+            $riskform->ar_severeInjuries = $fields->severe_injuries;
+            $riskform->ar_refer_physicianName = $fields->physician_name;
+            $riskform->ar_refer_reason = $fields->reason;
+            $riskform->ar_refer_facility = $fields->facility;
 
-        //RISK SCREENING
-        // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
 
-        $dmSymptoms = $fields->input('dm_symptoms', []);
+            //PAST MEDICAL HISTORY 
+            $riskform->pmh_hypertension = $fields->pm_hypertension;
+            $riskform->pmh_heartDisease = $fields->pm_heartDisease;
+            $riskform->pmh_diabetes = $fields->pm_diabetes;
+            $riskform->pmh_specify_diabetes = $fields->pm_diabetes_details;
+            $riskform->pmh_cancer = $fields->pm_cancer;
+            $riskform->pmh_specify_cancer = $fields->pm_cancer_details;
+            $riskform->pmh_COPD = $fields->pm_COPD;
+            $riskform->pmh_asthma = $fields->pm_asthma;
+            $riskform->pmh_allergies = $fields->pm_allergies;
+            $riskform->pmh_specify_allergies = $fields->pm_allergies_details;
+            $riskform->pmh_MNandSDisorder = $fields->pm_mnsad;
+            $riskform->pmh_specify_MNandSDisorder = $fields->pm_mnsad_details;
+            $riskform->pmh_visionProblems = $fields->pm_vision;
+            $riskform->pmh_previous_Surgical = $fields->pm_psh;
+            $riskform->pmh_specify_previous_Surgical = $fields->pm_psh_details;
+            $riskform->pmh_thyroidDisorders = $fields->pm_thyroid;
+            $riskform->pmh_kidneyDisorders = $fields->pm_kidney;
+            
+            //FAMILY HISTORY
+            $riskform->fm_hypertension = $fields->fm_hypertension;
+            $riskform->fm_stroke = $fields->fm_stroke;
+            $riskform->fm_heartDisease = $fields->fm_heart;
+            $riskform->fm_diabetesMel = $fields->fm_diabetes;
+            $riskform->fm_asthma = $fields->fm_asthma;
+            $riskform->fm_cancer = $fields->fm_cancer;
+            $riskform->fm_kidneyDisease = $fields->fm_kidney;
+            $riskform->fm_firstDegreRelative = $fields->fm_degree;
+            $riskform->fm_havingTB5years = $fields->fm_famtb;
+            $riskform->fm_MNandSDisorder = $fields->fm_mnsad;
+            $riskform->fm_COPD = $fields->fm_cop;
 
-        $riskform->rs_systolic_t1 = $fields->input('systolic_t1', ' ');
-        $riskform->rs_diastolic_t1 = $fields->input('diastolic_t1', ' ');
-        $riskform->rs_systolic_t2 = $fields->input('systolic_t2', ' ');
-        $riskform->rs_diastolic_t2 = $fields->input('diastolic_t2', ' ');
-        $riskform->rs_bloodSugar_fbs = $fields->input('fbs_result', ' ');
-        $riskform->rs_bloodSugar_rbs = $fields->input('rbs_result', ' ');
-        $riskform->rs_bloodSugar_date_taken = $fields->input('bloodSugar_date_taken', '');
-        $riskform->rs_bloodSugar_symptoms = implode(', ', $dmSymptoms);
-        $riskform->rs_lipid_cholesterol = $fields->input('lipid_cholesterol', ''); 
-        $riskform->rs_lipid_hdl = $fields->input('lipid_hdl', ''); 
-        $riskform->rs_lipid_ldl = $fields->input('lipid_ldl', ''); 
-        $riskform->rs_lipid_vldl = $fields->input('lipid_vldl', ''); 
-        $riskform->rs_lipid_triglyceride = $fields->input('lipid_triglyceride', ''); 
-        $riskform->rs_lipid_date_taken = $fields->input('lipid_date_taken', date('Y-m-d'));
-        $riskform->rs_urine_protein = $fields->input('uri_protein', '');
-        $riskform->rs_urine_protein_date_taken = $fields->input('uri_protein_date_taken', date('Y-m-d'));
-        $riskform->rs_urine_ketones = $fields->input('uri_ketones', '');
-        $riskform->rs_urine_ketones_date_taken = $fields->input('uri_ketones_date_taken', date('Y-m-d'));
+            // NCD RISK FACTORS 
+            $tobaccoUsed = $fields->tobaccoUse; 
+            $tobaccoUseLimited = array_slice($tobaccoUsed, 0, 2); 
+            $riskform->rf_tobbacoUse = implode(', ', $tobaccoUseLimited); 
+            $riskform->rf_alcoholIntake = $fields->ncd_alcohol; 
+            $riskform->rf_alcoholBingeDrinker = $fields->ncd_alcoholBinge;
+            $riskform->rf_physicalActivity = $fields->ncd_physical; 
+            $riskform->rf_nutritionDietary = $fields->ncd_nutrition; 
+            $riskform->rf_weight = $fields->rf_weight;
+            $riskform->rf_height = $fields->rf_height;
+            $riskform->rf_bodyMass = $fields->rf_BMI;
+            $riskform->rf_waistCircum = $fields->rf_waist;
+
+            //RISK SCREENING
+            // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
+
+            $dmSymptoms = $fields->dm_symptoms;
+
+            $riskform->rs_systolic_t1 = $fields->systolic_t1;
+            $riskform->rs_diastolic_t1 = $fields->diastolic_t1;
+            $riskform->rs_systolic_t2 = $fields->systolic_t2;
+            $riskform->rs_diastolic_t2 = $fields->diastolic_t2;
+            $riskform->rs_bloodSugar_fbs = $fields->fbs_result;
+            $riskform->rs_bloodSugar_rbs = $fields->rbs_result;
+            $riskform->rs_bloodSugar_date_taken = $fields->bloodSugar_date_taken;
+            $riskform->rs_bloodSugar_symptoms = implode(', ', $dmSymptoms);
+            $riskform->rs_lipid_cholesterol = $fields->lipid_cholesterol; 
+            $riskform->rs_lipid_hdl = $fields->lipid_hdl; 
+            $riskform->rs_lipid_ldl = $fields->lipid_ldl; 
+            $riskform->rs_lipid_vldl = $fields->lipid_vldl; 
+            $riskform->rs_lipid_triglyceride = $fields->lipid_triglyceride; 
+            $riskform->rs_lipid_date_taken = date('Y-m-d', strtotime($fields->lipid_date_taken));
+            $riskform->rs_urine_protein = $fields->uri_protein;
+            $riskform->rs_urine_protein_date_taken = date('Y-m-d', strtotime($fields->uri_protein_date_taken));
+            $riskform->rs_urine_ketones = $fields->uri_ketones;
+            $riskform->rs_urine_ketones_date_taken = date('Y-m-d', strtotime($fields->uri_ketones_date_taken));
+            
+            $symptoms = [];
+
+            // Check each checkbox and add the label to the array if selected
+            if ($fields->has('symptom_breathlessness')) {
+                $symptoms[] = 'Breathlessness';
+            }
+            if ($fields->has('symptom_sputum_production')) {
+                $symptoms[] = 'Sputum (mucous) production';
+            }
+            if ($fields->has('symptom_chronic_cough')) {
+                $symptoms[] = 'Chronic cough';
+            }
+            if ($fields->has('symptom_chest_tightness')) {
+                $symptoms[] = 'Chest tightness';
+            }
+            if ($fields->has('symptom_wheezing')) {
+                $symptoms[] = 'Wheezing';
+            }
+
+            // Convert the array into a comma-separated string
+            $riskform->rs_Chronic_Respiratory_Disease = implode(', ', $symptoms);  // Store as a string
+
+            // For PEFR checkboxes, similarly store the selected labels as a comma-separated string
+            $pefr = [];
+            if ($fields->has('pefr_above_20_percent')) {
+                $pefr[] = '20% change from baseline (consider Probable Asthma)';
+            }
+            if ($fields->has('pefr_below_20_percent')) {
+                $pefr[] = '20% change from baseline (consider Probable COPD)';
+            }
+
+            // Convert the array into a comma-separated string for PEFR
+            $riskform->rs_if_yes_any_symptoms = implode(', ', $pefr);  // Store as a string
+            // Anti-Hypertensives: Store selected option and any specify text
+            $riskform->mngm_med_hypertension = $fields->anti_hypertensives;
+            $riskform->mngm_med_hypertension_specify = $fields->anti_hypertensives_specify;
         
-        $symptoms = [];
-
-        // Check each checkbox and add the label to the array if selected
-        if ($fields->has('symptom_breathlessness')) {
-            $symptoms[] = 'Breathlessness';
+            // Anti-Diabetes: Store selected option and any specify text, and type
+            $riskform->mngm_med_diabetes = $fields->anti_diabetes;
+            $riskform->mngm_med_diabetes_options = $fields->anti_diabetes_type;
+            $riskform->mngm_med_diabetes_specify = $fields->anti_diabetes_specify;
+        
+            // Follow-up Date
+            $riskform->mngm_date_follow_up = $fields->follow_up_date;
+        
+            // Remarks (Text area)
+            $riskform->mngm_remarks = $fields->remarks;
+        
+            // Save the data
+            $riskform->save();
+            return response()->json(['message' => 'Entry successfully saved.'], 200);
+        }catch(Exception $e){
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
         }
-        if ($fields->has('symptom_sputum_production')) {
-            $symptoms[] = 'Sputum (mucous) production';
-        }
-        if ($fields->has('symptom_chronic_cough')) {
-            $symptoms[] = 'Chronic cough';
-        }
-        if ($fields->has('symptom_chest_tightness')) {
-            $symptoms[] = 'Chest tightness';
-        }
-        if ($fields->has('symptom_wheezing')) {
-            $symptoms[] = 'Wheezing';
-        }
-
-        // Convert the array into a comma-separated string
-        $riskform->rs_Chronic_Respiratory_Disease = implode(', ', $symptoms);  // Store as a string
-
-        // For PEFR checkboxes, similarly store the selected labels as a comma-separated string
-        $pefr = [];
-        if ($fields->has('pefr_above_20_percent')) {
-            $pefr[] = '20% change from baseline (consider Probable Asthma)';
-        }
-        if ($fields->has('pefr_below_20_percent')) {
-            $pefr[] = '20% change from baseline (consider Probable COPD)';
-        }
-
-        // Convert the array into a comma-separated string for PEFR
-        $riskform->rs_if_yes_any_symptoms = implode(', ', $pefr);  // Store as a string
-        // Anti-Hypertensives: Store selected option and any specify text
-        $riskform->mngm_med_hypertension = $fields->input('anti_hypertensives');
-        $riskform->mngm_med_hypertension_specify = $fields->input('anti_hypertensives_specify');
-    
-        // Anti-Diabetes: Store selected option and any specify text, and type
-        $riskform->mngm_med_diabetes = $fields->input('anti_diabetes');
-        $riskform->mngm_med_diabetes_options = $fields->input('anti_diabetes_type');
-        $riskform->mngm_med_diabetes_specify = $fields->input('anti_diabetes_specify');
-    
-        // Follow-up Date
-        $riskform->mngm_date_follow_up = $fields->input('follow_up_date');
-    
-        // Remarks (Text area)
-        $riskform->mngm_remarks = $fields->input('remarks');
-    
-        // Save the data
-        $riskform->save();
     }
 }

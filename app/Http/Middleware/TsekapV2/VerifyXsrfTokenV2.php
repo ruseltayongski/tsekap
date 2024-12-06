@@ -3,7 +3,6 @@
 namespace App\Http\Middleware\TsekapV2;
 
 use Closure;
-use Illuminate\Http\Request;
 
 // XSRF Token Middleware for Tsekapv2
 class VerifyXsrfTokenV2

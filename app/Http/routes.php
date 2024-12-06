@@ -464,17 +464,15 @@ Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskP
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
 
 
-// Tsekap V2 Endpoints
-use App\Http\Middleware\CorsMiddleware;
-
+// # -------- Tsekap V2 Endpoints -------- #
 // Less-protected endpoints (no XSRF token validation)
 Route::group(['middleware' => ['less-protected-api']], function () {
     // System
-    Route::get('v2/api/rev1', 'TsekapV2\SystemController@api')->middleware(CorsMiddleware::class);
+    Route::get('v2/api/rev1', 'TsekapV2\SystemController@api');
 });
 
 // Protected endpoints (with XSRF token validation)
 Route::group(['middleware' => ['api']], function () {
     // Data
-    Route::get('v2/api/rev1/riskassessment', 'TsekapV2\RiskAssessmentForm\DataController@api')->middleware(CorsMiddleware::class);
+    Route::get('v2/api/rev1/riskassessment', 'TsekapV2\RiskAssessmentForm\DataController@api');
 });
