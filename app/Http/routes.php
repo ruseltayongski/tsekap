@@ -468,7 +468,9 @@ Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
 // Less-protected endpoints (no XSRF token validation)
 Route::group(['middleware' => ['less-protected-api']], function () {
     // System
-    Route::get('v2/api/rev1', 'TsekapV2\SystemController@api');
+    Route::get('v2/api/rev1/login', 'TsekapV2\SystemController@login');
+    Route::get('v2/api/rev1/version', 'TsekapV2\SystemController@getVersion');
+    // Route::get('v2/api/rev1/version', [SystemController::class, 'getVersion']);
 });
 
 // Protected endpoints (with XSRF token validation)
