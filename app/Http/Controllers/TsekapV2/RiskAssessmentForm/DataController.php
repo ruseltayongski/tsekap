@@ -16,52 +16,33 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 { 
-    // function to call once an endpoint is invoked
-    public function api(Request $request){
-        $action = $request -> get('r');
-        // switch statement as to what is needed to be done
-        
-        switch($action){
-            case 'getMuncity':
-                return $this->getMuncity($request);
-            case 'getBarangay':
-                return $this->getBarangay($request);
-            case 'getPatientRiskFormList':
-                return $this->getPatientRiskFormList($request);
-            case 'submitPatientRiskForm':
-                return $this->submitRiskForm($request);
-            case 'sublistRiskPatient':
-                return $this->sublistRiskPatient($request);        
-        }
-    }
-
     // # ---------- AUXILIARY FUNCTIONS ----------- # //
-    
     // get municipality/city
     public function getMuncity(Request $request){
-        $provinceId = $request->get('province_id');
+        $provinceId = $request->query('province_id');
 
         $muncity = Muncity::where('province_id', $provinceId)
             ->select('id','province_id','description')
-            ->get();
+            ->query();
 
         return response()->json($muncity);
     }
 
     // get barangay
     public function getBarangay(Request $request){
-        $muncityId = $request->get('muncity_id');
+        $muncityId = $request->query('muncity_id');
 
         $barangay = Barangay::where('muncity_id',$muncityId)
             ->select('id','muncity_id','description')
-            ->get();
+            ->query();
         return response()->json($barangay);
     }
-
     // get patient risk form list
+    
+    // # ---------- END OF AUXILIARY FUNCTIONS ----------- # //
     public function getPatientRiskFormList(Request $request) {
-        $user = $request->get('user');
-        $keyword = $request->get('keyword');
+        $user = $request->query('user');
+        $keyword = $request->query('keyword');
 
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);
@@ -141,18 +122,18 @@ class DataController extends Controller
     }
 
     public function sublistRiskPatient(Request $request){
-        $user = $request->get('user');
-        $fields = $request->get('fields');
+        $user = $request->query('user');
+        $fields = $request->query('fields');
 
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);
         }
 
         $id = $fields->id;
-        $facility = Facility::select('id','name','address','hospital_type')->get();
+        $facility = Facility::select('id','name','address','hospital_type')->query();
 
-        $selectedMuncity = Muncity::select('id','description')->get();
-        $province = Province::select('id','description')->get();
+        $selectedMuncity = Muncity::select('id','description')->query();
+        $province = Province::select('id','description')->query();
 
         $provinceSelectedMun = $province->merge($selectedMuncity);
 
@@ -213,8 +194,8 @@ class DataController extends Controller
     }
 
     public function submitRiskForm(Request $request){
-        $user = $request->get('user');
-        $fields = $request->get('fields'); 
+        $user = $request->query('user');
+        $fields = $request->query('fields'); 
         
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);

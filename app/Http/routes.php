@@ -477,4 +477,9 @@ Route::group(['middleware' => ['less-protected-api']], function () {
 Route::group(['middleware' => ['api']], function () {
     // Data
     Route::get('v2/api/rev1/riskassessment', 'TsekapV2\RiskAssessmentForm\DataController@api');
+
+    // User
+    Route::get('v2/api/rev1/user/changepass', 'TsekapV2\UserController@updateUserPassword');
+    Route::get('v2/api/rev1/user/changenames', 'TsekapV2\UserController@updateUserFullName');
+    Route::get('v2/api/rev1/user/changecontact', 'TsekapV2\UserController@updateUserContact');
 });
