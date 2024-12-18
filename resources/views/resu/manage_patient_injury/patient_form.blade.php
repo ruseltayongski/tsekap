@@ -130,7 +130,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control" name="province" id="province" required>
+                                <select class="form-control chosen-select" name="province" id="province" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -139,12 +139,12 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
-                                <select class="form-control" name="municipal" id="municipal" required>
+                                <select class="form-control chosen-select" name="municipal" id="municipal" required>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control" name="barangay" id="barangay" required>
+                                <select class="form-control chosen-select" name="barangay" id="barangay" required>
                                 </select>
                             </div>
                             <div class="col-md-12">
@@ -159,8 +159,8 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control " name="provinceInjury" id="provinceId" >
-                                    <option value="">Select Province</option>
+                                <select class="form-control chosen-select"  name="provinceInjury" id="provinceId" >
+                                    <option value="" >Select Province</option>
                                     @foreach($province as $prov)
                                           <option value="{{ $prov->id }}">{{ $prov->description }}</option>
                                     @endforeach
@@ -168,12 +168,12 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
-                                <select class="form-control" name="municipal_injury" id="municipal_injury" >
+                                <select class="form-control chosen-select" name="municipal_injury" id="municipal_injury" >
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                <select class="form-control" name="barangay_injury" id="barangay_injury">
+                                <select class="form-control chosen-select" name="barangay_injury" id="barangay_injury">
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -472,7 +472,6 @@
                                     <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}"> {{$exInjury->name}}
                                 </label><br>
                                 <div class="col-md-5">
-                                
                                     <div class="checkbox">
                                         <label>
                                             <input type="radio" name="burn_type" id="burn1" value="heat" disabled>
@@ -497,7 +496,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here" disabled><br>
+                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="Specify here" disabled><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
@@ -607,7 +606,6 @@
                     <div class="col-md-2 transport-related">
                         <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
                     </div> -->
-            
                     <div class="col-md-6 transport-related"><hr class="bold-line">
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
@@ -842,6 +840,14 @@
                                             <label for="complete_final">Complete Final Diagnosis</label>
                                             <input type="text" class="form-control" id="complete_final" name="final_diagnose" id="" value="">
                                         </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: Nature of injury</label>
+                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
+                                        </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: External Cause injury</label>
+                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
+                                        </div>
                                         <div class="col-md-12"><hr>
 
                                             <label for="Disposition">Disposition:</label><br>
@@ -875,14 +881,7 @@
                                                 <input type="radio" id="died1" name="Outcome1" value="died"> Died
                                             </div>
                                         </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
-                                        </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -938,6 +937,7 @@
 <!--Validation Functions-->
 <!-- Step 1 validation -->
 <script language="javascript" type="text/javascript">
+
     const resetErrorStep1Styles = () => {
 
         document.getElementById('lname').style.borderColor = ' ';
@@ -985,7 +985,7 @@
             return str.replace(/\D/g, '');
         };
 
-       // let errorMessage = "<strong>Please review and check these fields:</strong> <br/>";
+        let errorMessage = "<strong>Please fill out all required fields:</strong> <br/>";
         let isValid = true;
 
         if (!lname) {
@@ -1020,7 +1020,7 @@
 
         if (!province) {
             document.getElementById('province').style.borderColor = 'red';
-            //errorMessage += "Province<br>";
+            errorMessage += "Province<br>";
             isValid = false;
         }
         if (!municipal) {
@@ -1034,8 +1034,7 @@
             isValid = false;
         }
         if (!provinceInjury) {
-            document.getElementById('provinceId').style.borderColor = 'red';
-           // errorMessage += "Please Enter Province <br>";
+            document.querySelector('#provinceId').style.borderColor = 'red';
             isValid = false;
         }
         if (!municipal_injury) {
@@ -1071,7 +1070,7 @@
         }
         if (!isValid) {
             document.getElementById('error-message').style.display = 'block';
-            //document.getElementById('error-message').innerHTML = errorMessage;
+            document.getElementById('error-message').innerHTML = errorMessage;
             return;  // Prevent moving to the next step if validation fails
         }
 
@@ -1183,7 +1182,6 @@
         border: none;
         outline: none;
     }
-
     .bold-line {
         border: none;            /* Remove default hr styling */
         border-top: 2px solid #000; /* Bold line with black color */
@@ -1216,6 +1214,4 @@
         25% { transform: translateX(-5px); }
         75% { transform: translateX(5px); }
     }
-   
-
 </style>
