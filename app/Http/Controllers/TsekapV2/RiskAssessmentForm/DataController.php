@@ -7,7 +7,6 @@ use Exception;
 use App\Muncity;
 use App\Facility;
 use App\Province;
-use App\Barangay;
 use App\RiskProfile;
 use App\RiskFormAssesment;
 use App\Http\Controllers\Controller;
@@ -16,33 +15,10 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 { 
-    // # ---------- AUXILIARY FUNCTIONS ----------- # //
-    // get municipality/city
-    public function getMuncity(Request $request){
-        $provinceId = $request->query('province_id');
-
-        $muncity = Muncity::where('province_id', $provinceId)
-            ->select('id','province_id','description')
-            ->query();
-
-        return response()->json($muncity);
-    }
-
-    // get barangay
-    public function getBarangay(Request $request){
-        $muncityId = $request->query('muncity_id');
-
-        $barangay = Barangay::where('muncity_id',$muncityId)
-            ->select('id','muncity_id','description')
-            ->query();
-        return response()->json($barangay);
-    }
-    // get patient risk form list
-    
     // # ---------- END OF AUXILIARY FUNCTIONS ----------- # //
-    public function getPatientRiskFormList(Request $request) {
-        $user = $request->query('user');
-        $keyword = $request->query('keyword');
+    public function retrievePatientRiskProfile(Request $request) {
+        $user = $request->input('user'); 
+        $fields = $request->input('fields'); 
 
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);
@@ -64,9 +40,13 @@ class DataController extends Controller
                 },
             ])
             ->orderby('id', 'desc');
-        
+
+        // get the values to be used from the request objects.
+        $user_priv = $user['user_priv'];
+        $keyword = $fields['keyword'];
+
         // depending on the priviledge level of the user
-        switch($user->user_priv){
+        switch($user_priv){
             // provincial view
             case 3:
                 if (!empty($keyword)) { // Search functionality
@@ -121,81 +101,76 @@ class DataController extends Controller
         return response()->json($riskprofiles, 200);
     }
 
-    public function sublistRiskPatient(Request $request){
-        $user = $request->query('user');
-        $fields = $request->query('fields');
-
-        if(!$user){
+    public function retrievePatientRiskAssessment(Request $request)
+    {
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+    
+        if (!$user) {
             return response()->json(['error' => 'No user is logged in.'], 401);
         }
-
-        $id = $fields->id;
-        $facility = Facility::select('id','name','address','hospital_type')->query();
-
-        $selectedMuncity = Muncity::select('id','description')->query();
-        $province = Province::select('id','description')->query();
-
-        $provinceSelectedMun = $province->merge($selectedMuncity);
-
-        $profile = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'suffix', 'sex',  'age',
-                                        'civil_status','religion','other_religion','contact','municipal_id', 'province_id', 
-                                         'barangay_id','street','purok','sitio','phic_id', 'pwd_id','ethnicity','other_ethnicity',
-                                         'indigenous_person','employment_status', 'facility_id_updated','created_at')
-             ->with([
-            'riskForm' => function ($query) {
-                $query->select('id','risk_profile_id','ar_chestpain','ar_diffBreath',
-                    'ar_lossOfConsciousness','ar_slurredSpeech','ar_facialAsymmetry',
-                    'ar_weaknessNumbness','ar_disoriented','ar_chestRetraction',
-                    'ar_seizureConvulsion', 'ar_actSelfHarmSuicide','ar_agitatedBehaivior',
-                    'ar_eyeInjury', 'ar_severeInjuries','ar_refer_physicianName',
-                    'ar_refer_reason','ar_refer_facility', 'pmh_hypertension',
-                    'pmh_heartDisease', 
-                    'pmh_diabetes', 
-                    'pmh_specify_diabetes',
-                    'pmh_cancer',
-                    'pmh_specify_cancer',
-                    'pmh_COPD', 
-                    'pmh_asthma',
-                    'pmh_allergies', 
-                    'pmh_specify_allergies', 
-                    'pmh_MNandSDisorder', 
-                    'pmh_specify_MNandSDisorder', 
-                    'pmh_specify_previous_Surgical',
-                    'pmh_visionProblems', 
-                    'pmh_previous_Surgical','pmh_thyroidDisorders', 'pmh_kidneyDisorders',
-                    'fm_hypertension','fm_stroke','fm_heartDisease','fm_diabetesMel',
-                    'fm_asthma','fm_cancer', 
-                    'fm_kidneyDisease', 'fm_firstDegreRelative', 
-                    'fm_havingTB5years', 
-                    'fm_MNandSDisorder', 'fm_COPD', 
-                    'rf_tobbacoUse', 'rf_alcoholIntake', 'rf_alcoholBingeDrinker', 
-                    'rf_physicalActivity','rf_nutritionDietary','rf_weight','rf_height','rf_bodyMass','rf_waistCircum',
-                    'rs_systolic_t1', 'rs_diastolic_t1',
-                    'rs_systolic_t2', 'rs_diastolic_t2',
-                    'rs_bloodSugar_fbs','rs_bloodSugar_rbs',
-                    'rs_bloodSugar_date_taken',
-                    'rs_bloodSugar_symptoms', 'rs_lipid_cholesterol',
-                    'rs_lipid_hdl',
-                    'rs_lipid_ldl',
-                    'rs_lipid_vldl',
-                    'rs_lipid_triglyceride',
-                    'rs_lipid_date_taken',
-                    'rs_urine_protein','rs_urine_protein_date_taken',
-                    'rs_urine_ketones','rs_urine_ketones_date_taken',
-                    'rs_Chronic_Respiratory_Disease', 'rs_if_yes_any_symptoms','mngm_med_hypertension','mngm_med_hypertension_specify', 'mngm_med_diabetes', 
-                    'mngm_med_diabetes_options',
-                    'mngm_med_diabetes_specify',
-                    'mngm_date_follow_up',
-                    'mngm_remarks'); 
-            }
-        ])->find($id);
-
-        return response()->json(['profile' => $profile, 'facility' => $facility, 'province' => $provinceSelectedMun], 200);
+    
+        $id = $fields['id'];
+        $muncity = $fields['muncity_id'] !== null ? $fields['muncity_id'] : null;
+        $province = $fields['province_id'] !== null ? $fields['province_id'] : null;
+    
+        // Building the query
+        $profileQuery = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'suffix', 'sex', 'age',
+                                            'civil_status', 'religion', 'other_religion', 'contact', 'municipal_id', 'province_id',
+                                            'barangay_id', 'street', 'purok', 'sitio', 'phic_id', 'pwd_id', 'ethnicity', 'other_ethnicity',
+                                            'indigenous_person', 'employment_status', 'facility_id_updated', 'created_at')
+                 ->with([
+                    'riskForm' => function ($query) {
+                        $query->select('id', 'risk_profile_id', 'ar_chestpain', 'ar_diffBreath',
+                                       'ar_lossOfConsciousness', 'ar_slurredSpeech', 'ar_facialAsymmetry',
+                                       'ar_weaknessNumbness', 'ar_disoriented', 'ar_chestRetraction',
+                                       'ar_seizureConvulsion', 'ar_actSelfHarmSuicide', 'ar_agitatedBehaivior',
+                                       'ar_eyeInjury', 'ar_severeInjuries', 'ar_refer_physicianName',
+                                       'ar_refer_reason', 'ar_refer_facility', 'pmh_hypertension',
+                                       'pmh_heartDisease', 'pmh_diabetes', 'pmh_specify_diabetes',
+                                       'pmh_cancer', 'pmh_specify_cancer', 'pmh_COPD', 'pmh_asthma',
+                                       'pmh_allergies', 'pmh_specify_allergies', 'pmh_MNandSDisorder',
+                                       'pmh_specify_MNandSDisorder', 'pmh_specify_previous_Surgical',
+                                       'pmh_visionProblems', 'pmh_previous_Surgical', 'pmh_thyroidDisorders',
+                                       'pmh_kidneyDisorders', 'fm_hypertension', 'fm_stroke', 'fm_heartDisease',
+                                       'fm_diabetesMel', 'fm_asthma', 'fm_cancer', 'fm_kidneyDisease',
+                                       'fm_firstDegreRelative', 'fm_havingTB5years', 'fm_MNandSDisorder', 'fm_COPD',
+                                       'rf_tobbacoUse', 'rf_alcoholIntake', 'rf_alcoholBingeDrinker',
+                                       'rf_physicalActivity', 'rf_nutritionDietary', 'rf_weight', 'rf_height',
+                                       'rf_bodyMass', 'rf_waistCircum', 'rs_systolic_t1', 'rs_diastolic_t1',
+                                       'rs_systolic_t2', 'rs_diastolic_t2', 'rs_bloodSugar_fbs', 'rs_bloodSugar_rbs',
+                                       'rs_bloodSugar_date_taken', 'rs_bloodSugar_symptoms', 'rs_lipid_cholesterol',
+                                       'rs_lipid_hdl', 'rs_lipid_ldl', 'rs_lipid_vldl', 'rs_lipid_triglyceride',
+                                       'rs_lipid_date_taken', 'rs_urine_protein', 'rs_urine_protein_date_taken',
+                                       'rs_urine_ketones', 'rs_urine_ketones_date_taken', 'rs_Chronic_Respiratory_Disease',
+                                       'rs_if_yes_any_symptoms', 'mngm_med_hypertension', 'mngm_med_hypertension_specify',
+                                       'mngm_med_diabetes', 'mngm_med_diabetes_options', 'mngm_med_diabetes_specify',
+                                       'mngm_date_follow_up', 'mngm_remarks');
+                    }
+                ]);
+    
+        // Applying filters based on muncity and province
+        if ($muncity) {
+            $profileQuery->where('municipal_id', $muncity);
+        }
+    
+        if ($province) {
+            $profileQuery->where('province_id', $province);
+        }
+    
+        $profile = $profileQuery->find($id);
+    
+        if (!$profile) {
+            return response()->json(['error' => 'Profile not found.'], 404);
+        }
+    
+        return response()->json(['profile' => $profile, 'province' => $province, 'municipality' => $muncity], 200);
     }
+    
 
     public function submitRiskForm(Request $request){
-        $user = $request->query('user');
-        $fields = $request->query('fields'); 
+        $user = $request->input('user');
+        $fields = $request->input('fields'); 
         
         if(!$user){
             return response()->json(['error' => 'No user is logged in.'], 401);
@@ -265,7 +240,6 @@ class DataController extends Controller
             $riskform->ar_refer_physicianName = $fields->physician_name;
             $riskform->ar_refer_reason = $fields->reason;
             $riskform->ar_refer_facility = $fields->facility;
-
 
             //PAST MEDICAL HISTORY 
             $riskform->pmh_hypertension = $fields->pm_hypertension;

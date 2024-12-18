@@ -3,6 +3,36 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 }
 
+// # -------- Tsekap V2 Endpoints -------- #
+// Less-protected endpoints (no XSRF token validation)
+Route::group(['middleware' => ['less-protected-api']], function () {
+    // System
+    Route::post('v2/api/rev1/login', 'TsekapV2\SystemController@login');
+    Route::get('v2/api/rev1/version', 'TsekapV2\SystemController@getVersion');
+    // Route::get('v2/api/rev1/version', [SystemController::class, 'getVersion']);
+});
+
+// Protected endpoints (with XSRF token validation)
+Route::group(['middleware' => ['api']], function () {
+    // Misc Data
+    Route::get('v2/api/rev1/misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
+    Route::get('v2/api/rev1/misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
+    Route::get('v2/api/rev1/misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getMuncity');
+    
+    // User Data
+    Route::post('v2/api/rev1/user/updatepass', 'TsekapV2\UserController@updateUserPassword');
+    Route::post('v2/api/rev1/user/updatename', 'TsekapV2\UserController@updateUserFullName');
+    Route::post('v2/api/rev1/user/updatecontact', 'TsekapV2\UserController@updateUserContact');
+
+        
+    // Forms
+    // ---- Risk Assessment and Profile ---- //
+    Route::get('v2/api/rev1/forms/riskassessment/getpatientriskform', 'TsekapV2\RiskAssessmentForm\DataController@getPatientRiskFormList');
+    // Route::get('v2/api/rev1/forms/riskassessment/getpatientriskform', 'TsekapV2\RiskAssessmentForm\DataController@getPatientRiskFormList');
+
+    //
+});
+
 
 Route::auth();
 Route::group(['middleware' => 'checkUserPrivilege'], function(){
@@ -462,24 +492,3 @@ Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm'
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
 Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
-
-
-// # -------- Tsekap V2 Endpoints -------- #
-// Less-protected endpoints (no XSRF token validation)
-Route::group(['middleware' => ['less-protected-api']], function () {
-    // System
-    Route::get('v2/api/rev1/login', 'TsekapV2\SystemController@login');
-    Route::get('v2/api/rev1/version', 'TsekapV2\SystemController@getVersion');
-    // Route::get('v2/api/rev1/version', [SystemController::class, 'getVersion']);
-});
-
-// Protected endpoints (with XSRF token validation)
-Route::group(['middleware' => ['api']], function () {
-    // Data
-    Route::get('v2/api/rev1/riskassessment', 'TsekapV2\RiskAssessmentForm\DataController@api');
-
-    // User
-    Route::get('v2/api/rev1/user/changepass', 'TsekapV2\UserController@updateUserPassword');
-    Route::get('v2/api/rev1/user/changenames', 'TsekapV2\UserController@updateUserFullName');
-    Route::get('v2/api/rev1/user/changecontact', 'TsekapV2\UserController@updateUserContact');
-});

@@ -12,31 +12,39 @@ class SystemController extends Controller
     // Used to login users
     public function login(Request $request)
     {
-        $username = $request->query('user');
-        $password = $request->query('pass');
-
+        // Extract username and password from query parameters
+        $username = $request->input('user');
+        $password = $request->input('pass');
+    
+        // Validate the input
+        if (!$username || !$password) {
+            return response()->json(['status' => 'error', 'message' => 'Username and password are required'], 400); // Bad request
+        }
+    
+        // Attempt to find the user by username
         $user = User::where('username', $username)->first();
-
+    
+        // Check if user exists and password is correct
         if ($user && Hash::check($password, $user->password)) {
-            // Optional: Set $userBrgy and $target as required
-            $userBrgy = 0;
-            $target = 0;
-
-            // Set the XSRF token in the cookies
-            $cookie = cookie('XSRF-TOKEN', csrf_token(), 60); // 60 minutes expiration time
-
+    
+            // Generate a CSRF token
+            $csrfToken = csrf_token();
+    
+            // Set the XSRF-TOKEN and X-CSRF-TOKEN cookies
+            $xsrfCookie = cookie('XSRF-TOKEN', $csrfToken, 60); // 60 minutes expiration time
+            $csrfCookie = cookie('X-CSRF-TOKEN', $csrfToken, 60); // 60 minutes expiration time
+    
+            // Return success response with user data and attach the CSRF token cookies
             return response()->json([
                 'data' => $user,
-                'userBrgy' => $userBrgy,
-                'muncity' => $user->muncity,
-                'target' => $target,
                 'status' => 'success'
-            ])->cookie($cookie); // Attach the cookie to the response
+            ])->cookie($xsrfCookie)->cookie($csrfCookie); // Attach both cookies to the response
         }
-
+    
+        // Return unauthorized response if credentials are invalid
         return response()->json(['status' => 'denied'], 401); // Use 401 for unauthorized
     }
-
+    
     // Get version for API documentation
     public function getVersion()
     {

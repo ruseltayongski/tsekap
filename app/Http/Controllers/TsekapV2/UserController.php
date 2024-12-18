@@ -97,6 +97,7 @@ class UserController extends Controller
     // changes the user's contact
     public function updateUserContact(Request $request)
     {
+        $fields = $request->input('fields');
         // Validate the input
         $validator = Validator::make($request->all(), [
             'username' => 'required',
@@ -108,7 +109,7 @@ class UserController extends Controller
         }
 
         // Get username
-        $username = $request->input('username');
+        $username = $fields->username;
 
         // Get contact
         $contact = $request->input('contact');
