@@ -22,9 +22,9 @@ class MiscDataController extends Controller
     public function getMuncity(Request $request){
         $provinceId = $request->query('province_id');
 
-        $muncity = Muncity::where('province_id', $provinceId)
+        $muncity = Muncity::where('province_id', '=', $provinceId)
             ->select('id','province_id','description')
-            ->query();
+            ->get();
 
         return response()->json($muncity);
     }
@@ -33,9 +33,9 @@ class MiscDataController extends Controller
     public function getBarangay(Request $request){
         $muncityId = $request->query('muncity_id');
 
-        $barangay = Barangay::where('muncity_id',$muncityId)
+        $barangay = Barangay::where('muncity_id', '=',$muncityId)
             ->select('id','muncity_id','description')
-            ->query();
+            ->get();
         return response()->json($barangay);
     }
     // get patient risk form list

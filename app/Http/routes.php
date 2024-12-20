@@ -5,16 +5,21 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 
 // # -------- Tsekap V2 Endpoints -------- #
 // Less-protected endpoints (no XSRF token validation)
+
+
+
 Route::group(['middleware' => ['less-protected-api']], function () {
+    $apiVersions = ['v2/api/rev1/'];
+    
     // System
-    Route::post('v2/api/rev1/login', 'TsekapV2\SystemController@login');
-    Route::get('v2/api/rev1/version', 'TsekapV2\SystemController@getVersion');
-    // Route::get('v2/api/rev1/version', [SystemController::class, 'getVersion']);
+    Route::post($apiVersions[0] . 'login', 'TsekapV2\SystemController@login');
+    Route::get($apiVersions[0] . 'version', 'TsekapV2\SystemController@getVersion');
 });
 
 // Protected endpoints (with XSRF token validation)
 Route::group(['middleware' => ['api']], function () {
     $apiVersions = ['v2/api/rev1/'];
+    
     // Misc Data Controllers
     Route::get($apiVersions[0] . 'misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
     Route::get($apiVersions[0] . 'misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
