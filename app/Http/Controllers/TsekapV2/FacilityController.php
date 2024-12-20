@@ -11,7 +11,7 @@ class FacilityController extends Controller
 {
     // ---- GET FUNCTIONS ----- //
     // get facilities
-    public function getFacility(Request $request)
+    public function getAllFacility(Request $request)
     {
         $province = $request->query('province');
         $municipality = $request->query('municipality');
@@ -33,6 +33,28 @@ class FacilityController extends Controller
     }
 
     // ---- POST FUNCTIONS ----- //
+
+    // get a health facility
+    public function retrieveFacilityByCode(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+
+        // do not allow access unless no user is logged in.
+        if(!$user){
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        // do not authorize update unless admin
+        if($user['user_priv'] != 1){
+            return response()->json(['error' => 'Unauthorized.'], 401);
+        }
+
+        $facility = Facility::find($fields->facility_code);
+
+        return response()->json($facility);
+    }
+
+
     // add a health facility
     public function addFacility(Request $request){
         $user = $request->input('user');
@@ -78,26 +100,6 @@ class FacilityController extends Controller
         $facility = Facility::create($fields->all());
 
         return response()->json($facility, 201);
-    }
-
-    // get a health facility
-    public function retrieveSpecificFacility(Request $request){
-        $user = $request->input('user');
-        $fields = $request->input('fields');
-
-        // do not allow access unless no user is logged in.
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
-
-        // do not authorize update unless admin
-        if($user['user_priv'] != 1){
-            return response()->json(['error' => 'Unauthorized.'], 401);
-        }
-
-        $facility = Facility::find($fields->facility_code);
-
-        return response()->json($facility);
     }
 
     // update a health facility

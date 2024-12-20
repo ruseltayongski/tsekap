@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Validator;
 
 class UserHealthFacilityController extends Controller
 {
+    // Get a user-health facility mapping
+    public function retrieveUserHealthFacility(Request $request)
+    {
+        $fields = $request->input('fields');
+
+        $userHealthFacility = UserHealthFacility::where('user_id', $fields['user_id'])
+            ->where('facility_id', $fields['facility_id'])
+            ->first();
+
+        if (!$userHealthFacility) {
+            return response()->json(['message' => 'Mapping not found'], 404);
+        } 
+
+        return response()->json($userHealthFacility);
+    }
+
     // add a user-health facility mapping
     public function addUserHealthFacility(Request $request)
     {
@@ -38,22 +54,6 @@ class UserHealthFacilityController extends Controller
         $userHealthFacility = UserHealthFacility::create($request->all());
 
         return response()->json($userHealthFacility, 201);
-    }
-
-    // Get a user-health facility mapping
-    public function retrieveUserHealthFacility(Request $request)
-    {
-        $fields = $request->input('fields');
-
-        $userHealthFacility = UserHealthFacility::where('user_id', $fields['user_id'])
-            ->where('facility_id', $fields['facility_id'])
-            ->first();
-
-        if (!$userHealthFacility) {
-            return response()->json(['message' => 'Mapping not found'], 404);
-        } 
-
-        return response()->json($userHealthFacility);
     }
 
     // update a user-health facility mapping

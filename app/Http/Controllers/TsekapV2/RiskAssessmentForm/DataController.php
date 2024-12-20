@@ -4,12 +4,10 @@ namespace App\Http\Controllers\TsekapV2\RiskAssessmentForm;
 
 use Exception;
 
-use App\Muncity;
-use App\Facility;
-use App\Province;
 use App\RiskProfile;
 use App\RiskFormAssesment;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 
@@ -167,6 +165,72 @@ class DataController extends Controller
         return response()->json(['profile' => $profile, 'province' => $province, 'municipality' => $muncity], 200);
     }
     
+    public function submitRiskProfile(Request $request)
+    {
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+    
+        if (!$user) {
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+    
+        // Define validation rules
+        $rules = [
+            'fields.profile_id' => 'nullable|integer',
+            'fields.fname' => 'required|string|max:255',
+            'fields.mname' => 'nullable|string|max:255',
+            'fields.lname' => 'required|string|max:255',
+            'fields.suffix' => 'nullable|string|max:10',
+            'fields.sex' => 'required|string|max:1',
+            'fields.dateofbirth' => 'required|date',
+            'fields.age' => 'required|integer|min:0|max:150',
+            'fields.contact' => 'required|string|max:20',
+            'fields.province_risk' => 'required|integer',
+            'fields.municipal' => 'required|integer',
+            'fields.barangay' => 'required|integer',
+            'fields.sitio' => 'nullable|string|max:255',
+            'fields.street' => 'nullable|string|max:255',
+            'fields.purok' => 'nullable|string|max:255',
+            'fields.phic_id' => 'nullable|string|max:20',
+            'fields.civil_status' => 'required|string|max:20',
+            'fields.religion' => 'required|string|max:50',
+            'fields.other_religion' => 'nullable|string|max:50',
+            'fields.pwd_id' => 'nullable|string|max:20',
+            'fields.ethnicity' => 'required|string|max:50',
+            'fields.other_ethnicity' => 'nullable|string|max:50',
+            'fields.indigenous_person' => 'required|boolean',
+            'fields.employment_status' => 'required|string|max:50',
+            'fields.facility_id_updated' => 'required|integer'
+        ];
+    
+        // Validate the request
+        $validator = Validator::make($fields, $rules);
+    
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+    
+        // Check for duplicate in the RiskProfile table
+        $existingRiskProfile = RiskProfile::where('profile_id', $fields['profile_id'])
+            ->where('fname', $fields['fname'])
+            ->where('lname', $fields['lname'])
+            ->where('mname', $fields['mname'])
+            ->where('dob', $fields['dateofbirth'])
+            ->first();
+    
+        if ($existingRiskProfile) {
+            return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
+        }
+    
+        try {
+            $riskprofile = new RiskProfile($fields);
+            $riskprofile->save();
+    
+            return response()->json(['message' => 'Entry successfully saved.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+        }
+    }
 
     public function submitRiskForm(Request $request){
         $user = $request->input('user');
@@ -176,54 +240,121 @@ class DataController extends Controller
             return response()->json(['error' => 'No user is logged in.'], 401);
         }
 
-        // Check for duplicate in the RiskProfile table
-        $existingRiskProfile = RiskProfile::where('fname', '=', $fields->fname)
-        ->where('lname', '=', $fields->lname)
-        ->where('mname', '=', $fields->mname)
-        ->where('dob', '=', $fields->dateofbirth)
-        ->first();
+        // Define validation rules
+        $rules = [
+            'fields.risk_profile_id' => 'required|integer',
+            'fields.chest_pain' => 'required|boolean',
+            'fields.difficulty_breathing' => 'required|boolean',
+            'fields.loss_of_consciousness' => 'required|boolean',
+            'fields.slurred_speech' => 'required|boolean',
+            'fields.facial_asymmetry' => 'required|boolean',
+            'fields.weakness_numbness' => 'required|boolean',
+            'fields.disoriented' => 'required|boolean',
+            'fields.chest_retractions' => 'required|boolean',
+            'fields.seizures' => 'required|boolean',
+            'fields.self_harm' => 'required|boolean',
+            'fields.agitated_behavior' => 'required|boolean',
+            'fields.eye_injury' => 'required|boolean',
+            'fields.severe_injuries' => 'required|boolean',
+            'fields.physician_name' => 'required|string|max:255',
+            'fields.reason' => 'required|string|max:255',
+            'fields.facility' => 'required|string|max:255',
+            'fields.pm_hypertension' => 'required|boolean',
+            'fields.pm_heartDisease' => 'required|boolean',
+            'fields.pm_diabetes' => 'required|boolean',
+            'fields.pm_diabetes_details' => 'nullable|string|max:255',
+            'fields.pm_cancer' => 'required|boolean',
+            'fields.pm_cancer_details' => 'nullable|string|max:255',
+            'fields.pm_COPD' => 'required|boolean',
+            'fields.pm_asthma' => 'required|boolean',
+            'fields.pm_allergies' => 'required|boolean',
+            'fields.pm_allergies_details' => 'nullable|string|max:255',
+            'fields.pm_mnsad' => 'required|boolean',
+            'fields.pm_mnsad_details' => 'nullable|string|max:255',
+            'fields.pm_vision' => 'required|boolean',
+            'fields.pm_psh' => 'required|boolean',
+            'fields.pm_psh_details' => 'nullable|string|max:255',
+            'fields.pm_thyroid' => 'required|boolean',
+            'fields.pm_kidney' => 'required|boolean',
 
-        if ($existingRiskProfile) {
-        // Redirect with an error message if a duplicate is found
-            return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
+            'fields.fm_hypertension' => 'required|boolean',
+            'fields.fm_side_hypertension' => 'required|boolean',
+            'fields.fm_stroke' => 'required|boolean',
+            'fields.fm_side_stroke' => 'required|boolean',
+            'fields.fm_heart_disease' => 'required|boolean',
+            'fields.fm_side_heart_disease' => 'required|boolean',
+            'fields.fm_diabetes' => 'required|boolean',
+            'fields.fm_side_diabetes' => 'required|boolean',
+            'fields.fm_asthma' => 'required|boolean',
+            'fields.fm_side_asthma' => 'required|boolean',
+            'fields.fm_cancer' => 'required|boolean',
+            'fields.fm_side_cancer' => 'required|boolean',
+            'fields.fm_kidney_disease' => 'required|boolean',
+            'fields.fm_side_kidney_disease' => 'required|boolean',
+            'fields.fm_degree' => 'required|boolean',
+            'fields.fm_side_coronary_disease' => 'required|boolean',
+            'fields.fm_famtb' => 'required|boolean',
+            'fields.fm_side_famtb' => 'required|boolean',
+            'fields.fm_mnsad' => 'required|boolean',
+            'fields.fm_side_mnsad' => 'required|boolean',
+            'fields.fm_copd' => 'required|boolean',
+            'fields.fm_side_copd' => 'required|boolean',
+
+            'fields.tobaccoUse' => 'required|array|min:1',
+            'fields.ncd_alcohol' => 'required|boolean',
+            'fields.ncd_alcoholBinge' => 'required|boolean',
+            'fields.ncd_physical' => 'required|boolean',
+            'fields.ncd_nutrition' => 'required|boolean',
+            'fields.rf_weight' => 'required|numeric',
+            'fields.rf_height' => 'required|numeric',
+            'fields.rf_BMI' => 'required|numeric',
+            'fields.rf_waist' => 'required|numeric',
+            'fields.dm_symptoms' => 'required|array|min:1',
+            'fields.systolic_t1' => 'required|numeric',
+            'fields.diastolic_t1' => 'required|numeric',
+            'fields.systolic_t2' => 'required|numeric',
+            'fields.diastolic_t2' => 'required|numeric',
+            'fields.fbs_result' => 'required|numeric',
+            'fields.rbs_result' => 'required|numeric',
+            'fields.bloodSugar_date_taken' => 'required|date',
+            'fields.lipid_cholesterol' => 'required|numeric',
+            'fields.lipid_hdl' => 'required|numeric',
+            'fields.lipid_ldl' => 'required|numeric',
+            'fields.lipid_vldl' => 'required|numeric',
+            'fields.lipid_triglyceride' => 'required|numeric',
+            'fields.lipid_date_taken' => 'required|date',
+            'fields.uri_protein' => 'required|numeric',
+            'fields.uri_protein_date_taken' => 'required|date',
+            'fields.uri_ketones' => 'required|numeric',
+            'fields.uri_ketones_date_taken' => 'required|date',
+            'fields.symptom_breathlessness' => 'required|boolean',
+            'fields.symptom_sputum_production' => 'required|boolean',
+            'fields.symptom_chronic_cough' => 'required|boolean',
+            'fields.symptom_chest_tightness' => 'required|boolean',
+            'fields.symptom_wheezing' => 'required|boolean',
+            'fields.pefr_above_20_percent' => 'required|boolean',
+            'fields.pefr_below_20_percent' => 'required|boolean',
+            'fields.anti_hypertensives' => 'required|string|max:255',
+            'fields.anti_hypertensives_specify' => 'nullable|string|max:255',
+            'fields.anti_diabetes' => 'required|string|max:255',
+            'fields.anti_diabetes_type' => 'nullable|string|max:255',
+            'fields.anti_diabetes_specify' => 'nullable|string|max:255',
+            'fields.follow_up_date' => 'required|date',
+            'fields.remarks' => 'nullable|string|max:1000'
+        ];
+
+        $validator = Validator::make($fields, $rules);
+        
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
         try{
-            $riskprofile = new RiskProfile();
 
-            // Assign all the necessary values
-            $riskprofile->profile_id = $fields->profile_id? $fields->profile_id : null;
-            $riskprofile->fname = $fields->fname;
-            $riskprofile->mname = $fields->mname? $fields->mname : null;
-            $riskprofile->lname = $fields->lname;
-            $riskprofile->suffix = $fields->suffix? $fields->suffix : null;
-            $riskprofile->sex = $fields->sex;
-            $riskprofile->dob = $fields->dateofbirth;
-            $riskprofile->age = $fields->age;
-            $riskprofile->contact = $fields->contact;
-            $riskprofile->province_id = $fields->province_risk;
-            $riskprofile->municipal_id = $fields->municipal;
-            $riskprofile->barangay_id = $fields->barangay;
-            $riskprofile->sitio = $fields->sitio? $fields->sitio : null;
-            $riskprofile->street = $fields->street? $fields->street : null;
-            $riskprofile->purok = $fields->purok? $fields->purok : null;
-            $riskprofile->phic_id = $fields->phic_id? $fields->phic_id : null; // Ensure you use the correct field name here
-            $riskprofile->civil_status = $fields->civil_status;
-            $riskprofile->religion = $fields->religion;
-            $riskprofile->other_religion = $fields->other_religion ? $fields -> other_religion : null;
-            $riskprofile->pwd_id = $fields->pwd_id? $fields->pwd_id : null;
-            $riskprofile->ethnicity = $fields->ethnicity;
-            $riskprofile->other_ethnicity = $fields -> other_ethnicity ? $fields -> other_ethnicity : null;
-            $riskprofile->indigenous_person = $fields->indigenous_person;
-            $riskprofile->employment_status = $fields->employment_status;
-            $riskprofile->facility_id_updated = $fields->facility_id_updated; // Ensure this is not null
-        
-            // Save the profile
-            $riskprofile->save();
             $riskform = new RiskFormAssesment();
 
             // Health assessment checkbox fields
-            $riskform->risk_profile_id = $riskprofile->id;
+            $riskform->risk_profile_id = $fields->risk_profile_id;
             $riskform->ar_chestpain = $fields->chest_pain;
             $riskform->ar_diffBreath = $fields->difficulty_breathing;
             $riskform->ar_lossOfConsciousness = $fields->loss_of_consciousness;
@@ -262,16 +393,26 @@ class DataController extends Controller
             
             //FAMILY HISTORY
             $riskform->fm_hypertension = $fields->fm_hypertension;
+            $riskform->fm_side_hypertension = $fields->fm_side_hypertension;
             $riskform->fm_stroke = $fields->fm_stroke;
-            $riskform->fm_heartDisease = $fields->fm_heart;
+            $riskform->fm_side_stroke = $fields->fm_side_stroke;
+            $riskform->fm_heartDisease = $fields->fm_heart_disease;
+            $riskform->fm_side_heartDisease = $fields->fm_side_heart_disease;
             $riskform->fm_diabetesMel = $fields->fm_diabetes;
+            $riskform->fm_side_diabetes = $fields->fm_side_diabetes;
             $riskform->fm_asthma = $fields->fm_asthma;
+            $riskform->fm_side_asthma = $fields->fm_side_asthma;
             $riskform->fm_cancer = $fields->fm_cancer;
+            $riskform->fm_sideCancer = $fields->fm_side_cancer;
             $riskform->fm_kidneyDisease = $fields->fm_kidney;
+            $riskform->fm_sideKidneyDisease = $fields->fm_side_kidney_disease;
             $riskform->fm_firstDegreRelative = $fields->fm_degree;
+            $riskform->fm_sideCoronaryDisease = $fields->fm_side_coronary_disease;
             $riskform->fm_havingTB5years = $fields->fm_famtb;
+            $riskform->fm_sideTuberculosis = $fields->fm_side_famtb;
             $riskform->fm_MNandSDisorder = $fields->fm_mnsad;
-            $riskform->fm_COPD = $fields->fm_cop;
+            $riskform->fm_sideDisorders = $fields->fm_side_mnsad;
+            $riskform->fm_COPD = $fields->fm_copd;
 
             // NCD RISK FACTORS 
             $tobaccoUsed = $fields->tobaccoUse; 
@@ -288,7 +429,6 @@ class DataController extends Controller
 
             //RISK SCREENING
             // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
-
             $dmSymptoms = $fields->dm_symptoms;
 
             $riskform->rs_systolic_t1 = $fields->systolic_t1;
@@ -362,6 +502,272 @@ class DataController extends Controller
             $riskform->save();
             return response()->json(['message' => 'Entry successfully saved.'], 200);
         }catch(Exception $e){
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+        }
+    }
+
+    // update risk profile
+    public function updateRiskProfile(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+
+        if (!$user) {
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        // Define validation rules
+        $rules = [
+            'fields.profile_id' => 'required|integer',
+            'fields.fname' => 'required|string|max:255',
+            'fields.mname' => 'nullable|string|max:255',
+            'fields.lname' => 'required|string|max:255',
+            'fields.suffix' => 'nullable|string|max:10',
+            'fields.sex' => 'required|string|max:1',
+            'fields.dateofbirth' => 'required|date',
+            'fields.age' => 'required|integer|min:0|max:150',
+            'fields.contact' => 'required|string|max:20',
+            'fields.province_risk' => 'required|integer',
+            'fields.municipal' => 'required|integer',
+            'fields.barangay' => 'required|integer',
+            'fields.sitio' => 'nullable|string|max:255',
+            'fields.street' => 'nullable|string|max:255',
+            'fields.purok' => 'nullable|string|max:255',
+            'fields.phic_id' => 'nullable|string|max:20',
+            'fields.civil_status' => 'required|string|max:20',
+            'fields.religion' => 'required|string|max:50',
+            'fields.other_religion' => 'nullable|string|max:50',
+            'fields.pwd_id' => 'nullable|string|max:20',
+            'fields.ethnicity' => 'required|string|max:50',
+            'fields.other_ethnicity' => 'nullable|string|max:50',
+            'fields.indigenous_person' => 'required|boolean',
+            'fields.employment_status' => 'required|string|max:50',
+            'fields.facility_id_updated' => 'required|integer'
+        ];
+
+        // Validate the request
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // Find the existing RiskProfile
+        $riskprofile = RiskProfile::find($fields['profile_id']);
+
+        if (!$riskprofile) {
+            return response()->json(['error' => 'Profile not found.'], 404);
+        }
+
+        try {
+            // Update the RiskProfile with new data
+            $riskprofile->update($fields);
+
+            return response()->json(['message' => 'Profile successfully updated.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+        }
+    }
+
+    // update risk form
+    public function updateRiskForm(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+
+        if (!$user) {
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        // Define validation rules
+        $rules = [
+            'fields.risk_profile_id' => 'required|integer',
+            'fields.chest_pain' => 'required|boolean',
+            'fields.difficulty_breathing' => 'required|boolean',
+            'fields.loss_of_consciousness' => 'required|boolean',
+            'fields.slurred_speech' => 'required|boolean',
+            'fields.facial_asymmetry' => 'required|boolean',
+            'fields.weakness_numbness' => 'required|boolean',
+            'fields.disoriented' => 'required|boolean',
+            'fields.chest_retractions' => 'required|boolean',
+            'fields.seizures' => 'required|boolean',
+            'fields.self_harm' => 'required|boolean',
+            'fields.agitated_behavior' => 'required|boolean',
+            'fields.eye_injury' => 'required|boolean',
+            'fields.severe_injuries' => 'required|boolean',
+            'fields.physician_name' => 'required|string|max:255',
+            'fields.reason' => 'required|string|max:255',
+            'fields.facility' => 'required|string|max:255',
+            'fields.pm_hypertension' => 'required|boolean',
+            'fields.pm_heartDisease' => 'required|boolean',
+            'fields.pm_diabetes' => 'required|boolean',
+            'fields.pm_diabetes_details' => 'nullable|string|max:255',
+            'fields.pm_cancer' => 'required|boolean',
+            'fields.pm_cancer_details' => 'nullable|string|max:255',
+            'fields.pm_COPD' => 'required|boolean',
+            'fields.pm_asthma' => 'required|boolean',
+            'fields.pm_allergies' => 'required|boolean',
+            'fields.pm_allergies_details' => 'nullable|string|max:255',
+            'fields.pm_mnsad' => 'required|boolean',
+            'fields.pm_mnsad_details' => 'nullable|string|max:255',
+            'fields.pm_vision' => 'required|boolean',
+            'fields.pm_psh' => 'required|boolean',
+            'fields.pm_psh_details' => 'nullable|string|max:255',
+            'fields.pm_thyroid' => 'required|boolean',
+            'fields.pm_kidney' => 'required|boolean',
+
+            'fields.fm_hypertension' => 'required|boolean',
+            'fields.fm_side_hypertension' => 'required|boolean',
+            'fields.fm_stroke' => 'required|boolean',
+            'fields.fm_side_stroke' => 'required|boolean',
+            'fields.fm_heart_disease' => 'required|boolean',
+            'fields.fm_side_heart_disease' => 'required|boolean',
+            'fields.fm_diabetes' => 'required|boolean',
+            'fields.fm_side_diabetes' => 'required|boolean',
+            'fields.fm_asthma' => 'required|boolean',
+            'fields.fm_side_asthma' => 'required|boolean',
+            'fields.fm_cancer' => 'required|boolean',
+            'fields.fm_side_cancer' => 'required|boolean',
+            'fields.fm_kidney_disease' => 'required|boolean',
+            'fields.fm_side_kidney_disease' => 'required|boolean',
+            'fields.fm_degree' => 'required|boolean',
+            'fields.fm_side_coronary_disease' => 'required|boolean',
+            'fields.fm_famtb' => 'required|boolean',
+            'fields.fm_side_famtb' => 'required|boolean',
+            'fields.fm_mnsad' => 'required|boolean',
+            'fields.fm_side_mnsad' => 'required|boolean',
+            'fields.fm_copd' => 'required|boolean',
+            'fields.fm_side_copd' => 'required|boolean',
+
+            'fields.tobaccoUse' => 'required|array|min:1',
+            'fields.ncd_alcohol' => 'required|boolean',
+            'fields.ncd_alcoholBinge' => 'required|boolean',
+            'fields.ncd_physical' => 'required|boolean',
+            'fields.ncd_nutrition' => 'required|boolean',
+            'fields.rf_weight' => 'required|numeric',
+            'fields.rf_height' => 'required|numeric',
+            'fields.rf_BMI' => 'required|numeric',
+            'fields.rf_waist' => 'required|numeric',
+            'fields.dm_symptoms' => 'required|array|min:1',
+            'fields.systolic_t1' => 'required|numeric',
+            'fields.diastolic_t1' => 'required|numeric',
+            'fields.systolic_t2' => 'required|numeric',
+            'fields.diastolic_t2' => 'required|numeric',
+            'fields.fbs_result' => 'required|numeric',
+            'fields.rbs_result' => 'required|numeric',
+            'fields.bloodSugar_date_taken' => 'required|date',
+            'fields.lipid_cholesterol' => 'required|numeric',
+            'fields.lipid_hdl' => 'required|numeric',
+            'fields.lipid_ldl' => 'required|numeric',
+            'fields.lipid_vldl' => 'required|numeric',
+            'fields.lipid_triglyceride' => 'required|numeric',
+            'fields.lipid_date_taken' => 'required|date',
+            'fields.uri_protein' => 'required|numeric',
+            'fields.uri_protein_date_taken' => 'required|date',
+            'fields.uri_ketones' => 'required|numeric',
+            'fields.uri_ketones_date_taken' => 'required|date',
+            'fields.symptom_breathlessness' => 'required|boolean',
+            'fields.symptom_sputum_production' => 'required|boolean',
+            'fields.symptom_chronic_cough' => 'required|boolean',
+            'fields.symptom_chest_tightness' => 'required|boolean',
+            'fields.symptom_wheezing' => 'required|boolean',
+            'fields.pefr_above_20_percent' => 'required|boolean',
+            'fields.pefr_below_20_percent' => 'required|boolean',
+            'fields.anti_hypertensives' => 'required|string|max:255',
+            'fields.anti_hypertensives_specify' => 'nullable|string|max:255',
+            'fields.anti_diabetes' => 'required|string|max:255',
+            'fields.anti_diabetes_type' => 'nullable|string|max:255',
+            'fields.anti_diabetes_specify' => 'nullable|string|max:255',
+            'fields.follow_up_date' => 'required|date',
+            'fields.remarks' => 'nullable|string|max:1000'
+        ];
+
+        // Validate the request
+        $validator = Validator::make($fields, $rules);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        // Find the existing RiskFormAssesment
+        $riskform = RiskFormAssesment::where('risk_profile_id', $fields['risk_profile_id'])->first();
+
+        if (!$riskform) {
+            return response()->json(['error' => 'Risk form not found.'], 404);
+        }
+
+        try {
+            // Update the RiskFormAssesment with new data
+            $riskform->update($fields);
+
+            return response()->json(['message' => 'Risk form successfully updated.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+        }
+    }
+
+    // delete risk profile
+    public function deleteRiskProfile(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+
+        $riskProfileId = $fields->risk_profile_id;
+
+        if (!$user) {
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        if($user['user_priv'] != 1){
+            return response()->json(['error' => 'Unauthorized.'], 401);
+        }
+
+        if (!$riskProfileId) {
+            return response()->json(['error' => 'Profile ID is required.'], 400);
+        }
+
+        try {
+            $riskProfile = RiskProfile::find($riskProfileId);
+
+            if (!$riskProfile) {
+                return response()->json(['error' => 'Risk profile not found.'], 404);
+            }
+
+            $riskProfile->delete();
+
+            return response()->json(['message' => 'Risk profile successfully deleted.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+        }
+    }
+
+    // delete risk form
+    public function deleteRiskForm(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+
+        $riskProfileId = $fields->risk_profile_id;
+
+        if (!$user) {
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        if($user['user_priv'] != 1){
+            return response()->json(['error' => 'Unauthorized.'], 401);
+        }
+
+        if (!$riskProfileId) {
+            return response()->json(['error' => 'Risk profile ID is required.'], 400);
+        }
+
+        try {
+            $riskForm = RiskFormAssesment::where('risk_profile_id', $riskProfileId)->first();
+
+            if (!$riskForm) {
+                return response()->json(['error' => 'Risk form not found.'], 404);
+            }
+
+            $riskForm->delete();
+
+            return response()->json(['message' => 'Risk form successfully deleted.'], 200);
+        } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
         }
     }

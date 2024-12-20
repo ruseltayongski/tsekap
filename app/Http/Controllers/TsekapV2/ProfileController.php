@@ -15,6 +15,43 @@ class ProfileController extends Controller
         return $fname . $mname . $lname . $barangay_id . $muncity_id;
     }
 
+    // get profiles
+    public function retrieveProfile(Request $request){
+        $user = $request->input('user');
+        $fields = $request->input('fields');
+        
+        if(!$user){
+            return response()->json(['error' => 'No user is logged in.'], 401);
+        }
+
+        $firstName = $fields->firstname;
+        $middleName = $fields->middlename;
+        $lastName = $fields->lastname;
+        $dob = $request->dob;
+   
+        $profile = Profile::select('unique_id','fname','mname','lname','dob','id');
+
+        // check individually
+        if($firstName){
+            $profile = $profile->where('fname','like',"%$firstName%");
+        }
+        if($middleName){
+            $profile = $profile->where('mname','like',"%$middleName%");
+        }
+        if($lastName){
+            $profile = $profile->where('lname','like',"%$lastName%");
+        }
+        if($dob){
+            $profile = $profile->where('dob',"%$dob%");
+        }
+        
+        $profiles = $profile->orderBy('lname', 'asc')
+        ->limit(25)
+        ->get();
+
+        return response()->json($profiles);
+    }
+
     // add profile
     public function addProfile(Request $request){
         // Validation rules
@@ -91,25 +128,6 @@ class ProfileController extends Controller
         return response()->json(['message' => 'Profile added successfully', 'profile' => $profile], 201);
     }
     
-    // delete profile
-    public function deleteProfile(Request $request){
-        $user = $request->input('user');
-        $fields = $request->input('fields');
-        
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
-
-        // do not authorize deletion unless admin
-        if($user->user_priv != 1){
-            return response()->json(['error' => 'Unauthorized.'], 401);
-        }
-
-        $profile = Profile::find($fields->id);
-        $profile->delete(); 
-        return response()->json(['message' => 'Deleted profile.'], 200);
-    }
-
     // update profile
     public function updateProfile(Request $request){
         $user = $request->input('user');
@@ -189,10 +207,10 @@ class ProfileController extends Controller
         $profile->update($request->all());
 
         return response()->json(['message' => 'Profile updated successfully', 'profile' => $profile], 200);
-    }
-
-    // get profiles
-    public function retrieveProfile(Request $request){
+    } 
+    
+    // delete profile
+    public function deleteProfile(Request $request){
         $user = $request->input('user');
         $fields = $request->input('fields');
         
@@ -200,31 +218,13 @@ class ProfileController extends Controller
             return response()->json(['error' => 'No user is logged in.'], 401);
         }
 
-        $firstName = $fields->firstname;
-        $middleName = $fields->middlename;
-        $lastName = $fields->lastname;
-        $dob = $request->dob;
-   
-        $profile = Profile::select('unique_id','fname','mname','lname','dob','id');
+        // do not authorize deletion unless admin
+        if($user->user_priv != 1){
+            return response()->json(['error' => 'Unauthorized.'], 401);
+        }
 
-        // check individually
-        if($firstName){
-            $profile = $profile->where('fname','like',"%$firstName%");
-        }
-        if($middleName){
-            $profile = $profile->where('mname','like',"%$middleName%");
-        }
-        if($lastName){
-            $profile = $profile->where('lname','like',"%$lastName%");
-        }
-        if($dob){
-            $profile = $profile->where('dob',"%$dob%");
-        }
-        
-        $profiles = $profile->orderBy('lname', 'asc')
-        ->limit(25)
-        ->get();
-
-        return response()->json($profiles);
-    }
+        $profile = Profile::find($fields->id);
+        $profile->delete(); 
+        return response()->json(['message' => 'Deleted profile.'], 200);
+    } 
 }
