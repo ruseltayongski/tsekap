@@ -48,8 +48,8 @@ Route::group(['middleware' => ['api']], function () {
     // ---- Risk Assessment and Profile ---- //
     Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskassessment', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskAssessment');
     Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfile');
-    Route::post($apiVersions[0] . 'forms/riskassessment/submitriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@submitRiskProfile');
-    Route::post($apiVersions[0] . 'forms/riskassessment/submitriskform', 'TsekapV2\RiskAssessmentForm\DataController@submitRiskForm');
+    Route::post($apiVersions[0] . 'forms/riskassessment/addriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@addRiskProfile');
+    Route::post($apiVersions[0] . 'forms/riskassessment/addriskform', 'TsekapV2\RiskAssessmentForm\DataController@addRiskForm');
     Route::post($apiVersions[0] . 'forms/riskassessment/updateriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@updateRiskProfile');
     Route::post($apiVersions[0] . 'forms/riskassessment/updateriskform', 'TsekapV2\RiskAssessmentForm\DataController@updateRiskForm');
     Route::post($apiVersions[0] . 'forms/riskassessment/deleteriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@deleteRiskProfile');
