@@ -6,43 +6,51 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     // changes the user's password
     public function updateUserPassword(Request $request)
-    {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'currentPassword' => 'required',
-            'newPassword' => 'required|min:5',
-            'username' => 'required',
-        ]);
+    {        
+        $fields = $request->input('fields');
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $currentPassword = $request->input('currentPassword');
-        $newPassword = $request->input('newPassword');
-        $username = $request->input('username');
+        // Validate the input
+        $fieldsValidator = Validator::make($fields, [
+            'username' => 'required|string',
+            'currentPassword' => 'required|string',
+            'newPassword' => 'required|string|min:8' 
+        ]);
+
+        if ($fieldsValidator->fails()) {
+            return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
+        }
+
+        $currentPassword = $fields['currentPassword'];
+        $newPassword = $fields['newPassword'];
+        $username = $fields['username'];
 
         // Fetch the user based on the provided username
-        $user = User::where('username', '=', $username)->first();
+        $queryUser = User::where('username', $username)->first();
 
-        if (!$user) {
+        if (!$queryUser) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
         // Verify that the current password matches the user's existing password
-        if (!Hash::check($currentPassword, $user->password)) {
+        if (!Hash::check($currentPassword, $queryUser->password)) {
             return response()->json(['error' => 'Current password is incorrect'], 400);
         }
 
         // Update the user's password with the new password
-        $user->password = Hash::make($newPassword);
-        $user->save();
+        $queryUser->password = Hash::make($newPassword);
+        $queryUser->save();
 
         // Return a success response
         return response()->json(['message' => 'Password changed successfully'], 200);
@@ -51,81 +59,87 @@ class UserController extends Controller
     // changes/updates any of the ff. user's name (fname, mname, lname)
     public function updateUserFullName(Request $request)
     {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-        ]);
+        $fields = $request->input('fields');
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // Get username 
-        $username = $request->input('username');
+        // Validate the input
+        $fieldsValidator = Validator::make($fields, [
+            'username' => 'required|string',
+            'fname' => 'string|max:255',
+            'mname' => 'string|max:255',
+            'lname' => 'string|max:255',
+        ]);
 
-        // Get names
-        $firstName = $request->input('firstName');
-        $middleName = $request->input('middleName');
-        $lastName = $request->input('lastName');
+        if ($fieldsValidator->fails()) {
+            return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
+        }
+
+        $username = $fields['username'];
 
         // Fetch the user based on the provided username
-        $user = User::where('username', '=', $username)->first();
+        $queryUser = User::where('username', $username)->first();
 
-        if (!$user) {
+        if (!$queryUser) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
         // Update the user's full name if the fields are not blank
-        if (!is_null($firstName) && trim($firstName) !== '') {
-            $user->fname = $firstName;
+        if (isset($fields['fname'])) {
+            $queryUser->fname = $fields['fname'];
         }
-        if (!is_null($middleName) && trim($middleName) !== '') {
-            $user->mname = $middleName;
+        if (isset($fields['mname'])) {
+            $queryUser->mname = $fields['mname'];
         }
-        if (!is_null($lastName) && trim($lastName) !== '') {
-            $user->lname = $lastName;
+        if (isset($fields['lname'])) {
+            $queryUser->lname = $fields['lname'];
         }
 
         // Save the changes
-        $user->save();
+        $queryUser->save();
 
         // Return a success response
         return response()->json(['message' => 'Names updated successfully'], 200);
     }
 
-
     // changes the user's contact
     public function updateUserContact(Request $request)
     {
         $fields = $request->input('fields');
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'contact' => 'required|min:11|max:11'
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // Get username
-        $username = $fields->username;
+        $fieldsValidator = Validator::make($fields, [
+            'username' => 'required|string',
+            'contact' => 'required|string|min:11|max:11'
+        ]);
 
-        // Get contact
-        $contact = $request->input('contact');
+        if ($fieldsValidator->fails()) {
+            return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
+        }
+
+        // Get username and contact from the fields
+        $username = $fields['username'];
+        $contact = $fields['contact'];
 
         // Fetch the user based on the provided username
-        $user = User::where('username', '=', $username)->first();
+        $queryUser = User::where('username', $username)->first();
 
-        if (!$user) {
+        if (!$queryUser) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
-        // Update the user's full name if the fields are not blank
-        $user->contact = $contact;
+        // Update the user's contact
+        $queryUser->contact = $contact;
 
         // Save the changes
-        $user->save();
+        $queryUser->save();
 
         // Return a success response
         return response()->json(['message' => 'Contact updated successfully'], 200);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\UserHealthFacility;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserHealthFacilityController extends Controller
 {
@@ -13,6 +14,21 @@ class UserHealthFacilityController extends Controller
     public function retrieveUserHealthFacility(Request $request)
     {
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $validator = Validator::make($fields->all(), [
+            'user_id' => 'required|integer',
+            'facility_id' => 'required|integer',
+            'user_designation' => 'nullable|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
 
         $userHealthFacility = UserHealthFacility::where('user_id', $fields['user_id'])
             ->where('facility_id', $fields['facility_id'])
@@ -28,8 +44,12 @@ class UserHealthFacilityController extends Controller
     // add a user-health facility mapping
     public function addUserHealthFacility(Request $request)
     {
-        $user = $request->input('user');
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
 
         $validator = Validator::make($fields->all(), [
             'user_id' => 'required|integer',
@@ -42,7 +62,7 @@ class UserHealthFacilityController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $existingMapping = UserHealthFacility::where('user_id', $user['user_id'])
+        $existingMapping = UserHealthFacility::where('user_id', $fields['user_id'])
             ->where('facility_id', $fields['facility_id'])
             ->first();
 
@@ -59,13 +79,15 @@ class UserHealthFacilityController extends Controller
     // update a user-health facility mapping
     public function updateUserHealthFacility(Request $request)
     {
-        $user = $request->input('user');
         $fields = $request->input('fields');
-        
-        // do not allow access unless no user is logged in.
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        // get user
+        $user = Auth::user();
 
         // do not authorize update unless admin
         if ($user['user_priv'] != 1) {
@@ -109,12 +131,18 @@ class UserHealthFacilityController extends Controller
         return response()->json($userHealthFacility);
     }
     
-
     // delete a user-health facility mapping
     public function deleteUserHealthFacility(Request $request)
     {
-        $user = $request->input('user');
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();
 
         // Do not authorize update unless admin
         if ($user['user_priv'] != 1) {

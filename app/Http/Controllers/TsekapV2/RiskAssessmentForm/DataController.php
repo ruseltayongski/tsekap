@@ -8,6 +8,7 @@ use App\RiskProfile;
 use App\RiskFormAssesment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -15,12 +16,15 @@ class DataController extends Controller
 { 
     // # ---------- END OF AUXILIARY FUNCTIONS ----------- # //
     public function retrievePatientRiskProfile(Request $request) {
-        $user = $request->input('user'); 
         $fields = $request->input('fields'); 
 
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();
 
         $query = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'sex', 'civil_status', 'barangay_id', 'municipal_id', 'province_id', 'facility_id_updated', 'created_at')
             ->with([
@@ -101,13 +105,13 @@ class DataController extends Controller
 
     public function retrievePatientRiskAssessment(Request $request)
     {
-        $user = $request->input('user');
         $fields = $request->input('fields');
-    
-        if (!$user) {
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
-    
+        
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
         $id = $fields['id'];
         $muncity = $fields['muncity_id'] !== null ? $fields['muncity_id'] : null;
         $province = $fields['province_id'] !== null ? $fields['province_id'] : null;
@@ -167,13 +171,13 @@ class DataController extends Controller
     
     public function submitRiskProfile(Request $request)
     {
-        $user = $request->input('user');
         $fields = $request->input('fields');
     
-        if (!$user) {
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
-    
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
         // Define validation rules
         $rules = [
             'fields.profile_id' => 'nullable|integer',
@@ -233,12 +237,13 @@ class DataController extends Controller
     }
 
     public function submitRiskForm(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields'); 
         
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
 
         // Define validation rules
         $rules = [
@@ -508,11 +513,11 @@ class DataController extends Controller
 
     // update risk profile
     public function updateRiskProfile(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
 
-        if (!$user) {
-            return response()->json(['error' => 'No user is logged in.'], 401);
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         // Define validation rules
@@ -570,12 +575,12 @@ class DataController extends Controller
 
     // update risk form
     public function updateRiskForm(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
 
-        if (!$user) {
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
 
         // Define validation rules
         $rules = [
@@ -706,14 +711,21 @@ class DataController extends Controller
 
     // delete risk profile
     public function deleteRiskProfile(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
 
         $riskProfileId = $fields->risk_profile_id;
 
-        if (!$user) {
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+
+        // get user
+        $user = Auth::user();
+
+        if (!$riskProfileId) {
+            return response()->json(['error' => 'Profile ID is required.'], 400);
+        }               
 
         if($user['user_priv'] != 1){
             return response()->json(['error' => 'Unauthorized.'], 401);
@@ -740,10 +752,17 @@ class DataController extends Controller
 
     // delete risk form
     public function deleteRiskForm(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
 
         $riskProfileId = $fields->risk_profile_id;
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();
 
         if (!$user) {
             return response()->json(['error' => 'No user is logged in.'], 401);

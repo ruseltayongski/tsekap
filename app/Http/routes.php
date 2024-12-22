@@ -6,12 +6,12 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 // # -------- Tsekap V2 Endpoints -------- #
 // Less-protected endpoints (no XSRF token validation)
 
-
-
+// -- all with CORS --- //
 Route::group(['middleware' => ['less-protected-api']], function () {
     $apiVersions = ['v2/api/rev1/'];
     
     // System
+    Route::post($apiVersions[0] . 'logout', 'TsekapV2\SystemController@logout');
     Route::post($apiVersions[0] . 'login', 'TsekapV2\SystemController@login');
     Route::get($apiVersions[0] . 'version', 'TsekapV2\SystemController@getVersion');
 });
@@ -26,6 +26,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
 
     // User Data Controllers
+    Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
     Route::post($apiVersions[0] . 'user/updatepass', 'TsekapV2\UserController@updateUserPassword');
     Route::post($apiVersions[0] . 'user/updatename', 'TsekapV2\UserController@updateUserFullName');
     Route::post($apiVersions[0] . 'user/updatecontact', 'TsekapV2\UserController@updateUserContact');

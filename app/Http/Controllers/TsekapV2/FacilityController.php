@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Facility;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class FacilityController extends Controller
 {
@@ -13,6 +14,11 @@ class FacilityController extends Controller
     // get facilities
     public function getAllFacility(Request $request)
     {
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        
         $province = $request->query('province');
         $municipality = $request->query('municipality');
     
@@ -36,8 +42,15 @@ class FacilityController extends Controller
 
     // get a health facility
     public function retrieveFacilityByCode(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();
 
         // do not allow access unless no user is logged in.
         if(!$user){
@@ -57,14 +70,16 @@ class FacilityController extends Controller
 
     // add a health facility
     public function addFacility(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
 
-        // do not allow access unless no user is logged in.
-        if(!$user){
-            return response()->json(['error' => 'No user is logged in.'], 401);
-        }
-
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();       
+ 
         // do not authorize update unless admin
         if ($user['user_priv'] != 1) {
             return response()->json(['error' => 'Unauthorized.'], 401);
@@ -104,8 +119,15 @@ class FacilityController extends Controller
 
     // update a health facility
     public function updateFacility(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();       
 
         // do not allow access unless no user is logged in.
         if(!$user){
@@ -157,8 +179,15 @@ class FacilityController extends Controller
 
     // delete a health facility
     public function deleteFacility(Request $request){
-        $user = $request->input('user');
         $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }        
+       
+        // get user
+        $user = Auth::user();
 
         // do not allow access unless no user is logged in.
         if(!$user){
@@ -176,7 +205,7 @@ class FacilityController extends Controller
             return response()->json(['message' => 'Facility not found'], 404);
         }
 
-
+        // delete facility
         $facility->delete();
 
         return response()->json(['message' => 'Facility deleted']);

@@ -66,8 +66,7 @@ class Kernel extends HttpKernel
         'checkUserPrivilege' => \App\Http\Middleware\ResUserPrivilege::class, // I add this for not access resu
 
         // TsekapV2
-        // 'verifyCsrfToken' => \App\Http\Middleware\VerifyCsrfToken::class,
         'verifyXsrfToken' => \App\Http\Middleware\TsekapV2\VerifyXsrfTokenV2::class,
-        'corsMiddleware' => \App\Http\Middleware\CorsMiddleware::class
+        'corsMiddleware' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
