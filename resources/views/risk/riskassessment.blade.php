@@ -449,7 +449,7 @@
                                         <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetes_yes" name="pmh_diabetes" value="Yes"> Yes
                                         <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetes_no" name="pmh_diabetes" value="No" style="margin-left: flex"> No
                                         <br/>
-                                        <textarea class="col-md-12" id="diabetes_details_input" style="display:none;" name="pmh_diabetes_details" placeholder="Please provide"></textarea>
+                                        <textarea class="col-md-12" id="diabetesDetailsInput" style="display:none;" name="pmh_diabetes_details" placeholder="Please provide"></textarea>
                                
                                     </td>
                                 </tr>
@@ -486,7 +486,7 @@
                                         <input type="checkbox" class="allergiesCheckbox" id="pmh_allergies_yes" name="pmh_allergies" value="Yes"> Yes
                                         <input type="checkbox" class="allergiesCheckbox" id="pmh_allergies_no" name="pmh_allergies" value="No" style="margin-left: flex"> No
                                         <br/>
-                                        <textarea class="col-md-12" id="allergies_details_input" style="display:none;" name="pmh_allergies_details" placeholder="Please provide"></textarea>
+                                        <textarea class="col-md-12" id="allergiesDetailsInput" style="display:none;" name="pmh_allergies_details" placeholder="Please provide"></textarea>
                                     </td>
                                    
                                 </tr>
@@ -496,7 +496,7 @@
                                         <input type="checkbox" class="mnsCheckbox" id="pmh_mns_yes" name ="pmh_mnsad" value="Yes"> Yes
                                         <input type="checkbox" class="mnsCheckbox" id="pmh_mns_no"  name ="pmh_mnsad" value="No" style="margin-left: flex"> No
                                         <br/>
-                                        <textarea class="col-md-12" id="mns_details_input" style="display:none;" name="pmh_mnsad_details" placeholder="Please provide"></textarea>
+                                        <textarea class="col-md-12" id="mnsDetailsInput" style="display:none;" name="pmh_mnsad_details" placeholder="Please provide"></textarea>
                                     </td>
                                    
                                 </tr>
@@ -514,7 +514,7 @@
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pmh_surgical_history_yes" name= "pmh_psh"value="Yes"> Yes
                                         <input type="checkbox" class="surgicalhistoryCheckbox" id="pmh_surgical_history_no" name= "pmh_psh" value="No" style="margin-left: flex"> No
                                         <br/>
-                                        <textarea class="col-md-12" id="surgical_details_input" style="display:none;" name="pmh_psh_details" placeholder="Please provide"></textarea>
+                                        <textarea class="col-md-12" id="surgicalDetailsInput" style="display:none;" name="pmh_psh_details" placeholder="Please provide"></textarea>
                                    
                                     </td>
                                     
@@ -577,48 +577,48 @@
                                 <tr>
                                     <td>4.4 Diabetes Mellitus</td>
                                     <td>
-                                        <input type="checkbox" class="diabetesmelCheckbox" id="fmh_diabetes_mel_yes" name="fmh_diabetes_mellitus" value="Yes"> Yes
-                                        <input type="checkbox" class="diabetemelCheckbox" id="fmh_diabetes_mel_no" name="fmh_diabetes_mellitus" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="diabetesMelCheckbox" id="fmh_diabetes_mel_yes" name="fmh_diabetes_mellitus" value="Yes"> Yes
+                                        <input type="checkbox" class="diabetesMelCheckbox" id="fmh_diabetes_mel_no" name="fmh_diabetes_mellitus" value="No" style="margin-left: flex"> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.5 Asthma</td>
                                     <td>
-                                        <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthma_yes" name="fmh_asthma" value="Yes"> Yes
-                                        <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthma_no" name="fmh_asthma" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="asthmasCheckbox" id="fmh_asthma_yes" name="fmh_asthma" value="Yes"> Yes
+                                        <input type="checkbox" class="asthmasCheckbox" id="fmh_asthma_no" name="fmh_asthma" value="No" style="margin-left: flex"> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                 <td>4.6 Cancer</td>
                                     <td>
-                                        <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_yes" name="fmh_cancer" value="Yes"> Yes
-                                        <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_no" name="fmh_cancer" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_yes" name="fmh_cancer" value="Yes"> Yes
+                                        <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_no" name="fmh_cancer" value="No" style="margin-left: flex"> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td> 4.7 Kidney Disease </td>
                                     <td>
-                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_disease_yes" name="fmh_kidney" value="Yes"> Yes
-                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_disease_no" name="fmh_kidney" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="kidneyDiseaseCheckbox" id="fmh_kidney_disease_yes" name="fmh_kidney" value="Yes"> Yes
+                                        <input type="checkbox" class="kidneyDiseaseCheckbox" id="fmh_kidney_disease_no" name="fmh_kidney" value="No" style="margin-left: flex"> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.8 1st Degree relative with premature coronary <br> disease or vascular disease <br> (includes "Heart Attack")</td>
                                     <td>
-                                        <input type="checkbox" class="degreerelativeCheckbox" id="fmh_degree_relative_yes" name="fmh_first_degree" value="Yes"> Yes
-                                        <input type="checkbox" class="degreerelativeCheckbox" id="fmh_degree_relative_no" name="fmh_first_degree" value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="firstDegreeRelativeCheckbox" id="fmh_degree_relative_yes" name="fmh_first_degree" value="Yes"> Yes
+                                        <input type="checkbox" class="firstDegreeRelativeCheckbox" id="fmh_degree_relative_no" name="fmh_first_degree" value="No" style="margin-left: flex"> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>4.9 Family having TB in the last 5 years </td>
                                     <td>
-                                        <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_yes" name="fmh_famtb"  value="Yes"> Yes
-                                        <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_no" name="fmh_famtb"  value="No" style="margin-left: flex"> No
+                                        <input type="checkbox" class="familyTbCheckbox" id="fmh_family_tb_yes" name="fmh_famtb"  value="Yes"> Yes
+                                        <input type="checkbox" class="familyTbCheckbox" id="fmh_family_tb_no" name="fmh_famtb"  value="No" style="margin-left: flex"> No
                                     </td>
                                    
                                 </tr>
@@ -665,7 +665,7 @@
                                 </tr>
                             </thead>
                             <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;"> 
-                                   <tr>     
+                                <tr>     
                                     <td><span id="tobacco-use-label">5.1 Tobacco Use</span></td>
                                     <td>
                                         <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
@@ -676,25 +676,26 @@
                                             If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
                                         </p>
                                     </td>
+                                </tr>
                                 <tr>
                                     <td><span id="alcohol-intake-label">5.2 Alcohol Intake</span></td>
-                                <td>
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcohol_never" name="ncd_alcohol" value="No"> Never Consumed 
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcohol_yes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
+                                        <td>
+                                            <input type="checkbox" class="alcoholCheckbox" id="alcohol_never" name="ncd_alcohol" value="No"> Never Consumed 
+                                            <input type="checkbox" class="alcoholCheckbox" id="alcohol_yes" name="ncd_alcohol" value="Yes"> Yes, drinks alcohol
                                     
-                                    <br><br>
-                                    <label id="bingeLabel" style="opacity: 0.5;">
-                                        <input type="checkbox" class="alcoholCheckbox" id="alcohol_binge" name="ncd_alcohol_binge" value="Yes">
-                                        Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
-                                    </label>
-                                    <br><br>
+                                        <br><br>
+                                        <label id="bingeLabel" style="opacity: 0.5;">
+                                            <input type="checkbox" class="alcoholCheckbox" id="alcohol_binge" name="ncd_alcohol_binge" value="Yes">
+                                            Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
+                                        </label>
+                                        <br><br>
 
-                                    <p style="font-style: italic; font-size: 15px;">
+                                        <p style="font-style: italic; font-size: 15px;">
                                         If NO, congratulate the patient. The patient is at a lower risk of drinking alcohol.<br>
                                         If YES, proceed using AUDIT SCREENING TOOL (Form 2) to assess alcohol consumption and alcohol problems. 
                                         If binge drinker, provide brief advice and/or extended brief advice. The patient is on the higher risk category level of drinking or in harmful use of alcohol.
-                                    </p>
-                                </td>
+                                        </p>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><span id="physical-activity-label">5.3 Physical Activity</span></td>
@@ -1239,7 +1240,6 @@
     // Initialize checkbox toggling for each condition
     document.addEventListener('DOMContentLoaded', () => {
         // Toggle checkboxes for all conditions
-
         //past medical history
         toggleCheckbox('pmh_hypertension_yes', 'pmh_hypertension_no');
         toggleCheckbox('pmh_heart_disease_yes', 'pmh_heartdiseaseNo');
@@ -1283,76 +1283,81 @@
                 additionalInputs.style.display = anyChecked ? 'block' : 'none';
             });
         });
+    });
 
-        const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+    const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
 
-        tobaccoCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
-                tobaccoCheckboxCount = checkedCheckboxes.length;
-                if (checkedCheckboxes.length >= 2) {
-                    // Disable all unchecked checkboxes if two are checked
-                    tobaccoCheckboxes.forEach(cb => {
-                        if (!cb.checked) {
-                            cb.disabled = true;
-                        }
-                    });
-                } else {
-                    // Re-enable all checkboxes if fewer than two are checked
-                    tobaccoCheckboxes.forEach(cb => cb.disabled = false);
-                }
-            });
-        });
-
-        const alcoholYes = document.getElementById('alcohol_yes');
-        const alcoholNo = document.getElementById('alcohol_never');
-        const bingeLabel = document.getElementById('bingeLabel');
-
-        // Check initial state
-        bingeLabel.style.opacity = alcohol_yes.checked ? '1' : '0.5';
-
-        // Event listener to toggle opacity
-        alcoholYes.addEventListener('change', function() {
-            if (alcoholYes.checked) {
-                bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
+    tobaccoCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
+            tobaccoCheckboxCount = checkedCheckboxes.length;
+            if (checkedCheckboxes.length >= 2) {
+                // Disable all unchecked checkboxes if two are checked
+                tobaccoCheckboxes.forEach(cb => {
+                    if (!cb.checked) {
+                        cb.disabled = true;
+                    }
+                });
             } else {
-                bingeLabel.style.opacity = '0.5';  // Translucent when unchecked
-                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+                // Re-enable all checkboxes if fewer than two are checked
+                tobaccoCheckboxes.forEach(cb => cb.disabled = false);
             }
         });
-        // Event listener for "No" option to toggle opacity and uncheck binge question
-        alcoholNo.addEventListener('change', function() {
-            if (alcoholNo.checked) {
-                bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
-                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
-            }
-        });
+    });
 
-        document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const neverUsed = document.getElementById('q1'); // Option 1
-                const secondhandExposure = document.getElementById('q2'); // Option 2
-                const formerUser = document.getElementById('q3'); // Option 3
-                const currentUser = document.getElementById('q4'); // Option 4
+    const alcoholYes = document.getElementById('alcohol_yes');
+    const alcoholNo = document.getElementById('alcohol_never');
+    const bingeLabel = document.getElementById('bingeLabel');
 
-                if (this.checked) {
-                    // If "Never Used" is selected, uncheck "Former User" and "Current User"
-                    if (this === neverUsed) {
-                        formerUser.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Former User" is selected, uncheck "Never Used" and "Current User"
-                    else if (this === formerUser) {
-                        neverUsed.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Current User" is selected, uncheck "Never Used" and "Former User"
-                    else if (this === currentUser) {
-                        neverUsed.checked = false;
-                        formerUser.checked = false;
-                    }
+    // Check initial state
+    bingeLabel.style.opacity = alcoholYes.checked ? '1' : '0.5';
+
+    // Event listener to toggle opacity
+    alcoholYes.addEventListener('change', function() {
+        if (alcoholYes.checked) {
+            bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
+            alcoholNo.checked = false; // Uncheck "Never Consumed"
+            alcoholNo.disabled = true; // Disable "Never Consumed"
+        } else {
+            bingeLabel.style.opacity = '0.5';  // Translucent when unchecked
+            document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+            alcoholNo.disabled = false; // Enable "Never Consumed"
+        }
+    });
+
+    // Event listener for "No" option to toggle opacity and uncheck binge question
+    alcoholNo.addEventListener('change', function() {
+        if (alcoholNo.checked) {
+            bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
+            document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+        }
+    });
+
+    
+    document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const neverUsed = document.getElementById('q1'); // Option 1
+            const secondhandExposure = document.getElementById('q2'); // Option 2
+            const formerUser = document.getElementById('q3'); // Option 3
+            const currentUser = document.getElementById('q4'); // Option 4
+
+            if (this.checked) {
+                // If "Never Used" is selected, uncheck "Former User" and "Current User"
+                if (this === neverUsed) {
+                    formerUser.checked = false;
+                    currentUser.checked = false;
                 }
-            });
+                // If "Former User" is selected, uncheck "Never Used" and "Current User"
+                else if (this === formerUser) {
+                    neverUsed.checked = false;
+                    currentUser.checked = false;
+                }
+                // If "Current User" is selected, uncheck "Never Used" and "Former User"
+                else if (this === currentUser) {
+                    neverUsed.checked = false;
+                    formerUser.checked = false;
+                }
+            }
         });
     });
 
@@ -1380,10 +1385,10 @@
         // Handle multiple checkboxes and their corresponding input fields
         const conditions = [
             { checkboxId: 'pmh_cancer_yes', detailsInputId: 'cancerDetailsInput' },
-            { checkboxId: 'pmh_allergies_yes', detailsInputId: 'allergies_details_input' },
-            { checkboxId: 'pmh_mns_yes', detailsInputId: 'mns_details_input' },
-            { checkboxId: 'pmh_diabetes_yes', detailsInputId: 'diabetes_details_input' },
-            { checkboxId: 'pmh_surgical_history_yes', detailsInputId: 'surgical_details_input' }
+            { checkboxId: 'pmh_allergies_yes', detailsInputId: 'allergiesDetailsInput' },
+            { checkboxId: 'pmh_mns_yes', detailsInputId: 'mnsDetailsInput' },
+            { checkboxId: 'pmh_diabetes_yes', detailsInputId: 'diabetesDetailsInput' },
+            { checkboxId: 'pmh_surgical_history_yes', detailsInputId: 'surgicalDetailsInput' }
         ];
 
         conditions.forEach(condition => {
@@ -1506,7 +1511,7 @@
         // Age validation
         if (Number(extractNumbers(age)) < 18) {
             document.getElementById('age').style.borderColor = 'red';
-            errorMessage += "<strong>Patient is not eligible for this form.</strong><i> (Under 20)</i><br>";
+            errorMessage += "<strong>Patient is not eligible for this form.</strong><i> (Under 18)</i><br>";
             isValid = false;
         }
 
