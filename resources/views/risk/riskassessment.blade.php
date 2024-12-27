@@ -152,7 +152,7 @@
                             <div class="row"></div>
                             <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control" name="province" id="province" required>
+                                <select class="form-control" name="province" id="province_risk" required>
                                     <option value="">Select Province</option>
                                     @foreach($province as $prov)
                                     <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -684,7 +684,7 @@
                                     
                                     <br><br>
                                     <label id="bingeLabel" style="opacity: 0.5;">
-                                        <input type="checkbox" class="alcoholCheckbox" id="alcohol_binge" name="ncd_alcohol_binge" value="Yes">
+                                        <input type="checkbox" class="alcoholCheckbox" id="alcohol_binge" name="ncd_alcohol_binge" value="Yes" >
                                         Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
                                     </label>
                                     <br><br>
@@ -1283,76 +1283,63 @@
                 additionalInputs.style.display = anyChecked ? 'block' : 'none';
             });
         });
+    });
 
-        const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+    const alcoholYes = document.getElementById('alcohol_yes');
+    const alcoholNo = document.getElementById('alcohol_never');
+    const bingeLabel = document.getElementById('bingeLabel');
 
-        tobaccoCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
-                tobaccoCheckboxCount = checkedCheckboxes.length;
-                if (checkedCheckboxes.length >= 2) {
-                    // Disable all unchecked checkboxes if two are checked
-                    tobaccoCheckboxes.forEach(cb => {
-                        if (!cb.checked) {
-                            cb.disabled = true;
-                        }
-                    });
-                } else {
-                    // Re-enable all checkboxes if fewer than two are checked
-                    tobaccoCheckboxes.forEach(cb => cb.disabled = false);
+    // Check initial state
+    bingeLabel.style.opacity = alcohol_yes.checked ? '1' : '0.5';
+
+    // Event listener to toggle opacity
+    alcoholYes.addEventListener('change', function() {
+        if (alcoholYes.checked) {
+            bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
+            document.getElementById('alcohol_never').checked = false;
+            document.getElementById('alcohol_binge').disabled = false;
+        }
+    });
+    // Event listener for "No" option to toggle opacity and uncheck binge question
+    alcoholNo.addEventListener('change', function() {
+        if (alcoholNo.checked) {
+            bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
+            document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+            document.getElementById('alcohol_yes').checked = false; // Uncheck binge question
+            document.getElementById('alcohol_binge').disabled = true;
+        }
+    });
+
+    document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const neverUsed = document.getElementById('q1'); // Option 1
+            const secondhandExposure = document.getElementById('q2'); // Option 2
+            const formerUser = document.getElementById('q3'); // Option 3
+            const currentUser = document.getElementById('q4'); // Option 4
+
+            if (this.checked) {
+                // If "Never Used" is selected, uncheck "Former User" and "Current User"
+                if (this === neverUsed) {
+                    formerUser.checked = false;
+                    formerUser.dispatchEvent(new Event('change')); // Trigger change
+                    currentUser.checked = false;
+                    currentUser.dispatchEvent(new Event('change')); // Trigger change
                 }
-            });
-        });
-
-        const alcoholYes = document.getElementById('alcohol_yes');
-        const alcoholNo = document.getElementById('alcohol_never');
-        const bingeLabel = document.getElementById('bingeLabel');
-
-        // Check initial state
-        bingeLabel.style.opacity = alcohol_yes.checked ? '1' : '0.5';
-
-        // Event listener to toggle opacity
-        alcoholYes.addEventListener('change', function() {
-            if (alcoholYes.checked) {
-                bingeLabel.style.opacity = '1';  // Full opacity when "Yes, drinks alcohol" is checked
-            } else {
-                bingeLabel.style.opacity = '0.5';  // Translucent when unchecked
-                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
-            }
-        });
-        // Event listener for "No" option to toggle opacity and uncheck binge question
-        alcoholNo.addEventListener('change', function() {
-            if (alcoholNo.checked) {
-                bingeLabel.style.opacity = '0.5';  // Translucent when "No" is checked
-                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
-            }
-        });
-
-        document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const neverUsed = document.getElementById('q1'); // Option 1
-                const secondhandExposure = document.getElementById('q2'); // Option 2
-                const formerUser = document.getElementById('q3'); // Option 3
-                const currentUser = document.getElementById('q4'); // Option 4
-
-                if (this.checked) {
-                    // If "Never Used" is selected, uncheck "Former User" and "Current User"
-                    if (this === neverUsed) {
-                        formerUser.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Former User" is selected, uncheck "Never Used" and "Current User"
-                    else if (this === formerUser) {
-                        neverUsed.checked = false;
-                        currentUser.checked = false;
-                    }
-                    // If "Current User" is selected, uncheck "Never Used" and "Former User"
-                    else if (this === currentUser) {
-                        neverUsed.checked = false;
-                        formerUser.checked = false;
-                    }
+                // If "Former User" is selected, uncheck "Never Used" and "Current User"
+                else if (this === formerUser) {
+                    neverUsed.checked = false;
+                    neverUsed.dispatchEvent(new Event('change')); // Trigger change
+                    currentUser.checked = false;
+                    currentUser.dispatchEvent(new Event('change')); // Trigger change
                 }
-            });
+                // If "Current User" is selected, uncheck "Never Used" and "Former User"
+                else if (this === currentUser) {
+                    neverUsed.checked = false;
+                    neverUsed.dispatchEvent(new Event('change')); // Trigger change
+                    formerUser.checked = false;
+                    formerUser.dispatchEvent(new Event('change')); // Trigger change
+                }
+            }
         });
     });
 
