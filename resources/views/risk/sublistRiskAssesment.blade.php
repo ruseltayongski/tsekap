@@ -316,43 +316,43 @@
                                 <tr>
                                     <td>2.1 Chest Pain</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="chpYes" name="chest_pain" {{ $profile->riskForm->ar_chestpain == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="chpNo" name="chest_pain" {{ $profile->riskForm->ar_chestpain == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="chpYes" name="chest_pain" {{ $profile->riskForm->ar_chest_pain == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="chpNo" name="chest_pain" {{ $profile->riskForm->ar_chest_pain == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.2 Difficulty of Breathing</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="dfbYes" name="difficulty_breathing" {{ $profile->riskForm->ar_diffBreath == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="dfbNo" name="difficulty_breathing" {{ $profile->riskForm->ar_diffBreath == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="dfbYes" name="difficulty_breathing" {{ $profile->riskForm->ar_difficulty_breathing == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="dfbNo" name="difficulty_breathing" {{ $profile->riskForm->ar_difficulty_breathing == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.3 Loss of Consciousness</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="lossConYes"  name="loss_of_consciousness" {{ $profile->riskForm->ar_lossOfConsciousness == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="lossConNo"  name="loss_of_consciousness" {{ $profile->riskForm->ar_lossOfConsciousness == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="lossConYes"  name="loss_of_consciousness" {{ $profile->riskForm->ar_loss_of_consciousness == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="lossConNo"  name="loss_of_consciousness" {{ $profile->riskForm->ar_loss_of_consciousness == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.4 Slurred Speech</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="slurredYes" name ="slurred_speech" {{ $profile->riskForm->ar_slurredSpeech == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="slurredNo" name ="slurred_speech" {{ $profile->riskForm->ar_slurredSpeech == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="slurredYes" name ="slurred_speech" {{ $profile->riskForm->ar_slurred_speech == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="slurredNo" name ="slurred_speech" {{ $profile->riskForm->ar_slurred_speech == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.5 Facial Asymmetry</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="facialYes" name= "facial_asymmetry" {{ $profile->riskForm->ar_facialAsymmetry == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="facialNo" name= "facial_asymmetry" {{ $profile->riskForm->ar_facialAsymmetry == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="facialYes" name= "facial_asymmetry" {{ $profile->riskForm->ar_facial_asymmetry == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="facialNo" name= "facial_asymmetry" {{ $profile->riskForm->ar_facial_asymmetry == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                 <td>2.6 Weakness/Numbness on arm <br> of the left on one side of the body</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="weaknumbYes" name="weakness_numbness" {{ $profile->riskForm->ar_weaknessNumbness == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="weaknumbNo" name="weakness_numbness" {{ $profile->riskForm->ar_weaknessNumbness == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbYes" name="weakness_numbness" {{ $profile->riskForm->ar_weakness_numbness == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="weaknumbNo" name="weakness_numbness" {{ $profile->riskForm->ar_weakness_numbness == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
@@ -365,43 +365,43 @@
                                 <tr>
                                     <td>2.8 Chest Retractions</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="chestRetractYes"  name="chest_retractions" {{ $profile->riskForm->ar_chestRetraction == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="chestRetractNo" name="chest_retractions" {{ $profile->riskForm->ar_chestRetraction == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractYes"  name="chest_retractions" {{ $profile->riskForm->ar_chest_retractions == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="chestRetractNo" name="chest_retractions" {{ $profile->riskForm->ar_chest_retractions == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.9 Seizure or Convulsion</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="seizureYes" name="seizures" {{ $profile->riskForm->ar_seizureConvulsion == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="seizuredNo" name="seizures" {{ $profile->riskForm->ar_seizureConvulsion == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="seizureYes" name="seizures" {{ $profile->riskForm->ar_seizure_convulsion == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="seizuredNo" name="seizures" {{ $profile->riskForm->ar_seizure_convulsion == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.10 Act of self-harm or suicide</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="selfharmYes" name="self_harm" {{ $profile->riskForm->ar_actSelfHarmSuicide == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="selfharmNo" name="self_harm" {{ $profile->riskForm->ar_actSelfHarmSuicide == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="selfmharmYes" name="self_harm" {{ $profile->riskForm->ar_act_self_harm_suicide == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="selfmharmNo" name="self_harm" {{ $profile->riskForm->ar_act_self_harm_suicide == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.11 Agitated and/or aggressive behavior</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="agitatedYes" name="agitated_behavior" {{ $profile->riskForm->ar_agitatedBehaivior == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="agitatedNo" name="agitated_behavior" {{ $profile->riskForm->ar_agitatedBehaivior == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedYes" name="agitated_behavior" {{ $profile->riskForm->ar_agitated_behavior == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="agitatedNo" name="agitated_behavior" {{ $profile->riskForm->ar_agitated_behavior == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.12 Eye Injury/ Foreign Body on the eye</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes" name="eye_injury" {{ $profile->riskForm->ar_eyeInjury == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo" name="eye_injury" {{ $profile->riskForm->ar_eyeInjury == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes" name="eye_injury" {{ $profile->riskForm->ar_eye_injury == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo" name="eye_injury" {{ $profile->riskForm->ar_eye_injury == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>2.13 Severe Injuries</td>
                                     <td>
-                                        <input type="checkbox" class="healthCheckbox" id="severeYes" {{ $profile->riskForm->ar_severeInjuries == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="healthCheckbox" id="severeNo" {{ $profile->riskForm->ar_severeInjuries == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="healthCheckbox" id="severeYes" {{ $profile->riskForm->ar_severe_injuries == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="healthCheckbox" id="severeNo" {{ $profile->riskForm->ar_severe_injuries == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     </tr>
                             </tbody>
@@ -411,7 +411,7 @@
                 <div class="additional-inputs">
                         <div class="col-md-4">
                             <label for="physicianName">Physician Name:</label>
-                            <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name" value="{{ $profile->riskForm->ar_refer_physicianName ?? '' }}" readonly>
+                            <input type="text" class="form-control" id="physicianName" name="physician_name" placeholder="Enter physician name" value="{{ $profile->riskForm->ar_refer_physician_name ?? '' }}" readonly>
                         </div>
                         <div class="col-md-4">
                             <label for="reason">Reason:</label>
@@ -458,34 +458,34 @@
                                    <tr>
                                         <td>3.1 Hypertension</td>
                                         <td>
-                                            <input type="checkbox" class="hypertensionCheckbox" id="pm_hypertensionYes" name="pm_hypertension" {{ $profile->riskForm->pmh_hypertension == 'Yes' ? 'checked' : '' }}> Yes
-                                            <input type="checkbox" class="hypertensionCheckbox" id="pm_hypertensionNo" name="pm_hypertension" {{ $profile->riskForm->pmh_hypertension == 'No' ? 'checked' : '' }}> No
+                                            <input type="checkbox" class="hypertensionCheckbox" id="pmh_hypertensionYes" name="pmh_hypertension" {{ $profile->riskForm->pmh_hypertension == 'Yes' ? 'checked' : '' }}> Yes
+                                            <input type="checkbox" class="hypertensionCheckbox" id="pmh_hypertensionNo" name="pmh_hypertension" {{ $profile->riskForm->pmh_hypertension == 'No' ? 'checked' : '' }}> No
                                         </td>
                                     </tr>
                                 <tr>
                                     <td>3.2 Heart Disease</td>
                                     <td>
-                                        <input type="checkbox" class="heartdiseaseCheckbox" id="pm_heartsdiseaseYes" name="pm_heartDisease" {{ $profile->riskForm->pmh_heartDisease == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="heartdiseaseCheckbox" id="pm_heartdiseaseNo" name="pm_heartDisease" {{ $profile->riskForm->pmh_heartDisease == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="heartdiseaseCheckbox" id="pmh_heartsdiseaseYes" name="pmh_heart_disease" {{ $profile->riskForm->pmh_heart_disease == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="heartdiseaseCheckbox" id="pmh_heartdiseaseNo" name="pmh_heart_disease" {{ $profile->riskForm->pmh_heart_disease == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3.3 Diabetes</td>
                                     <td>
-                                        <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesYes" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="diabetesCheckbox" id="pm_diabetesNo" name="pm_diabetes" {{ $profile->riskForm->pmh_diabetes == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetesYes" name="pmh_diabetes" {{ $profile->riskForm->pmh_diabetes == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetesNo" name="pmh_diabetes" {{ $profile->riskForm->pmh_diabetes == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pm_diabetes_details"  placeholder="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly disabled></textarea>
+                                        <textarea class="col-md-12" id="diabetesDetailsInput"  name="pmh_diabetes_details"  placeholder="{{ $profile->riskForm->pmh_specify_diabetes ?? '' }}" readonly disabled></textarea>
                                
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>3.4 Cancer</td>
                                     <td>
-                                        <input type="checkbox" class="cancerCheckbox" id="pm_cancerYes" name= "pm_cancer"{{ $profile->riskForm->pmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="cancerCheckbox" id="pm_cancerNo"  name= "pm_cancer" {{ $profile->riskForm->pmh_cancer == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="cancerCheckbox" id="pmh_cancerYes" name= "pmh_cancer"{{ $profile->riskForm->pmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="cancerCheckbox" id="pmh_cancerNo"  name= "pmh_cancer" {{ $profile->riskForm->pmh_cancer == 'No' ? 'checked' : '' }}> No
                                        <br/>    
-                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pm_cancer_details"  placeholder="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly disabled></textarea>
+                                         <textarea class="col-md-12" id="cancerDetailsInput" name="pmh_cancer_details"  placeholder="{{ $profile->riskForm->pmh_specify_cancer ?? '' }}" readonly disabled></textarea>
                                     </td>
                                 </tr>
                             </tr>
@@ -493,54 +493,54 @@
                                 <tr>
                                     <td>3.5 COPD</td>
                                     <td>
-                                        <input type="checkbox" class="codCheckbox" id="pm_codYes" name="pm_COPD" {{ $profile->riskForm->pmh_COPD == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="codCheckbox" id="pm_codNo" name="pm_COPD"{{ $profile->riskForm->pmh_COPD == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="codCheckbox" id="pmh_codYes" name="pmh_COPD" {{ $profile->riskForm->pmh_copd == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="codCheckbox" id="pmh_codNo" name="pmh_COPD"{{ $profile->riskForm->pmh_copd == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                 <td>3.6 Asthma</td>
                                     <td>
-                                        <input type="checkbox" class="asthmaCheckbox" id="pm_asthmaYes" name="pm_asthma" {{ $profile->riskForm->pmh_asthma == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="asthmaCheckbox" id="pm_asthmaNo" name="pm_asthma" {{ $profile->riskForm->pmh_asthma == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="asthmaCheckbox" id="pmh_asthmaYes" name="pmh_asthma" {{ $profile->riskForm->pmh_asthma == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="asthmaCheckbox" id="pmh_asthmaNo" name="pmh_asthma" {{ $profile->riskForm->pmh_asthma == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td> 3.7 Allergies</td>
                                     <td>
-                                        <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesYes" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="allergiesCheckbox" id="pm_allergiesNo" name="pm_allergies" {{ $profile->riskForm->pmh_allergies == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="allergiesCheckbox" id="pmh_allergiesYes" name="pmh_allergies" {{ $profile->riskForm->pmh_allergies == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="allergiesCheckbox" id="pmh_allergiesNo" name="pmh_allergies" {{ $profile->riskForm->pmh_allergies == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pm_allergies_details"  placeholder="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly disabled></textarea>
+                                        <textarea class="col-md-12" id="allergiesDetailsInput"  name="pmh_allergies_details"  placeholder="{{ $profile->riskForm->pmh_specify_allergies ?? '' }}" readonly disabled></textarea>
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>3.8 Mental, Neurological, and Substance-Abuse Disorder</td>
                                     <td>
-                                        <input type="checkbox" class="mnsCheckbox" id="pm_mnsYes" name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="mnsCheckbox" id="pm_mnsNo"  name ="pm_mnsad" {{ $profile->riskForm->pmh_MNandSDisorder == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="mnsCheckbox" id="pmh_mnsYes" name ="pmh_mnsad" {{ $profile->riskForm->pmh_mn_and_s_disorder == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="mnsCheckbox" id="pmh_mnsNo"  name ="pmh_mnsad" {{ $profile->riskForm->pmh_mn_and_s_disorder == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pm_mnsad_details"  placeholder="{{ $profile->riskForm->pmh_specify_MNandSDisorder ?? '' }}" readonly disabled></textarea>
+                                        <textarea class="col-md-12" id="mnsDetailsInput" name="pmh_mnsad_details"  placeholder="{{ $profile->riskForm->pmh_specify_mn_and_s_disorder ?? '' }}" readonly disabled></textarea>
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>3.9 Vision Problems</td>
                                     <td>
-                                        <input type="checkbox" class="visionCheckbox" id="pm_visionYes" name= "pm_vision" {{ $profile->riskForm->pmh_visionProblems == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="visionCheckbox" id="pm_visionNo"  name= "pm_vision" {{ $profile->riskForm->pmh_visionProblems == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="visionCheckbox" id="pmh_visionYes" name= "pmh_vision" {{ $profile->riskForm->pmh_vision_problems == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="visionCheckbox" id="pmh_visionNo"  name= "pmh_vision" {{ $profile->riskForm->pmh_vision_problems == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>3.10 Previous Surgical History</td>
                                     <td>
-                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryYes" {{ $profile->riskForm->pmh_previous_Surgical == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="pm_surgicalhistoryNo" {{ $profile->riskForm->pmh_previous_Surgical == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="pmh_surgicalhistoryYes" {{ $profile->riskForm->pmh_previous_surgical == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="surgicalhistoryCheckbox" id="pmh_surgicalhistoryNo" {{ $profile->riskForm->pmh_previous_surgical == 'No' ? 'checked' : '' }}> No
                                         <br/>
-                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pm_psh_details" placeholder="{{ $profile->riskForm->pmh_specify_previous_Surgical ?? '' }}" readonly disabled></textarea>
+                                        <textarea class="col-md-12" id="surgicalDetailsInput" name="pmh_psh_details" placeholder="{{ $profile->riskForm->pmh_specify_previous_surgical ?? '' }}" readonly disabled></textarea>
                                    
                                     </td>
                                     
@@ -548,16 +548,16 @@
                                 <tr>
                                     <td>3.11 Thyroid Disorders</td>
                                     <td>
-                                        <input type="checkbox" class="thyroidCheckbox" id="pm_thyroidYes" {{ $profile->riskForm->pmh_thyroidDisorders == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="thyroidCheckbox" id="pm_thyroidNo" {{ $profile->riskForm->pmh_thyroidDisorders == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroidYes" {{ $profile->riskForm->pmh_thyroid_disorders == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroidNo" {{ $profile->riskForm->pmh_thyroid_disorders == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>3.12 Kidney Disorders</td>
                                     <td>
-                                        <input type="checkbox" class="kidneyCheckbox" id="pm_kidneyYes" name="pm_kidney" {{ $profile->riskForm->pmh_kidneyDisorders == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="kidneyCheckbox" id="pm_kidneyNo" name="pm_kidney" {{ $profile->riskForm->pmh_kidneyDisorders == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="kidneyCheckbox" id="pmh_kidneyYes" name="pmh_kidney" {{ $profile->riskForm->pmh_kidney_disorders == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="kidneyCheckbox" id="pmh_kidneyNo" name="pmh_kidney" {{ $profile->riskForm->pmh_kidney_disorders == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                             </tbody>
@@ -582,87 +582,87 @@
                                    <tr>
                                         <td>4.1 Hypertension</td>
                                         <td>
-                                            <input type="checkbox" class="hyperCheckbox" id="fh_hyperYes" name="fm_hypertension" {{ $profile->riskForm->fm_hypertension == 'Yes' ? 'checked' : '' }}> Yes
-                                            <input type="checkbox" class="hyperCheckbox" id="fh_hyperNo"  name="fm_hypertension" {{ $profile->riskForm->fm_hypertension == 'No' ? 'checked' : '' }}> No
+                                            <input type="checkbox" class="hyperCheckbox" id="fmh_hyperYes" name="fmh_hypertension" {{ $profile->riskForm->fmh_hypertension == 'Yes' ? 'checked' : '' }}> Yes
+                                            <input type="checkbox" class="hyperCheckbox" id="fmh_hyperNo"  name="fmh_hypertension" {{ $profile->riskForm->fmh_hypertension == 'No' ? 'checked' : '' }}> No
                                         </td>
                                        
                                     </tr>
                                 <tr>
                                     <td>4.2 Stroke</td>
                                     <td>
-                                        <input type="checkbox" class="strokeCheckbox" id="fh_strokeYes" name="fm_stroke" {{ $profile->riskForm->fm_stroke == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="strokeCheckbox" id="fh_strokeNo" name="fm_stroke" {{ $profile->riskForm->fm_stroke == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="strokeCheckbox" id="fmh_strokeYes" name="fmh_stroke" {{ $profile->riskForm->fmh_stroke == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="strokeCheckbox" id="fmh_strokeNo" name="fmh_stroke" {{ $profile->riskForm->fmh_stroke == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.3 Heart Disease (change from "Cardiovascular") </td>
                                     <td>
-                                        <input type="checkbox" class="heartdisCheckbox" id="fh_heartdisYes" name="fm_heart" {{ $profile->riskForm->fm_heartDisease == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="heartdisCheckbox" id="fh_heartdisNo" name="fm_heart" {{ $profile->riskForm->fm_heartDisease == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="heartdisCheckbox" id="fmh_heartdisYes" name="fmh_heart" {{ $profile->riskForm->fmh_heart_disease == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="heartdisCheckbox" id="fmh_heartdisNo" name="fmh_heart" {{ $profile->riskForm->fmh_heart_disease == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.4 Diabetes Mellitus</td>
                                     <td>
-                                        <input type="checkbox" class="diabetesmelCheckbox" id="fh_diabetesmelYes" {{ $profile->riskForm->fm_diabetesMel == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="diabetemelCheckbox" id="fh_diabetesmelNo"  {{ $profile->riskForm->fm_diabetesMel == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="diabetesmelCheckbox" id="fmh_diabetesmelYes" {{ $profile->riskForm->fmh_diabetes_mellitus == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="diabetemelCheckbox" id="fmh_diabetesmelNo"  {{ $profile->riskForm->fmh_diabetes_mellitus == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.5 Asthma</td>
                                     <td>
-                                        <input type="checkbox" class="asthmas_Checkbox" id="fh_asthmaYes"   {{ $profile->riskForm->fm_asthma == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="asthmas_Checkbox" id="fh_asthmaNo"  {{ $profile->riskForm->fm_asthma == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthmaYes"   {{ $profile->riskForm->fmh_asthma == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthmaNo"  {{ $profile->riskForm->fmh_asthma == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                 <td>4.6 Cancer</td>
                                     <td>
-                                        <input type="checkbox" class="cancer_Checkbox" id="fh_cancer_Yes"  {{ $profile->riskForm->fm_cancer == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="cancer_Checkbox" id="fh_cancer_No" {{ $profile->riskForm->fm_cancer == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_Yes"  {{ $profile->riskForm->fmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_No" {{ $profile->riskForm->fmh_cancer == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td> 4.7 Kidney Disease </td>
                                     <td>
-                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fh_kidney_diYes" {{ $profile->riskForm->fm_kidneyDisease == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fh_kidney_disNo" {{ $profile->riskForm->fm_kidneyDisease == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_diYes" {{ $profile->riskForm->fmh_kidney_disease == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_disNo" {{ $profile->riskForm->fmh_kidney_disease == 'No' ? 'checked' : '' }}> No
                                     </td>
                                     
                                 </tr>
                                 <tr>
                                     <td>4.8 1st Degree relative with premature coronary <br> disease or vascular disease <br> (includes "Heart Attack")</td>
                                     <td>
-                                        <input type="checkbox" class="degreerelativeCheckbox" id="fh_degreerelativeYes" name="fm_degree" {{ $profile->riskForm->fm_firstDegreRelative == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="degreerelativeCheckbox" id="fh_degreerelativeNo" name="fm_degree" {{ $profile->riskForm->fm_firstDegreRelative == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="degreerelativeCheckbox" id="fmh_degreerelativeYes" name="fmh_degree" {{ $profile->riskForm->fmh_first_degree_relative == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="degreerelativeCheckbox" id="fmh_degreerelativeNo" name="fmh_degree" {{ $profile->riskForm->fmh_first_degree_relative == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>4.9 Family having TB in the last 5 years </td>
                                     <td>
-                                        <input type="checkbox" class="familytbCheckbox" id="fh_familytbYes"  name="fm_famtb"  {{ $profile->riskForm->fm_havingTB5years == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="familytbCheckbox" id="fh_familytbNo"  name="fm_famtb" {{ $profile->riskForm->fm_havingTB5years == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="familytbCheckbox" id="fmh_familytbYes"  name="fmh_famtb"  {{ $profile->riskForm->fmh_having_tuberculosis_5_years == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="familytbCheckbox" id="fmh_familytbNo"  name="fmh_famtb" {{ $profile->riskForm->fmh_having_tuberculosis_5_years == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
                                 <tr>
                                     <td>4.10 Mental, Neuroligical and Substance Abuse Disorder</td>
                                     <td>
-                                        <input type="checkbox" class="mnsadCheckbox" id="fh_mnsadYes" name="fm_mnsad" {{ $profile->riskForm->fm_MNandSDisorder == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="mnsadCheckbox" id="fh_mnsadNo" name="fm_mnsad" {{ $profile->riskForm->fm_MNandSDisorder == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsadYes" name="fmh_mnsad" {{ $profile->riskForm->fmh_mn_and_s_disorder == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsadNo" name="fmh_mnsad" {{ $profile->riskForm->fmh_mn_and_s_disorder == 'No' ? 'checked' : '' }}> No
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>4.11 COPD</td>
                                     <td>
-                                        <input type="checkbox" class="COPCheckbox" id="fh_COPYes" value="Yes" {{ $profile->riskForm->fm_COPD == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="COPCheckbox" id="fh_COPNo" value="No"  {{ $profile->riskForm->fm_COPD == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="COPCheckbox" id="fmh_COPYes" value="Yes" {{ $profile->riskForm->fmh_copd == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="COPCheckbox" id="fmh_COPNo" value="No"  {{ $profile->riskForm->fmh_copd == 'No' ? 'checked' : '' }}> No
                                     </td>
                                    
                                 </tr>
@@ -699,19 +699,19 @@
                                     <td>5.1 Tobacco Use</td>
                                     <td>
                                         <!-- Never Used (proceed to Q2) checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Never') !== false ? 'checked' : '' }}>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobacco_use, 'Never') !== false ? 'checked' : '' }}>
                                         Never Used (proceed to Q2) <br>
 
                                         <!-- Exposure to secondhand smoke checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Exposure') !== false ? 'checked' : '' }}>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobacco_use, 'Exposure') !== false ? 'checked' : '' }}>
                                         Exposure to secondhand smoke <br>
                                 
                                         <!-- Former tobacco user checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Former') !== false ? 'checked' : '' }}>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobacco_use, 'Former') !== false ? 'checked' : '' }}>
                                         Former tobacco user (stopped smoking > 1 year) <br>
                                 
                                         <!-- Current tobacco user checkbox -->
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobbacoUse, 'Current') !== false ? 'checked' : '' }}>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" {{ strpos($profile->riskForm->rf_tobacco_use, 'Current') !== false ? 'checked' : '' }}>
                                         Current tobacco user (currently smoking or stopped smoking) <br><br>
                                 
                                         <p style="font-style: italic; font-size: 15px;">
@@ -721,12 +721,12 @@
                                 </tr>                        
                                     <td>5.2 Alcohol Intake</td>
                                 <td>
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" {{ $profile->riskForm->rf_alcoholIntake == 'No' ? 'checked' : '' }}> Never Consumed 
-                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" {{ $profile->riskForm->rf_alcoholIntake == 'Yes' ? 'checked' : '' }}> Yes, drinks alcohol
+                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholNever" name="ncd_alcohol" {{ $profile->riskForm->rf_alcohol_intake == 'No' ? 'checked' : '' }}> Never Consumed 
+                                    <input type="checkbox" class="alcoholCheckbox" id="alcoholYes" name="ncd_alcohol" {{ $profile->riskForm->rf_alcohol_intake == 'Yes' ? 'checked' : '' }}> Yes, drinks alcohol
                                     
                                     <br><br>
                                     <label id="bingeLabel" class="ml-2">
-                                        <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge" name="ncd_alcoholBinge" {{ $profile->riskForm->rf_alcoholBingeDrinker == 'Yes' ? 'checked' : '' }}>
+                                        <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge" name="ncd_alcoholBinge" {{ $profile->riskForm->rf_alcohol_binge_drinker == 'Yes' ? 'checked' : '' }}>
                                         Do you drink 5 or more standard drinks for men, and 4 or more for women (in one sitting/occasion) in the past year?
                                     </label>
                                     <br><br>
@@ -742,8 +742,8 @@
                                     <td>5.3 Physical Activity </td>
                                     <td>
                                         Does the patient do at least 2.5 hours a week of moderate-intensity physical activity?  <br><br>
-                                        <input type="checkbox" class="physicalCheckbox" id="physicalYes" name="ncd_physical" {{ $profile->riskForm->rf_physicalActivity == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="physicalCheckbox" id="physicalNo" name="ncd_physical" {{ $profile->riskForm->rf_physicalActivity == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="physicalCheckbox" id="physicalYes" name="ncd_physical" {{ $profile->riskForm->rf_physical_activity == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="physicalCheckbox" id="physicalNo" name="ncd_physical" {{ $profile->riskForm->rf_physical_activity == 'No' ? 'checked' : '' }}> No
                                         <br>
 
                                         <br>
@@ -757,8 +757,8 @@
                                     <td>
                                          Does the patient eat high fat, high salt food,(processed/fast food such as instant <br> noodles, burgers, fries, dried fish),
                                         "ihaw-ihaw/fried" (e.g isaw, barbecue, liver, chicken skin)and high sugar food and drinks (e.g chocolates, cakes, pastries, softdrinks) weekly? <br><br><br>
-                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietYes"  {{ $profile->riskForm->rf_nutritionDietary == 'Yes' ? 'checked' : '' }}> Yes
-                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo"  {{ $profile->riskForm->rf_nutritionDietary == 'No' ? 'checked' : '' }}> No
+                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietYes"  {{ $profile->riskForm->rf_nutrition_dietary == 'Yes' ? 'checked' : '' }}> Yes
+                                        <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo"  {{ $profile->riskForm->rf_nutrition_dietary == 'No' ? 'checked' : '' }}> No
                                         <br><br><br>
                                             <p style="font-style: italic; font-size: 15px;">
                                             If YES to the question, give lifestyle modification advice following Annex 2. Nutrition Practice Guidelines for Health Professionals in the Primary Care Screening.
@@ -787,7 +787,7 @@
                                         5.7 Body Mass Index (wt.[kgs]/ht[cm]x 10,000): 
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="BMI" value="{{ $profile->riskForm->rf_bodyMass ?? '' }}" name="rf_BMI" readonly disabled><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" ></span></i></p>
+                                        <input type="text" class="textbox" id="BMI" value="{{ $profile->riskForm->rf_body_mass ?? '' }}" name="rf_BMI" readonly disabled><p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;" id="bmiStrVal" ></span></i></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -795,7 +795,7 @@
                                         5.8 Waist Circumference (cm): F < 80cm M < 90
                                     </td>
                                     <td>
-                                        <input type="text" class="textbox" id="waist" name ="rf_waist" value="{{ $profile->riskForm->rf_waistCircum ?? '' }}" readonly disabled> 
+                                        <input type="text" class="textbox" id="waist" name ="rf_waist" value="{{ $profile->riskForm->rf_waist_circumference ?? '' }}" readonly disabled> 
                                     </td>
                                 </tr>
                             </tbody>
@@ -864,15 +864,15 @@
                             <td style="border: 1px solid #000; padding: 10px;">
                                 <div style="margin-bottom: 10px;">
                                     <label>FBS Result:</label>
-                                    <input type="text" name="fbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_fbs ?? '' }}" readonly disabled>
+                                    <input type="text" name="fbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_blood_sugar_fbs ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>RBS Result:</label>
-                                    <input type="text" name="rbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_rbs ?? '' }}" readonly disabled>
+                                    <input type="text" name="rbs_result" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_blood_sugar_rbs ?? '' }}" readonly disabled>
                                 </div>
                                 <div style="margin-bottom: 10px;">
                                     <label>Date Taken:</label>
-                                    <input type="date" name="bloodSugar_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_bloodSugar_date_taken ?? '' }}" readonly disabled>
+                                    <input type="date" name="bloodSugar_date_taken" style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" value="{{ $profile->riskForm->rs_blood_sugar_date_taken ?? '' }}" readonly disabled>
                                 </div>
                             </td>
                         </tr>
@@ -881,14 +881,14 @@
                                 Check if Blood Sugar Symptoms are present
                             </td>
                             <td style="border: 1px solid #000; padding: 10px;">
-                                <input type="checkbox" name="rs_bloodSugar_symptoms[]" value="symptom1" 
-                                    {{ in_array('polyphagia', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> Polyphagia 
+                                <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom1" 
+                                    {{ in_array('polyphagia', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ?? '')) ? 'checked' : '' }}> Polyphagia 
                         
-                                <input type="checkbox" name="rs_bloodSugar_symptoms[]" value="symptom2" 
-                                    {{ in_array('polydipsia', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> Polydipsia
+                                <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom2" 
+                                    {{ in_array('polydipsia', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ?? '')) ? 'checked' : '' }}> Polydipsia
                         
-                                <input type="checkbox" name="rs_bloodSugar_symptoms[]" value="symptom3" 
-                                    {{ in_array('polyuria', explode(', ', $profile->riskForm->rs_bloodSugar_symptoms ?? '')) ? 'checked' : '' }}> Polyuria
+                                <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom3" 
+                                    {{ in_array('polyuria', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ?? '')) ? 'checked' : '' }}> Polyuria
                             </td>
                         </tr>
                         
@@ -961,23 +961,23 @@
                                 <div class="checkbox-group" style="display: flex; gap: 10px; flex-wrap: wrap;">
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_breathlessness"  
-                                        {{ in_array('Breathlessness', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Breathlessness (or a 'need for air')
+                                        {{ in_array('Breathlessness', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ?? '')) ? 'checked' : '' }}> Breathlessness (or a 'need for air')
                                     </label>
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_sputum_production" 
-                                        {{ in_array('Sputum (mucous) production', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Sputum (mucous) production
+                                        {{ in_array('Sputum (mucous) production', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ?? '')) ? 'checked' : '' }}> Sputum (mucous) production
                                     </label>
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_chronic_cough" 
-                                        {{ in_array('Chronic cough', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Chronic cough
+                                        {{ in_array('Chronic cough', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ?? '')) ? 'checked' : '' }}> Chronic cough
                                     </label>
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_chest_tightness" 
-                                        {{ in_array('Chest tightness', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Chest tightness
+                                        {{ in_array('Chest tightness', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ?? '')) ? 'checked' : '' }}> Chest tightness
                                     </label>
                                     <label style="margin-right: 20px;">
                                         <input type="checkbox" name="symptom_wheezing" 
-                                        {{ in_array('Wheezing', explode(', ', $profile->riskForm->rs_Chronic_Respiratory_Disease ?? '')) ? 'checked' : '' }}> Wheezing
+                                        {{ in_array('Wheezing', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ?? '')) ? 'checked' : '' }}> Wheezing
                                     </label>
                                 </div>
                             </td>
@@ -1280,31 +1280,31 @@
         // Initialize checkbox toggling for each condition
         document.addEventListener('DOMContentLoaded', () => {
             // Toggle checkboxes for all conditions
-            toggleCheckbox('pm_hypertensionYes', 'pm_hypertensionNo');
-            toggleCheckbox('pm_heartsdiseaseYes', 'pm_heartdiseaseNo');
-            toggleCheckbox('pm_diabetesYes', 'pm_diabetesNo');
-            toggleCheckbox('pm_cancerYes', 'pm_cancerNo');
-            toggleCheckbox('pm_codYes', 'pm_codNo');
-            toggleCheckbox('pm_asthmaYes', 'pm_asthmaNo');
-            toggleCheckbox('pm_allergiesYes', 'pm_allergiesNo');
-            toggleCheckbox('pm_mnsYes', 'pm_mnsNo');
-            toggleCheckbox('pm_visionYes', 'pm_visionNo');
-            toggleCheckbox('pm_surgicalhistoryYes', 'pm_surgicalhistoryNo');
-            toggleCheckbox('pm_thyroidYes', 'pm_thyroidNo');
-            toggleCheckbox('pm_kidneyYes', 'pm_kidneyNo');
+            toggleCheckbox('pmh_hypertensionYes', 'pmh_hypertensionNo');
+            toggleCheckbox('pmh_heartsdiseaseYes', 'pmh_heartdiseaseNo');
+            toggleCheckbox('pmh_diabetesYes', 'pmh_diabetesNo');
+            toggleCheckbox('pmh_cancerYes', 'pmh_cancerNo');
+            toggleCheckbox('pmh_codYes', 'pmh_codNo');
+            toggleCheckbox('pmh_asthmaYes', 'pmh_asthmaNo');
+            toggleCheckbox('pmh_allergiesYes', 'pmh_allergiesNo');
+            toggleCheckbox('pmh_mnsYes', 'pmh_mnsNo');
+            toggleCheckbox('pmh_visionYes', 'pmh_visionNo');
+            toggleCheckbox('pmh_surgicalhistoryYes', 'pmh_surgicalhistoryNo');
+            toggleCheckbox('pmh_thyroidYes', 'pmh_thyroidNo');
+            toggleCheckbox('pmh_kidneyYes', 'pmh_kidneyNo');
 
             //family history
-            toggleCheckbox('fh_hyperYes', 'fh_hyperNo');
-            toggleCheckbox('fh_strokeYes', 'fh_strokeNo');
-            toggleCheckbox('fh_heartdisYes', 'fh_heartdisNo');
-            toggleCheckbox('fh_diabetesmelYes', 'fh_diabetesmelNo');
-            toggleCheckbox('fh_asthmaYes', 'fh_asthmaNo');
-            toggleCheckbox('fh_cancer_Yes', 'fh_cancer_No');
-            toggleCheckbox('fh_kidney_diYes', 'fh_kidney_disNo');
-            toggleCheckbox('fh_degreerelativeYes', 'fh_degreerelativeNo');
-            toggleCheckbox('fh_familytbYes', 'fh_familytbNo');
-            toggleCheckbox('fh_mnsadYes', 'fh_mnsadNo');
-            toggleCheckbox('fh_COPYes', 'fh_COPNo');
+            toggleCheckbox('fmh_hyperYes', 'fmh_hyperNo');
+            toggleCheckbox('fmh_strokeYes', 'fmh_strokeNo');
+            toggleCheckbox('fmh_heartdisYes', 'fmh_heartdisNo');
+            toggleCheckbox('fmh_diabetesmelYes', 'fmh_diabetesmelNo');
+            toggleCheckbox('fmh_asthmaYes', 'fmh_asthmaNo');
+            toggleCheckbox('fmh_cancer_Yes', 'fmh_cancer_No');
+            toggleCheckbox('fmh_kidney_diYes', 'fmh_kidney_disNo');
+            toggleCheckbox('fmh_degreerelativeYes', 'fmh_degreerelativeNo');
+            toggleCheckbox('fmh_familytbYes', 'fmh_familytbNo');
+            toggleCheckbox('fmh_mnsadYes', 'fmh_mnsadNo');
+            toggleCheckbox('fmh_COPYes', 'fmh_COPNo');
 
             //NCD RISK FACTORS
             toggleCheckbox('alcoholYes', 'alcoholNever');
