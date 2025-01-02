@@ -12,48 +12,68 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
+// for logging
+use Illuminate\Support\Facades\Log;
+
 class DataController extends Controller
 {
-    // # ---------- END OF AUXILIARY FUNCTIONS ----------- # //
     public function retrievePatientRiskProfile(Request $request)
     {
-        $fields = $request->input('fields');
+        // Manually validate the request
+        $validator = Validator::make($request->all(), [
+            'fields' => 'required|array',
+            'fields.keyword' => 'sometimes|string',
+        ]);
 
-        // check authentication if user is logged in
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
+
+        // Log the entire request for debugging
+        \Log::info('Request Payload:', $request->all());
+
+        // Retrieve the fields parameter
+        $fields = $request->input('fields');
+        echo "Fields:";
+        print_r($fields);
+
+        // Log the fields for debugging
+        \Log::info('Fields Input:', ['fields' => $fields]);
+
+        // Check if the user is authenticated
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // get user
+        // Get the authenticated user
         $user = Auth::user();
 
+        // Log the user for debugging
+        \Log::info('User:', ['user' => $user]);
+
+        // Build the query
         $query = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'sex', 'civil_status', 'barangay_id', 'municipal_id', 'province_id', 'facility_id_updated', 'created_at')
             ->with([
-                'facility' => function ($query) {
-                    $query->select('id', 'name');
+                'province' => function ($query) use ($user) {
+                    $query->select('id', 'description')->where('id', $user->province);
                 },
-                'province' => function ($query) {
-                    $query->select('id', 'description');
-                },
-                'muncity' => function ($query) {
-                    $query->select('id', 'province_id', 'description');
-                },
-                'barangay' => function ($query) {
-                    $query->select('id', 'muncity_id', 'description');
+                'muncity' => function ($query) use ($user) {
+                    $query->select('id', 'province_id', 'description')->where('province_id', $user->province);
                 },
             ])
             ->orderby('id', 'desc');
 
-        // get the values to be used from the request objects.
-        $user_priv = $user['user_priv'];
-        $keyword = $fields['keyword'];
+        // Log the query for debugging
+        \Log::info('Query Instance:', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
-        // depending on the priviledge level of the user
+        // Get the user privilege and keyword
+        $user_priv = $user->user_priv;
+        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null;
+
+        // Build the query based on user privileges
         switch ($user_priv) {
-            // provincial view
-            case 3:
+            case 3: // provincial view
                 if (!empty($keyword)) {
-                    // Search functionality
                     $query->where('province_id', $user->province)->where(function ($q) use ($keyword) {
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
@@ -61,14 +81,13 @@ class DataController extends Controller
                                 $q->where('description', 'like', "%$keyword%");
                             });
                     });
+                } else {
+                    $query->where('province_id', $user->province);
                 }
-                $query->where('province_id', $user->province);
                 break;
 
-            // facility view
-            case 6:
+            case 6: // facility view
                 if (!empty($keyword)) {
-                    // Search functionality
                     $query->where('facility_id_updated', $user->facility_id)->where(function ($q) use ($keyword) {
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
@@ -79,14 +98,13 @@ class DataController extends Controller
                                 $q->where('description', 'like', "%$keyword%");
                             });
                     });
+                } else {
+                    $query->where('facility_id_updated', $user->facility_id);
                 }
-                $query->where('facility_id_updated', $user->facility_id);
                 break;
 
-            // region view
-            case 7:
+            case 7: // region view
                 if (!empty($keyword)) {
-                    // Search functionality
                     $query->where(function ($q) use ($keyword) {
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
@@ -101,7 +119,10 @@ class DataController extends Controller
                 break;
         }
 
+        // Paginate the results
         $riskprofiles = $query->simplePaginate(15);
+
+        // Return the results as JSON
         return response()->json($riskprofiles, 200);
     }
 
@@ -119,36 +140,7 @@ class DataController extends Controller
         $province = $fields['province_id'] !== null ? $fields['province_id'] : null;
 
         // Building the query
-        $profileQuery = RiskProfile::select(
-            'id',
-            'profile_id',
-            'lname', 
-            'fname',
-            'mname',
-            'suffix',
-            'sex',
-            'dob', 
-            'age', 
-            'civil_status', 
-            'religion', 
-            'other_religion', 
-            'contact', 
-            'province_id',
-            'muncity_id', 
-            'barangay_id', 
-            'street', 
-            'purok',
-            'sitio', 
-            'phic_id', 
-            'pwd_id', 
-            'ethnicity', 
-            'other_ethnicity', 
-            'indigenous_person', 
-            'employment_status', 
-            'facility_id_updated', 
-            'created_at',
-            'updated_at'
-        )->with([
+        $profileQuery = RiskProfile::select('id', 'profile_id', 'lname', 'fname', 'mname', 'suffix', 'sex', 'dob', 'age', 'civil_status', 'religion', 'other_religion', 'contact', 'province_id', 'muncity_id', 'barangay_id', 'street', 'purok', 'sitio', 'phic_id', 'pwd_id', 'citizenship', 'other_citizenship', 'indigenous_person', 'employment_status', 'facility_id_updated', 'created_at', 'updated_at')->with([
             'riskForm' => function ($query) {
                 $query->select(
                     'id',
@@ -297,8 +289,8 @@ class DataController extends Controller
             'fields.sitio' => 'nullable|string|max:255',
             'fields.phic_id' => 'nullable|string|max:20',
             'fields.pwd_id' => 'nullable|string|max:20',
-            'fields.ethnicity' => 'required|string|max:50',
-            'fields.other_ethnicity' => 'nullable|string|max:50',
+            'fields.citizenship' => 'required|string|max:50',
+            'fields.other_citizenship' => 'nullable|string|max:50',
             'fields.indigenous_person' => 'required|boolean',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
@@ -639,8 +631,8 @@ class DataController extends Controller
             'fields.religion' => 'required|string|max:50',
             'fields.other_religion' => 'nullable|string|max:50',
             'fields.pwd_id' => 'nullable|string|max:20',
-            'fields.ethnicity' => 'required|string|max:50',
-            'fields.other_ethnicity' => 'nullable|string|max:50',
+            'fields.citizenship' => 'required|string|max:50',
+            'fields.other_citizenship' => 'nullable|string|max:50',
             'fields.indigenous_person' => 'required|boolean',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',

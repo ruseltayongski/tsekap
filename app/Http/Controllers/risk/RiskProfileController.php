@@ -75,8 +75,8 @@ class RiskProfileController extends Controller
         $riskprofile->sitio = $req->sitio? $req->sitio : null;
         $riskprofile->phic_id = $req->phic_id? $req->phic_id : null; // Ensure you use the correct field name here
         $riskprofile->pwd_id = $req->pwd_id? $req->pwd_id : null;
-        $riskprofile->ethnicity = $req->ethnicity;
-        $riskprofile->other_ethnicity = $req -> other_ethnicity ? $req -> other_ethnicity : null;
+        $riskprofile->citizenship = $req->citizenship;
+        $riskprofile->other_citizenship = $req -> other_citizenship ? $req -> other_citizenship : null;
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
         $riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
@@ -320,7 +320,7 @@ class RiskProfileController extends Controller
 
          $profile = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'suffix', 'sex',  'age',
                                         'civil_status','religion','other_religion','contact','municipal_id', 'province_id', 
-                                         'barangay_id','street','purok','sitio','phic_id', 'pwd_id','ethnicity','other_ethnicity',
+                                         'barangay_id','street','purok','sitio','phic_id', 'pwd_id','citizenship','other_citizenship',
                                          'indigenous_person','employment_status', 'facility_id_updated','created_at')
              ->with([
             'riskForm' => function ($query) {
