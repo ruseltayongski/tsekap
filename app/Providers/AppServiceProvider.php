@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\DB; // added for tsekapv2
+use Illuminate\Support\Facades\Log; // added for tsekapv2
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +16,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // added for tsekapv2
+        DB::listen(function ($query) {
+            Log::info(
+                'Query Time: ' . $query->time . 'ms [' . $query->sql . ']',
+                $query->bindings
+            );
+        });
     }
 
     /**
