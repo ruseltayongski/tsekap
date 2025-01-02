@@ -24,7 +24,9 @@ Route::group(['middleware' => ['api']], function () {
     Route::get($apiVersions[0] . 'misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
     Route::get($apiVersions[0] . 'misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
     Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
-
+    Route::get($apiVersions[0] . 'misc/getallmuncities', 'TsekapV2\Misc\MiscDataController@getAllMuncities');
+    Route::get($apiVersions[0] . 'misc/getallbarangay', 'TsekapV2\Misc\MiscDataController@getAllBarangays');
+    
     // User Data Controllers
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
     Route::post($apiVersions[0] . 'user/updatepass', 'TsekapV2\UserController@updateUserPassword');

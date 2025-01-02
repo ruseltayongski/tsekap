@@ -38,5 +38,16 @@ class MiscDataController extends Controller
             ->get();
         return response()->json($barangay);
     }
-    // get patient risk form list
+    
+    // get all municipalities/cities
+    public function getAllMuncities(){
+        $muncities = Muncity::select('id', 'province_id', 'description')->get();
+        return response()->json($muncities);
+    }
+    
+    // get all barangays
+    public function getAllBarangays(){
+        $muncities = Barangay::select('id', 'province_id', 'muncity_id', 'description')->get();
+        return response()->json($muncities);
+    }
 }
