@@ -130,12 +130,17 @@
                                 <select class="form-control chosen-select" name="barangay" id="barangay" required>
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-5">
                                 <label for="phil_no">PhilHealth No.</label>
                                 <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
                             </div>
+                            <div class="col-md-3">
+                                <label for="contacts_number">Contact #.</label>
+                                <input type="text" class="form-control" name="contacts_number" id="contacts_number" value=""><br>
+                            </div>
                         </div>
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">Pre-admission Data</h4>
+                    </br>
+                    <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">Pre-admission Data</h4>
                         <div class="row">
                             <div class="col-md-12">
                                 <label>Place Of Injury:</label>
@@ -804,17 +809,19 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="col-md-2">
-                                            <label for="Outcome">Outcome</label>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Improved" name="outcome" value="Improved"> Improved
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input type="radio" id="Died1" name="outcome" value="died"> Died
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="Outcome">Outcome</label>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" id="Improved" name="outcome" value="Improved"> Improved
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" id="Unimproved" name="outcome" value="Unimproved"> Unimproved
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="radio" id="Died1" name="outcome" value="died"> Died
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -855,6 +862,14 @@
                                                 <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="" placeholder="Others">
                                             </div>
                                         </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: Nature of injury</label>
+                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
+                                        </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: External Cause injury</label>
+                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
+                                        </div>
                                         <div class="col-md-12"><hr>
                                             <label for="Outcome">Outcome</label><br>
                                             <div class="col-md-2 col-md-offset-1">
@@ -867,14 +882,7 @@
                                                 <input type="radio" id="died1" name="Outcome1" value="died"> Died
                                             </div>
                                         </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
-                                        </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
-                                        </div>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -1042,7 +1050,7 @@
     }
 </script>
 @endsection
-<!-- @include('resu.manage_patient_injury.checkProfile') -->
+{{-- @include('resu.manage_patient_injury.checkProfile') --}}
 <style>
     .json-display-style {
         background-color: black;
@@ -1167,6 +1175,4 @@
         25% { transform: translateX(-5px); }
         75% { transform: translateX(5px); }
     }
-   
-
 </style>

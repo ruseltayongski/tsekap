@@ -187,9 +187,13 @@
                                 <select class="form-control chosen-select" name="barangay" id="update-barangay" data-selected="{{ $profile->barangay_id }}" required>
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-5">
                                 <label for="phil_no">PhilHealth No.</label>
                                 <input type="text" class="form-control" name="phil_no" id="phil_no" value="{{$profile->phicID}}"><br>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="contacts_number">Contact #.</label>
+                                <input type="text" class="form-control" name="contacts_number" id="contacts_number" value="{{$profile->contact}}"><br>
                             </div>
                         </div>
                         <h4 class="patient-font mt-4">Pre-admission Data</h4>

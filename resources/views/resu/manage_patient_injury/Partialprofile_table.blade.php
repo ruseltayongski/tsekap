@@ -4,7 +4,7 @@
     use App\ResuReportFacility;
     
     $priv_fact= Auth::user()->facility_id;
-
+    $user_priv = Auth::user()->user_priv;
 @endphp
 
 @foreach($profiles as $p)
@@ -34,7 +34,15 @@
                 <i class="fa fa-eye"></i> View
             </a>
         </td>
-        @if($user->user_priv !== 6)
+        <td nowrap="TRUE">
+            <form action="{{ route('patient.delete', $p->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-xs btn-danger">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+            </form>
+        </td>
+        @if($user_priv !== 6)
             <td>
                 @php
                     $facility = Facility::find(
@@ -62,8 +70,14 @@
         <td>{{ $p->barangay ? $p->barangay->description : 'N/A' }}</td>
         <td>{{ $preprovince. ' , ' . $premuncity. ' , ' . $prebarangay. ' , ' . $p->preadmission->POIPurok }}</td>
         <td>{{ $p->preadmission->dateInjury . ' '. $p->preadmission->timeInjury }}</td>
-        @if($user->user_priv !== 6)
-            <td>{{ $p->nameof_encoder }}</td>
-        @endif
+        @if($user_priv === 7)
+        <td>
+            @if($p->name_of_encoder)
+                {{ $p->name_of_encoder }}
+            @else
+                {{ $NameEncoder ?? 'N/A' }}
+            @endif 
+        </td>
+    @endif
     </tr>
 @endforeach

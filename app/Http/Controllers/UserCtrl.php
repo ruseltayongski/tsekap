@@ -28,14 +28,16 @@ class UserCtrl extends Controller
 
         $user = Auth::user();
         $id = $user->id;
-        $users = User::where(function($q) use ($keyword){
-                            $q->where('lname','like',"%$keyword%")
-                                ->orwhere('mname','like',"%$keyword%")
-                                ->orwhere('fname','like',"%$keyword%")
-                                ->orwhere('username','like',"%$keyword%")
-                                ->orwhere('contact','like',"%$keyword%");
-                        })
-            ->where('id','!=',$id);
+        $users = User::whereYear('created_at', 2024) // Filter by year 2024
+                    ->where(function ($q) use ($keyword) {
+                        $q->where('lname', 'like', "%$keyword%")
+                        ->orWhere('mname', 'like', "%$keyword%")
+                        ->orWhere('fname', 'like', "%$keyword%")
+                        ->orWhere('username', 'like', "%$keyword%")
+                        ->orWhere('contact', 'like', "%$keyword%");
+                    })
+        ->where('id', '!=', $id);
+          
 
         if($user->user_priv==3){
             $users = $users->where('user_priv','!=',1)
@@ -57,7 +59,7 @@ class UserCtrl extends Controller
             'province_id' => $province_id,
             'muncity_id' => $muncity_id,
             'keyword' => $keyword,
-            'level' => $level,
+            'level' => $level,  
         ]);
     }
 
