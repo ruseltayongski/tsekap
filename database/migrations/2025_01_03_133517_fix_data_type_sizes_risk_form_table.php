@@ -16,14 +16,8 @@ class FixDataTypeSizesRiskFormTable extends Migration
         try {
             Schema::table('risk_form', function (Blueprint $table) {
                 // Check if the column 'rf_tobbaco_use' exists before renaming it
-                if (Schema::hasColumn('risk_form', 'rf_tobbaco_use')) {
-                    // Rename the column 'rf_tobbaco_use' to 'rf_tobacco_use'
-                    $table->renameColumn('rf_tobbaco_use', 'rf_tobacco_use');
-                }
-    
-                // Adjust the size of 'rf_tobacco_use' to varchar(8)
-                if (Schema::hasColumn('risk_form', 'rf_tobacco_use')) {
-                    $table->string('rf_tobacco_use', 8)->change();
+                if (Schema::hasColumn('risk_form', 'rf_tobbaco_use')) { 
+                    $table->renameColumn('rf_tobbaco_use', 'rf_tobacco_use'); // Rename the column 'rf_tobbaco_use' to 'rf_tobacco_use'
                 }
     
                 // Define the columns that should be varchar(8)
