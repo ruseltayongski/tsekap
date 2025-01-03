@@ -109,7 +109,7 @@ class RenameRiskFromColumns extends Migration
             $table->timestamps();
         });
 
-        db::statement('insert into risk_form_temp select * from risk_form');
+        DB::statement('insert into risk_form_temp select * from risk_form');
 
         Schema::dropIfExists('risk_form');
 
@@ -314,7 +314,7 @@ class RenameRiskFromColumns extends Migration
             $table->timestamps();
         });
 
-        db::statement('insert into risk_form_temp select * from risk_form');
+        DB::statement('insert into risk_form_temp select * from risk_form');
 
         Schema::dropIfExists('risk_form');
 
