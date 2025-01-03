@@ -220,48 +220,48 @@
                                 <input type="text" class="form-control" name="pwd_id" id="pwd_id" maxlength="13" value="{{ $profile->pwd_id ?? '' }}" readonly><br>
                             </div>
                             <div class="col-md-3">
-                                <label for="ethnicity">Ethnicity</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()" disabled>
-                                    <option value="">Select Ethnicity</option>
-                                    <option value="Cebuano" {{ $profile->ethnicity == 'Cebuano' ? 'selected' : '' }}>Cebuano</option> 
-                                    <option value="Bisaya" {{ $profile->ethnicity == 'Bisaya' ? 'selected' : '' }}>Bisaya</option>
-                                    <option value="Tagalog" {{ $profile->ethnicity == 'Tagalog' ? 'selected' : '' }}>Tagalog</option>
-                                    <option value="Waray" {{ $profile->ethnicity == 'Waray' ? 'selected' : '' }}>Waray</option>
-                                    <option value="Ilonggo" {{ $profile->ethnicity == 'Illongo' ? 'selected' : '' }}>Illongo</option>
-                                    <option value="Bicolano" {{ $profile->ethnicity == 'Bicolano' ? 'selected' : '' }}>Bicolano</option>
-                                    <option value="Kampampangan" {{ $profile->ethnicity == 'Kampampangan' ? 'selected' : '' }}>Kapampangan</option> 
-                                    <option value="Maguindanao" {{ $profile->ethnicity == 'Maguindanao' ? 'selected' : '' }}>Maguindanao</option>
-                                    <option value="Pangasinan" {{ $profile->ethnicity == 'Pangasinan' ? 'selected' : '' }}>Pangasinan</option>
-                                    <option value="Badjao" {{ $profile->ethnicity == 'Badjao' ? 'selected' : '' }} >Badjao</option>
-                                    <option value="Tausug" {{ $profile->ethnicity == 'Tausug' ? 'selected' : '' }} >Tausug</option>
-                                    <option value="Maranao" {{ $profile->ethnicity == 'Maranao' ? 'selected' : '' }} >Maranao</option>
-                                    <option value="Thai" {{ $profile->ethnicity == 'Thai' ? 'selected' : '' }}>Thai</option> 
-                                    <option value="Vietnamese" {{ $profile->ethnicity == 'Vietnamese' ? 'selected' : '' }}>Vietnamese</option>
-                                    <option value="Indonesian" {{ $profile->ethnicity == 'Indonesian' ? 'selected' : '' }}>Indonesian</option>
-                                    <option value="Malaysian" {{ $profile->ethnicity == 'Malaysian' ? 'selected' : '' }}>Malaysian</option> 
-                                    <option value="Singaporean" {{ $profile->ethnicity == 'Singaporean' ? 'selected' : '' }}>Singaporean</option> 
-                                    <option value="Australian" {{ $profile->ethnicity == 'Australian' ? 'selected' : '' }}>Australian</option>
-                                    <option value="Chinese" {{ $profile->ethnicity == 'Chinese' ? 'selected' : '' }}>Chinese</option> 
-                                    <option value="Indian" {{ $profile->ethnicity == 'Indian' ? 'selected' : '' }}>Indian</option>
-                                    <option value="American" {{ $profile->ethnicity == 'American' ? 'selected' : '' }}>American</option>
-                                    <option value="Canadian" {{ $profile->ethnicity == 'Canadian' ? 'selected' : '' }}>Canadian</option>
-                                    <option value="Swiss" {{ $profile->ethnicity == 'Swiss' ? 'selected' : '' }}>Swiss</option>
-                                    <option value="Japanese" {{ $profile->ethnicity == 'Japanese' ? 'selected' : '' }}>Japanese</option>
-                                    <option value="Korean" {{ $profile->ethnicity == 'Korean' ? 'selected' : '' }}>Korean</option>
-                                    <option value="British" {{ $profile->ethnicity == 'British' ? 'selected' : '' }}>British</option> 
-                                    <option value="Spanish" {{ $profile->ethnicity == 'Spanish' ? 'selected' : '' }}>Spanish</option>
-                                    <option value="French" {{ $profile->ethnicity == 'French' ? 'selected' : '' }}>French</option>
-                                    <option value="German" {{ $profile->ethnicity == 'German' ? 'selected' : '' }}>German</option>
-                                    <option value="Russian" {{ $profile->ethnicity == 'Russian' ? 'selected' : '' }}>Russian</option> 
-                                    <option value="Others" {{ $profile->ethnicity == 'Others' ? 'selected' : '' }} readonly>Others</option>
+                                <label for="citizenship">Citizenship</label>
+                                <select class="form-control" name="citizenship" id="citizenship" onchange="showOtherCitizenshipField()" disabled>
+                                    <option value="">Select Citizenship</option>
+                                    <option value="Cebuano" {{ $profile->citizenship == 'Cebuano' ? 'selected' : '' }}>Cebuano</option> 
+                                    <option value="Bisaya" {{ $profile->citizenship == 'Bisaya' ? 'selected' : '' }}>Bisaya</option>
+                                    <option value="Tagalog" {{ $profile->citizenship == 'Tagalog' ? 'selected' : '' }}>Tagalog</option>
+                                    <option value="Waray" {{ $profile->citizenship == 'Waray' ? 'selected' : '' }}>Waray</option>
+                                    <option value="Ilonggo" {{ $profile->citizenship == 'Illongo' ? 'selected' : '' }}>Illongo</option>
+                                    <option value="Bicolano" {{ $profile->citizenship == 'Bicolano' ? 'selected' : '' }}>Bicolano</option>
+                                    <option value="Kampampangan" {{ $profile->citizenship == 'Kampampangan' ? 'selected' : '' }}>Kapampangan</option> 
+                                    <option value="Maguindanao" {{ $profile->citizenship == 'Maguindanao' ? 'selected' : '' }}>Maguindanao</option>
+                                    <option value="Pangasinan" {{ $profile->citizenship == 'Pangasinan' ? 'selected' : '' }}>Pangasinan</option>
+                                    <option value="Badjao" {{ $profile->citizenship == 'Badjao' ? 'selected' : '' }} >Badjao</option>
+                                    <option value="Tausug" {{ $profile->citizenship == 'Tausug' ? 'selected' : '' }} >Tausug</option>
+                                    <option value="Maranao" {{ $profile->citizenship == 'Maranao' ? 'selected' : '' }} >Maranao</option>
+                                    <option value="Thai" {{ $profile->citizenship == 'Thai' ? 'selected' : '' }}>Thai</option> 
+                                    <option value="Vietnamese" {{ $profile->citizenship == 'Vietnamese' ? 'selected' : '' }}>Vietnamese</option>
+                                    <option value="Indonesian" {{ $profile->citizenship == 'Indonesian' ? 'selected' : '' }}>Indonesian</option>
+                                    <option value="Malaysian" {{ $profile->citizenship == 'Malaysian' ? 'selected' : '' }}>Malaysian</option> 
+                                    <option value="Singaporean" {{ $profile->citizenship == 'Singaporean' ? 'selected' : '' }}>Singaporean</option> 
+                                    <option value="Australian" {{ $profile->citizenship == 'Australian' ? 'selected' : '' }}>Australian</option>
+                                    <option value="Chinese" {{ $profile->citizenship == 'Chinese' ? 'selected' : '' }}>Chinese</option> 
+                                    <option value="Indian" {{ $profile->citizenship == 'Indian' ? 'selected' : '' }}>Indian</option>
+                                    <option value="American" {{ $profile->citizenship == 'American' ? 'selected' : '' }}>American</option>
+                                    <option value="Canadian" {{ $profile->citizenship == 'Canadian' ? 'selected' : '' }}>Canadian</option>
+                                    <option value="Swiss" {{ $profile->citizenship == 'Swiss' ? 'selected' : '' }}>Swiss</option>
+                                    <option value="Japanese" {{ $profile->citizenship == 'Japanese' ? 'selected' : '' }}>Japanese</option>
+                                    <option value="Korean" {{ $profile->citizenship == 'Korean' ? 'selected' : '' }}>Korean</option>
+                                    <option value="British" {{ $profile->citizenship == 'British' ? 'selected' : '' }}>British</option> 
+                                    <option value="Spanish" {{ $profile->citizenship == 'Spanish' ? 'selected' : '' }}>Spanish</option>
+                                    <option value="French" {{ $profile->citizenship == 'French' ? 'selected' : '' }}>French</option>
+                                    <option value="German" {{ $profile->citizenship == 'German' ? 'selected' : '' }}>German</option>
+                                    <option value="Russian" {{ $profile->citizenship == 'Russian' ? 'selected' : '' }}>Russian</option> 
+                                    <option value="Others" {{ $profile->citizenship == 'Others' ? 'selected' : '' }} readonly>Others</option>
                                    
                                 </select>
                             </div>
                             
                             <!-- This div will only appear if Others is selected -->
-                            <div class="col-md-3" id="other-ethnicity-div" >
-                                <label for="other_ethnicity">Specify Other Ethnicity <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity" value="{{ $profile->other_ethnicity ?? '' }}" readonly>
+                            <div class="col-md-3" id="other-citizenship-div" >
+                                <label for="other_citizenship">Specify Other Citizenship <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="other_citizenship" id="other_citizenship" placeholder="Please specify citizenship" value="{{ $profile->other_citizenship ?? '' }}" readonly>
                             </div> 
                             <div class="col-md-3 d-flex align-items-center">
                                 <label class="mr-2">Indigenous Person</label><br>
@@ -1198,15 +1198,15 @@
             }
         }
 
-        // controls the other ethnicity field
-        const showOtherEthnicityField = () => {
-            let ethnicitySelect = document.getElementById("ethnicity");
-            let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
-            if (ethnicitySelect.value === "Others") {
-            otherEthnicityDiv.style.display = "block";
+        // controls the other citizenship field
+        const showOtherCitizenshipField = () => {
+            let citizenshipSelect = document.getElementById("citizenship");
+            let otherCitizenshipDiv = document.getElementById("other-citizenship-div");
+            if (citizenshipSelect.value === "Others") {
+            otherCitizenshipDiv.style.display = "block";
             } 
             else {
-            otherEthnicityDiv.style.display = "none";
+            otherCitizenshipDiv.style.display = "none";
             }
         }
 

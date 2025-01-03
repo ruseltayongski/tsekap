@@ -190,9 +190,9 @@
                                 <input type="text" class="form-control" name="pwd_id" id="pwd_id" maxlength="13" value=""><br>
                             </div>
                             <div class="col-md-3">
-                                <label for="ethnicity">Ethnicity</label>
-                                <select class="form-control" name="ethnicity" id="ethnicity" onchange="showOtherEthnicityField()">
-                                    <option value="">Select Ethnicity</option>
+                                <label for="citizenship">Citizenship</label>
+                                <select class="form-control" name="citizenship" id="citizenship" onchange="showOtherCitizenshipField()">
+                                    <option value="">Select Citizenship</option>
                                     <option value="Cebuano">Cebuano</option> 
                                     <option value="Bisaya">Bisaya</option>
                                     <option value="Tagalog">Tagalog</option>
@@ -228,9 +228,9 @@
                             </div>
                             
                             <!-- This div will only appear if "Others" is selected -->
-                            <div class="col-md-3" id="other-ethnicity-div" style="display:none;">
-                                <label for="other_ethnicity">Specify Other Ethnicity <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="other_ethnicity" id="other_ethnicity" placeholder="Please specify ethnicity" required>
+                            <div class="col-md-3" id="other-citizenship-div" style="display:none;">
+                                <label for="other_citizenship">Specify Other Citizenship <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="other_citizenship" id="other_citizenship" placeholder="Please specify citizenship" required>
                             </div>
 
                             <div class="col-md-3 d-flex align-items-center">
@@ -1131,18 +1131,18 @@
         }
     }
 
-    // controls the other ethnicity field
-    const showOtherEthnicityField = () => {
-        let ethnicitySelect = document.getElementById("ethnicity");
-        let otherEthnicityDiv = document.getElementById("other-ethnicity-div");
-        let otherEthnicityInput = document.getElementById("other_ethnicity");
+    // controls the other citizenship field
+    const showOtherCitizenshipField = () => {
+        let citizenshipSelect = document.getElementById("citizenship");
+        let otherCitizenshipDiv = document.getElementById("other-citizenship-div");
+        let otherCitizenshipInput = document.getElementById("other_citizenship");
 
-        if (ethnicitySelect.value === "Others") {
-            otherEthnicityDiv.style.display = "block";
-            otherEthnicityInput.required = true; // Make the 'Other' ethnicity input required
+        if (citizenshipSelect.value === "Others") {
+            otherCitizenshipDiv.style.display = "block";
+            otherCitizenshipInput.required = true; // Make the 'Other' citizenship input required
         } else {
-            otherEthnicityDiv.style.display = "none";
-            otherEthnicityInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+            otherCitizenshipDiv.style.display = "none";
+            otherCitizenshipInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
         }
     }
 
@@ -1400,9 +1400,9 @@
         document.getElementById('age').style.borderColor = '';
         document.getElementById('civil_status').style.borderColor = '';
         document.getElementById('religion').style.borderColor = '';
-        // document.getElementById('ethnicity').style.borderColor = '';
+        // document.getElementById('citizenship').style.borderColor = '';
         document.getElementById('other_religion').style.borderColor = '';
-        document.getElementById('other_ethnicity').style.borderColor = '';
+        document.getElementById('other_citizenship').style.borderColor = '';
         document.getElementById('province').style.borderColor = '';
         document.getElementById('municipal').style.borderColor = '';
         document.getElementById('barangay').style.borderColor = '';
@@ -1425,8 +1425,8 @@
         const age = document.getElementById('age').value;
         const contact = document.getElementById('contact').value;
         const dateofbirth = document.getElementById('dob').value;
-        const ethnicity = document.getElementById('ethnicity').value;
-        const otherEthnicity = document.getElementById('other_ethnicity').value;
+        const citizenship = document.getElementById('citizenship').value;
+        const otherCitizenship = document.getElementById('other_citizenship').value;
         const civilStatus = document.getElementById('civil_status').value;
         const religion = document.getElementById('religion').value;
         const otherReligion = document.getElementById('other_religion').value;
@@ -1521,9 +1521,9 @@
             isValid = false;
         }
 
-        if (ethnicity === "Others" && !otherEthnicity) {
-            document.getElementById('other_ethnicity').style.borderColor = 'red';
-            errorMessage += "Other Ethnicity is required when 'Others' is selected.<br>";
+        if (citizenship === "Others" && !otherCitizenship) {
+            document.getElementById('other_citizenship').style.borderColor = 'red';
+            errorMessage += "Other Citizenship is required when 'Others' is selected.<br>";
             isValid = false;
         }
 
