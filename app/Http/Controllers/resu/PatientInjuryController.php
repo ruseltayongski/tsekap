@@ -22,6 +22,7 @@ use App\ResuSafety;
 use App\ResuInpatient;
 use App\ResuErOpdBhsRhu;
 use App\ResuProfileInjury;
+use Carbon\Carbon;
 
 class PatientInjuryController extends Controller     
 {
@@ -30,7 +31,7 @@ class PatientInjuryController extends Controller
         $user = Auth::user();
         $keyword = $request->input('keyword');
      
-        $query = ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'contact','report_facilityId','name_of_encoder')
+        $query = ResuProfileInjury::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')
         // $query =Profile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'barangay_id', 'muncity_id', 'province_id', 'report_facilityId','name_of_encoder')   
         ->with([
                 'facility' => function($query){
@@ -51,8 +52,23 @@ class PatientInjuryController extends Controller
             ])
             ->whereNotNull('report_facilityId')
             ->orderby('id', 'desc');
-
+          
              $user_facility = ResuReportFacility::where('facility_id',  $user->facility_id)->first();
+             
+             $startDate = $request->input('start_date');
+             $endDate = $request->input('end_date');
+         
+             if ($startDate) {
+                 $query->whereHas('preadmission', function ($q) use ($startDate) {
+                     $q->whereDate('dateInjury', '>=', Carbon::parse($startDate));
+                 });
+             }
+         
+             if ($endDate) {
+                 $query->whereHas('preadmission', function ($q) use ($endDate) {
+                     $q->whereDate('dateInjury', '<=', Carbon::parse($endDate));
+                 });
+             }
              
             if($user->user_priv == 6){ // for facility view
                 if(!empty($keyword)){ //search functionality
@@ -60,6 +76,10 @@ class PatientInjuryController extends Controller
                     ->where(function ($q) use ($keyword){
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhere('mname', 'like', "%$keyword%") // Search by middle name
+                            ->orWhereRaw("CONCAT(fname, ' ', IFNULL(mname, ''), ' ', lname) LIKE ?", ["%$keyword%"])
+                            ->orWhere('sex', 'like', "%$keyword%")
+                            ->orWhere('name_of_encoder', 'like', "%$keyword%")
                             ->orWhereHas('province', function ($q) use ($keyword){
                                 $q->where('description','like', "%$keyword%");
                             })
@@ -75,7 +95,11 @@ class PatientInjuryController extends Controller
                     $query->where(function ($q) use ($keyword){
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
-                            
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhere('mname', 'like', "%$keyword%") // Search by middle name
+                            ->orWhereRaw("CONCAT(fname, ' ', IFNULL(mname, ''), ' ', lname) LIKE ?", ["%$keyword%"])   
+                            ->orWhere('sex', 'like', "%$keyword%")       
+                            ->orWhere('name_of_encoder', 'like', "%$keyword%")  
                             ->orWhereHas('province', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             })
@@ -89,11 +113,15 @@ class PatientInjuryController extends Controller
             }else if($user->user_priv == 3){ //provincial
 
                 if(!empty($keyword)){ //search functionality
-                        $query->where('province_id', $user->province)
-                        ->whereNotIn('province_id',['63','76','80'])    
+                    $query->where('province_id', $user->province)
+                        ->whereNotIn('province_id',['63','76','80'])                           
                     ->where(function ($q) use ($keyword){
                         $q->where('fname', 'like', "%$keyword%")
                             ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhere('mname', 'like', "%$keyword%") // Search by middle name
+                            ->orWhereRaw("CONCAT(fname, ' ', IFNULL(mname, ''), ' ', lname) LIKE ?", ["%$keyword%"]) // Search by full name with middle name
+                            ->orWhere('sex', 'like', "%$keyword%")
+                            ->orWhere('name_of_encoder', 'like', "%$keyword%")
                             ->orWhereHas('muncity', function ($q) use ($keyword){
                                 $q->where('description', 'like', "%$keyword%");
                             });
@@ -104,18 +132,35 @@ class PatientInjuryController extends Controller
                     ->whereNotIn('province_id',['63','76','80'])
                     ->simplePaginate(15);
 
-            }else if($user->user_priv == 8){ // HUC
-
-                $profiles = $query->where('muncity_id', $user->muncity)
-                    ->simplePaginate(15);
-            }
-            else{
-                $profiles = $query->simplePaginate(15);
+            }else if($user->user_priv == 10){ //DSO
+                if (!empty($keyword)) { // Check if a keyword is provided for search
+                    $query->where(function ($q) use ($keyword) {
+                        $q->where('fname', 'like', "%$keyword%") // Search by first name
+                            ->orWhere('lname', 'like', "%$keyword%") // Search by last name
+                            ->orWhere('mname', 'like', "%$keyword%") // Search by middle name
+                            ->orWhere('sex', 'like', "%$keyword%")
+                            ->orWhere('name_of_encoder', 'like', "%$keyword%")
+                            ->orWhereRaw("CONCAT(fname, ' ', IFNULL(mname, ''), ' ', lname) LIKE ?", ["%$keyword%"]) // Search by full name with middle name
+                            ->orWhereHas('province', function ($q) use ($keyword) { // Search in province relationship
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhereHas('muncity', function ($q) use ($keyword) { // Search in muncity relationship
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhereHas('barangay', function ($q) use ($keyword) { // Search in barangay relationship
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                    });
+                }
+                $profiles = $query->simplePaginate(15);   
+               
             }
             
              if ($request->ajax()) { // for populate table search
                  return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
-            //     return view('resu.manage_patient_injury.Partialprofile_table', compact('profiles','user'))->render();
+    
+             }else if($request->ajax()) {
+                   return view('resu.manage_patient_injury.patient_injury_Date', compact('profile','user'))->render();
              }
             
         return view('resu.manage_patient_injury.list_patient', [
@@ -124,7 +169,7 @@ class PatientInjuryController extends Controller
         
         ]);
     }
-
+    
     public function PatientForm(){
 
         $user = Auth::user();
@@ -215,15 +260,16 @@ class PatientInjuryController extends Controller
         $profile->fname = $request->fname;
         $profile->mname = $request->mname;
         $profile->lname = $request->lname;
+        $profile->suffix = $request->suffix;
         $profile->sex = $request->sex;
         $profile->dob = $request->dateBirth;
         $profile->province_id = $request->province;
         $profile->muncity_id = $request->municipal;
         $profile->barangay_id = $request->barangay;
         $profile->phicID = $request->phil_no;
-        $profile->contact = $request->contacts_number;
+        $profile->contact = $request->contact;
         $profile->type_of_patient = $request->typePatient;
-        $profile->name_of_encoder = $user->fname.' '.$user->lname;
+        $profile->name_of_encoder = $user->fname." ".$user->lname;
         $profile->report_facilityId = $request->facility_id;
 
         // $profile->nameof_encoder = $user->
@@ -480,7 +526,7 @@ class PatientInjuryController extends Controller
 
         $province_selectedMun = $province->merge($selectedMuncity);
 
-         $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'contact','Hospital_caseNo', 'type_of_patient','report_facilityId')
+         $profile = ResuProfileInjury::select('id', 'fname', 'mname', 'lname', 'suffix', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'contact', 'type_of_patient','report_facilityId')
         // $profile = Profile::select('id', 'fname', 'mname', 'lname', 'dob', 'phicID', 'sex', 'barangay_id', 'muncity_id', 'province_id', 'Hospital_caseNo', 'type_of_patient','report_facilityId')
              ->with([
             'preadmission' => function ($query) { //sub list manage patient injury
@@ -585,7 +631,6 @@ class PatientInjuryController extends Controller
             $profile->muncity_id = $request->municipal;
             $profile->barangay_id = $request->barangay;
             $profile->phicID = $request->phil_no;
-            $profile->contact = $request->contacts_number;
             $profile->type_of_patient = $request->typePatient;
             $profile->name_of_encoder = $user->fname.''.$user->lname;
             $profile->save();
@@ -1034,3 +1079,6 @@ class PatientInjuryController extends Controller
             }
         }
 }
+
+
+//asdasdad

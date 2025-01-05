@@ -203,7 +203,7 @@ $(document).ready(function () {
         type: "GET",
         dataType: "json",
         success: function (data) {
-          console.log("data province", provinceId)
+          //console.log("data province", provinceId)
           if (data && data.length > 0) {
             $.each(data, function (key, value) {
               if (value.id && value.description) {
@@ -219,7 +219,7 @@ $(document).ready(function () {
             if (muncity_id) {
               $(muncity).val(muncity_id);
               $(muncity).trigger("chosen:updated");
-              console.log("chosen", $(muncity).trigger("chosen:updated"));
+              //console.log("chosen", $(muncity).trigger("chosen:updated"));
             } else {
               $(muncity).trigger("chosen:updated");
             }
@@ -260,7 +260,7 @@ $(document).ready(function () {
   // display Barangay
   function BarangayData(muncityId, barangay, barangay_id = null) {
     $(barangay).empty().append("<option>Select Barangay</option>");
-    console.log("muncity id: ", muncityId);
+    //console.log("muncity id: ", muncityId);
     $.ajax({
       url: "get/barangay/" + muncityId,
       type: "GET",
@@ -301,7 +301,7 @@ $(document).ready(function () {
         type: "GET",
         dataType: "json",
         success: function (data) {
-          console.log("data province", provinceId)
+         // console.log("data province", provinceId)
           if (data && data.length > 0) {
             $.each(data, function (key, value) {
               if (value.id && value.description) {
@@ -317,7 +317,7 @@ $(document).ready(function () {
             if (muncity_id) {
               $(muncity).val(muncity_id);
               $(muncity).trigger("chosen:updated");
-              console.log("chosen", $(muncity).trigger("chosen:updated"));
+            //  console.log("chosen", $(muncity).trigger("chosen:updated"));
             } else {
               $(muncity).trigger("chosen:updated");
             }
@@ -349,7 +349,7 @@ $(document).ready(function () {
 
   $("#municipal").change(function () {
     var muncityId = $(this).val();
-    console.log("barangay muncity id:", muncityId);
+   // console.log("barangay muncity id:", muncityId);
     BarangayData(muncityId, "#barangay");
   });
 
@@ -375,7 +375,7 @@ $(document).ready(function () {
     }
   }
   // end of update portion
-  console.log("Document ready!");
+  //console.log("Document ready!");
 
   if ($("#update_provinceId").length) {
     //console.log("Element #update_provinceId is present.");
@@ -391,7 +391,7 @@ $(document).ready(function () {
   if (placeprovinceId) {
     $("#update_provinceId").change(function () {
       var PprovinceId = $(this).val();
-      console.log("place province injury", PprovinceId);
+      //console.log("place province injury", PprovinceId);
       MunicipalData(PprovinceId, "#update_municipal_injury");
     });
 
@@ -407,7 +407,7 @@ $(document).ready(function () {
   if (placemunicipalId !== null && placemunicipalId !== undefined) {
     $("#update_municipal_injury").change(function () {
       var pmuncity_id = $(this).val();
-      console.log("place injuruy municity Id", pmuncity_id);
+      //console.log("place injuruy municity Id", pmuncity_id);
       BarangayData(pmuncity_id, "#update_barangay_injury");
     });
 
@@ -491,7 +491,7 @@ $(document).ready(function () {
     if (dob) {
         const parsedDob = new Date(dob);
         const ageString = calculateAge(parsedDob);
-        console.log(ageString);
+       // console.log(ageString);
         ageField.val(ageString);
     } else {
         ageField.val("");
@@ -739,7 +739,7 @@ $(document).ready(function () {
   });
 
   var checkmodal = $("#checkProfiles").modal("show");
-  console.log("modal", checkmodal);
+  //console.log("modal", checkmodal);
 
   $("#riskCheckProfile").modal({
     backdrop: "static",
