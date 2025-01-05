@@ -12,16 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
-// for logging
-use Illuminate\Support\Facades\Log;
-
 class DataController extends Controller
 {
     public function retrievePatientRiskProfile(Request $request)
     {
-        // Manually validate the request
+        // Validate the request using the Validator facade
         $validator = Validator::make($request->all(), [
             'fields' => 'required|array',
+            'fields.filter'=> 'required|string',
             'fields.keyword' => 'sometimes|string',
         ]);
 
@@ -29,101 +27,73 @@ class DataController extends Controller
             return response()->json(['error' => 'Invalid input'], 400);
         }
 
-        // Log the entire request for debugging
-        \Log::info('Request Payload:', $request->all());
-
-        // Retrieve the fields parameter
-        $fields = $request->input('fields');
-        echo "Fields:";
-        print_r($fields);
-
-        // Log the fields for debugging
-        \Log::info('Fields Input:', ['fields' => $fields]);
-
         // Check if the user is authenticated
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // Get the authenticated user
         $user = Auth::user();
+        $fields = $request->input('fields');
 
-        // Log the user for debugging
-        \Log::info('User:', ['user' => $user]);
+        $filter = isset($fields['filter']) ? $fields['filter'] : "fname";
+        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null; // Older ternary syntax
 
-        // Build the query
-        $query = RiskProfile::select('id', 'fname', 'mname', 'lname', 'dob', 'sex', 'civil_status', 'barangay_id', 'municipal_id', 'province_id', 'facility_id_updated', 'created_at')
-            ->with([
-                'province' => function ($query) use ($user) {
-                    $query->select('id', 'description')->where('id', $user->province);
-                },
-                'muncity' => function ($query) use ($user) {
-                    $query->select('id', 'province_id', 'description')->where('province_id', $user->province);
-                },
-            ])
-            ->orderby('id', 'desc');
+        // Debugging: Log the keyword
+        \Log::info('Keyword:', ['keyword' => $keyword]);
+        \Log::info('Filter:', ['filter' => $filter]);       
+    
+        // Base query for risk profiles with INNER JOIN
+        $query = RiskProfile::select(
+            'risk_profile.id',
+            'risk_profile.fname',
+            'risk_profile.mname',
+            'risk_profile.lname',
+            'risk_profile.dob',
+            'risk_profile.sex',
+            'risk_profile.civil_status',
+            'risk_profile.barangay_id',
+            'risk_profile.municipal_id',
+            'risk_profile.province_id',
+            'risk_profile.facility_id_updated',
+            'risk_profile.created_at',
+            'muncity.description as municipal_name',
+            'province.description as province_name'
+        )
+            ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id') // Corrected column name
+            ->join('province', 'risk_profile.province_id', '=', 'province.id');
 
-        // Log the query for debugging
-        \Log::info('Query Instance:', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        // Apply user privilege filters
+        if ($user->user_priv === 3) {
+            $query->where('risk_profile.province_id', $user->province);
+        }
+            // } elseif ($user->user_priv === 6) {
+        //     $query->where('risk_profile.facility_id_updated', $user->facility_id);
+        // }
 
-        // Get the user privilege and keyword
-        $user_priv = $user->user_priv;
-        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null;
-
-        // Build the query based on user privileges
-        switch ($user_priv) {
-            case 3: // provincial view
-                if (!empty($keyword)) {
-                    $query->where('province_id', $user->province)->where(function ($q) use ($keyword) {
-                        $q->where('fname', 'like', "%$keyword%")
-                            ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('muncity', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            });
-                    });
-                } else {
-                    $query->where('province_id', $user->province);
-                }
-                break;
-
-            case 6: // facility view
-                if (!empty($keyword)) {
-                    $query->where('facility_id_updated', $user->facility_id)->where(function ($q) use ($keyword) {
-                        $q->where('fname', 'like', "%$keyword%")
-                            ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('province', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            })
-                            ->orWhereHas('muncity', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            });
-                    });
-                } else {
-                    $query->where('facility_id_updated', $user->facility_id);
-                }
-                break;
-
-            case 7: // region view
-                if (!empty($keyword)) {
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where('fname', 'like', "%$keyword%")
-                            ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('province', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            })
-                            ->orWhereHas('muncity', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            });
-                    });
-                }
-                break;
+        // Apply keyword filter for fname, lname, or dob (OR condition for each field)
+        if ($keyword) {
+            if($filter === 'fname') {
+                $query->where('risk_profile.fname', 'like', "%$keyword%");
+            } elseif($filter === 'lname') {
+                $query->where('risk_profile.lname', 'like', "%$keyword%");
+            } elseif($filter === 'dob') {
+                $query->where('risk_profile.dob', 'like', "%$keyword%");
+            } else {
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('risk_profile.fname', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.lname', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.dob', 'like', "%$keyword%");
+                });
+            }
         }
 
-        // Paginate the results
-        $riskprofiles = $query->simplePaginate(15);
+        // Debugging: Log the query instance
+        \Log::info('Query Instance:', [
+            'bindings' => $query->getBindings(),
+        ]);
 
-        // Return the results as JSON
-        return response()->json($riskprofiles, 200);
+        // Paginate and return results
+        return response()->json($query->simplePaginate(15), 200);
     }
 
     public function retrievePatientRiskAssessment(Request $request)
@@ -291,7 +261,7 @@ class DataController extends Controller
             'fields.pwd_id' => 'nullable|string|max:20',
             'fields.citizenship' => 'required|string|max:50',
             'fields.other_citizenship' => 'nullable|string|max:50',
-            'fields.indigenous_person' => 'required|boolean',
+            'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
         ];
@@ -337,104 +307,97 @@ class DataController extends Controller
         // Define validation rules
         $rules = [
             'fields.risk_profile_id' => 'required|integer',
-            'fields.chest_pain' => 'required|boolean',
-            'fields.difficulty_breathing' => 'required|boolean',
-            'fields.loss_of_consciousness' => 'required|boolean',
-            'fields.slurred_speech' => 'required|boolean',
-            'fields.facial_asymmetry' => 'required|boolean',
-            'fields.weakness_numbness' => 'required|boolean',
-            'fields.disoriented' => 'required|boolean',
-            'fields.chest_retractions' => 'required|boolean',
-            'fields.seizures' => 'required|boolean',
-            'fields.self_harm' => 'required|boolean',
-            'fields.agitated_behavior' => 'required|boolean',
-            'fields.eye_injury' => 'required|boolean',
-            'fields.severe_injuries' => 'required|boolean',
-            'fields.physician_name' => 'required|string|max:255',
-            'fields.reason' => 'required|string|max:255',
-            'fields.facility' => 'required|string|max:255',
-            'fields.pm_hypertension' => 'required|boolean',
-            'fields.pm_heartDisease' => 'required|boolean',
-            'fields.pm_diabetes' => 'required|boolean',
-            'fields.pm_diabetes_details' => 'nullable|string|max:255',
-            'fields.pm_cancer' => 'required|boolean',
-            'fields.pm_cancer_details' => 'nullable|string|max:255',
-            'fields.pm_COPD' => 'required|boolean',
-            'fields.pm_asthma' => 'required|boolean',
-            'fields.pm_allergies' => 'required|boolean',
-            'fields.pm_allergies_details' => 'nullable|string|max:255',
-            'fields.pm_mnsad' => 'required|boolean',
-            'fields.pm_mnsad_details' => 'nullable|string|max:255',
-            'fields.pm_vision' => 'required|boolean',
-            'fields.pm_psh' => 'required|boolean',
-            'fields.pm_psh_details' => 'nullable|string|max:255',
-            'fields.pm_thyroid' => 'required|boolean',
-            'fields.pm_kidney' => 'required|boolean',
+            // ar
+            'fields.ar_chest_pain' => 'required|string|max:8',
+            'fields.ar_difficulty_breathing' => 'required|string|max:8',
+            'fields.ar_loss_of_consciousness' => 'required|string|max:8',
+            'fields.ar_slurred_speech' => 'required|string|max:8',
+            'fields.ar_facial_asymmetry' => 'required|string|max:8',
+            'fields.ar_weakness_numbness' => 'required|string|max:8',
+            'fields.ar_disoriented' => 'required|string|max:8',
+            'fields.ar_chest_retractions' => 'required|string|max:8',
+            'fields.ar_seizure_convulsion' => 'required|string|max:8',
+            'fields.ar_act_self_harm_suicide' => 'required|string|max:8',
+            'fields.ar_agitated_behavior' => 'required|string|max:8',
+            'fields.ar_eye_injury' => 'required|string|max:8',
+            'fields.ar_severe_injuries' => 'required|string|max:8',
+            'fields.ar_refer_physician_name' => 'required|string|max:255',
+            'fields.ar_refer_reason' => 'required|string|max:255',
+            'fields.ar_refer_facility' => 'required|string|max:255',
 
-            'fields.fmh_hypertension' => 'required|boolean',
-            'fields.fmh_side_hypertension' => 'required|boolean',
-            'fields.fmh_stroke' => 'required|boolean',
-            'fields.fmh_side_stroke' => 'required|boolean',
-            'fields.fmh_heart_disease' => 'required|boolean',
-            'fields.fmh_side_heart_disease' => 'required|boolean',
-            'fields.fmh_diabetes' => 'required|boolean',
-            'fields.fmh_side_diabetes' => 'required|boolean',
-            'fields.fmh_asthma' => 'required|boolean',
-            'fields.fmh_side_asthma' => 'required|boolean',
-            'fields.fmh_cancer' => 'required|boolean',
-            'fields.fmh_side_cancer' => 'required|boolean',
-            'fields.fmh_kidney_disease' => 'required|boolean',
-            'fields.fmh_side_kidney_disease' => 'required|boolean',
-            'fields.fmh_degree' => 'required|boolean',
-            'fields.fmh_side_coronary_disease' => 'required|boolean',
-            'fields.fmh_famtb' => 'required|boolean',
-            'fields.fmh_side_famtb' => 'required|boolean',
-            'fields.fmh_mnsad' => 'required|boolean',
-            'fields.fmh_side_mnsad' => 'required|boolean',
-            'fields.fmh_copd' => 'required|boolean',
-            'fields.fmh_side_copd' => 'required|boolean',
+            // pmh
+            'fields.pmh_hypertension' => 'required|string|max:8',
+            'fields.pmh_heart_disease' => 'required|string|max:8',
+            'fields.pmh_diabetes' => 'required|string|max:8',
+            'fields.pmh_specify_diabetes' => 'nullable|string|max:255',
+            'fields.pmh_cancer' => 'required|string|max:8',
+            'fields.pmh_specify_cancer' => 'nullable|string|max:255',
+            'fields.pmh_copd' => 'required|string|max:8',
+            'fields.pmh_asthma' => 'required|string|max:8',
+            'fields.pmh_allergies' => 'required|string|max:8',
+            'fields.pmh_specify_allergies' => 'nullable|string|max:255',
+            'fields.pmh_mn_and_s_disorder' => 'required|string|max:8',
+            'fields.pmh_specify_mn_and_s_disorder' => 'nullable|string|max:255',
+            'fields.pmh_vision_problems' => 'required|string|max:8',
+            'fields.pmh_previous_surgical' => 'required|string|max:8',
+            'fields.pmh_specify_previous_surgical' => 'nullable|string|max:255',
+            'fields.pmh_thyroid_disorders' => 'required|string|max:8',
+            'fields.pmh_kidney_disorders' => 'required|string|max:8',
 
-            'fields.tobaccoUse' => 'required|array|min:1',
-            'fields.ncd_alcohol' => 'required|boolean',
-            'fields.ncd_alcoholBinge' => 'required|boolean',
-            'fields.ncd_physical' => 'required|boolean',
-            'fields.ncd_nutrition' => 'required|boolean',
+            // fmh
+            'fields.fmh_hypertension' => 'required|string|max:20',
+            'fields.fmh_stroke' => 'required|string|max:20',
+            'fields.fmh_heart_disease' => 'required|string|max:20',
+            'fields.fmh_diabetes_mellitus' => 'required|string|max:20',
+            'fields.fmh_asthma' => 'required|string|max:20',
+            'fields.fmh_cancer' => 'required|string|max:20',
+            'fields.fmh_kidney_disease' => 'required|string|max:20',
+            'fields.fmh_first_degree_relative' => 'required|string|max:20',
+            'fields.fmh_having_tuberculosis_5_years' => 'required|string|max:20',
+            'fields.fmh_mn_and_s_disorder' => 'required|string|max:20',
+            'fields.fmh_copd' => 'required|string|max:20',
+
+            // rf
+            'fields.rf_tobacco_use' => 'required|string|max:255',
+            'fields.rf_alcohol_intake' => 'required|string|max:8',
+            'fields.rf_alcohol_binge_drinker' => 'required|string|max:8',
+            'fields.rf_physical_activity' => 'required|string|max:8',
+            'fields.rf_nutrition_dietary' => 'required|string|max:8',
             'fields.rf_weight' => 'required|numeric',
             'fields.rf_height' => 'required|numeric',
-            'fields.rf_BMI' => 'required|numeric',
-            'fields.rf_waist' => 'required|numeric',
-            'fields.dm_symptoms' => 'required|array|min:1',
-            'fields.systolic_t1' => 'required|numeric',
-            'fields.diastolic_t1' => 'required|numeric',
-            'fields.systolic_t2' => 'required|numeric',
-            'fields.diastolic_t2' => 'required|numeric',
-            'fields.fbs_result' => 'required|numeric',
-            'fields.rbs_result' => 'required|numeric',
-            'fields.bloodSugar_date_taken' => 'required|date',
-            'fields.lipid_cholesterol' => 'required|numeric',
-            'fields.lipid_hdl' => 'required|numeric',
-            'fields.lipid_ldl' => 'required|numeric',
-            'fields.lipid_vldl' => 'required|numeric',
-            'fields.lipid_triglyceride' => 'required|numeric',
-            'fields.lipid_date_taken' => 'required|date',
-            'fields.uri_protein' => 'required|numeric',
-            'fields.uri_protein_date_taken' => 'required|date',
-            'fields.uri_ketones' => 'required|numeric',
-            'fields.uri_ketones_date_taken' => 'required|date',
-            'fields.symptom_breathlessness' => 'required|boolean',
-            'fields.symptom_sputum_production' => 'required|boolean',
-            'fields.symptom_chronic_cough' => 'required|boolean',
-            'fields.symptom_chest_tightness' => 'required|boolean',
-            'fields.symptom_wheezing' => 'required|boolean',
-            'fields.pefr_above_20_percent' => 'required|boolean',
-            'fields.pefr_below_20_percent' => 'required|boolean',
-            'fields.anti_hypertensives' => 'required|string|max:255',
-            'fields.anti_hypertensives_specify' => 'nullable|string|max:255',
-            'fields.anti_diabetes' => 'required|string|max:255',
-            'fields.anti_diabetes_type' => 'nullable|string|max:255',
-            'fields.anti_diabetes_specify' => 'nullable|string|max:255',
-            'fields.follow_up_date' => 'required|date',
-            'fields.remarks' => 'nullable|string|max:1000',
+            'fields.rf_body_mass' => 'required|numeric',
+            'fields.rf_waist_circumference' => 'required|numeric',
+
+            // rs
+            'fields.rs_systolic_t1' => 'required|numeric',
+            'fields.rs_diastolic_t1' => 'required|numeric',
+            'fields.rs_systolic_t2' => 'required|numeric',
+            'fields.rs_diastolic_t2' => 'required|numeric',
+            'fields.rs_blood_sugar_fbs' => 'required|numeric',
+            'fields.rs_blood_sugar_rbs' => 'required|numeric',
+            'fields.rs_blood_sugar_date_taken' => 'required|date',
+            'fields.rs_blood_sugar_symptoms' => 'required|string|max:255',
+            'fields.rs_lipid_cholesterol' => 'required|numeric',
+            'fields.rs_lipid_hdl' => 'required|numeric',
+            'fields.rs_lipid_ldl' => 'required|numeric',
+            'fields.rs_lipid_vldl' => 'required|numeric',
+            'fields.rs_lipid_triglyceride' => 'required|numeric',
+            'fields.rs_lipid_date_taken' => 'required|date',
+            'fields.rs_urine_protein' => 'required|numeric',
+            'fields.rs_urine_protein_date_taken' => 'required|date',
+            'fields.rs_urine_ketones' => 'required|numeric',
+            'fields.rs_urine_ketones_date_taken' => 'required|date',
+            'fields.rs_chronic_respiratory_disease' => 'required|string|max:255',
+            'fields.rs_if_yes_any_symptoms' => 'required|string|max:255',
+
+            //mngm
+            'fields.mngm_med_hypertension' => 'required|string|max:8',
+            'fields.mngm_med_hypertension_specify' => 'nullable|string|max:255',
+            'fields.mngm_med_diabetes' => 'required|string|max:8',
+            'fields.mngm_med_diabetes_options' => 'required|string|max:50',
+            'fields.mngm_med_diabetes_specify' => 'nullable|string|max:255',
+            'fields.mngm_date_follow_up' => 'required|date',
+            'fields.mngm_remarks' => 'nullable|string|max:255',
         ];
 
         $validator = Validator::make($fields, $rules);
@@ -448,148 +411,95 @@ class DataController extends Controller
 
             // Health assessment checkbox fields
             $riskform->risk_profile_id = $fields->risk_profile_id;
-            $riskform->ar_chest_pain = $fields->chest_pain;
-            $riskform->ar_difficulty_breathing = $fields->difficulty_breathing;
-            $riskform->ar_loss_of_consciousness = $fields->loss_of_consciousness;
-            $riskform->ar_slurred_speech = $fields->slurred_speech;
-            $riskform->ar_facial_asymmetry = $fields->facial_asymmetry;
-            $riskform->ar_weakness_numbness = $fields->weakness_numbness;
-            $riskform->ar_disoriented = $fields->disoriented;
-            $riskform->ar_chest_retractions = $fields->chest_retractions;
-            $riskform->ar_seizure_convulsion = $fields->seizures;
-            $riskform->ar_act_self_harm_suicide = $fields->self_harm;
-            $riskform->ar_agitated_behavior = $fields->agitated_behavior;
-            $riskform->ar_eye_injury = $fields->eye_injury;
-            $riskform->ar_severe_injuries = $fields->severe_injuries;
-            $riskform->ar_refer_physician_name = $fields->physician_name;
-            $riskform->ar_refer_reason = $fields->reason;
-            $riskform->ar_refer_facility = $fields->facility;
+            $riskform->ar_chest_pain = $fields->ar_chest_pain;
+            $riskform->ar_difficulty_breathing = $fields->ar_difficulty_breathing;
+            $riskform->ar_loss_of_consciousness = $fields->ar_loss_of_consciousness;
+            $riskform->ar_slurred_speech = $fields->ar_slurred_speech;
+            $riskform->ar_facial_asymmetry = $fields->ar_facial_asymmetry;
+            $riskform->ar_weakness_numbness = $fields->ar_weakness_numbness;
+            $riskform->ar_disoriented = $fields->ar_disoriented;
+            $riskform->ar_chest_retractions = $fields->ar_chest_retractions;
+            $riskform->ar_seizure_convulsion = $fields->ar_seizure_convulsion;
+            $riskform->ar_act_self_harm_suicide = $fields->ar_act_self_harm_suicide;
+            $riskform->ar_agitated_behavior = $fields->ar_agitated_behavior;
+            $riskform->ar_eye_injury = $fields->ar_eye_injury;
+            $riskform->ar_severe_injuries = $fields->ar_severe_injuries;
+            $riskform->ar_refer_physician_name = $fields->ar_refer_physician_name;
+            $riskform->ar_refer_reason = $fields->ar_refer_reason;
+            $riskform->ar_refer_facility = $fields->ar_refer_facility;
 
             //PAST MEDICAL HISTORY
-            $riskform->pmh_hypertension = $fields->pm_hypertension;
-            $riskform->pmh_heart_disease = $fields->pm_heartDisease;
-            $riskform->pmh_diabetes = $fields->pm_diabetes;
-            $riskform->pmh_specify_diabetes = $fields->pm_diabetes_details;
-            $riskform->pmh_cancer = $fields->pm_cancer;
-            $riskform->pmh_specify_cancer = $fields->pm_cancer_details;
-            $riskform->pmh_copd = $fields->pm_COPD;
-            $riskform->pmh_asthma = $fields->pm_asthma;
-            $riskform->pmh_allergies = $fields->pm_allergies;
-            $riskform->pmh_specify_allergies = $fields->pm_allergies_details;
-            $riskform->pmh_mn_and_s_disorder = $fields->pm_mnsad;
-            $riskform->pmh_specify_mn_and_s_disorder = $fields->pm_mnsad_details;
-            $riskform->pmh_vision_problems = $fields->pm_vision;
-            $riskform->pmh_previous_surgical = $fields->pm_psh;
-            $riskform->pmh_specify_previous_surgical = $fields->pm_psh_details;
-            $riskform->pmh_thyroid_disorders = $fields->pm_thyroid;
-            $riskform->pmh_kidney_disorders = $fields->pm_kidney;
+            $riskform->pmh_hypertension = $fields->pmh_hypertension;
+            $riskform->pmh_heart_disease = $fields->pmh_heart_disease;
+            $riskform->pmh_diabetes = $fields->pmh_diabetes;
+            $riskform->pmh_specify_diabetes = $fields->pmh_specify_diabetes;
+            $riskform->pmh_cancer = $fields->pmh_cancer;
+            $riskform->pmh_specify_cancer = $fields->pmh_specify_cancer;
+            $riskform->pmh_copd = $fields->pmh_copd;
+            $riskform->pmh_asthma = $fields->pmh_asthma;
+            $riskform->pmh_allergies = $fields->pmh_allergies;
+            $riskform->pmh_specify_allergies = $fields->pmh_specify_allergies;
+            $riskform->pmh_mn_and_s_disorder = $fields->pmh_mn_and_s_disorder;
+            $riskform->pmh_specify_mn_and_s_disorder = $fields->pmh_specify_mn_and_s_disorder;
+            $riskform->pmh_vision_problems = $fields->pmh_vision_problems;
+            $riskform->pmh_previous_surgical = $fields->pmh_previous_surgical;
+            $riskform->pmh_specify_previous_surgical = $fields->pmh_specify_previous_surgical;
+            $riskform->pmh_thyroid_disorders = $fields->pmh_thyroid_disorders;
+            $riskform->pmh_kidney_disorders = $fields->pmh_kidney_disorders;
 
             //FAMILY HISTORY
             $riskform->fmh_hypertension = $fields->fmh_hypertension;
-            $riskform->fmh_side_hypertension = $fields->fmh_side_hypertension;
             $riskform->fmh_stroke = $fields->fmh_stroke;
-            $riskform->fmh_side_stroke = $fields->fmh_side_stroke;
             $riskform->fmh_heart_disease = $fields->fmh_heart_disease;
-            $riskform->fmh_side_heartDisease = $fields->fmh_side_heart_disease;
             $riskform->fmh_diabetes_mellitus = $fields->fmh_diabetes;
-            $riskform->fmh_side_diabetes = $fields->fmh_side_diabetes;
             $riskform->fmh_asthma = $fields->fmh_asthma;
-            $riskform->fmh_side_asthma = $fields->fmh_side_asthma;
             $riskform->fmh_cancer = $fields->fmh_cancer;
-            $riskform->fmh_side_cancer = $fields->fmh_side_cancer;
-            $riskform->fmh_kidney_disease = $fields->fmh_kidney;
-            $riskform->fmh_side_kidney_disease = $fields->fmh_side_kidney_disease;
-            $riskform->fmh_first_degree_relative = $fields->fmh_degree;
-            $riskform->fmh_side_coronary_disease = $fields->fmh_side_coronary_disease;
-            $riskform->fmh_having_tuberculosis_5_years = $fields->fmh_famtb;
-            $riskform->fmh_side_tuberculosis = $fields->fmh_side_famtb;
-            $riskform->fmh_mn_and_s_disorder = $fields->fmh_mnsad;
-            $riskform->fmh_side_m_and_s_disorder = $fields->fmh_side_mnsad;
+            $riskform->fmh_kidney_disease = $fields->fmh_kidney_disease;
+            $riskform->fmh_first_degree_relative = $fields->fmh_first_degree_relative;
+            $riskform->fmh_having_tuberculosis_5_years = $fields->fmh_having_tuberculosis_5_years;
+            $riskform->fmh_mn_and_s_disorder = $fields->fmh_mn_and_s_disorder;
             $riskform->fmh_copd = $fields->fmh_copd;
 
             // NCD RISK FACTORS
-            $tobaccoUsed = $fields->tobaccoUse;
-            $tobaccoUseLimited = array_slice($tobaccoUsed, 0, 2);
-            $riskform->rf_tobacco_use = implode(', ', $tobaccoUseLimited);
-            $riskform->rf_alcohol_intake = $fields->ncd_alcohol;
-            $riskform->rf_alcohol_binge_drinker = $fields->ncd_alcoholBinge;
-            $riskform->rf_physical_activity = $fields->ncd_physical;
-            $riskform->rf_nutrition_dietary = $fields->ncd_nutrition;
+            $riskform->rf_tobacco_use = $fields->rf_tobacco_use;
+            $riskform->rf_alcohol_intake = $fields->rf_alcohol_intake;
+            $riskform->rf_alcohol_binge_drinker = $fields->rf_alcohol_binge_drinker;
+            $riskform->rf_physical_activity = $fields->rf_physical_activity;
+            $riskform->rf_nutrition_dietary = $fields->rf_nutrition_dietary;
             $riskform->rf_weight = $fields->rf_weight;
             $riskform->rf_height = $fields->rf_height;
-            $riskform->rf_body_mass = $fields->rf_BMI;
-            $riskform->rf_waist_circumference = $fields->rf_waist;
+            $riskform->rf_body_mass = $fields->rf_body_mass;
+            $riskform->rf_waist_circumference = $fields->rf_waist_circumference;
 
             //RISK SCREENING
-            // Hypertension/Diabetes/Hypercholestrolemia/Renal Diseases
-            $dmSymptoms = $fields->dm_symptoms;
+            $riskform->rs_systolic_t1 = $fields->rs_systolic_t1;
+            $riskform->rs_diastolic_t1 = $fields->rs_diastolic_t1;
+            $riskform->rs_systolic_t2 = $fields->rs_systolic_t2;
+            $riskform->rs_diastolic_t2 = $fields->rs_diastolic_t2;
+            $riskform->rs_blood_sugar_fbs = $fields->rs_blood_sugar_fbs;
+            $riskform->rs_blood_sugar_rbs = $fields->rs_blood_sugar_rbs;
+            $riskform->rs_blood_sugar_date_taken = $fields->rs_blood_sugar_date_taken;
+            $riskform->rs_blood_sugar_symptoms = $fields->rs_blood_sugar_symptoms;
+            $riskform->rs_lipid_cholesterol = $fields->rs_lipid_cholesterol;
+            $riskform->rs_lipid_hdl = $fields->rs_lipid_hdl;
+            $riskform->rs_lipid_ldl = $fields->rs_lipid_ldl;
+            $riskform->rs_lipid_vldl = $fields->rs_lipid_vldl;
+            $riskform->rs_lipid_triglyceride = $fields->rs_lipid_triglyceride;
+            $riskform->rs_lipid_date_taken = $fields->rs_lipid_date_taken;
+            $riskform->rs_urine_protein = $fields->rs_urine_protein;
+            $riskform->rs_urine_protein_date_taken = $fields->rs_urine_protein_date_taken;
+            $riskform->rs_urine_ketones = $fields->rs_urine_ketones;
+            $riskform->rs_urine_ketones_date_taken = $fields->rs_urine_ketones_date_taken;
 
-            $riskform->rs_systolic_t1 = $fields->systolic_t1;
-            $riskform->rs_diastolic_t1 = $fields->diastolic_t1;
-            $riskform->rs_systolic_t2 = $fields->systolic_t2;
-            $riskform->rs_diastolic_t2 = $fields->diastolic_t2;
-            $riskform->rs_blood_sugar_fbs = $fields->fbs_result;
-            $riskform->rs_blood_sugar_rbs = $fields->rbs_result;
-            $riskform->rs_blood_sugar_date_taken = $fields->bloodSugar_date_taken;
-            $riskform->rs_blood_sugar_symptoms = implode(', ', $dmSymptoms);
-            $riskform->rs_lipid_cholesterol = $fields->lipid_cholesterol;
-            $riskform->rs_lipid_hdl = $fields->lipid_hdl;
-            $riskform->rs_lipid_ldl = $fields->lipid_ldl;
-            $riskform->rs_lipid_vldl = $fields->lipid_vldl;
-            $riskform->rs_lipid_triglyceride = $fields->lipid_triglyceride;
-            $riskform->rs_lipid_date_taken = date('Y-m-d', strtotime($fields->lipid_date_taken));
-            $riskform->rs_urine_protein = $fields->uri_protein;
-            $riskform->rs_urine_protein_date_taken = date('Y-m-d', strtotime($fields->uri_protein_date_taken));
-            $riskform->rs_urine_ketones = $fields->uri_ketones;
-            $riskform->rs_urine_ketones_date_taken = date('Y-m-d', strtotime($fields->uri_ketones_date_taken));
+            // mngm
+            $riskform->mngm_med_hypertension = $fields->mngm_med_hypertension;
+            $riskform->mngm_med_hypertension_specify = $fields->mngm_med_hypertension_specify;
+            $riskform->mngm_med_diabetes = $fields->mngm_med_diabetes;
+            $riskform->mngm_med_diabetes_options = $fields->mngm_med_diabetes_options;
+            $riskform->mngm_med_diabetes_specify = $fields->mngm_med_diabetes_specify;
+            $riskform->mngm_date_follow_up = $fields->mngm_date_follow_up;
 
-            $symptoms = [];
-
-            // Check each checkbox and add the label to the array if selected
-            if ($fields->has('symptom_breathlessness')) {
-                $symptoms[] = 'Breathlessness';
-            }
-            if ($fields->has('symptom_sputum_production')) {
-                $symptoms[] = 'Sputum (mucous) production';
-            }
-            if ($fields->has('symptom_chronic_cough')) {
-                $symptoms[] = 'Chronic cough';
-            }
-            if ($fields->has('symptom_chest_tightness')) {
-                $symptoms[] = 'Chest tightness';
-            }
-            if ($fields->has('symptom_wheezing')) {
-                $symptoms[] = 'Wheezing';
-            }
-
-            // Convert the array into a comma-separated string
-            $riskform->rs_chronic_respiratory_disease = implode(', ', $symptoms); // Store as a string
-
-            // For PEFR checkboxes, similarly store the selected labels as a comma-separated string
-            $pefr = [];
-            if ($fields->has('pefr_above_20_percent')) {
-                $pefr[] = '20% change from baseline (consider Probable Asthma)';
-            }
-            if ($fields->has('pefr_below_20_percent')) {
-                $pefr[] = '20% change from baseline (consider Probable COPD)';
-            }
-
-            // Convert the array into a comma-separated string for PEFR
-            $riskform->rs_if_yes_any_symptoms = implode(', ', $pefr); // Store as a string
-            // Anti-Hypertensives: Store selected option and any specify text
-            $riskform->mngm_med_hypertension = $fields->anti_hypertensives;
-            $riskform->mngm_med_hypertension_specify = $fields->anti_hypertensives_specify;
-
-            // Anti-Diabetes: Store selected option and any specify text, and type
-            $riskform->mngm_med_diabetes = $fields->anti_diabetes;
-            $riskform->mngm_med_diabetes_options = $fields->anti_diabetes_type;
-            $riskform->mngm_med_diabetes_specify = $fields->anti_diabetes_specify;
-
-            // Follow-up Date
-            $riskform->mngm_date_follow_up = $fields->follow_up_date;
-
-            // Remarks (Text area)
-            $riskform->mngm_remarks = $fields->remarks;
+            $riskform->mngm_remarks = $fields->mngm_remarks; // Remarks (Text area)
 
             // Save the data
             $riskform->save();
@@ -633,7 +543,7 @@ class DataController extends Controller
             'fields.pwd_id' => 'nullable|string|max:20',
             'fields.citizenship' => 'required|string|max:50',
             'fields.other_citizenship' => 'nullable|string|max:50',
-            'fields.indigenous_person' => 'required|boolean',
+            'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
         ];
@@ -675,104 +585,97 @@ class DataController extends Controller
         // Define validation rules
         $rules = [
             'fields.risk_profile_id' => 'required|integer',
-            'fields.chest_pain' => 'required|boolean',
-            'fields.difficulty_breathing' => 'required|boolean',
-            'fields.loss_of_consciousness' => 'required|boolean',
-            'fields.slurred_speech' => 'required|boolean',
-            'fields.facial_asymmetry' => 'required|boolean',
-            'fields.weakness_numbness' => 'required|boolean',
-            'fields.disoriented' => 'required|boolean',
-            'fields.chest_retractions' => 'required|boolean',
-            'fields.seizures' => 'required|boolean',
-            'fields.self_harm' => 'required|boolean',
-            'fields.agitated_behavior' => 'required|boolean',
-            'fields.eye_injury' => 'required|boolean',
-            'fields.severe_injuries' => 'required|boolean',
-            'fields.physician_name' => 'required|string|max:255',
-            'fields.reason' => 'required|string|max:255',
-            'fields.facility' => 'required|string|max:255',
-            'fields.pm_hypertension' => 'required|boolean',
-            'fields.pm_heartDisease' => 'required|boolean',
-            'fields.pm_diabetes' => 'required|boolean',
-            'fields.pm_diabetes_details' => 'nullable|string|max:255',
-            'fields.pm_cancer' => 'required|boolean',
-            'fields.pm_cancer_details' => 'nullable|string|max:255',
-            'fields.pm_COPD' => 'required|boolean',
-            'fields.pm_asthma' => 'required|boolean',
-            'fields.pm_allergies' => 'required|boolean',
-            'fields.pm_allergies_details' => 'nullable|string|max:255',
-            'fields.pm_mnsad' => 'required|boolean',
-            'fields.pm_mnsad_details' => 'nullable|string|max:255',
-            'fields.pm_vision' => 'required|boolean',
-            'fields.pm_psh' => 'required|boolean',
-            'fields.pm_psh_details' => 'nullable|string|max:255',
-            'fields.pm_thyroid' => 'required|boolean',
-            'fields.pm_kidney' => 'required|boolean',
+            // ar
+            'fields.ar_chest_pain' => 'required|string|max:8',
+            'fields.ar_difficulty_breathing' => 'required|string|max:8',
+            'fields.ar_loss_of_consciousness' => 'required|string|max:8',
+            'fields.ar_slurred_speech' => 'required|string|max:8',
+            'fields.ar_facial_asymmetry' => 'required|string|max:8',
+            'fields.ar_weakness_numbness' => 'required|string|max:8',
+            'fields.ar_disoriented' => 'required|string|max:8',
+            'fields.ar_chest_retractions' => 'required|string|max:8',
+            'fields.ar_seizure_convulsion' => 'required|string|max:8',
+            'fields.ar_act_self_harm_suicide' => 'required|string|max:8',
+            'fields.ar_agitated_behavior' => 'required|string|max:8',
+            'fields.ar_eye_injury' => 'required|string|max:8',
+            'fields.ar_severe_injuries' => 'required|string|max:8',
+            'fields.ar_refer_physician_name' => 'required|string|max:255',
+            'fields.ar_refer_reason' => 'required|string|max:255',
+            'fields.ar_refer_facility' => 'required|string|max:255',
 
-            'fields.fmh_hypertension' => 'required|boolean',
-            'fields.fmh_side_hypertension' => 'required|boolean',
-            'fields.fmh_stroke' => 'required|boolean',
-            'fields.fmh_side_stroke' => 'required|boolean',
-            'fields.fmh_heart_disease' => 'required|boolean',
-            'fields.fmh_side_heart_disease' => 'required|boolean',
-            'fields.fmh_diabetes' => 'required|boolean',
-            'fields.fmh_side_diabetes' => 'required|boolean',
-            'fields.fmh_asthma' => 'required|boolean',
-            'fields.fmh_side_asthma' => 'required|boolean',
-            'fields.fmh_cancer' => 'required|boolean',
-            'fields.fmh_side_cancer' => 'required|boolean',
-            'fields.fmh_kidney_disease' => 'required|boolean',
-            'fields.fmh_side_kidney_disease' => 'required|boolean',
-            'fields.fmh_degree' => 'required|boolean',
-            'fields.fmh_side_coronary_disease' => 'required|boolean',
-            'fields.fmh_famtb' => 'required|boolean',
-            'fields.fmh_side_famtb' => 'required|boolean',
-            'fields.fmh_mnsad' => 'required|boolean',
-            'fields.fmh_side_mnsad' => 'required|boolean',
-            'fields.fmh_copd' => 'required|boolean',
-            'fields.fmh_side_copd' => 'required|boolean',
+            // pmh
+            'fields.pmh_hypertension' => 'required|string|max:8',
+            'fields.pmh_heart_disease' => 'required|string|max:8',
+            'fields.pmh_diabetes' => 'required|string|max:8',
+            'fields.pmh_specify_diabetes' => 'nullable|string|max:255',
+            'fields.pmh_cancer' => 'required|string|max:8',
+            'fields.pmh_specify_cancer' => 'nullable|string|max:255',
+            'fields.pmh_copd' => 'required|string|max:8',
+            'fields.pmh_asthma' => 'required|string|max:8',
+            'fields.pmh_allergies' => 'required|string|max:8',
+            'fields.pmh_specify_allergies' => 'nullable|string|max:255',
+            'fields.pmh_mn_and_s_disorder' => 'required|string|max:8',
+            'fields.pmh_specify_mn_and_s_disorder' => 'nullable|string|max:255',
+            'fields.pmh_vision_problems' => 'required|string|max:8',
+            'fields.pmh_previous_surgical' => 'required|string|max:8',
+            'fields.pmh_specify_previous_surgical' => 'nullable|string|max:255',
+            'fields.pmh_thyroid_disorders' => 'required|string|max:8',
+            'fields.pmh_kidney_disorders' => 'required|string|max:8',
 
-            'fields.tobaccoUse' => 'required|array|min:1',
-            'fields.ncd_alcohol' => 'required|boolean',
-            'fields.ncd_alcoholBinge' => 'required|boolean',
-            'fields.ncd_physical' => 'required|boolean',
-            'fields.ncd_nutrition' => 'required|boolean',
+            // fmh
+            'fields.fmh_hypertension' => 'required|string|max:20',
+            'fields.fmh_stroke' => 'required|string|max:20',
+            'fields.fmh_heart_disease' => 'required|string|max:20',
+            'fields.fmh_diabetes_mellitus' => 'required|string|max:20',
+            'fields.fmh_asthma' => 'required|string|max:20',
+            'fields.fmh_cancer' => 'required|string|max:20',
+            'fields.fmh_kidney_disease' => 'required|string|max:20',
+            'fields.fmh_first_degree_relative' => 'required|string|max:20',
+            'fields.fmh_having_tuberculosis_5_years' => 'required|string|max:20',
+            'fields.fmh_mn_and_s_disorder' => 'required|string|max:20',
+            'fields.fmh_copd' => 'required|string|max:20',
+
+            // rf
+            'fields.rf_tobacco_use' => 'required|string|max:255',
+            'fields.rf_alcohol_intake' => 'required|string|max:8',
+            'fields.rf_alcohol_binge_drinker' => 'required|string|max:8',
+            'fields.rf_physical_activity' => 'required|string|max:8',
+            'fields.rf_nutrition_dietary' => 'required|string|max:8',
             'fields.rf_weight' => 'required|numeric',
             'fields.rf_height' => 'required|numeric',
-            'fields.rf_BMI' => 'required|numeric',
-            'fields.rf_waist' => 'required|numeric',
-            'fields.dm_symptoms' => 'required|array|min:1',
-            'fields.systolic_t1' => 'required|numeric',
-            'fields.diastolic_t1' => 'required|numeric',
-            'fields.systolic_t2' => 'required|numeric',
-            'fields.diastolic_t2' => 'required|numeric',
-            'fields.fbs_result' => 'required|numeric',
-            'fields.rbs_result' => 'required|numeric',
-            'fields.bloodSugar_date_taken' => 'required|date',
-            'fields.lipid_cholesterol' => 'required|numeric',
-            'fields.lipid_hdl' => 'required|numeric',
-            'fields.lipid_ldl' => 'required|numeric',
-            'fields.lipid_vldl' => 'required|numeric',
-            'fields.lipid_triglyceride' => 'required|numeric',
-            'fields.lipid_date_taken' => 'required|date',
-            'fields.uri_protein' => 'required|numeric',
-            'fields.uri_protein_date_taken' => 'required|date',
-            'fields.uri_ketones' => 'required|numeric',
-            'fields.uri_ketones_date_taken' => 'required|date',
-            'fields.symptom_breathlessness' => 'required|boolean',
-            'fields.symptom_sputum_production' => 'required|boolean',
-            'fields.symptom_chronic_cough' => 'required|boolean',
-            'fields.symptom_chest_tightness' => 'required|boolean',
-            'fields.symptom_wheezing' => 'required|boolean',
-            'fields.pefr_above_20_percent' => 'required|boolean',
-            'fields.pefr_below_20_percent' => 'required|boolean',
-            'fields.anti_hypertensives' => 'required|string|max:255',
-            'fields.anti_hypertensives_specify' => 'nullable|string|max:255',
-            'fields.anti_diabetes' => 'required|string|max:255',
-            'fields.anti_diabetes_type' => 'nullable|string|max:255',
-            'fields.anti_diabetes_specify' => 'nullable|string|max:255',
-            'fields.follow_up_date' => 'required|date',
-            'fields.remarks' => 'nullable|string|max:1000',
+            'fields.rf_body_mass' => 'required|numeric',
+            'fields.rf_waist_circumference' => 'required|numeric',
+
+            // rs
+            'fields.rs_systolic_t1' => 'required|numeric',
+            'fields.rs_diastolic_t1' => 'required|numeric',
+            'fields.rs_systolic_t2' => 'required|numeric',
+            'fields.rs_diastolic_t2' => 'required|numeric',
+            'fields.rs_blood_sugar_fbs' => 'required|numeric',
+            'fields.rs_blood_sugar_rbs' => 'required|numeric',
+            'fields.rs_blood_sugar_date_taken' => 'required|date',
+            'fields.rs_blood_sugar_symptoms' => 'required|string|max:255',
+            'fields.rs_lipid_cholesterol' => 'required|numeric',
+            'fields.rs_lipid_hdl' => 'required|numeric',
+            'fields.rs_lipid_ldl' => 'required|numeric',
+            'fields.rs_lipid_vldl' => 'required|numeric',
+            'fields.rs_lipid_triglyceride' => 'required|numeric',
+            'fields.rs_lipid_date_taken' => 'required|date',
+            'fields.rs_urine_protein' => 'required|numeric',
+            'fields.rs_urine_protein_date_taken' => 'required|date',
+            'fields.rs_urine_ketones' => 'required|numeric',
+            'fields.rs_urine_ketones_date_taken' => 'required|date',
+            'fields.rs_chronic_respiratory_disease' => 'required|string|max:255',
+            'fields.rs_if_yes_any_symptoms' => 'required|string|max:255',
+
+            //mngm
+            'fields.mngm_med_hypertension' => 'required|string|max:8',
+            'fields.mngm_med_hypertension_specify' => 'nullable|string|max:255',
+            'fields.mngm_med_diabetes' => 'required|string|max:8',
+            'fields.mngm_med_diabetes_options' => 'required|string|max:50',
+            'fields.mngm_med_diabetes_specify' => 'nullable|string|max:255',
+            'fields.mngm_date_follow_up' => 'required|date',
+            'fields.mngm_remarks' => 'nullable|string|max:255',
         ];
 
         // Validate the request
