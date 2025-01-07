@@ -41,16 +41,16 @@ Route::group(['middleware' => ['api']], function () {
     Route::post($apiVersions[0] . 'facility/deletefacility', 'TsekapV2\FacilityController@deleteFacility');
 
     // Profile Controllers
-    Route::post($apiVersions[0] . 'facility/retrieveprofile', 'TsekapV2\ProfileController@retrieveProfile');
-    Route::post($apiVersions[0] . 'facility/addprofile', 'TsekapV2\ProfileController@addProfile');
-    Route::post($apiVersions[0] . 'facility/updateprofile', 'TsekapV2\ProfileController@updateProfile');
-    Route::post($apiVersions[0] . 'facility/deleteprofile', 'TsekapV2\ProfileController@deleteProfile');
+    Route::post($apiVersions[0] . 'profile/retrieveprofile', 'TsekapV2\ProfileController@retrieveProfile');
+    Route::post($apiVersions[0] . 'profile/addprofile', 'TsekapV2\ProfileController@addProfile');
+    Route::post($apiVersions[0] . 'profile/updateprofile', 'TsekapV2\ProfileController@updateProfile');
+    Route::post($apiVersions[0] . 'profile/deleteprofile', 'TsekapV2\ProfileController@deleteProfile');
 
     // User Health Facility Controllers
-    Route::post($apiVersions[0] . 'facility/retrieveuserhf', 'TsekapV2\UserHealthFacilityController@retrieveUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/adduserhf', 'TsekapV2\UserHealthFacilityController@addUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/updateuserhf', 'TsekapV2\UserHealthFacilityController@updateUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/deleteuserhf', 'TsekapV2\UserHealthFacilityController@deleteUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/retrieveuserhf', 'TsekapV2\UserHealthFacilityController@retrieveUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/adduserhf', 'TsekapV2\UserHealthFacilityController@addUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/updateuserhf', 'TsekapV2\UserHealthFacilityController@updateUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/deleteuserhf', 'TsekapV2\UserHealthFacilityController@deleteUserHealthFacility');
 
     // Forms
     // ---- Risk Assessment and Profile ---- //

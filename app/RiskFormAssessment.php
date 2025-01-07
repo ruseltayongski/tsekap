@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\RiskProfile;
 
-class RiskFormAssesment extends Model
+class RiskFormAssessment extends Model
 {
     protected $connection = 'mysql';
     protected $table = 'risk_form';
@@ -103,7 +103,8 @@ class RiskFormAssesment extends Model
         'mngm_med_diabetes_options',
         'mngm_med_diabetes_specify',
         'mngm_date_follow_up',
-        'mngm_remarks'
+        'mngm_remarks',
+        'offline_entry'
     ];
     
     public function risk_profile_Id(){

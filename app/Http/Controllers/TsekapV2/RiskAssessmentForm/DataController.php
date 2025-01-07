@@ -5,10 +5,11 @@ namespace App\Http\Controllers\TsekapV2\RiskAssessmentForm;
 use Exception;
 
 use App\RiskProfile;
-use App\RiskFormAssesment;
+use App\RiskFormAssessment;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class DataController extends Controller
         // Validate the request using the Validator facade
         $validator = Validator::make($request->all(), [
             'fields' => 'required|array',
-            'fields.filter'=> 'required|string',
+            'fields.filter' => 'required|string',
             'fields.keyword' => 'sometimes|string',
         ]);
 
@@ -40,8 +41,8 @@ class DataController extends Controller
 
         // Debugging: Log the keyword
         \Log::info('Keyword:', ['keyword' => $keyword]);
-        \Log::info('Filter:', ['filter' => $filter]);       
-    
+        \Log::info('Filter:', ['filter' => $filter]);
+
         // Base query for risk profiles with INNER JOIN
         $query = RiskProfile::select(
             'risk_profile.id',
@@ -55,7 +56,9 @@ class DataController extends Controller
             'risk_profile.municipal_id',
             'risk_profile.province_id',
             'risk_profile.facility_id_updated',
+            'risk_profile.offline_entry',
             'risk_profile.created_at',
+            'risk_profile.updated_at',
             'muncity.description as municipal_name',
             'province.description as province_name'
         )
@@ -66,17 +69,17 @@ class DataController extends Controller
         if ($user->user_priv === 3) {
             $query->where('risk_profile.province_id', $user->province);
         }
-            // } elseif ($user->user_priv === 6) {
+        // } elseif ($user->user_priv === 6) {
         //     $query->where('risk_profile.facility_id_updated', $user->facility_id);
         // }
 
         // Apply keyword filter for fname, lname, or dob (OR condition for each field)
         if ($keyword) {
-            if($filter === 'fname') {
+            if ($filter === 'fname') {
                 $query->where('risk_profile.fname', 'like', "%$keyword%");
-            } elseif($filter === 'lname') {
+            } elseif ($filter === 'lname') {
                 $query->where('risk_profile.lname', 'like', "%$keyword%");
-            } elseif($filter === 'dob') {
+            } elseif ($filter === 'dob') {
                 $query->where('risk_profile.dob', 'like', "%$keyword%");
             } else {
                 $query->where(function ($q) use ($keyword) {
@@ -98,147 +101,144 @@ class DataController extends Controller
 
     public function retrievePatientRiskAssessment(Request $request)
     {
-        $fields = $request->input('fields');
+        // Validate the request using the Validator facade
+        $validator = Validator::make($request->all(), [
+            'fields' => 'required|array',
+            'fields.profile_id' => 'required|number',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
 
         // check authentication if user is logged in
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $id = $fields['id'];
-        $muncity = $fields['muncity_id'] !== null ? $fields['muncity_id'] : null;
-        $province = $fields['province_id'] !== null ? $fields['province_id'] : null;
+
+        $fields = $request->input('fields');
+        $id = $fields['profile_id'];
 
         // Building the query
-        $profileQuery = RiskProfile::select('id', 'profile_id', 'lname', 'fname', 'mname', 'suffix', 'sex', 'dob', 'age', 'civil_status', 'religion', 'other_religion', 'contact', 'province_id', 'muncity_id', 'barangay_id', 'street', 'purok', 'sitio', 'phic_id', 'pwd_id', 'citizenship', 'other_citizenship', 'indigenous_person', 'employment_status', 'facility_id_updated', 'created_at', 'updated_at')->with([
-            'riskForm' => function ($query) {
-                $query->select(
-                    'id',
-                    'risk_profile_id',
-                    'ar_chest_pain',
-                    'ar_difficulty_breathing',
-                    'ar_loss_of_consciousness',
-                    'ar_slurred_speech',
-                    'ar_facial_asymmetry',
-                    'ar_weakness_numbness',
-                    'ar_disoriented',
-                    'ar_chest_retractions',
-                    'ar_seizure_convulsion',
-                    'ar_act_self_harm_suicide',
-                    'ar_agitated_behavior',
-                    'ar_eye_injury',
-                    'ar_severe_injuries',
-                    'ar_refer_physician_name',
-                    'ar_refer_reason',
-                    'ar_refer_facility',
-                    'pmh_hypertension',
-                    'pmh_heart_disease',
-                    'pmh_diabetes',
-                    'pmh_specify_diabetes',
-                    'pmh_cancer',
-                    'pmh_specify_cancer',
-                    'pmh_copd',
-                    'pmh_asthma',
-                    'pmh_allergies',
-                    'pmh_specify_allergies',
-                    'pmh_mn_and_s_disorder',
-                    'pmh_specify_mn_and_s_disorder',
-                    'pmh_vision_problems',
-                    'pmh_previous_surgical',
-                    'pmh_specify_previous_surgical',
-                    'pmh_thyroid_disorders',
-                    'pmh_kidney_disorders',
-                    'fmh_hypertension',
-                    'fmh_side_hypertension',
-                    'fmh_stroke',
-                    'fmh_side_stroke',
-                    'fmh_heart_disease',
-                    'fmh_side_heart_disease',
-                    'fmh_diabetes_mellitus',
-                    'fmh_side_diabetes_mellitus',
-                    'fmh_asthma',
-                    'fmh_side_asthma',
-                    'fmh_cancer',
-                    'fmh_side_cancer',
-                    'fmh_kidney_disease',
-                    'fmh_side_kidney_disease',
-                    'fmh_first_degree_relative',
-                    'fmh_side_coronary_disease',
-                    'fmh_having_tuberculosis_5_years',
-                    'fmh_side_tuberculosis',
-                    'fmh_mn_and_s_disorder',
-                    'fmh_side_m_and_s_disorder',
-                    'fmh_copd',
-                    'fmh_side_copd',
-                    'rf_tobacco_use',
-                    'rf_alcohol_intake',
-                    'rf_alcohol_binge_drinker',
-                    'rf_physical_activity',
-                    'rf_nutrition_dietary',
-                    'rf_weight',
-                    'rf_height',
-                    'rf_body_mass',
-                    'rf_waist_circumference',
-                    'rs_systolic_t1',
-                    'rs_diastolic_t1',
-                    'rs_systolic_t2',
-                    'rs_diastolic_t2',
-                    'rs_blood_sugar_fbs',
-                    'rs_blood_sugar_rbs',
-                    'rs_blood_sugar_date_taken',
-                    'rs_blood_sugar_symptoms',
-                    'rs_lipid_cholesterol',
-                    'rs_lipid_hdl',
-                    'rs_lipid_ldl',
-                    'rs_lipid_vldl',
-                    'rs_lipid_triglyceride',
-                    'rs_lipid_date_taken',
-                    'rs_urine_protein',
-                    'rs_urine_protein_date_taken',
-                    'rs_urine_ketones',
-                    'rs_urine_ketones_date_taken',
-                    'rs_chronic_respiratory_disease',
-                    'rs_if_yes_any_symptoms',
-                    'mngm_med_hypertension',
-                    'mngm_med_hypertension_specify',
-                    'mngm_med_diabetes',
-                    'mngm_med_diabetes_options',
-                    'mngm_med_diabetes_specify',
-                    'mngm_date_follow_up',
-                    'mngm_remarks',
-                );
-            },
-        ]);
+        $query = RiskFormAssessment::select(
+            'id',
+            'risk_profile_id',
+            'ar_chest_pain',
+            'ar_difficulty_breathing',
+            'ar_loss_of_consciousness',
+            'ar_slurred_speech',
+            'ar_facial_asymmetry',
+            'ar_weakness_numbness',
+            'ar_disoriented',
+            'ar_chest_retractions',
+            'ar_seizure_convulsion',
+            'ar_act_self_harm_suicide',
+            'ar_agitated_behavior',
+            'ar_eye_injury',
+            'ar_severe_injuries',
+            'ar_refer_physician_name',
+            'ar_refer_reason',
+            'ar_refer_facility',
+            'pmh_hypertension',
+            'pmh_heart_disease',
+            'pmh_diabetes',
+            'pmh_specify_diabetes',
+            'pmh_cancer',
+            'pmh_specify_cancer',
+            'pmh_copd',
+            'pmh_asthma',
+            'pmh_allergies',
+            'pmh_specify_allergies',
+            'pmh_mn_and_s_disorder',
+            'pmh_specify_mn_and_s_disorder',
+            'pmh_vision_problems',
+            'pmh_previous_surgical',
+            'pmh_specify_previous_surgical',
+            'pmh_thyroid_disorders',
+            'pmh_kidney_disorders',
+            'fmh_hypertension',
+            'fmh_side_hypertension',
+            'fmh_stroke',
+            'fmh_side_stroke',
+            'fmh_heart_disease',
+            'fmh_side_heart_disease',
+            'fmh_diabetes_mellitus',
+            'fmh_side_diabetes_mellitus',
+            'fmh_asthma',
+            'fmh_side_asthma',
+            'fmh_cancer',
+            'fmh_side_cancer',
+            'fmh_kidney_disease',
+            'fmh_side_kidney_disease',
+            'fmh_first_degree_relative',
+            'fmh_side_coronary_disease',
+            'fmh_having_tuberculosis_5_years',
+            'fmh_side_tuberculosis',
+            'fmh_mn_and_s_disorder',
+            'fmh_side_m_and_s_disorder',
+            'fmh_copd',
+            'fmh_side_copd',
+            'rf_tobacco_use',
+            'rf_alcohol_intake',
+            'rf_alcohol_binge_drinker',
+            'rf_physical_activity',
+            'rf_nutrition_dietary',
+            'rf_weight',
+            'rf_height',
+            'rf_body_mass',
+            'rf_waist_circumference',
+            'rs_systolic_t1',
+            'rs_diastolic_t1',
+            'rs_systolic_t2',
+            'rs_diastolic_t2',
+            'rs_blood_sugar_fbs',
+            'rs_blood_sugar_rbs',
+            'rs_blood_sugar_date_taken',
+            'rs_blood_sugar_symptoms',
+            'rs_lipid_cholesterol',
+            'rs_lipid_hdl',
+            'rs_lipid_ldl',
+            'rs_lipid_vldl',
+            'rs_lipid_triglyceride',
+            'rs_lipid_date_taken',
+            'rs_urine_protein',
+            'rs_urine_protein_date_taken',
+            'rs_urine_ketones',
+            'rs_urine_ketones_date_taken',
+            'rs_chronic_respiratory_disease',
+            'rs_if_yes_any_symptoms',
+            'mngm_med_hypertension',
+            'mngm_med_hypertension_specify',
+            'mngm_med_diabetes',
+            'mngm_med_diabetes_options',
+            'mngm_med_diabetes_specify',
+            'mngm_date_follow_up',
+            'mngm_remarks',
+            'offline_entry',
+            'created_at',
+            'updated_at'
+        );
 
-        // Applying filters based on muncity and province
-        if ($muncity) {
-            $profileQuery->where('municity_id', $muncity);
+        if ($id) {
+            $query->where('risk_profile_id', $id);
         }
 
-        if ($province) {
-            $profileQuery->where('province_id', $province);
-        }
-
-        $profile = $profileQuery->find($id);
-
-        if (!$profile) {
-            return response()->json(['error' => 'Profile not found.'], 404);
-        }
-
-        return response()->json(['profile' => $profile, 'province' => $province, 'municipality' => $muncity], 200);
+        return response()->json($query->simplePaginate(15), 200);
     }
 
     public function submitRiskProfile(Request $request)
     {
         $fields = $request->input('fields');
-
-        // check authentication if user is logged in
+    
+        // Check if the user is authenticated
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+    
         // Define validation rules
         $rules = [
+            'fields' => 'required|array',
             'fields.profile_id' => 'nullable|integer',
             'fields.lname' => 'required|string|max:255',
             'fields.fname' => 'required|string|max:255',
@@ -264,36 +264,52 @@ class DataController extends Controller
             'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
+            'fields.offline_entry' => 'nullable|boolean',
         ];
-
+    
         // Validate the request
-        $validator = Validator::make($fields, $rules);
-
+        $validator = Validator::make($request->all(), $rules);
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
-
-        // Check for duplicate in the RiskProfile table
+    
+        // Offline entry check
+        if (empty($fields['offline_entry']) || $fields['offline_entry'] == false) {
+            if (!empty($fields['profile_id'])) {
+                return response()->json(['error' => 'Malformed parameter. Please recheck request.'], 403);
+            }
+        }
+    
+        // Check for duplicates
         $existingRiskProfile = RiskProfile::where('profile_id', $fields['profile_id'])
             ->where('fname', $fields['fname'])
             ->where('lname', $fields['lname'])
-            ->where('mname', $fields['mname'])
-            ->where('dob', $fields['dateofbirth'])
+            ->where('mname', $fields['mname'] ? $fields['mname'] : null)
+            ->where('dob', $fields['dob'])
             ->first();
-
+    
         if ($existingRiskProfile) {
             return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
         }
-
+    
+        // Save the record
         try {
-            $riskprofile = new RiskProfile($fields);
-            $riskprofile->save();
-
-            return response()->json(['message' => 'Entry successfully saved.'], 200);
+            $riskProfile = new RiskProfile($fields);
+            $riskProfile->save();
+    
+            return response()->json([
+                'message' => 'Entry successfully saved.',
+                'id' => $riskProfile->id
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+            // Log the exception for debugging
+            \Log::error('RiskProfile saving failed: ' . $e->getMessage());
+    
+            return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
     }
+    
 
     public function submitRiskForm(Request $request)
     {
@@ -398,114 +414,43 @@ class DataController extends Controller
             'fields.mngm_med_diabetes_specify' => 'nullable|string|max:255',
             'fields.mngm_date_follow_up' => 'required|date',
             'fields.mngm_remarks' => 'nullable|string|max:255',
+
+            // offline entry field
+            'fields.offline_entry' => 'nullable|boolean'
         ];
 
+        // Validate the request
         $validator = Validator::make($fields, $rules);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
 
+        // Ensure `offline_entry` is true
+        if (empty($fields['offline_entry']) || !$fields['offline_entry']) {
+            return response()->json(['error' => 'Malformed parameter. Please recheck request.'], 403);
+        }
+
         try {
-            $riskform = new RiskFormAssesment();
 
-            // Health assessment checkbox fields
-            $riskform->risk_profile_id = $fields->risk_profile_id;
-            $riskform->ar_chest_pain = $fields->ar_chest_pain;
-            $riskform->ar_difficulty_breathing = $fields->ar_difficulty_breathing;
-            $riskform->ar_loss_of_consciousness = $fields->ar_loss_of_consciousness;
-            $riskform->ar_slurred_speech = $fields->ar_slurred_speech;
-            $riskform->ar_facial_asymmetry = $fields->ar_facial_asymmetry;
-            $riskform->ar_weakness_numbness = $fields->ar_weakness_numbness;
-            $riskform->ar_disoriented = $fields->ar_disoriented;
-            $riskform->ar_chest_retractions = $fields->ar_chest_retractions;
-            $riskform->ar_seizure_convulsion = $fields->ar_seizure_convulsion;
-            $riskform->ar_act_self_harm_suicide = $fields->ar_act_self_harm_suicide;
-            $riskform->ar_agitated_behavior = $fields->ar_agitated_behavior;
-            $riskform->ar_eye_injury = $fields->ar_eye_injury;
-            $riskform->ar_severe_injuries = $fields->ar_severe_injuries;
-            $riskform->ar_refer_physician_name = $fields->ar_refer_physician_name;
-            $riskform->ar_refer_reason = $fields->ar_refer_reason;
-            $riskform->ar_refer_facility = $fields->ar_refer_facility;
+            $riskform = new RiskFormAssessment();
 
-            //PAST MEDICAL HISTORY
-            $riskform->pmh_hypertension = $fields->pmh_hypertension;
-            $riskform->pmh_heart_disease = $fields->pmh_heart_disease;
-            $riskform->pmh_diabetes = $fields->pmh_diabetes;
-            $riskform->pmh_specify_diabetes = $fields->pmh_specify_diabetes;
-            $riskform->pmh_cancer = $fields->pmh_cancer;
-            $riskform->pmh_specify_cancer = $fields->pmh_specify_cancer;
-            $riskform->pmh_copd = $fields->pmh_copd;
-            $riskform->pmh_asthma = $fields->pmh_asthma;
-            $riskform->pmh_allergies = $fields->pmh_allergies;
-            $riskform->pmh_specify_allergies = $fields->pmh_specify_allergies;
-            $riskform->pmh_mn_and_s_disorder = $fields->pmh_mn_and_s_disorder;
-            $riskform->pmh_specify_mn_and_s_disorder = $fields->pmh_specify_mn_and_s_disorder;
-            $riskform->pmh_vision_problems = $fields->pmh_vision_problems;
-            $riskform->pmh_previous_surgical = $fields->pmh_previous_surgical;
-            $riskform->pmh_specify_previous_surgical = $fields->pmh_specify_previous_surgical;
-            $riskform->pmh_thyroid_disorders = $fields->pmh_thyroid_disorders;
-            $riskform->pmh_kidney_disorders = $fields->pmh_kidney_disorders;
-
-            //FAMILY HISTORY
-            $riskform->fmh_hypertension = $fields->fmh_hypertension;
-            $riskform->fmh_stroke = $fields->fmh_stroke;
-            $riskform->fmh_heart_disease = $fields->fmh_heart_disease;
-            $riskform->fmh_diabetes_mellitus = $fields->fmh_diabetes;
-            $riskform->fmh_asthma = $fields->fmh_asthma;
-            $riskform->fmh_cancer = $fields->fmh_cancer;
-            $riskform->fmh_kidney_disease = $fields->fmh_kidney_disease;
-            $riskform->fmh_first_degree_relative = $fields->fmh_first_degree_relative;
-            $riskform->fmh_having_tuberculosis_5_years = $fields->fmh_having_tuberculosis_5_years;
-            $riskform->fmh_mn_and_s_disorder = $fields->fmh_mn_and_s_disorder;
-            $riskform->fmh_copd = $fields->fmh_copd;
-
-            // NCD RISK FACTORS
-            $riskform->rf_tobacco_use = $fields->rf_tobacco_use;
-            $riskform->rf_alcohol_intake = $fields->rf_alcohol_intake;
-            $riskform->rf_alcohol_binge_drinker = $fields->rf_alcohol_binge_drinker;
-            $riskform->rf_physical_activity = $fields->rf_physical_activity;
-            $riskform->rf_nutrition_dietary = $fields->rf_nutrition_dietary;
-            $riskform->rf_weight = $fields->rf_weight;
-            $riskform->rf_height = $fields->rf_height;
-            $riskform->rf_body_mass = $fields->rf_body_mass;
-            $riskform->rf_waist_circumference = $fields->rf_waist_circumference;
-
-            //RISK SCREENING
-            $riskform->rs_systolic_t1 = $fields->rs_systolic_t1;
-            $riskform->rs_diastolic_t1 = $fields->rs_diastolic_t1;
-            $riskform->rs_systolic_t2 = $fields->rs_systolic_t2;
-            $riskform->rs_diastolic_t2 = $fields->rs_diastolic_t2;
-            $riskform->rs_blood_sugar_fbs = $fields->rs_blood_sugar_fbs;
-            $riskform->rs_blood_sugar_rbs = $fields->rs_blood_sugar_rbs;
-            $riskform->rs_blood_sugar_date_taken = $fields->rs_blood_sugar_date_taken;
-            $riskform->rs_blood_sugar_symptoms = $fields->rs_blood_sugar_symptoms;
-            $riskform->rs_lipid_cholesterol = $fields->rs_lipid_cholesterol;
-            $riskform->rs_lipid_hdl = $fields->rs_lipid_hdl;
-            $riskform->rs_lipid_ldl = $fields->rs_lipid_ldl;
-            $riskform->rs_lipid_vldl = $fields->rs_lipid_vldl;
-            $riskform->rs_lipid_triglyceride = $fields->rs_lipid_triglyceride;
-            $riskform->rs_lipid_date_taken = $fields->rs_lipid_date_taken;
-            $riskform->rs_urine_protein = $fields->rs_urine_protein;
-            $riskform->rs_urine_protein_date_taken = $fields->rs_urine_protein_date_taken;
-            $riskform->rs_urine_ketones = $fields->rs_urine_ketones;
-            $riskform->rs_urine_ketones_date_taken = $fields->rs_urine_ketones_date_taken;
-
-            // mngm
-            $riskform->mngm_med_hypertension = $fields->mngm_med_hypertension;
-            $riskform->mngm_med_hypertension_specify = $fields->mngm_med_hypertension_specify;
-            $riskform->mngm_med_diabetes = $fields->mngm_med_diabetes;
-            $riskform->mngm_med_diabetes_options = $fields->mngm_med_diabetes_options;
-            $riskform->mngm_med_diabetes_specify = $fields->mngm_med_diabetes_specify;
-            $riskform->mngm_date_follow_up = $fields->mngm_date_follow_up;
-
-            $riskform->mngm_remarks = $fields->mngm_remarks; // Remarks (Text area)
+            // Dynamically populate the model with validated data
+            foreach ($fields as $key => $value) {
+                if (Schema::hasColumn($riskform->getTable(), $key)) {
+                    $riskform->$key = $value;
+                }
+            }
 
             // Save the data
             $riskform->save();
+
             return response()->json(['message' => 'Entry successfully saved.'], 200);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong. Please try again later'], 500);
+            // Log the error for debugging
+            \Log::error('Error saving RiskFormAssessment: ' . $e->getMessage(), ['trace' => $e->getTrace()]);
+
+            return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
     }
 
@@ -686,7 +631,7 @@ class DataController extends Controller
         }
 
         // Find the existing RiskFormAssesment
-        $riskform = RiskFormAssesment::where('risk_profile_id', $fields['risk_profile_id'])->first();
+        $riskform = RiskFormAssessment::where('risk_profile_id', $fields['risk_profile_id'])->first();
 
         if (!$riskform) {
             return response()->json(['error' => 'Risk form not found.'], 404);

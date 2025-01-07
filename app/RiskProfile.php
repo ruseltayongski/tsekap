@@ -74,6 +74,7 @@ class RiskProfile extends Model
         'indigenous_person',
         'employment_status',
         'facility_id_updated',
+        'offline_entry',
         'created_at',
         'updated_at',
     ];

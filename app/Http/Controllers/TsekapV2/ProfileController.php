@@ -16,42 +16,57 @@ class ProfileController extends Controller
         return $fname . $mname . $lname . $barangay_id . $muncity_id;
     }
 
-    // get profiles
-    public function retrieveProfile(Request $request){
-        $fields = $request->input('fields');
-         
-        // check authentication if user is logged in
-        if(!Auth::check()){
+    public function retrieveProfile(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'fields' => 'required|array',
+            'fields.firstname' => 'string',
+            'fields.middlename' => 'string',
+            'fields.lastname' => 'string',
+            'fields.dob' => 'date',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
+    
+        // Check authentication
+        if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        $firstName = $fields->firstname;
-        $middleName = $fields->middlename;
-        $lastName = $fields->lastname;
-        $dob = $request->dob;
-   
-        $profile = Profile::select('unique_id','fname','mname','lname','dob','id');
-
-        // check individually
-        if($firstName){
-            $profile = $profile->where('fname','like',"%$firstName%");
+    
+        $fields = $request->input('fields');
+    
+        // Initialize query
+        $query = Profile::select('unique_id', 'fname', 'mname', 'lname', 'dob', 'id');
+    
+        // Add conditions dynamically
+        $filters = [
+            'fname' => $fields['firstname'] ? $fields['firstname'] : null,
+            'mname' => $fields['middlename'] ? $fields['middlename'] : null,
+            'lname' => $fields['lastname'] ? $fields['lastname']: null,
+            'dob' => $fields['dob'] ? $fields['dob']: null,
+        ];
+    
+        foreach ($filters as $column => $value) {
+            if (!empty($value)) {
+                if ($column === 'dob') {
+                    $query->where($column, $value); // Exact match for date
+                } else {
+                    $query->where($column, 'like', "%$value%"); // Partial match for strings
+                }
+            }
         }
-        if($middleName){
-            $profile = $profile->where('mname','like',"%$middleName%");
-        }
-        if($lastName){
-            $profile = $profile->where('lname','like',"%$lastName%");
-        }
-        if($dob){
-            $profile = $profile->where('dob',"%$dob%");
-        }
-        
-        $profiles = $profile->orderBy('lname', 'asc')
-        ->limit(25)
-        ->get();
-
-        return response()->json($profiles);
+    
+        // Execute query with ordering and limit
+        $profiles = $query->orderBy('lname', 'asc')
+            ->limit(25)
+            ->get();
+    
+        return response()->json($profiles, 200);
     }
+    
 
     // add profile
     public function addProfile(Request $request){
