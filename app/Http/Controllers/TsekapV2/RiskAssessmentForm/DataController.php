@@ -227,7 +227,7 @@ class DataController extends Controller
         return response()->json($query->simplePaginate(15), 200);
     }
 
-    public function submitRiskProfile(Request $request)
+    public function addRiskProfile(Request $request)
     {
         $fields = $request->input('fields');
     
@@ -238,33 +238,33 @@ class DataController extends Controller
     
         // Define validation rules
         $rules = [
-            'fields' => 'required|array',
-            'fields.profile_id' => 'nullable|integer',
+			'fields' => 'required|array',
+            'fields.profile_id' => 'integer',
             'fields.lname' => 'required|string|max:255',
             'fields.fname' => 'required|string|max:255',
-            'fields.mname' => 'nullable|string|max:255',
-            'fields.suffix' => 'nullable|string|max:10',
+            'fields.mname' => 'string|max:255',
+            'fields.suffix' => 'string|max:10',
             'fields.sex' => 'required|string|max:1',
             'fields.dob' => 'required|date',
             'fields.age' => 'required|integer|min:0|max:150',
             'fields.civil_status' => 'required|string|max:20',
             'fields.religion' => 'required|string|max:50',
-            'fields.other_religion' => 'nullable|string|max:50',
+            'fields.other_religion' => 'string|max:50',
             'fields.contact' => 'required|string|max:20',
             'fields.province_id' => 'required|integer',
             'fields.muncity_id' => 'required|integer',
             'fields.barangay_id' => 'required|integer',
-            'fields.street' => 'nullable|string|max:255',
-            'fields.purok' => 'nullable|string|max:255',
-            'fields.sitio' => 'nullable|string|max:255',
-            'fields.phic_id' => 'nullable|string|max:20',
-            'fields.pwd_id' => 'nullable|string|max:20',
+            'fields.street' => 'string|max:255',
+            'fields.purok' => 'string|max:255',
+            'fields.sitio' => 'string|max:255',
+            'fields.phic_id' => 'string|max:20',
+            'fields.pwd_id' => 'string|max:20',
             'fields.citizenship' => 'required|string|max:50',
-            'fields.other_citizenship' => 'nullable|string|max:50',
+            'fields.other_citizenship' => 'string|max:50',
             'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
-            'fields.offline_entry' => 'nullable|boolean',
+            'fields.offline_entry' => 'boolean',
         ];
     
         // Validate the request
@@ -311,18 +311,20 @@ class DataController extends Controller
     }
     
 
-    public function submitRiskForm(Request $request)
+    public function addRiskForm(Request $request)
     {
         $fields = $request->input('fields');
-
-        // check authentication if user is logged in
+    
+        // Check authentication if user is logged in
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+    
         // Define validation rules
         $rules = [
-            'fields.risk_profile_id' => 'required|integer',
+            'fields' => 'required|array',
+            'fields.risk_profile_id' => 'integer',
+    
             // ar
             'fields.ar_chest_pain' => 'required|string|max:8',
             'fields.ar_difficulty_breathing' => 'required|string|max:8',
@@ -337,29 +339,29 @@ class DataController extends Controller
             'fields.ar_agitated_behavior' => 'required|string|max:8',
             'fields.ar_eye_injury' => 'required|string|max:8',
             'fields.ar_severe_injuries' => 'required|string|max:8',
-            'fields.ar_refer_physician_name' => 'required|string|max:255',
-            'fields.ar_refer_reason' => 'required|string|max:255',
-            'fields.ar_refer_facility' => 'required|string|max:255',
-
+            'fields.ar_refer_physician_name' => 'string|max:255',
+            'fields.ar_refer_reason' => 'string|max:255',
+            'fields.ar_refer_facility' => 'string|max:255',
+    
             // pmh
             'fields.pmh_hypertension' => 'required|string|max:8',
             'fields.pmh_heart_disease' => 'required|string|max:8',
             'fields.pmh_diabetes' => 'required|string|max:8',
-            'fields.pmh_specify_diabetes' => 'nullable|string|max:255',
+            'fields.pmh_specify_diabetes' => 'string|max:255',
             'fields.pmh_cancer' => 'required|string|max:8',
-            'fields.pmh_specify_cancer' => 'nullable|string|max:255',
+            'fields.pmh_specify_cancer' => 'string|max:255',
             'fields.pmh_copd' => 'required|string|max:8',
             'fields.pmh_asthma' => 'required|string|max:8',
             'fields.pmh_allergies' => 'required|string|max:8',
-            'fields.pmh_specify_allergies' => 'nullable|string|max:255',
+            'fields.pmh_specify_allergies' => 'string|max:255',
             'fields.pmh_mn_and_s_disorder' => 'required|string|max:8',
-            'fields.pmh_specify_mn_and_s_disorder' => 'nullable|string|max:255',
+            'fields.pmh_specify_mn_and_s_disorder' => 'string|max:255',
             'fields.pmh_vision_problems' => 'required|string|max:8',
             'fields.pmh_previous_surgical' => 'required|string|max:8',
-            'fields.pmh_specify_previous_surgical' => 'nullable|string|max:255',
+            'fields.pmh_specify_previous_surgical' => 'string|max:255',
             'fields.pmh_thyroid_disorders' => 'required|string|max:8',
             'fields.pmh_kidney_disorders' => 'required|string|max:8',
-
+    
             // fmh
             'fields.fmh_hypertension' => 'required|string|max:20',
             'fields.fmh_stroke' => 'required|string|max:20',
@@ -372,7 +374,7 @@ class DataController extends Controller
             'fields.fmh_having_tuberculosis_5_years' => 'required|string|max:20',
             'fields.fmh_mn_and_s_disorder' => 'required|string|max:20',
             'fields.fmh_copd' => 'required|string|max:20',
-
+    
             // rf
             'fields.rf_tobacco_use' => 'required|string|max:255',
             'fields.rf_alcohol_intake' => 'required|string|max:8',
@@ -383,76 +385,76 @@ class DataController extends Controller
             'fields.rf_height' => 'required|numeric',
             'fields.rf_body_mass' => 'required|numeric',
             'fields.rf_waist_circumference' => 'required|numeric',
-
+    
             // rs
             'fields.rs_systolic_t1' => 'required|numeric',
             'fields.rs_diastolic_t1' => 'required|numeric',
             'fields.rs_systolic_t2' => 'required|numeric',
             'fields.rs_diastolic_t2' => 'required|numeric',
-            'fields.rs_blood_sugar_fbs' => 'required|numeric',
-            'fields.rs_blood_sugar_rbs' => 'required|numeric',
-            'fields.rs_blood_sugar_date_taken' => 'required|date',
-            'fields.rs_blood_sugar_symptoms' => 'required|string|max:255',
-            'fields.rs_lipid_cholesterol' => 'required|numeric',
-            'fields.rs_lipid_hdl' => 'required|numeric',
-            'fields.rs_lipid_ldl' => 'required|numeric',
-            'fields.rs_lipid_vldl' => 'required|numeric',
-            'fields.rs_lipid_triglyceride' => 'required|numeric',
-            'fields.rs_lipid_date_taken' => 'required|date',
-            'fields.rs_urine_protein' => 'required|numeric',
-            'fields.rs_urine_protein_date_taken' => 'required|date',
-            'fields.rs_urine_ketones' => 'required|numeric',
-            'fields.rs_urine_ketones_date_taken' => 'required|date',
-            'fields.rs_chronic_respiratory_disease' => 'required|string|max:255',
-            'fields.rs_if_yes_any_symptoms' => 'required|string|max:255',
-
-            //mngm
-            'fields.mngm_med_hypertension' => 'required|string|max:8',
-            'fields.mngm_med_hypertension_specify' => 'nullable|string|max:255',
-            'fields.mngm_med_diabetes' => 'required|string|max:8',
-            'fields.mngm_med_diabetes_options' => 'required|string|max:50',
-            'fields.mngm_med_diabetes_specify' => 'nullable|string|max:255',
-            'fields.mngm_date_follow_up' => 'required|date',
-            'fields.mngm_remarks' => 'nullable|string|max:255',
-
+            'fields.rs_blood_sugar_fbs' => 'numeric',
+            'fields.rs_blood_sugar_rbs' => 'numeric',
+            'fields.rs_blood_sugar_date_taken' => 'date',
+            'fields.rs_blood_sugar_symptoms' => 'string|max:255',
+            'fields.rs_lipid_cholesterol' => 'numeric',
+            'fields.rs_lipid_hdl' => 'numeric',
+            'fields.rs_lipid_ldl' => 'numeric',
+            'fields.rs_lipid_vldl' => 'numeric',
+            'fields.rs_lipid_triglyceride' => 'numeric',
+            'fields.rs_lipid_date_taken' => 'date',
+            'fields.rs_urine_protein' => 'numeric',
+            'fields.rs_urine_protein_date_taken' => 'date',
+            'fields.rs_urine_ketones' => 'numeric',
+            'fields.rs_urine_ketones_date_taken' => 'date',
+            'fields.rs_chronic_respiratory_disease' => 'string|max:255',
+            'fields.rs_if_yes_any_symptoms' => 'string|max:255',
+    
+            // mngm
+            'fields.mngm_med_hypertension' => 'string|max:8',
+            'fields.mngm_med_hypertension_specify' => 'string|max:255',
+            'fields.mngm_med_diabetes' => 'string|max:8',
+            'fields.mngm_med_diabetes_options' => 'string|max:50',
+            'fields.mngm_med_diabetes_specify' => 'string|max:255',
+            'fields.mngm_date_follow_up' => 'date',
+            'fields.mngm_remarks' => 'string|max:255',
+    
             // offline entry field
-            'fields.offline_entry' => 'nullable|boolean'
+            'fields.offline_entry' => 'required|boolean',
         ];
-
+    
         // Validate the request
-        $validator = Validator::make($fields, $rules);
-
+        $validator = Validator::make($request->all(), $rules);
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
-
+    
         // Ensure `offline_entry` is true
         if (empty($fields['offline_entry']) || !$fields['offline_entry']) {
             return response()->json(['error' => 'Malformed parameter. Please recheck request.'], 403);
         }
-
+    
         try {
-
             $riskform = new RiskFormAssessment();
-
+    
             // Dynamically populate the model with validated data
             foreach ($fields as $key => $value) {
                 if (Schema::hasColumn($riskform->getTable(), $key)) {
                     $riskform->$key = $value;
                 }
             }
-
+    
             // Save the data
             $riskform->save();
-
+    
             return response()->json(['message' => 'Entry successfully saved.'], 200);
         } catch (Exception $e) {
             // Log the error for debugging
             \Log::error('Error saving RiskFormAssessment: ' . $e->getMessage(), ['trace' => $e->getTrace()]);
-
+    
             return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
     }
+    
 
     // update risk profile
     public function updateRiskProfile(Request $request)
@@ -466,35 +468,37 @@ class DataController extends Controller
 
         // Define validation rules
         $rules = [
-            'fields.profile_id' => 'required|integer',
-            'fields.fname' => 'required|string|max:255',
-            'fields.mname' => 'nullable|string|max:255',
+            'fields' => 'required|array',
+            'fields.profile_id' => 'integer',
             'fields.lname' => 'required|string|max:255',
-            'fields.suffix' => 'nullable|string|max:10',
+            'fields.fname' => 'required|string|max:255',
+            'fields.mname' => 'string|max:255',
+            'fields.suffix' => 'string|max:10',
             'fields.sex' => 'required|string|max:1',
-            'fields.dateofbirth' => 'required|date',
+            'fields.dob' => 'required|date',
             'fields.age' => 'required|integer|min:0|max:150',
-            'fields.contact' => 'required|string|max:20',
-            'fields.province_risk' => 'required|integer',
-            'fields.municipal' => 'required|integer',
-            'fields.barangay' => 'required|integer',
-            'fields.sitio' => 'nullable|string|max:255',
-            'fields.street' => 'nullable|string|max:255',
-            'fields.purok' => 'nullable|string|max:255',
-            'fields.phic_id' => 'nullable|string|max:20',
             'fields.civil_status' => 'required|string|max:20',
             'fields.religion' => 'required|string|max:50',
-            'fields.other_religion' => 'nullable|string|max:50',
-            'fields.pwd_id' => 'nullable|string|max:20',
+            'fields.other_religion' => 'string|max:50',
+            'fields.contact' => 'required|string|max:20',
+            'fields.province_id' => 'required|integer',
+            'fields.muncity_id' => 'required|integer',
+            'fields.barangay_id' => 'required|integer',
+            'fields.street' => 'string|max:255',
+            'fields.purok' => 'string|max:255',
+            'fields.sitio' => 'string|max:255',
+            'fields.phic_id' => 'string|max:20',
+            'fields.pwd_id' => 'string|max:20',
             'fields.citizenship' => 'required|string|max:50',
-            'fields.other_citizenship' => 'nullable|string|max:50',
+            'fields.other_citizenship' => 'string|max:50',
             'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
+            'fields.offline_entry' => 'boolean',
         ];
 
         // Validate the request
-        $validator = Validator::make($fields, $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
@@ -529,7 +533,7 @@ class DataController extends Controller
 
         // Define validation rules
         $rules = [
-            'fields.risk_profile_id' => 'required|integer',
+            'fields.risk_profile_id' => 'integer',
             // ar
             'fields.ar_chest_pain' => 'required|string|max:8',
             'fields.ar_difficulty_breathing' => 'required|string|max:8',
@@ -544,26 +548,26 @@ class DataController extends Controller
             'fields.ar_agitated_behavior' => 'required|string|max:8',
             'fields.ar_eye_injury' => 'required|string|max:8',
             'fields.ar_severe_injuries' => 'required|string|max:8',
-            'fields.ar_refer_physician_name' => 'required|string|max:255',
-            'fields.ar_refer_reason' => 'required|string|max:255',
-            'fields.ar_refer_facility' => 'required|string|max:255',
+            'fields.ar_refer_physician_name' => 'string|max:255',
+            'fields.ar_refer_reason' => 'string|max:255',
+            'fields.ar_refer_facility' => 'string|max:255',
 
             // pmh
             'fields.pmh_hypertension' => 'required|string|max:8',
             'fields.pmh_heart_disease' => 'required|string|max:8',
             'fields.pmh_diabetes' => 'required|string|max:8',
-            'fields.pmh_specify_diabetes' => 'nullable|string|max:255',
+            'fields.pmh_specify_diabetes' => 'string|max:255',
             'fields.pmh_cancer' => 'required|string|max:8',
-            'fields.pmh_specify_cancer' => 'nullable|string|max:255',
+            'fields.pmh_specify_cancer' => 'string|max:255',
             'fields.pmh_copd' => 'required|string|max:8',
             'fields.pmh_asthma' => 'required|string|max:8',
             'fields.pmh_allergies' => 'required|string|max:8',
-            'fields.pmh_specify_allergies' => 'nullable|string|max:255',
+            'fields.pmh_specify_allergies' => 'string|max:255',
             'fields.pmh_mn_and_s_disorder' => 'required|string|max:8',
-            'fields.pmh_specify_mn_and_s_disorder' => 'nullable|string|max:255',
+            'fields.pmh_specify_mn_and_s_disorder' => 'string|max:255',
             'fields.pmh_vision_problems' => 'required|string|max:8',
             'fields.pmh_previous_surgical' => 'required|string|max:8',
-            'fields.pmh_specify_previous_surgical' => 'nullable|string|max:255',
+            'fields.pmh_specify_previous_surgical' => 'string|max:255',
             'fields.pmh_thyroid_disorders' => 'required|string|max:8',
             'fields.pmh_kidney_disorders' => 'required|string|max:8',
 
@@ -607,24 +611,27 @@ class DataController extends Controller
             'fields.rs_lipid_triglyceride' => 'required|numeric',
             'fields.rs_lipid_date_taken' => 'required|date',
             'fields.rs_urine_protein' => 'required|numeric',
-            'fields.rs_urine_protein_date_taken' => 'required|date',
+            'fields.rs_urine_protein_date_taken' => 'date',
             'fields.rs_urine_ketones' => 'required|numeric',
-            'fields.rs_urine_ketones_date_taken' => 'required|date',
+            'fields.rs_urine_ketones_date_taken' => 'date',
             'fields.rs_chronic_respiratory_disease' => 'required|string|max:255',
             'fields.rs_if_yes_any_symptoms' => 'required|string|max:255',
 
             //mngm
             'fields.mngm_med_hypertension' => 'required|string|max:8',
-            'fields.mngm_med_hypertension_specify' => 'nullable|string|max:255',
+            'fields.mngm_med_hypertension_specify' => 'string|max:255',
             'fields.mngm_med_diabetes' => 'required|string|max:8',
-            'fields.mngm_med_diabetes_options' => 'required|string|max:50',
-            'fields.mngm_med_diabetes_specify' => 'nullable|string|max:255',
+            'fields.mngm_med_diabetes_options' => 'string|max:50',
+            'fields.mngm_med_diabetes_specify' => 'string|max:255',
             'fields.mngm_date_follow_up' => 'required|date',
-            'fields.mngm_remarks' => 'nullable|string|max:255',
+            'fields.mngm_remarks' => 'string|max:255',
+
+            // offline entry field
+            'fields.offline_entry' => 'required|boolean'
         ];
 
         // Validate the request
-        $validator = Validator::make($fields, $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);

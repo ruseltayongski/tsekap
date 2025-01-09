@@ -8,6 +8,7 @@ use App\Profile;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\RetrieveProfileJob;
 
 class ProfileController extends Controller
 {
@@ -18,7 +19,6 @@ class ProfileController extends Controller
 
     public function retrieveProfile(Request $request)
     {
-        // Validate the request
         $validator = Validator::make($request->all(), [
             'fields' => 'required|array',
             'fields.firstname' => 'string',
@@ -26,50 +26,40 @@ class ProfileController extends Controller
             'fields.lastname' => 'string',
             'fields.dob' => 'date',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => 'Invalid input'], 400);
         }
-    
-        // Check authentication
-        if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-    
+
         $fields = $request->input('fields');
-    
-        // Initialize query
-        $query = Profile::select('unique_id', 'fname', 'mname', 'lname', 'dob', 'id');
-    
-        // Add conditions dynamically
-        $filters = [
-            'fname' => $fields['firstname'] ? $fields['firstname'] : null,
-            'mname' => $fields['middlename'] ? $fields['middlename'] : null,
-            'lname' => $fields['lastname'] ? $fields['lastname']: null,
-            'dob' => $fields['dob'] ? $fields['dob']: null,
-        ];
-    
-        foreach ($filters as $column => $value) {
-            if (!empty($value)) {
-                if ($column === 'dob') {
-                    $query->where($column, $value); // Exact match for date
-                } else {
-                    $query->where($column, 'like', "%$value%"); // Partial match for strings
-                }
-            }
+        $job = new RetrieveProfileJob($fields);
+        $result = $job->handle();
+
+        if ($result === 'timeout') {
+            return response()->json([
+                'message' => 'Request timed out. Please try again.',
+            ], 408); // HTTP 408 Request Timeout
         }
-    
-        // Execute query with ordering and limit
-        $profiles = $query->orderBy('lname', 'asc')
-            ->limit(25)
-            ->get();
-    
-        return response()->json($profiles, 200);
+
+        if ($result === 'Validation failed') {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
+
+        if (empty($result)) {
+            return response()->json([
+                'message' => 'No profiles found. Please refine your search criteria and try again.',
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Profiles retrieved successfully',
+            'profiles' => $result,
+        ], 200);
     }
-    
 
     // add profile
-    public function addProfile(Request $request){
+    public function addProfile(Request $request)
+    {
         // Validation rules
         $rules = [
             'unique_id' => 'required|unique:profiles',
@@ -117,10 +107,10 @@ class ProfileController extends Controller
         ];
 
         // check authentication if user is logged in
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
-        }        
-       
+        }
+
         // Validate input
         $validator = Validator::make($request->fields, $rules);
 
@@ -148,24 +138,25 @@ class ProfileController extends Controller
 
         return response()->json(['message' => 'Profile added successfully', 'profile' => $profile], 201);
     }
-    
+
     // update profile
-    public function updateProfile(Request $request){
+    public function updateProfile(Request $request)
+    {
         $fields = $request->input('fields');
-        
+
         // check authentication if user is logged in
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
-        }        
-       
+        }
+
         // get user
         $user = Auth::user();
-        
+
         // do not authorize update unless admin
-        if($user['user_priv'] != 1){
+        if ($user['user_priv'] != 1) {
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
-        
+
         // Check if profile exists
         $profile = Profile::find($fields->id);
 
@@ -231,27 +222,28 @@ class ProfileController extends Controller
         $profile->update($request->all());
 
         return response()->json(['message' => 'Profile updated successfully', 'profile' => $profile], 200);
-    } 
-    
+    }
+
     // delete profile
-    public function deleteProfile(Request $request){
+    public function deleteProfile(Request $request)
+    {
         $fields = $request->input('fields');
-       
+
         // check authentication if user is logged in
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
-        }        
-       
+        }
+
         // get user
         $user = Auth::user();
 
         // do not authorize deletion unless admin
-        if($user['user_priv'] != 1){
+        if ($user['user_priv'] != 1) {
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
         $profile = Profile::find($fields->id);
-        $profile->delete(); 
+        $profile->delete();
         return response()->json(['message' => 'Deleted profile.'], 200);
-    } 
+    }
 }
