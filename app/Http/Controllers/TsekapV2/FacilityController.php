@@ -20,11 +20,11 @@ class FacilityController extends Controller
         }
         
         $province = $request->query('province');
-        $municipality = $request->query('municipality');
+        $municipality = $request->query('muncity');
     
         $query = Facility::select('id', 'facility_code', 'name', 'latitude', 'longitude',
-                                  'abbr', 'address', 'brgy', 'muncity', 'contact', 'email', 
-                                  'status', 'description');
+                                  'abbr', 'address', 'brgy', 'muncity', 'province', 'contact', 'email',
+                                  'status', 'level', 'hospital_type', 'referral_used');
     
         if ($province) {
             $query->where('province', $province);
