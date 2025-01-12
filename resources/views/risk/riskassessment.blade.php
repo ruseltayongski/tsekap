@@ -35,8 +35,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="facility-name">Name of Health Facility</label>
-                                <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ?? 'N/A' }}">
-                                <input type="hidden" name="facility_id_updated" id="facility_id_updated" value="{{ json_decode($facility, true)[0]['id'] ?? 'N/A' }}"> 
+                                <input type="text" class="form-control" name="facilityname" id="facility" readonly value="{{ json_decode($facility, true)[0]['name'] ? json_decode($facility, true)[0]['name'] : 'N/A' }}">
+                                <input type="hidden" name="facility_id_updated" id="facility_id_updated" value="{{ json_decode($facility, true)[0]['id'] ? json_decode($facility, true)[0]['id']: 'N/A' }}"> 
                             </div> 
                                  @php
                                     use Carbon\Carbon;
@@ -82,6 +82,7 @@
                                     <option value="III">III</option>
                                     <option value="IV">IV</option>
                                     <option value="V">V</option>
+                                    <option value="VI">VI</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -110,7 +111,6 @@
                                     <option value="Legally Separated">Legally Separated</option>
                                 </select>
                             </div>
-
                             <div class="col-md-3">
                                 <label for="religion">Religion <span class="text-danger">*</span></label>
                                 <select class="form-control " name="religion" id="religion" onchange="showOtherReligionField()" required>
@@ -193,35 +193,25 @@
                                 <label for="citizenship">Citizenship</label>
                                 <select class="form-control" name="citizenship" id="citizenship" onchange="showOtherCitizenshipField()">
                                     <option value="">Select Citizenship</option>
-                                    <option value="Cebuano">Cebuano</option> 
-                                    <option value="Bisaya">Bisaya</option>
-                                    <option value="Tagalog">Tagalog</option>
-                                    <option value="Waray">Waray</option>
-                                    <option value="Ilonggo">Ilonggo</option>
-                                    <option value="Bicolano">Bicolano</option>
-                                    <option value="Kampampangan">Kapampangan</option> 
-                                    <option value="Maguindanao">Maguindanao</option>
-                                    <option value="Pangasinan">Pangasinan</option>
-                                    <option value="Badjao">Badjao</option>
-                                    <option value="Tausug">Tausug</option>
-                                    <option value="Maranao">Maranao</option>
-                                    <option value="Thai">Thai</option> 
-                                    <option value="Vietnamese">Vietnamese</option>
-                                    <option value="Indonesian">Indonesian</option>
-                                    <option value="Malaysian">Malaysian</option> 
-                                    <option value="Singaporean">Singaporean</option> 
-                                    <option value="Australian">Australian</option>
-                                    <option value="Chinese">Chinese</option> 
-                                    <option value="Indian">Indian</option>
+                                    <option value="Filipino">Filipino</option> 
                                     <option value="American">American</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="South Korean">South Korean</option>
+                                    <option value="Singaporean">Singaporean</option> 
+                                    <option value="Chinese">Chinese</option> 
+                                    <option value="Taiwanese">Taiwanese</option>
+                                    <option value="Australian">Australian</option>
                                     <option value="Canadian">Canadian</option>
                                     <option value="Swiss">Swiss</option>
-                                    <option value="Japanese">Japanese</option>
-                                    <option value="Korean">Korean</option>
                                     <option value="British">British</option> 
                                     <option value="Spanish">Spanish</option>
                                     <option value="French">French</option>
                                     <option value="German">German</option>
+                                    <option value="Thai">Thai</option> 
+                                    <option value="Vietnamese">Vietnamese</option>
+                                    <option value="Indonesian">Indonesian</option>
+                                    <option value="Malaysian">Malaysian</option> 
+                                    <option value="Indian">Indian</option>
                                     <option value="Russian">Russian</option> 
                                     <option value="Others">Others</option>
                                 </select>
