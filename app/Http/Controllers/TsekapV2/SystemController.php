@@ -5,46 +5,83 @@ namespace App\Http\Controllers\TsekapV2;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Cookie;
 
 class SystemController extends Controller
 {
     // Used to login users
     public function login(Request $request)
     {
-        $username = $request->query('user');
-        $password = $request->query('pass');
+        $username = $request->input('user');
+        $password = $request->input('pass');
 
-        $user = User::where('username', $username)->first();
-
-        if ($user && Hash::check($password, $user->password)) {
-            // Optional: Set $userBrgy and $target as required
-            $userBrgy = 0;
-            $target = 0;
-
-            // Set the XSRF token in the cookies
-            $cookie = cookie('XSRF-TOKEN', csrf_token(), 60); // 60 minutes expiration time
-
-            return response()->json([
-                'data' => $user,
-                'userBrgy' => $userBrgy,
-                'muncity' => $user->muncity,
-                'target' => $target,
-                'status' => 'success'
-            ])->cookie($cookie); // Attach the cookie to the response
+        if (!$username || !$password) {
+            return Response::json(['status' => 'error', 'message' => 'Username and password are required'], 400);
         }
 
-        return response()->json(['status' => 'denied'], 401); // Use 401 for unauthorized
+        // Attempt to find the user by username
+        $user = User::select(
+            'users.*',
+            'muncity.description as muncity_name',
+            'province.description as province_name',
+            'user_health_facility.facility_id',
+            'facilities.name as facility_name',
+            'user_health_facility.user_designation as user_designation'
+        )
+            ->where('username', $username)
+            ->join('muncity', 'users.muncity', '=', 'muncity.id')
+            ->join('province', 'users.province', '=', 'province.id')
+            ->leftJoin('user_health_facility', 'users.id', '=', 'user_health_facility.user_id')
+            ->leftJoin('facilities', 'user_health_facility.facility_id', '=', 'facilities.id')
+            ->first();
+
+        if ($user) {
+            if (Hash::check($password, $user->password)) {
+                // Log the user in
+                Auth::login($user);
+
+                // Generate a CSRF token
+                $csrfToken = csrf_token();
+
+                // Set the XSRF-TOKEN and X-CSRF-TOKEN cookies
+                $xsrfCookie = Cookie::make('XSRF-TOKEN', $csrfToken, 60);
+                $csrfCookie = Cookie::make('X-CSRF-TOKEN', $csrfToken, 60);
+
+                return Response::json([
+                    'data' => [
+                        'user' => $user,
+                        'facility' => $user->facility_id ? [
+                            'id' => $user->facility_id,
+                            'name' => $user->facility_name,
+                        ] : null,
+                    ],
+                    'status' => 'success',
+                ])->withCookie($xsrfCookie)->withCookie($csrfCookie);
+            } else {
+                return Response::json(['status' => 'error', 'message' => 'Invalid credentials'], 401);
+            }
+        }
+
+        return Response::json(['status' => 'error', 'message' => 'User not found'], 404);
+    }
+
+
+    // Logout the user
+    public function logout()
+    {
+        Auth::logout();
+        return Response::json(['status' => 'success', 'message' => 'Logged out successfully']);
     }
 
     // Get version for API documentation
     public function getVersion()
     {
-        return response()->json([
+        return Response::json([
             'apiName' => 'Tsekap 2.0 API',
             'revision' => '1.0',
         ]);
     }
 }
-
-

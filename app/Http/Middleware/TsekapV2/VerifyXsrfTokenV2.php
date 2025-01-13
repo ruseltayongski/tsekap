@@ -16,10 +16,11 @@ class VerifyXsrfTokenV2
      */
     public function handle($request, Closure $next)
     {
-        $headerToken = $request->header('X-XSRF-TOKEN');
-        $cookieToken = $request->cookie('XSRF-TOKEN');
+        $xsrfheaderToken = $request->header('X-XSRF-TOKEN');
+        $xsrfCookieToken1 = $request->cookie('XSRF-TOKEN');
+        $xsrfheaderToken2 = $request->cookie('X-XSRF-TOKEN');
 
-        if(!$headerToken && !$cookieToken){
+        if(!$xsrfheaderToken && !$xsrfCookieToken1 && !$xsrfheaderToken2) {
             return response()->json(['error' => 'XSRF token is missing.'], 403);
         }
 

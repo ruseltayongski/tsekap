@@ -15,7 +15,8 @@ class VerifyCsrfToken extends BaseVerifier
         'api/*',
         'apiv21/*',
         'post_dengvaxia/{id}',
-        'IhBKItxoEpTK425HpIMtyKCqan2IdRUn' //insert bhert
+        'IhBKItxoEpTK425HpIMtyKCqan2IdRUn', //insert bhert
+        'v2/*' // for tskeapv2
     ];
 
     protected function tokensMatch($request)

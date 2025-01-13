@@ -29,7 +29,6 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            
             \App\Http\Middleware\VerifyCsrfToken::class,
         ],
 
@@ -43,9 +42,8 @@ class Kernel extends HttpKernel
 
         'less-protected-api' => [
             'throttle:60,1',
-            
             // TsekapV2
-            'corsMiddleware'
+            'corsMiddleware',
         ],
     ];
 
@@ -69,6 +67,6 @@ class Kernel extends HttpKernel
 
         // TsekapV2
         'verifyXsrfToken' => \App\Http\Middleware\TsekapV2\VerifyXsrfTokenV2::class,
-        'corsMiddleware' => \App\Http\Middleware\CorsMiddleware::class
+        'corsMiddleware' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
