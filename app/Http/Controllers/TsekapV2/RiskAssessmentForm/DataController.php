@@ -428,11 +428,6 @@ class DataController extends Controller
             return response()->json(['error' => $validator->errors()], 422);
         }
     
-        // Ensure `offline_entry` is true
-        if (empty($fields['offline_entry']) || !$fields['offline_entry']) {
-            return response()->json(['error' => 'Malformed parameter. Please recheck request.'], 403);
-        }
-    
         try {
             $riskform = new RiskFormAssessment();
     
