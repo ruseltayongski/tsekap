@@ -8,7 +8,7 @@ use App\Barangay;
 use App\Muncity;
 use App\Province;
 use App\RiskProfile;
-use App\RiskFormAssesment;
+use App\RiskFormAssessment;
 
 class RiskProfileController extends Controller     
 {
@@ -68,7 +68,7 @@ class RiskProfileController extends Controller
         $riskprofile->other_religion = $req->other_religion ? $req -> other_religion : null; 
         $riskprofile->contact = $req->contact;
         $riskprofile->province_id = $req->province;
-        $riskprofile->muncity_id = $req->municipal;
+        $riskprofile->municipal_id = $req->municipal;
         $riskprofile->barangay_id = $req->barangay;
         $riskprofile->street = $req->street? $req->street : null;
         $riskprofile->purok = $req->purok? $req->purok : null;
@@ -83,7 +83,7 @@ class RiskProfileController extends Controller
     
         // Save the profile
         $riskprofile->save();
-        $riskform = new RiskFormAssesment();
+        $riskform = new RiskFormAssessment();
 
         // Health assessment checkbox fields
         $riskform->risk_profile_id = $riskprofile->id;
@@ -124,7 +124,7 @@ class RiskProfileController extends Controller
         $riskform->pmh_kidney_disorders = $req->input('pmh_kidney', 'No');
         
         //FAMILY HISTORY
-        $riskform->fmh_hypertension = $req->input('fmh_hypertension','No');
+        $riskform->fmh_side_hypertension = $req->input('fmh_side_hypertension','No');
         $riskform->fmh_stroke = $req->input('fmh_stroke','No');
         $riskform->fmh_heart_disease = $req->input('fmh_heart_disease','No');
         $riskform->fmh_diabetes_mellitus = $req->input('fmh_diabetes_mellitus','No');
@@ -231,81 +231,85 @@ class RiskProfileController extends Controller
     public function PatientRiskFormList(Request $request) { 
         $user = Auth::user();
         $keyword = $request->input('keyword');
+        
+        $query = RiskProfile::select(
+            'id', 'fname', 'mname', 'lname', 'dob', 'sex', 'civil_status', 
+            'barangay_id', 'municipal_id', 'province_id', 'facility_id_updated', 'created_at'
+        )->with([
+            'facility' => function($query) {
+                $query->select('id', 'name');
+            },
+            'province' => function($query) {
+                $query->select('id', 'description');
+            },
+            'muncity' => function($query) {
+                $query->select('id', 'province_id', 'description');
+            },
+            'barangay' => function($query) {
+                $query->select('id', 'muncity_id', 'description');
+            },
+        ])->orderby('id', 'desc');
     
-        $query = RiskProfile::select('id','fname', 'mname', 'lname', 'dob' , 'sex', 'civil_status','barangay_id', 'municipal_id', 'province_id', 'facility_id_updated','created_at')
-            ->with([
-                'facility' => function($query){
-                    $query->select('id', 'name');
-                },
-                'province' => function($query){
-                    $query->select('id', 'description');
-                },
-                'muncity' => function($query){
-                    $query->select('id', 'province_id', 'description');
-                },
-                'barangay' => function($query){
-                    $query->select('id','muncity_id', 'description');
-                },
-            ])
-            ->orderby('id', 'desc');
-        if($user->user_priv == 6){ // for facility view
-            if(!empty($keyword)){ //search functionality
+        if ($user->user_priv == 6) { // Facility view
+            if (!empty($keyword)) { // Search functionality
                 $query->where('facility_id_updated', $user->facility_id)
-                ->where(function ($q) use ($keyword){
-                    $q->where('fname', 'like', "%$keyword%")
-                        ->orWhere('lname', 'like', "%$keyword%")
-                        ->orWhereHas('province', function ($q) use ($keyword){
-                            $q->where('description','like', "%$keyword%");
-                        })
-                        ->orWhereHas('muncity', function ($q) use ($keyword){
-                            $q->where('description', 'like', "%$keyword%");
-                        });
-                });
+                    ->where(function ($q) use ($keyword) {
+                        $q->where('fname', 'like', "%$keyword%")
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhereHas('province', function ($q) use ($keyword) {
+                                $q->where('description', 'like', "%$keyword%");
+                            })
+                            ->orWhereHas('muncity', function ($q) use ($keyword) {
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                    });
             }
-            $riskprofiles = $query->where('facility_id_updated', $user->facility_id)->simplePaginate(15);
-            
-        } else if($user->user_priv == 7){ //Region view
-            if(!empty($keyword)){ //search functionality
-                $query->where(function ($q) use ($keyword){
+            $riskprofiles = $query->where('facility_id_updated', $user->facility_id)
+                ->simplePaginate(15);
+    
+        } else if ($user->user_priv == 7) { // Region view
+            if (!empty($keyword)) { // Search functionality
+                $query->where(function ($q) use ($keyword) {
                     $q->where('fname', 'like', "%$keyword%")
                         ->orWhere('lname', 'like', "%$keyword%")
-                        ->orWhereHas('province', function ($q) use ($keyword){
+                        ->orWhereHas('province', function ($q) use ($keyword) {
                             $q->where('description', 'like', "%$keyword%");
                         })
-                        ->orWhereHas('muncity', function ($q) use ($keyword){
+                        ->orWhereHas('muncity', function ($q) use ($keyword) {
                             $q->where('description', 'like', "%$keyword%");
                         });
                 });
             }
             $riskprofiles = $query->simplePaginate(15);
-        
-        } else if($user->user_priv == 3){ //provincial
-            if(!empty($keyword)){ //search functionality
-                $query->where('province_id', $user->province) 
-                ->where(function ($q) use ($keyword){
-                    $q->where('fname', 'like', "%$keyword%")
-                        ->orWhere('lname', 'like', "%$keyword%")
-                        ->orWhereHas('muncity', function ($q) use ($keyword){
-                            $q->where('description', 'like', "%$keyword%");
-                        });
-                });
+    
+        } else if ($user->user_priv == 3) { // Provincial view
+            if (!empty($keyword)) { // Search functionality
+                $query->where('province_id', $user->province)
+                    ->where(function ($q) use ($keyword) {
+                        $q->where('fname', 'like', "%$keyword%")
+                            ->orWhere('lname', 'like', "%$keyword%")
+                            ->orWhereHas('muncity', function ($q) use ($keyword) {
+                                $q->where('description', 'like', "%$keyword%");
+                            });
+                    });
             }
-
             $riskprofiles = $query->where('province_id', $user->province)
                 ->simplePaginate(15);
-        }          
-
-        if ($request->ajax()) {
-            return view('risk.riskprofilelist', compact('riskprofiles','user'))->render();
+        } else {
+            // Default empty pagination if no condition is met
+            $riskprofiles = RiskProfile::where('id', 0)->simplePaginate(15);
         }
-
-
+    
+        if ($request->ajax()) {
+            return view('risk.riskprofilelist', compact('riskprofiles', 'user'))->render();
+        }
+    
         return view('risk.risklist', [
             'user_priv' => $user,
-            'riskprofiles' => $riskprofiles, // Ensure the correct variable name is used
+            'riskprofiles' => $riskprofiles,
         ]);      
-
     }
+    
 
     public function SublistRiskPatient($id){
 

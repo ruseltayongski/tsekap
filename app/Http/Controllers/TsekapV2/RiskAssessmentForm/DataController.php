@@ -637,7 +637,7 @@ class DataController extends Controller
             return response()->json(['error' => $validator->errors()], 422);
         }
 
-        // Find the existing RiskFormAssesment
+        // Find the existing RiskFormAssessment
         $riskform = RiskFormAssessment::where('risk_profile_id', $fields['risk_profile_id'])->first();
 
         if (!$riskform) {
@@ -645,7 +645,7 @@ class DataController extends Controller
         }
 
         try {
-            // Update the RiskFormAssesment with new data
+            // Update the RiskFormAssessment with new data
             $riskform->update($fields);
 
             return response()->json(['message' => 'Risk form successfully updated.'], 200);
@@ -724,7 +724,7 @@ class DataController extends Controller
         }
 
         try {
-            $riskForm = RiskFormAssesment::where('risk_profile_id', $riskProfileId)->first();
+            $riskForm = RiskFormAssessment::where('risk_profile_id', $riskProfileId)->first();
 
             if (!$riskForm) {
                 return response()->json(['error' => 'Risk form not found.'], 404);
