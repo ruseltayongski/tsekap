@@ -153,4 +153,16 @@ class UsersCtrl extends Controller
                 return redirect()->route('resu.admin.view_Users')->with('error', 'User not found.');
             }
         }
+        
+        public function getUser($id)
+            {
+                $user = User::find($id);
+
+                if (!$user) {
+                    return response()->json(['error' => 'User not found'], 404);
+                }
+
+                return response()->json($user);
+            }
+
 }

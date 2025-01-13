@@ -6,6 +6,7 @@
  use App\Facility;
  use App\Province;
  use App\Barangay;
+//  use App\RiskAssessment; 
  
  $user = Auth::user();
    $facilities = Facility::select('id', 'name')->get();
@@ -223,18 +224,7 @@
                                 <label for="citizenship">Citizenship</label>
                                 <select class="form-control" name="citizenship" id="citizenship" onchange="showOtherCitizenshipField()" disabled>
                                     <option value="">Select Citizenship</option>
-                                    <option value="Cebuano" {{ $profile->citizenship == 'Cebuano' ? 'selected' : '' }}>Cebuano</option> 
-                                    <option value="Bisaya" {{ $profile->citizenship == 'Bisaya' ? 'selected' : '' }}>Bisaya</option>
-                                    <option value="Tagalog" {{ $profile->citizenship == 'Tagalog' ? 'selected' : '' }}>Tagalog</option>
-                                    <option value="Waray" {{ $profile->citizenship == 'Waray' ? 'selected' : '' }}>Waray</option>
-                                    <option value="Ilonggo" {{ $profile->citizenship == 'Illongo' ? 'selected' : '' }}>Illongo</option>
-                                    <option value="Bicolano" {{ $profile->citizenship == 'Bicolano' ? 'selected' : '' }}>Bicolano</option>
-                                    <option value="Kampampangan" {{ $profile->citizenship == 'Kampampangan' ? 'selected' : '' }}>Kapampangan</option> 
-                                    <option value="Maguindanao" {{ $profile->citizenship == 'Maguindanao' ? 'selected' : '' }}>Maguindanao</option>
-                                    <option value="Pangasinan" {{ $profile->citizenship == 'Pangasinan' ? 'selected' : '' }}>Pangasinan</option>
-                                    <option value="Badjao" {{ $profile->citizenship == 'Badjao' ? 'selected' : '' }} >Badjao</option>
-                                    <option value="Tausug" {{ $profile->citizenship == 'Tausug' ? 'selected' : '' }} >Tausug</option>
-                                    <option value="Maranao" {{ $profile->citizenship == 'Maranao' ? 'selected' : '' }} >Maranao</option>
+                                    <option value="Filipino" {{ $profile->citizenship == 'Filipino' ? 'selected' : '' }}>Filipino</option> 
                                     <option value="Thai" {{ $profile->citizenship == 'Thai' ? 'selected' : '' }}>Thai</option> 
                                     <option value="Vietnamese" {{ $profile->citizenship == 'Vietnamese' ? 'selected' : '' }}>Vietnamese</option>
                                     <option value="Indonesian" {{ $profile->citizenship == 'Indonesian' ? 'selected' : '' }}>Indonesian</option>
