@@ -62,7 +62,7 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields->facility_code);
+        $facility = Facility::find($fields['facility_code']);
 
         return response()->json($facility);
     }
@@ -106,13 +106,13 @@ class FacilityController extends Controller
             'referral_used' => 'nullable|string|max:45',
         ];
 
-        $validator = Validator::make($fields->all(), $rules);
+        $validator = Validator::make($fields, $rules);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $facility = Facility::create($fields->all());
+        $facility = Facility::create($fields);
 
         return response()->json($facility, 201);
     }
@@ -139,7 +139,7 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields->facility_code);
+        $facility = Facility::find($fields['facility_code']);
 
         if (!$facility) {
             return response()->json(['message' => 'Facility not found'], 404);
@@ -166,13 +166,13 @@ class FacilityController extends Controller
             'referral_used' => 'nullable|string|max:45',
         ];
 
-        $validator = Validator::make($fields->all(), $rules);
+        $validator = Validator::make($fields, $rules);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $facility->update($fields->all());
+        $facility->update($fields);
 
         return response()->json($facility);
     }
@@ -199,7 +199,7 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields->facility_code);
+        $facility = Facility::find($fields['facility_code']);
 
         if (!$facility) {
             return response()->json(['message' => 'Facility not found'], 404);

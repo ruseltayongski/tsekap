@@ -658,10 +658,10 @@
                                 <tr>     
                                     <td><span id="tobacco-use-label">5.1 Tobacco Use</span></td>
                                     <td>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="Never Used"> Never Used (proceed to Q2) <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" value="Exposure to secondhand smoke"> Exposure to secondhand smoke <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" value="Former tobacco user"> Former tobacco user (stopped smoking > 1 year) <br>
-                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" value="Current tobacco user"> Current tobacco user (currently smoking or stopped smoking) <br> <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q1" name="tobaccoUse[]" value="q1"> Never Used (proceed to Q2) <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q2" name="tobaccoUse[]" value="q2"> Exposure to secondhand smoke <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q3" name="tobaccoUse[]" value="q3"> Former tobacco user (stopped smoking > 1 year) <br>
+                                        <input type="checkbox" class="tobaccoCheckbox" id="q4" name="tobaccoUse[]" value="q4"> Current tobacco user (currently smoking or stopped smoking) <br> <br>
                                         <p style="font-style: italic; font-size: 15px;">
                                             If YES to Q2-Q4, follow the tobacco cessation protocol (5As) and use Form 1. Tobacco Cessation Referral Protocol, if needed.
                                         </p>
