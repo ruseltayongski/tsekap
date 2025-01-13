@@ -158,27 +158,16 @@ class DataController extends Controller
             'pmh_thyroid_disorders',
             'pmh_kidney_disorders',
             'fmh_hypertension',
-            'fmh_side_hypertension',
             'fmh_stroke',
-            'fmh_side_stroke',
             'fmh_heart_disease',
-            'fmh_side_heart_disease',
             'fmh_diabetes_mellitus',
-            'fmh_side_diabetes_mellitus',
             'fmh_asthma',
-            'fmh_side_asthma',
             'fmh_cancer',
-            'fmh_side_cancer',
             'fmh_kidney_disease',
-            'fmh_side_kidney_disease',
             'fmh_first_degree_relative',
-            'fmh_side_coronary_disease',
             'fmh_having_tuberculosis_5_years',
-            'fmh_side_tuberculosis',
             'fmh_mn_and_s_disorder',
-            'fmh_side_m_and_s_disorder',
             'fmh_copd',
-            'fmh_side_copd',
             'rf_tobacco_use',
             'rf_alcohol_intake',
             'rf_alcohol_binge_drinker',
@@ -654,7 +643,7 @@ class DataController extends Controller
     {
         $fields = $request->input('fields');
 
-        $riskProfileId = $fields->risk_profile_id;
+        $riskProfileId = $fields['risk_profile_id'];
 
         // check authentication if user is logged in
         if (!Auth::check()) {
@@ -696,7 +685,7 @@ class DataController extends Controller
     {
         $fields = $request->input('fields');
 
-        $riskProfileId = $fields->risk_profile_id;
+        $riskProfileId = $fields['risk_profile_id'];
 
         // check authentication if user is logged in
         if (!Auth::check()) {
@@ -719,7 +708,7 @@ class DataController extends Controller
         }
 
         try {
-            $riskForm = RiskFormAssesment::where('risk_profile_id', $riskProfileId)->first();
+            $riskForm = RiskFormAssessment::where('risk_profile_id', $riskProfileId)->first();
 
             if (!$riskForm) {
                 return response()->json(['error' => 'Risk form not found.'], 404);
