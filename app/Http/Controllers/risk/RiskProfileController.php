@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\risk;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -243,28 +245,28 @@ class RiskProfileController extends Controller
         }
 
         // Update the RiskProfile data
-        $riskprofile->profile_id = $req->profile_id ?: null;
+        $riskprofile->profile_id = $req->profile_id ? $req->profile_id : null;
         $riskprofile->lname = $req->lname;
         $riskprofile->fname = $req->fname;
-        $riskprofile->mname = $req->mname ?: null;
-        $riskprofile->suffix = $req->suffix ?: null;
+        $riskprofile->mname = $req->mname ? $req->mname : null;
+        $riskprofile->suffix = $req->suffix ? $req->suffix : null;
         $riskprofile->sex = $req->sex;
         $riskprofile->dob = $req->dob;
         $riskprofile->age = $req->age;
         $riskprofile->civil_status = $req->civil_status;
         $riskprofile->religion = $req->religion;
-        $riskprofile->other_religion = $req->other_religion ?: null;
+        $riskprofile->other_religion = $req->other_religion ? $req->other_religion : null;
         $riskprofile->contact = $req->contact;
         $riskprofile->province_id = $req->province;
         $riskprofile->municipal_id = $req->municipal;
         $riskprofile->barangay_id = $req->barangay;
-        $riskprofile->street = $req->street ?: null;
-        $riskprofile->purok = $req->purok ?: null;
-        $riskprofile->sitio = $req->sitio ?: null;
-        $riskprofile->phic_id = $req->phic_id ?: null;
-        $riskprofile->pwd_id = $req->pwd_id ?: null;
+        $riskprofile->street = $req->street ? $req->street : null;
+        $riskprofile->purok = $req->purok ? $req->purok : null;
+        $riskprofile->sitio = $req->sitio ? $req->sitio : null;
+        $riskprofile->phic_id = $req->phic_id ? $req->phic_id : null;
+        $riskprofile->pwd_id = $req->pwd_id ? $req->pwd_id : null;
         $riskprofile->citizenship = $req->citizenship;
-        $riskprofile->other_citizenship = $req->other_citizenship ?: null;
+        $riskprofile->other_citizenship = $req->other_citizenship ? $req->other_citizenship : null;
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
         $riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
@@ -421,7 +423,7 @@ class RiskProfileController extends Controller
 
         // Save the data
         $riskform->save();
-        
+
         // Redirect after saving
         return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
