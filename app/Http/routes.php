@@ -515,10 +515,16 @@ Route::get('/RiskAssessment', function () {
     return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
 })->name('riskassessment');
 
+//risk assessment
+Route::get('/RiskAssessment', function () {
+    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+})->name('riskassessment');
+
 //risk get profile verification
 Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
 Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
 Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
+Route::post('/update-risk-profile', 'risk\RiskProfileController@UpdateRiskPForm')->name('update-patient-risk-form');
 
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
 Route::post('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
