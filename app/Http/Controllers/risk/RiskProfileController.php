@@ -3,10 +3,10 @@ namespace App\Http\Controllers\risk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Facility;
+use App\Facilities;
 use App\Barangay;
 use App\Muncity;
-use App\Province;
+use App\UserHealthFacility;
 use App\RiskProfile;
 use App\RiskFormAssessment;
 
@@ -32,16 +32,16 @@ class RiskProfileController extends Controller
     {
         $user = Auth::user();
 
-        $facilities = Facility::all();
-        $facility = Facility::select('id', 'name', 'address', 'hospital_type')
-            ->where('id', $user->facility_id)
-            ->get();
-        $facilities = null;
+        // Retrieve the user health facility mapping
+        $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
 
-        foreach ($facility as $fact) {
-            $facilities = $fact;
+        // Fetch the facility details based on the mapping
+        $facility = null;
+        if ($userHealthFacilityMapping) {
+            $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
+                ->where('id', $userHealthFacilityMapping->facility_id)
+                ->first();
         }
-
         // Check for duplicate in the RiskProfile table
         $existingRiskProfile = RiskProfile::where('fname', $request->fname)
             ->where('lname', $request->lname)
@@ -81,7 +81,8 @@ class RiskProfileController extends Controller
         $riskprofile->other_citizenship = $request->other_citizenship ? $request->other_citizenship : null;
         $riskprofile->indigenous_person = $request->indigenous_person;
         $riskprofile->employment_status = $request->employment_status;
-        $riskprofile->facility_id_updated = $request->facility_id_updated; // Ensure this is not null
+        $riskprofile->facility_id_updated = $facility->id; // Ensure this is not null
+        $riskprofile->offline_entry = false;
 
         // Save the profile
         $riskprofile->save();
@@ -222,7 +223,7 @@ class RiskProfileController extends Controller
 
         // Remarks (Text area)
         $riskform->mngm_remarks = $request->input('remarks');
-
+        $riskform->offline_entry = false;
 
         // Save the data
         $riskform->save();
@@ -329,28 +330,28 @@ class RiskProfileController extends Controller
         $riskform->pmh_specify_previous_surgical = $req->input('pmh_psh_details', 'No');
         $riskform->pmh_thyroid_disorders = $req->input('pmh_thyroid', 'No');
         $riskform->pmh_kidney_disorders = $req->input('pmh_kidney', 'No');
-        
+
         //FAMILY HISTORY
-        $riskform->fmh_side_hypertension = $req->input('fmh_side_hypertension','No');
-        $riskform->fmh_stroke = $req->input('fmh_stroke','No');
-        $riskform->fmh_heart_disease = $req->input('fmh_heart_disease','No');
-        $riskform->fmh_diabetes_mellitus = $req->input('fmh_diabetes_mellitus','No');
-        $riskform->fmh_asthma = $req->input('fmh_asthma','No');
-        $riskform->fmh_cancer = $req->input('fmh_cancer','No');
-        $riskform->fmh_kidney_disease = $req->input('fmh_kidney','No');
-        $riskform->fmh_first_degree_relative = $req->input('fmh_first_degree','No');
-        $riskform->fmh_having_tuberculosis_5_years = $req->input('fmh_famtb','No');
-        $riskform->fmh_mn_and_s_disorder = $req->input('fmh_mnsad','No');
-        $riskform->fmh_copd = $req->input('fmh_copd','No');
+        $riskform->fmh_side_hypertension = $req->input('fmh_side_hypertension', 'No');
+        $riskform->fmh_stroke = $req->input('fmh_stroke', 'No');
+        $riskform->fmh_heart_disease = $req->input('fmh_heart_disease', 'No');
+        $riskform->fmh_diabetes_mellitus = $req->input('fmh_diabetes_mellitus', 'No');
+        $riskform->fmh_asthma = $req->input('fmh_asthma', 'No');
+        $riskform->fmh_cancer = $req->input('fmh_cancer', 'No');
+        $riskform->fmh_kidney_disease = $req->input('fmh_kidney', 'No');
+        $riskform->fmh_first_degree_relative = $req->input('fmh_first_degree', 'No');
+        $riskform->fmh_having_tuberculosis_5_years = $req->input('fmh_famtb', 'No');
+        $riskform->fmh_mn_and_s_disorder = $req->input('fmh_mnsad', 'No');
+        $riskform->fmh_copd = $req->input('fmh_copd', 'No');
 
         // NCD RISK FACTORS 
-        $tobaccoUsed = $req->input('tobaccoUse', []); 
-        $tobaccoUseLimited = array_slice($tobaccoUsed, 0, 2); 
-        $riskform->rf_tobacco_use = implode(', ', $tobaccoUseLimited); 
-        $riskform->rf_alcohol_intake = $req->input('ncd_alcohol', 'No'); 
+        $tobaccoUsed = $req->input('tobaccoUse', []);
+        $tobaccoUseLimited = array_slice($tobaccoUsed, 0, 2);
+        $riskform->rf_tobacco_use = implode(', ', $tobaccoUseLimited);
+        $riskform->rf_alcohol_intake = $req->input('ncd_alcohol', 'No');
         $riskform->rf_alcohol_binge_drinker = $req->input('ncd_alcohol_binge', 'No');
-        $riskform->rf_physical_activity = $req->input('ncd_physical', 'No'); 
-        $riskform->rf_nutrition_dietary = $req->input('ncd_nutrition', 'No'); 
+        $riskform->rf_physical_activity = $req->input('ncd_physical', 'No');
+        $riskform->rf_nutrition_dietary = $req->input('ncd_nutrition', 'No');
         $riskform->rf_weight = $req->input('rf_weight', '');
         $riskform->rf_height = $req->input('rf_height', '');
         $riskform->rf_body_mass = $req->input('rf_bmi', '');
@@ -369,17 +370,17 @@ class RiskProfileController extends Controller
         $riskform->rs_blood_sugar_rbs = $req->input('rbs_result', ' ');
         $riskform->rs_blood_sugar_date_taken = $req->input('blood_sugar_date_taken', '');
         $riskform->rs_blood_sugar_symptoms = implode(', ', $dmSymptoms);
-        $riskform->rs_lipid_cholesterol = $req->input('lipid_cholesterol', ''); 
-        $riskform->rs_lipid_hdl = $req->input('lipid_hdl', ''); 
-        $riskform->rs_lipid_ldl = $req->input('lipid_ldl', ''); 
-        $riskform->rs_lipid_vldl = $req->input('lipid_vldl', ''); 
-        $riskform->rs_lipid_triglyceride = $req->input('lipid_triglyceride', ''); 
+        $riskform->rs_lipid_cholesterol = $req->input('lipid_cholesterol', '');
+        $riskform->rs_lipid_hdl = $req->input('lipid_hdl', '');
+        $riskform->rs_lipid_ldl = $req->input('lipid_ldl', '');
+        $riskform->rs_lipid_vldl = $req->input('lipid_vldl', '');
+        $riskform->rs_lipid_triglyceride = $req->input('lipid_triglyceride', '');
         $riskform->rs_lipid_date_taken = $req->input('lipid_date_taken', date('Y-m-d'));
         $riskform->rs_urine_protein = $req->input('uri_protein', '');
         $riskform->rs_urine_protein_date_taken = $req->input('uri_protein_date_taken', date('Y-m-d'));
         $riskform->rs_urine_ketones = $req->input('uri_ketones', '');
         $riskform->rs_urine_ketones_date_taken = $req->input('uri_ketones_date_taken', date('Y-m-d'));
-        
+
         $symptoms = [];
 
         // Check each checkbox and add the label to the array if selected
@@ -416,18 +417,18 @@ class RiskProfileController extends Controller
         // Anti-Hypertensives: Store selected option and any specify text
         $riskform->mngm_med_hypertension = $req->input('anti_hypertensives');
         $riskform->mngm_med_hypertension_specify = $req->input('anti_hypertensives_specify');
-    
+
         // Anti-Diabetes: Store selected option and any specify text, and type
         $riskform->mngm_med_diabetes = $req->input('anti_diabetes');
         $riskform->mngm_med_diabetes_options = $req->input('anti_diabetes_type');
         $riskform->mngm_med_diabetes_specify = $req->input('anti_diabetes_specify');
-    
+
         // Follow-up Date
         $riskform->mngm_date_follow_up = $req->input('follow_up_date');
-    
+
         // Remarks (Text area)
         $riskform->mngm_remarks = $req->input('remarks');
-    
+
         // Save the data
         $riskform->save();
         // Redirect after saving
