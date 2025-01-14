@@ -521,5 +521,6 @@ Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@ri
 Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
 
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
-Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
+Route::post('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
+Route::post('/risk-patient/{id}', 'risk\RiskProfileController@destroy')->name('patientrisk.delete');
