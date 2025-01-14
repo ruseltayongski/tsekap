@@ -70,7 +70,7 @@
             <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.'. '.$profile->lname.' '.$profile->suffix }}
         </h2 >
         <!-- <div class="page-divider"></div> -->
-        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">  
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <input type="hidden" name="report_facilityId" value="{{ $facility->id }}">

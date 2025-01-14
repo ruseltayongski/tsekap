@@ -59,6 +59,7 @@
                         <thead>
                             <tr>
                                 <th></th>
+                                <th></th>
                                 @if($user_priv->user_priv !== 6)
                                     <th>Facility Name</th>
                                 @endif
@@ -81,6 +82,15 @@
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                     </td>
+                                    <td nowrap="TRUE">
+                                        <form action="{{ route('patientrisk.delete', $profile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                        
+                                    </td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>{{ $profile->facility->name ? $profile->facility->name : 'N/A' }}</td>
                                     @endif
@@ -92,7 +102,6 @@
                                     <td>{{ $profile->muncity->description ? $profile->muncity->description : 'N/A' }}</td>
                                     <td>{{ $profile->barangay->description ? $profile->barangay->description : 'N/A' }}</td>
                                     <td>{{ $profile->created_at ? Carbon::parse($profile->created_at)->format('F j, Y') : 'N/A' }}</td>
-                                  
                                 </tr>
                             @endforeach
                         </tbody>

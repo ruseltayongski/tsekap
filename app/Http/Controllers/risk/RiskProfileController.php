@@ -124,7 +124,7 @@ class RiskProfileController extends Controller
         $riskform->pmh_kidney_disorders = $req->input('pmh_kidney', 'No');
         
         //FAMILY HISTORY
-        $riskform->fmh_side_hypertension = $req->input('fmh_side_hypertension','No');
+        //$riskform->fmh_side_hypertension = $req->input('fmh_side_hypertension','No');
         $riskform->fmh_stroke = $req->input('fmh_stroke','No');
         $riskform->fmh_heart_disease = $req->input('fmh_heart_disease','No');
         $riskform->fmh_diabetes_mellitus = $req->input('fmh_diabetes_mellitus','No');
@@ -228,77 +228,46 @@ class RiskProfileController extends Controller
         return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
 
-    public function PatientRiskFormList(Request $request) { 
+    public function PatientRiskFormList(Request $request)
+    {
         $user = Auth::user();
         $keyword = $request->input('keyword');
-        
+    
         $query = RiskProfile::select(
             'id', 'fname', 'mname', 'lname', 'dob', 'sex', 'civil_status', 
             'barangay_id', 'municipal_id', 'province_id', 'facility_id_updated', 'created_at'
         )->with([
-            'facility' => function($query) {
+            'facility' => function ($query) {
                 $query->select('id', 'name');
             },
-            'province' => function($query) {
+            'province' => function ($query) {
                 $query->select('id', 'description');
             },
-            'muncity' => function($query) {
+            'muncity' => function ($query) {
                 $query->select('id', 'province_id', 'description');
             },
-            'barangay' => function($query) {
+            'barangay' => function ($query) {
                 $query->select('id', 'muncity_id', 'description');
             },
-        ])->orderby('id', 'desc');
+        ])->orderBy('id', 'desc');
     
         if ($user->user_priv == 6) { // Facility view
-            if (!empty($keyword)) { // Search functionality
-                $query->where('facility_id_updated', $user->facility_id)
-                    ->where(function ($q) use ($keyword) {
-                        $q->where('fname', 'like', "%$keyword%")
-                            ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('province', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            })
-                            ->orWhereHas('muncity', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            });
-                    });
-            }
-            $riskprofiles = $query->where('facility_id_updated', $user->facility_id)
-                ->simplePaginate(15);
-    
-        } else if ($user->user_priv == 7) { // Region view
-            if (!empty($keyword)) { // Search functionality
-                $query->where(function ($q) use ($keyword) {
-                    $q->where('fname', 'like', "%$keyword%")
-                        ->orWhere('lname', 'like', "%$keyword%")
-                        ->orWhereHas('province', function ($q) use ($keyword) {
-                            $q->where('description', 'like', "%$keyword%");
-                        })
-                        ->orWhereHas('muncity', function ($q) use ($keyword) {
-                            $q->where('description', 'like', "%$keyword%");
-                        });
-                });
-            }
-            $riskprofiles = $query->simplePaginate(15);
-    
-        } else if ($user->user_priv == 3) { // Provincial view
-            if (!empty($keyword)) { // Search functionality
-                $query->where('province_id', $user->province)
-                    ->where(function ($q) use ($keyword) {
-                        $q->where('fname', 'like', "%$keyword%")
-                            ->orWhere('lname', 'like', "%$keyword%")
-                            ->orWhereHas('muncity', function ($q) use ($keyword) {
-                                $q->where('description', 'like', "%$keyword%");
-                            });
-                    });
-            }
-            $riskprofiles = $query->where('province_id', $user->province)
-                ->simplePaginate(15);
+            $this->applyFilters($query, $user, $keyword);
+            $query->where('facility_id_updated', $user->facility_id);
+        } elseif ($user->user_priv == 10) { // DSOs view
+            $this->applyFilters($query, $user, $keyword);
+            $query->where('facility_id_updated', $user->facility_id);
+        } elseif ($user->user_priv == 7) { // Region view
+            $this->applyFilters($query, $user, $keyword);
+        } elseif ($user->user_priv == 3) { // Provincial view
+            $this->applyFilters($query, $user, $keyword);
+            $query->where('province_id', $user->province);
         } else {
             // Default empty pagination if no condition is met
-            $riskprofiles = RiskProfile::where('id', 0)->simplePaginate(15);
+            $query->where('id', 0);
         }
+    
+        $riskprofiles = $query->simplePaginate(15);
     
         if ($request->ajax()) {
             return view('risk.riskprofilelist', compact('riskprofiles', 'user'))->render();
@@ -307,10 +276,25 @@ class RiskProfileController extends Controller
         return view('risk.risklist', [
             'user_priv' => $user,
             'riskprofiles' => $riskprofiles,
-        ]);      
+        ]);
     }
     
-
+    private function applyFilters($query, $user, $keyword)
+    {
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('fname', 'like', "%$keyword%")
+                    ->orWhere('lname', 'like', "%$keyword%")
+                    ->orWhereHas('province', function ($q) use ($keyword) {
+                        $q->where('description', 'like', "%$keyword%");
+                    })
+                    ->orWhereHas('muncity', function ($q) use ($keyword) {
+                        $q->where('description', 'like', "%$keyword%");
+                    });
+            });
+        }
+    }
+    
     public function SublistRiskPatient($id){
 
         $user = Auth::user();
@@ -363,27 +347,27 @@ class RiskProfileController extends Controller
                     'pmh_thyroid_disorders',
                     'pmh_kidney_disorders',
                     'fmh_hypertension',
-                    'fmh_side_hypertension',
+                    //'fmh_side_hypertension',
                     'fmh_stroke',
-                    'fmh_side_stroke',
+                    //'fmh_side_stroke',
                     'fmh_heart_disease',
-                    'fmh_side_heart_disease',
+                    //'fmh_side_heart_disease',
                     'fmh_diabetes_mellitus',
-                    'fmh_side_diabetes_mellitus',
+                    //'fmh_side_diabetes_mellitus',
                     'fmh_asthma',
-                    'fmh_side_asthma',
+                    //'fmh_side_asthma',
                     'fmh_cancer',
-                    'fmh_side_cancer',
+                    //'fmh_side_cancer',
                     'fmh_kidney_disease',
-                    'fmh_side_kidney_disease',
+                    //'fmh_side_kidney_disease',
                     'fmh_first_degree_relative',
-                    'fmh_side_coronary_disease',
+                    //'fmh_side_coronary_disease',
                     'fmh_having_tuberculosis_5_years',
-                    'fmh_side_tuberculosis', 
+                    //'fmh_side_tuberculosis', 
                     'fmh_mn_and_s_disorder',
-                    'fmh_side_mn_and_s_disorder',
+                    //'fmh_side_mn_and_s_disorder',
                     'fmh_copd',
-                    'fmh_side_copd',
+                    //'fmh_side_copd',
                     'rf_tobacco_use', 
                     'rf_alcohol_intake', 
                     'rf_alcohol_binge_drinker', 
@@ -432,6 +416,23 @@ class RiskProfileController extends Controller
             'province' => $province_selectedMun,
         ]);
    
+    }
+
+    public function destroy($id)
+    {
+        try {
+            // Find the profile by ID
+            $profile = RiskProfile::findOrFail($id);
+            
+            // Delete the profile
+            $profile->delete();
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Risk profile deleted successfully!');
+        } catch (\Exception $e) {
+            // Handle error and redirect back with an error message
+            return redirect()->back()->with('error', 'Failed to delete risk profile: ' . $e->getMessage());
+        }
     }
 
 }

@@ -9,13 +9,22 @@
 @foreach($riskprofiles as $profile)
     <tr>
         <td nowrap="TRUE">
-            <a href="{{ asset('sublist-patient/'.$profile->id) }}" class="btn btn-xs btn-success">
+            <a href="{{ asset('sublist-risk-patient/'.$profile->id) }}" class="btn btn-xs btn-success">
                 <i class="fa fa-eye"></i> View
             </a>
         </td>
-        {{-- @if($user_priv->user_priv !== 6)
+        <td nowrap="TRUE">
+            <form action="{{ route('patientrisk.delete', $profile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                {{ csrf_field() }}
+                <button type="submit" class="btn btn-xs btn-danger">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
+            </form>
+        </td>   
+
+        @if($user_priv->user_priv !== 6)
             <td>{{ $profile->facility->name ?? 'N/A' }}</td>
-        @endif --}}
+        @endif
         <td>{{ $profile->fname }} {{ $profile->mname }} {{ $profile->lname }}</td>
         <td>{{ Carbon::parse($profile->dob)->age }}</td>
         <td>{{ $profile->sex }}</td>
