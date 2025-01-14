@@ -9,9 +9,9 @@
  
  $user = Auth::user();
  $facilities = Facility::select('id', 'name')->get();
- $facilities = Facility::select('id', 'name')->get();
  $facility = Facility::select('id','name','address','hospital_type')
-    ->where('id', $user->facility_id)    
+    ->where('id', $user->facility_id)
+    ->leftJoin('user_health_facility', 'users.id', '=', '')
     ->get();
 
  $province = Province::select('id', 'description')->get();

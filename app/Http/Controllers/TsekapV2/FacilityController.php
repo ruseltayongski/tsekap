@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\TsekapV2;
 
 use Illuminate\Http\Request;
-use App\Facility;
+use App\Facilities;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -14,17 +14,19 @@ class FacilityController extends Controller
     // get facilities
     public function getAllFacility(Request $request)
     {
-        // check authentication if user is logged in
-        if(!Auth::check()){
+        // Check if user is authenticated
+        if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
+    
         $province = $request->query('province');
         $municipality = $request->query('muncity');
     
-        $query = Facility::select('id', 'facility_code', 'name', 'latitude', 'longitude',
-                                  'abbr', 'address', 'brgy', 'muncity', 'province', 'contact', 'email',
-                                  'status', 'level', 'hospital_type', 'referral_used');
+        $query = Facilities::select(
+            'id', 'facility_code', 'name', 'latitude', 'longitude',
+            'abbr', 'address', 'brgy', 'muncity', 'province', 'contact', 'email',
+            'status', 'level', 'hospital_type', 'referral_used'
+        );
     
         if ($province) {
             $query->where('province', $province);
@@ -34,9 +36,17 @@ class FacilityController extends Controller
             $query->where('muncity', $municipality);
         }
     
+        // Log the query for debugging
+        \Log::info('Facilities Query:', [
+            'query' => $query->toSql(),
+            'bindings' => $query->getBindings(),
+        ]);
+    
         $facilities = $query->get();
+    
         return response()->json($facilities);
     }
+    
 
     // ---- POST FUNCTIONS ----- //
 
@@ -62,7 +72,7 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields['facility_code']);
+        $facility = Facilities::find($fields['facility_code']);
 
         return response()->json($facility);
     }
@@ -112,7 +122,7 @@ class FacilityController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $facility = Facility::create($fields);
+        $facility = Facilities::create($fields);
 
         return response()->json($facility, 201);
     }
@@ -139,10 +149,10 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields['facility_code']);
+        $facility = Facilities::find($fields['facility_code']);
 
         if (!$facility) {
-            return response()->json(['message' => 'Facility not found'], 404);
+            return response()->json(['message' => 'Facilities not found'], 404);
         }
 
         $rules = [
@@ -199,16 +209,16 @@ class FacilityController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $facility = Facility::find($fields['facility_code']);
+        $facility = Facilities::find($fields['facility_code']);
 
         if (!$facility) {
-            return response()->json(['message' => 'Facility not found'], 404);
+            return response()->json(['message' => 'Facilities not found'], 404);
         }
 
         // delete facility
         $facility->delete();
 
-        return response()->json(['message' => 'Facility deleted']);
+        return response()->json(['message' => 'Facilities deleted']);
     }
 }
 
