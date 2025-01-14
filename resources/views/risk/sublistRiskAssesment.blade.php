@@ -2,17 +2,23 @@
 @section('content')
     <?php
     use App\Muncity;
-    use App\Facility;
+    use App\UserHealthFacility;
+    use App\Facilities;
     use App\Province;
     use App\Barangay;
     //  use App\RiskAssessment;
     
     $user = Auth::user();
-    $facilities = Facility::select('id', 'name')->get();
-    $facilities = Facility::select('id', 'name')->get();
-    $facility = Facility::select('id', 'name', 'address', 'hospital_type')
-        ->where('id', $profile->facility_id_updated)
-        ->get();
+    // Retrieve the user health facility mapping
+    $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
+        
+        // Fetch the facility details based on the mapping
+        $facility = null;
+        if ($userHealthFacilityMapping) {
+            $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
+                ->where('id', $userHealthFacilityMapping->facility_id)
+                ->first();
+        }
     
     use Carbon\Carbon;
     $dob = Carbon::parse($profile->dob);

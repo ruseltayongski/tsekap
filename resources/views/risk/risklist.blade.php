@@ -2,7 +2,8 @@
     use Carbon\Carbon;
     use App\Facility;
     use App\ResuReportFacility;
-    $priv_fact = Auth::user()->facility_id_updated;
+    $priv_fact = Auth::user()->user_priv;
+    // $priv_fact = Auth::user()->facility_id_updated;
 @endphp
 
 @extends('resu/app1')

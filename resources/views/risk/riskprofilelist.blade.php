@@ -23,7 +23,7 @@
         </td>   
 
         @if($user_priv->user_priv !== 6)
-            <td>{{ $profile->facility->name ?? 'N/A' }}</td>
+            <td>{{ $profile->facility->name ? $profile->facility->name : 'N/A' }}</td>
         @endif
         <td>{{ $profile->fname }} {{ $profile->mname }} {{ $profile->lname }}</td>
         <td>{{ Carbon::parse($profile->dob)->age }}</td>
