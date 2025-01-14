@@ -31,10 +31,10 @@ class MiscDataController extends Controller
 
     // get barangay
     public function getBarangay(Request $request){
-        $muncityId = $request->query('muncity_id');
+        $muncityId = $request->query('municipal_id');
 
-        $barangay = Barangay::where('muncity_id', '=',$muncityId)
-            ->select('id','muncity_id','description')
+        $barangay = Barangay::where('municipal_id', '=',$muncityId)
+            ->select('id','municipal_id','description')
             ->get();
         return response()->json($barangay);
     }
@@ -47,7 +47,7 @@ class MiscDataController extends Controller
     
     // get all barangays
     public function getAllBarangays(){
-        $muncities = Barangay::select('id', 'province_id', 'muncity_id', 'description')->get();
+        $muncities = Barangay::select('id', 'province_id', 'municipal_id', 'description')->get();
         return response()->json($muncities);
     }
 }
