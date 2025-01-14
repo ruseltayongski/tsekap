@@ -3,10 +3,8 @@ namespace App\Http\Controllers\risk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Facilities;
 use App\Barangay;
 use App\Muncity;
-use App\UserHealthFacility;
 use App\RiskProfile;
 use App\RiskFormAssessment;
 
@@ -32,16 +30,6 @@ class RiskProfileController extends Controller
     {
         $user = Auth::user();
 
-        // Retrieve the user health facility mapping
-        $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
-
-        // Fetch the facility details based on the mapping
-        $facility = null;
-        if ($userHealthFacilityMapping) {
-            $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
-                ->where('id', $userHealthFacilityMapping->facility_id)
-                ->first();
-        }
         // Check for duplicate in the RiskProfile table
         $existingRiskProfile = RiskProfile::where('fname', $request->fname)
             ->where('lname', $request->lname)
@@ -81,7 +69,7 @@ class RiskProfileController extends Controller
         $riskprofile->other_citizenship = $request->other_citizenship ? $request->other_citizenship : null;
         $riskprofile->indigenous_person = $request->indigenous_person;
         $riskprofile->employment_status = $request->employment_status;
-        $riskprofile->facility_id_updated = $facility->id; // Ensure this is not null
+        $riskprofile->facility_id_updated = $request->facility_id_updated; // Ensure this is not null
         $riskprofile->offline_entry = false;
 
         // Save the profile
@@ -279,8 +267,9 @@ class RiskProfileController extends Controller
         $riskprofile->other_citizenship = $req->other_citizenship ?: null;
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
-        $riskprofile->facility_id_updated = $req->facility_id_updated;
-
+        $riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
+        $riskprofile->offline_entry = false;
+        
         // Save the updated RiskProfile
         $riskprofile->save();
 
@@ -428,9 +417,11 @@ class RiskProfileController extends Controller
 
         // Remarks (Text area)
         $riskform->mngm_remarks = $req->input('remarks');
+        $riskform->offline_entry = false;
 
         // Save the data
         $riskform->save();
+        
         // Redirect after saving
         return redirect()->route('riskassessment')->with('success', 'Patient Successfully Added');
     }
