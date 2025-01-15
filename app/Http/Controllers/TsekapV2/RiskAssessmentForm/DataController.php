@@ -57,14 +57,17 @@ class DataController extends Controller
             'risk_profile.province_id',
             'risk_profile.facility_id_updated',
             'risk_profile.offline_entry',
+            'risk_profile.encoded_by',
             'risk_profile.created_at',
             'risk_profile.updated_at',
             'muncity.description as municipal_name',
-            'province.description as province_name'
+            'province.description as province_name',
+            'users.name as encoded_by_name' // Assuming 'name' is a column in the users table
         )
-            ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id') // Corrected column name
-            ->join('province', 'risk_profile.province_id', '=', 'province.id');
-
+        ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id')
+        ->join('province', 'risk_profile.province_id', '=', 'province.id')
+        ->join('users', 'risk_profile.encoded_by', '=', 'users.id'); // Join with users table
+        
         // Apply user privilege filters
         if ($user->user_priv === 3) {
             $query->where('risk_profile.province_id', $user->province);
@@ -75,6 +78,9 @@ class DataController extends Controller
 
         // Apply keyword filter for fname, lname, or dob (OR condition for each field)
         if ($keyword) {
+            if($filter === 'facility_id_updated'){
+                $query->where('risk_profile.facility_id_updated', 'like', "%$keyword%");
+            }
             if ($filter === 'fname') {
                 $query->where('risk_profile.fname', 'like', "%$keyword%");
             } elseif ($filter === 'lname') {
@@ -253,6 +259,7 @@ class DataController extends Controller
             'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
+            'fields.encoded_by' => 'required|integer',
             'fields.offline_entry' => 'boolean',
         ];
     
@@ -478,6 +485,7 @@ class DataController extends Controller
             'fields.indigenous_person' => 'required|string|max:8',
             'fields.employment_status' => 'required|string|max:50',
             'fields.facility_id_updated' => 'required|integer',
+            'fields.encoded_by' => 'required|integer',
             'fields.offline_entry' => 'boolean',
         ];
 

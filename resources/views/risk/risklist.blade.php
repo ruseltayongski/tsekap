@@ -1,9 +1,23 @@
 @php
     use Carbon\Carbon;
-    use App\Facility;
-    use App\ResuReportFacility;
-    $priv_fact = Auth::user()->user_priv;
-    // $priv_fact = Auth::user()->facility_id_updated;
+    use App\Facilities;
+    use App\UserHealthFacility;
+    // use App\Facility;
+    // use App\ResuReportFacility;
+
+    $user = Auth::user();
+
+    $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
+
+    $facility = null;
+    if($userHealthFacilityMapping){
+        $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
+                ->where('id', $userHealthFacilityMapping->facility_id)
+                ->first();
+    }
+
+    $priv_fact = Auth::user()->facility_id_updated;
+
 @endphp
 
 @extends('resu/app1')
