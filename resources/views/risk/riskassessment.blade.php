@@ -7,7 +7,6 @@
         use App\Facilities;
         use App\Province;
         use App\Muncity;
-        use App\Barangay;
         use App\UserHealthFacility;
         use Illuminate\Support\Facades\Auth;
         

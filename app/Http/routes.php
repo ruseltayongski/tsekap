@@ -55,7 +55,8 @@ Route::group(['middleware' => ['api']], function () {
     // Forms
     // ---- Risk Assessment and Profile ---- //
     Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskassessment', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskAssessment');
-    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfile');
+    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofilebyfacility', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfileByFacility');
+    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfileWithoutFacility');
     Route::post($apiVersions[0] . 'forms/riskassessment/addriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@addRiskProfile');
     Route::post($apiVersions[0] . 'forms/riskassessment/addriskform', 'TsekapV2\RiskAssessmentForm\DataController@addRiskForm');
     Route::post($apiVersions[0] . 'forms/riskassessment/updateriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@updateRiskProfile');

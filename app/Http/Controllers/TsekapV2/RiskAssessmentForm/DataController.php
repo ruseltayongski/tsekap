@@ -36,7 +36,95 @@ class DataController extends Controller
         return null;
     }
 
-    public function retrievePatientRiskProfile(Request $request)
+    // retrieval without facility
+    public function retrievePatientRiskProfileWithoutFacility(Request $request)
+    {
+        // Validate the request
+        $validator = Validator::make($request->all(), [
+            'fields.filter' => 'required|string',
+            'fields.keyword' => 'string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid input'], 400);
+        }
+
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = Auth::user();
+        $fields = $request->input('fields', []);
+
+        $filter = isset($fields['filter']) ? $fields['filter'] : null;
+        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null;
+
+        // Debugging: Log the input
+        \Log::info('Request Input:', compact('filter', 'keyword', 'user'));
+
+        // Base query for risk profiles
+        $query = RiskProfile::select(
+            'risk_profile.id',
+            'risk_profile.fname',
+            'risk_profile.mname',
+            'risk_profile.lname',
+            'risk_profile.dob',
+            'risk_profile.sex',
+            'risk_profile.civil_status',
+            'risk_profile.barangay_id',
+            'risk_profile.municipal_id',
+            'risk_profile.province_id',
+            'risk_profile.facility_id_updated',
+            'risk_profile.offline_entry',
+            'risk_profile.encoded_by',
+            'risk_profile.created_at',
+            'risk_profile.updated_at',
+            'muncity.description as municipal_name',
+            'province.description as province_name'
+        )
+            ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id')
+            ->join('province', 'risk_profile.province_id', '=', 'province.id');
+
+        // Apply user privilege filters
+        if ($user->user_priv === 3) {
+            $query->where('risk_profile.province_id', $user->province);
+        }
+
+        // Apply keyword filter
+        if ($keyword) {
+            $query->where(function ($q) use ($filter, $keyword) {
+                $columns = [
+                    'facility_id_updated' => 'risk_profile.facility_id_updated',
+                    'fname' => 'risk_profile.fname',
+                    'lname' => 'risk_profile.lname',
+                    'dob' => 'risk_profile.dob'
+                ];
+
+                if ($filter === 'dob') {
+                    // Parse keyword as date
+                    $parsedDate = date('Y-m-d', strtotime($keyword));
+                    $q->where($columns['dob'], $parsedDate);
+                } elseif (isset($columns[$filter])) {
+                    $q->where($columns[$filter], 'like', "%$keyword%");
+                } else {
+                    $q->where('risk_profile.fname', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.lname', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.dob', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.facility_id_updated', '=', $keyword);
+                }
+            });
+        }
+
+        // Paginate and return results
+        $results = $query->simplePaginate(15);
+
+        return response()->json($results, 200);
+    }
+
+
+    // retrieval with facility
+    public function retrievePatientRiskProfileByFacility(Request $request)
     {
         // Validate the request
         $validator = Validator::make($request->all(), [
