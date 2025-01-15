@@ -33,7 +33,8 @@ class RiskProfileController extends Controller
         $user = Auth::user();
 
         // Check for duplicate in the RiskProfile table
-        $existingRiskProfile = RiskProfile::where('fname', $request->fname)
+        $existingRiskProfile = RiskProfile::where('profile_id', $request->profile_id)
+            ->where('fname', $request->fname)
             ->where('lname', $request->lname)
             ->where('mname', $request->mname)
             ->where('dob', $request->dob)
@@ -72,6 +73,7 @@ class RiskProfileController extends Controller
         $riskprofile->indigenous_person = $request->indigenous_person;
         $riskprofile->employment_status = $request->employment_status;
         $riskprofile->facility_id_updated = $request->facility_id_updated; // Ensure this is not null
+        $riskprofile->encoded_by = $request->encoded_by;
         $riskprofile->offline_entry = false;
 
         // Save the profile
@@ -270,6 +272,8 @@ class RiskProfileController extends Controller
         $riskprofile->indigenous_person = $req->indigenous_person;
         $riskprofile->employment_status = $req->employment_status;
         $riskprofile->facility_id_updated = $req->facility_id_updated; // Ensure this is not null
+        $riskprofile->encoded_by = $req->encoded_by;
+
         $riskprofile->offline_entry = false;
         
         // Save the updated RiskProfile

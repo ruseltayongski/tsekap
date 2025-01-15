@@ -5,6 +5,9 @@
 
     <?php
         use App\Facilities;
+        use App\Province;
+        use App\Muncity;
+        use App\Barangay;
         use App\UserHealthFacility;
         use Illuminate\Support\Facades\Auth;
         
@@ -20,6 +23,9 @@
                 ->where('id', $userHealthFacilityMapping->facility_id)
                 ->first();
         }
+
+        $muncities = Muncity::select('id', 'description')->get();
+        $province = Province::select('id', 'description')->get();
     ?>
     
     <div class="col-md-12 wrapper"
@@ -49,6 +55,8 @@
                                             value="{{ $facility ? $facility->name : 'N/A' }}">
                                         <input type="hidden" name="facility_id_updated" id="facility_id_updated"
                                             value="{{ $facility ? $facility->id : 'N/A' }}">
+                                        <input type="hidden" name="encoded_by" id="encoded_by"
+                                            value="{{ $user ? $user->id : 0 }}">
                                     </div>
                                     @php
                                         use Carbon\Carbon;

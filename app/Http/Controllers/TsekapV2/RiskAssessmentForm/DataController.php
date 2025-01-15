@@ -6,6 +6,8 @@ use Exception;
 
 use App\RiskProfile;
 use App\RiskFormAssessment;
+use App\UserHealthFacility;
+use App\Facilities;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +17,31 @@ use Illuminate\Http\Request;
 
 class DataController extends Controller
 {
+    /**
+     * Retrieve the health facility for the given user.
+     *
+     * @param \App\User $user
+     * @return \App\Facilities|null
+     */
+    private function getHealthFacilityForUser($user)
+    {
+        $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
+
+        if ($userHealthFacilityMapping) {
+            return Facilities::select('id', 'name', 'address', 'hospital_type')
+                ->where('id', $userHealthFacilityMapping->facility_id)
+                ->first();
+        }
+
+        return null;
+    }
+
     public function retrievePatientRiskProfile(Request $request)
     {
-        // Validate the request using the Validator facade
+        // Validate the request
         $validator = Validator::make($request->all(), [
-            'fields' => 'required|array',
             'fields.filter' => 'required|string',
-            'fields.keyword' => 'sometimes|string',
+            'fields.keyword' => 'string',
         ]);
 
         if ($validator->fails()) {
@@ -34,16 +54,22 @@ class DataController extends Controller
         }
 
         $user = Auth::user();
-        $fields = $request->input('fields');
+        $fields = $request->input('fields', []);
 
-        $filter = isset($fields['filter']) ? $fields['filter'] : "fname";
-        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null; // Older ternary syntax
+        $filter = isset($fields['filter']) ? $fields['filter'] : null;
+        $keyword = isset($fields['keyword']) ? $fields['keyword'] : null;
 
-        // Debugging: Log the keyword
-        \Log::info('Keyword:', ['keyword' => $keyword]);
-        \Log::info('Filter:', ['filter' => $filter]);
+        // Retrieve the facility for the user
+        $facility = $this->getHealthFacilityForUser($user);
 
-        // Base query for risk profiles with INNER JOIN
+        if ($user->user_priv === 6 && !$facility) {
+            return response()->json(['error' => 'Facility not found for user'], 404);
+        }
+
+        // Debugging: Log the input
+        \Log::info('Request Input:', compact('filter', 'keyword', 'user'));
+
+        // Base query for risk profiles
         $query = RiskProfile::select(
             'risk_profile.id',
             'risk_profile.fname',
@@ -61,48 +87,47 @@ class DataController extends Controller
             'risk_profile.created_at',
             'risk_profile.updated_at',
             'muncity.description as municipal_name',
-            'province.description as province_name',
-            'users.name as encoded_by_name' // Assuming 'name' is a column in the users table
+            'province.description as province_name'
         )
-        ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id')
-        ->join('province', 'risk_profile.province_id', '=', 'province.id')
-        ->join('users', 'risk_profile.encoded_by', '=', 'users.id'); // Join with users table
-        
+            ->join('muncity', 'risk_profile.municipal_id', '=', 'muncity.id')
+            ->join('province', 'risk_profile.province_id', '=', 'province.id');
+
         // Apply user privilege filters
         if ($user->user_priv === 3) {
             $query->where('risk_profile.province_id', $user->province);
+        } elseif ($user->user_priv === 6 && $facility) {
+            $query->where('risk_profile.facility_id_updated', $facility->id);
         }
-        // } elseif ($user->user_priv === 6) {
-        //     $query->where('risk_profile.facility_id_updated', $user->facility_id);
-        // }
 
-        // Apply keyword filter for fname, lname, or dob (OR condition for each field)
+        // Apply keyword filter
         if ($keyword) {
-            if($filter === 'facility_id_updated'){
-                $query->where('risk_profile.facility_id_updated', 'like', "%$keyword%");
-            }
-            if ($filter === 'fname') {
-                $query->where('risk_profile.fname', 'like', "%$keyword%");
-            } elseif ($filter === 'lname') {
-                $query->where('risk_profile.lname', 'like', "%$keyword%");
-            } elseif ($filter === 'dob') {
-                $query->where('risk_profile.dob', 'like', "%$keyword%");
-            } else {
-                $query->where(function ($q) use ($keyword) {
+            $query->where(function ($q) use ($filter, $keyword) {
+                $columns = [
+                    'facility_id_updated' => 'risk_profile.facility_id_updated',
+                    'fname' => 'risk_profile.fname',
+                    'lname' => 'risk_profile.lname',
+                    'dob' => 'risk_profile.dob'
+                ];
+
+                if ($filter === 'dob') {
+                    // Parse keyword as date
+                    $parsedDate = date('Y-m-d', strtotime($keyword));
+                    $q->where($columns['dob'], $parsedDate);
+                } elseif (isset($columns[$filter])) {
+                    $q->where($columns[$filter], 'like', "%$keyword%");
+                } else {
                     $q->where('risk_profile.fname', 'like', "%$keyword%")
                         ->orWhere('risk_profile.lname', 'like', "%$keyword%")
-                        ->orWhere('risk_profile.dob', 'like', "%$keyword%");
-                });
-            }
+                        ->orWhere('risk_profile.dob', 'like', "%$keyword%")
+                        ->orWhere('risk_profile.facility_id_updated', '=', $keyword);
+                }
+            });
         }
 
-        // Debugging: Log the query instance
-        \Log::info('Query Instance:', [
-            'bindings' => $query->getBindings(),
-        ]);
-
         // Paginate and return results
-        return response()->json($query->simplePaginate(15), 200);
+        $results = $query->simplePaginate(15);
+
+        return response()->json($results, 200);
     }
 
     public function retrievePatientRiskAssessment(Request $request)
@@ -225,15 +250,15 @@ class DataController extends Controller
     public function addRiskProfile(Request $request)
     {
         $fields = $request->input('fields');
-    
+
         // Check if the user is authenticated
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
+
         // Define validation rules
         $rules = [
-			'fields' => 'required|array',
+            'fields' => 'required|array',
             'fields.profile_id' => 'integer',
             'fields.lname' => 'required|string|max:255',
             'fields.fname' => 'required|string|max:255',
@@ -262,21 +287,21 @@ class DataController extends Controller
             'fields.encoded_by' => 'required|integer',
             'fields.offline_entry' => 'boolean',
         ];
-    
+
         // Validate the request
         $validator = Validator::make($request->all(), $rules);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
-    
+
         // Offline entry check
         if (empty($fields['offline_entry']) || $fields['offline_entry'] == false) {
             if (!empty($fields['profile_id'])) {
                 return response()->json(['error' => 'Malformed parameter. Please recheck request.'], 403);
             }
         }
-    
+
         // Check for duplicates
         $existingRiskProfile = RiskProfile::where('profile_id', $fields['profile_id'])
             ->where('fname', $fields['fname'])
@@ -284,16 +309,16 @@ class DataController extends Controller
             ->where('mname', $fields['mname'] ? $fields['mname'] : null)
             ->where('dob', $fields['dob'])
             ->first();
-    
+
         if ($existingRiskProfile) {
             return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
         }
-    
+
         // Save the record
         try {
             $riskProfile = new RiskProfile($fields);
             $riskProfile->save();
-    
+
             return response()->json([
                 'message' => 'Entry successfully saved.',
                 'id' => $riskProfile->id
@@ -301,26 +326,26 @@ class DataController extends Controller
         } catch (Exception $e) {
             // Log the exception for debugging
             \Log::error('RiskProfile saving failed: ' . $e->getMessage());
-    
+
             return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
     }
-    
+
 
     public function addRiskForm(Request $request)
     {
         $fields = $request->input('fields');
-    
+
         // Check authentication if user is logged in
         if (!Auth::check()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-    
+
         // Define validation rules
         $rules = [
             'fields' => 'required|array',
             'fields.risk_profile_id' => 'integer',
-    
+
             // ar
             'fields.ar_chest_pain' => 'required|string|max:8',
             'fields.ar_difficulty_breathing' => 'required|string|max:8',
@@ -338,7 +363,7 @@ class DataController extends Controller
             'fields.ar_refer_physician_name' => 'string|max:255',
             'fields.ar_refer_reason' => 'string|max:255',
             'fields.ar_refer_facility' => 'string|max:255',
-    
+
             // pmh
             'fields.pmh_hypertension' => 'required|string|max:8',
             'fields.pmh_heart_disease' => 'required|string|max:8',
@@ -357,7 +382,7 @@ class DataController extends Controller
             'fields.pmh_specify_previous_surgical' => 'string|max:255',
             'fields.pmh_thyroid_disorders' => 'required|string|max:8',
             'fields.pmh_kidney_disorders' => 'required|string|max:8',
-    
+
             // fmh
             'fields.fmh_hypertension' => 'required|string|max:20',
             'fields.fmh_stroke' => 'required|string|max:20',
@@ -370,7 +395,7 @@ class DataController extends Controller
             'fields.fmh_having_tuberculosis_5_years' => 'required|string|max:20',
             'fields.fmh_mn_and_s_disorder' => 'required|string|max:20',
             'fields.fmh_copd' => 'required|string|max:20',
-    
+
             // rf
             'fields.rf_tobacco_use' => 'required|string|max:255',
             'fields.rf_alcohol_intake' => 'required|string|max:8',
@@ -381,7 +406,7 @@ class DataController extends Controller
             'fields.rf_height' => 'required|numeric',
             'fields.rf_body_mass' => 'required|numeric',
             'fields.rf_waist_circumference' => 'required|numeric',
-    
+
             // rs
             'fields.rs_systolic_t1' => 'required|numeric',
             'fields.rs_diastolic_t1' => 'required|numeric',
@@ -403,7 +428,7 @@ class DataController extends Controller
             'fields.rs_urine_ketones_date_taken' => 'date',
             'fields.rs_chronic_respiratory_disease' => 'string|max:255',
             'fields.rs_if_yes_any_symptoms' => 'string|max:255',
-    
+
             // mngm
             'fields.mngm_med_hypertension' => 'string|max:8',
             'fields.mngm_med_hypertension_specify' => 'string|max:255',
@@ -412,40 +437,40 @@ class DataController extends Controller
             'fields.mngm_med_diabetes_specify' => 'string|max:255',
             'fields.mngm_date_follow_up' => 'date',
             'fields.mngm_remarks' => 'string|max:255',
-    
+
             // offline entry field
             'fields.offline_entry' => 'required|boolean',
         ];
-    
+
         // Validate the request
         $validator = Validator::make($request->all(), $rules);
-    
+
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
-    
+
         try {
             $riskform = new RiskFormAssessment();
-    
+
             // Dynamically populate the model with validated data
             foreach ($fields as $key => $value) {
                 if (Schema::hasColumn($riskform->getTable(), $key)) {
                     $riskform->$key = $value;
                 }
             }
-    
+
             // Save the data
             $riskform->save();
-    
+
             return response()->json(['message' => 'Entry successfully saved.'], 200);
         } catch (Exception $e) {
             // Log the error for debugging
             \Log::error('Error saving RiskFormAssessment: ' . $e->getMessage(), ['trace' => $e->getTrace()]);
-    
+
             return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
     }
-    
+
 
     // update risk profile
     public function updateRiskProfile(Request $request)

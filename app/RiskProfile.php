@@ -75,6 +75,7 @@ class RiskProfile extends Model
         'employment_status',
         'facility_id_updated',
         'offline_entry',
+        'encoded_by',
         'created_at',
         'updated_at',
     ];
