@@ -9,9 +9,13 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
+
+    // Execute composer dump-autoload
+    // Exceute next: php artisan db:seed --class=FacilitiesTableSeeder
+    
     public function run()
     {
-         $this->call('FacilitiesTableSeeder');
+         $this->call(FacilitiesTableSeeder::class);
          $this->call(UserSeeder::class);
          $this->call(LocationSeeder::class);
          $this->call(caseSeeder::class);

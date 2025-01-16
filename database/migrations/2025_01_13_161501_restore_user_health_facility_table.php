@@ -14,6 +14,9 @@ class RestoreUserHealthFacilityTable extends Migration
     {
         DB::statement('SET foreign_key_checks = 0');
         
+        // Drop the 'user_health_facility' table if it exists
+        Schema::dropIfExists('user_health_facility');
+
         // Create the new user_health_facility table with InnoDB engine
         Schema::create('user_health_facility', function (Blueprint $table) {
             $table->engine = 'InnoDB';  // Ensure InnoDB engine is used
