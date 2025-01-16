@@ -528,6 +528,6 @@ Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm'
 Route::post('/update-risk-profile', 'risk\RiskProfileController@UpdateRiskPForm')->name('update-patient-risk-form');
 
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
-Route::post('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
+Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@PatientRiskProfileAndFormSubList')->name('sublist.risk.patient');
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
 Route::post('/risk-patient/{id}', 'risk\RiskProfileController@destroy')->name('patientrisk.delete');

@@ -504,6 +504,7 @@ class PatientInjuryController extends Controller
         }
 
     } 
+    
     public function SublistPatient($profile_id){
 
         $user = Auth::user();

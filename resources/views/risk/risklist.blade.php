@@ -2,8 +2,6 @@
     use Carbon\Carbon;
     use App\Facilities;
     use App\UserHealthFacility;
-    // use App\Facility;
-    // use App\ResuReportFacility;
 
     $user = Auth::user();
 
@@ -17,7 +15,6 @@
     }
 
     $priv_fact = Auth::user()->facility_id_updated;
-
 @endphp
 
 @extends('resu/app1')
@@ -86,7 +83,6 @@
                                 <th>Municipal<br>&nbsp;</th>
                                 <th>Barangay<br>&nbsp;</th>
                                 <th>Date Inputted<br>&nbsp;</th>
-                               
                             </tr>
                         </thead>
                         <tbody>
@@ -104,7 +100,6 @@
                                                 <i class="fa fa-trash"></i> Delete
                                             </button>
                                         </form>
-                                        
                                     </td>
                                     @if($user_priv->user_priv !== 6)
                                         <td>{{ $profile->facility->name ? $profile->facility->name : 'N/A' }}</td>
@@ -154,7 +149,7 @@
                         $('.loading').show();
                     },
                     success: function (response) {
-                        $('tbody').html(response);
+                        $('#results-container').html(response); // Updates the whole results container including pagination
                     },
                     complete: function () {
                         $('.loading').hide();

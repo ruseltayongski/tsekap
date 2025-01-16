@@ -125,7 +125,7 @@ class DataController extends Controller
         }
 
         // Paginate and return results
-        $results = $query->simplePaginate(15);
+        $results = $query->simplePaginate(30);
 
         return response()->json($results, 200);
     }
@@ -229,7 +229,7 @@ class DataController extends Controller
         }
 
         // Paginate and return results
-        $results = $query->simplePaginate(15);
+        $results = $query->simplePaginate(30);
 
         return response()->json($results, 200);
     }
@@ -239,7 +239,7 @@ class DataController extends Controller
         // Validate the request using the Validator facade
         $validator = Validator::make($request->all(), [
             'fields' => 'required|array',
-            'fields.profile_id' => 'required|number',
+            'fields.profile_id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -348,7 +348,7 @@ class DataController extends Controller
             $query->where('risk_profile_id', $id);
         }
 
-        return response()->json($query->simplePaginate(15), 200);
+        return response()->json($query->simplePaginate(30), 200);
     }
 
     public function addRiskProfile(Request $request)

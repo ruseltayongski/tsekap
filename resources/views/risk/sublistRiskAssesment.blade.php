@@ -6,34 +6,33 @@
     use App\Facilities;
     use App\Province;
     use App\Barangay;
-    //  use App\RiskAssessment;
     
     $user = Auth::user();
     // Retrieve the user health facility mapping
     $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
-        
-        // Fetch the facility details based on the mapping
-        $facility = null;
-        if ($userHealthFacilityMapping) {
-            $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
-                ->where('id', $userHealthFacilityMapping->facility_id)
-                ->first();
-        }
+    
+    // Fetch the facility details based on the mapping
+    $facility = null;
+    if ($userHealthFacilityMapping) {
+        $facility = Facilities::select('id', 'name', 'address', 'hospital_type')
+            ->where('id', $userHealthFacilityMapping->facility_id)
+            ->first();
+    }
     
     use Carbon\Carbon;
+    
     $dob = Carbon::parse($profile->dob);
     $province = Province::select('id', 'description')->get();
     $barangay = Barangay::select('id', 'description')->get();
     
     $muncities = Muncity::select('id', 'description')->get();
-    function isSimilar($str1, $str2)
-    {
-        // this is for Hospital/Facility Data function
-        similar_text(strtolower(trim($str1)), strtolower(trim($str2)), $percent);
-        return $percent >= 80; // You can adjust the threshold as needed
-    }
+    $facilities = Facilities::all();
     
+    // extract riskform from the profile object
+
+    $riskForm = $profile['riskForm'];
     ?>
+
     <div class="col-md-12 wrapper"
         style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <div class="col-md-8 wrapper" style="padding-bottom: 5%">
@@ -46,8 +45,10 @@
                 </h2>
                 <div class="page-divider"></div>
                 <!-- <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('submit-patient-risk-form') }}"> -->
-                <form class="form-horizontal form-submit" id="form-submit"
-                    action="{{ route('sublist.risk.patient', ['id' => $profile->id]) }}" method="POST">
+                <form class="form-horizontal form-submit" id="form-submit" {{-- Mind this route --}}
+                    action="{{ route('update-patient-risk-form') }}" method="POST">
+
+                    {{-- End comment --}}
                     {{ csrf_field() }}
                     <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
                     <div class="form-step" id="form-step-1">
@@ -58,18 +59,20 @@
                                     <div class="col-md-6">
                                         <label for="facility-name">Name of Health Facility</label>
                                         <input type="text" class="form-control" name="facilityname" id="facility"
-                                            value="{{ json_decode($facility, true)[0]['name'] ? json_decode($facility, true)[0]['name'] : 'N/A' }}">
+                                            readonly value="{{ $facility ? $facility['name'] : 'N/A' }}">
                                         <input type="hidden" name="facility_id_updated" id="facility_id_updated"
-                                            value="{{ json_decode($facility, true)[0]['id'] ? json_decode($facility, true)[0]['id'] : 'N/A' }}">
+                                            value="{{ $facility ? $facility['id'] : 'N/A' }}">
+                                        <input type="hidden" name="encoded_by" id="encoded_by"
+                                            value="{{ $user ? $user['id'] : 0 }}">
                                     </div>
 
                                     <!-- <label for="address-facility">Date of Assessment</label>
-                                    <input type="text" class="form-control" name="addressfacility" id="addressfacility"  value="{{ $facility->address }}"> -->
+                                            <input type="text" class="form-control" name="addressfacility" id="addressfacility"  value="{{ $facility->address }}"> -->
                                     <div class="col-md-6">
                                         <label for="date-of-assessment">Date of Assessment</label>
                                         <input type="text" class="form-control" name="date_of_assessment"
                                             id="date-of-assessment"
-                                            value="{{ $profile->created_at ? Carbon::parse($profile->created_at)->format('F d, Y') : '' }}">
+                                            value="{{ $profile['created_at'] ? Carbon::parse($profile['created_at'])->format('F d, Y') : '' }}">
                                     </div>
                                     <br><br>
                                     <br><br>
@@ -79,47 +82,47 @@
                                 <div class="row">
                                     <input type="hidden" name="profile_id" id="profile_id">
                                     <input type="hidden" name="profile_id" id="profile_id"
-                                        value="{{ $profile->id ? $profile->id : '' }}">
+                                        value="{{ $profile['id'] ? $profile['id'] : '' }}">
 
                                     <div class="col-md-3">
                                         <label for="lname">Last Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="lname" maxlength="25"
-                                            id="lname" value="{{ $profile->lname ? $profile->lname : '' }}">
+                                            id="lname" value="{{ $profile['lname'] ? $profile['lname'] : '' }}">
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="fname">First Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="fname" maxlength="25"
-                                            id="fname" value="{{ $profile->fname ? $profile->fname : '' }}">
+                                            id="fname" value="{{ $profile['fname'] ? $profile['fname'] : '' }}">
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="mname">Middle Name</label>
                                         <input type="text" class="form-control" name="mname" maxlength="25"
-                                            id="mname" value="{{ $profile->mname ? $profile->mname : '' }}">
+                                            id="mname" value="{{ $profile['mname'] ? $profile['mname'] : '' }}">
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="suffix">Suffix</label>
                                         <select class="form-control " name="suffix" id="suffix">
                                             <option value="">Select suffix</option>
-                                            <option value="Jr." {{ $profile->suffix == 'Jr.' ? 'selected' : '' }}>Jr.
+                                            <option value="Jr." {{ $profile['suffix'] == 'Jr.' ? 'selected' : '' }}>Jr.
                                             </option>
-                                            <option value="Sr." {{ $profile->suffix == 'Sr.' ? 'selected' : '' }}>Sr.
+                                            <option value="Sr." {{ $profile['suffix'] == 'Sr.' ? 'selected' : '' }}>Sr.
                                             </option>
-                                            <option value="I" {{ $profile->suffix == 'I' ? 'selected' : '' }}>I
+                                            <option value="I" {{ $profile['suffix'] == 'I' ? 'selected' : '' }}>I
                                             </option>
-                                            <option value="II" {{ $profile->suffix == 'II' ? 'selected' : '' }}>II
+                                            <option value="II" {{ $profile['suffix'] == 'II' ? 'selected' : '' }}>II
                                             </option>
-                                            <option value="III" {{ $profile->suffix == 'III' ? 'selected' : '' }}>III
+                                            <option value="III" {{ $profile['suffix'] == 'III' ? 'selected' : '' }}>III
                                             </option>
-                                            <option value="IV" {{ $profile->suffix == 'IV' ? 'selected' : '' }}>IV
+                                            <option value="IV" {{ $profile['suffix'] == 'IV' ? 'selected' : '' }}>IV
                                             </option>
-                                            <option value="V" {{ $profile->suffix == 'V' ? 'selected' : '' }}>V
+                                            <option value="V" {{ $profile['suffix'] == 'V' ? 'selected' : '' }}>V
                                             </option>
 
                                             <!-- Default "N/a" option if suffix is null or empty -->
-                                            @if (is_null($profile->suffix) || $profile->suffix === '')
+                                            @if (is_null($profile['suffix']) || $profile['suffix'] === '')
                                                 <option value="N/a" selected>N/a</option>
                                             @else
                                                 <option value="N/a">N/a</option>
@@ -131,37 +134,38 @@
                                         <label for="sex">Sex <span class="text-danger">*</span></label>
                                         <select class="form-control" name="sex" id="sex">
                                             <option value="">Select sex</option>
-                                            <option value="Male" {{ $profile->sex == 'Male' ? 'selected' : '' }}>Male
+                                            <option value="Male" {{ $profile['sex'] == 'Male' ? 'selected' : '' }}>Male
                                             </option>
-                                            <option value="Female" {{ $profile->sex == 'Female' ? 'selected' : '' }}>
+                                            <option value="Female" {{ $profile['sex'] == 'Female' ? 'selected' : '' }}>
                                                 Female</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="dateofbirth">Date Of Birth</label>
                                         <input type="text" class="form-control" id="dateofbirth" name="dateBirth"
-                                            value="{{ $profile->dob ? Carbon::parse($profile->dob)->format('F d, Y') : '' }}">
+                                            value="{{ $profile['dob'] ? Carbon::parse($profile['dob'])->format('F d, Y') : '' }}">
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="age">Age</label>
                                         <input type="text" class="form-control" id="age" name="age"
-                                            value="{{ $profile->age ? $profile->age : '' }}">
+                                            value="{{ $profile['age'] ? $profile['age'] : '' }}">
                                     </div>
                                     <div class="col-md-3">
                                         <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
                                         <select class="form-control" name="civil_status" id="civil_status">
                                             <option value="">Select status</option>
                                             <option value="Single"
-                                                {{ $profile->civil_status == 'Single' ? 'selected' : '' }}>Single</option>
+                                                {{ $profile['civil_status'] == 'Single' ? 'selected' : '' }}>Single
+                                            </option>
                                             <option value="Married"
-                                                {{ $profile->civil_status == 'Married' ? 'selected' : '' }}>Married
+                                                {{ $profile['civil_status'] == 'Married' ? 'selected' : '' }}>Married
                                             </option>
                                             <option value="Widowed"
-                                                {{ $profile->civil_status == 'Widowed' ? 'selected' : '' }}>Widowed
+                                                {{ $profile['civil_status'] == 'Widowed' ? 'selected' : '' }}>Widowed
                                             </option>
                                             <option value="Legally Separated"
-                                                {{ $profile->civil_status == 'Legally Separated' ? 'selected' : '' }}>
+                                                {{ $profile['civil_status'] == 'Legally Separated' ? 'selected' : '' }}>
                                                 Legally Separated</option>
                                         </select>
                                     </div>
@@ -171,58 +175,65 @@
                                             onchange="showOtherReligionField()">
                                             <option value="">Select Religion</option>
                                             <option value="Roman Catholic"
-                                                {{ $profile->religion == 'Roman Catholic' ? 'selected' : '' }}>Roman
+                                                {{ $profile['religion'] == 'Roman Catholic' ? 'selected' : '' }}>Roman
                                                 Catholic</option>
-                                            <option value="Islam" {{ $profile->religion == 'Islam' ? 'selected' : '' }}>
+                                            <option value="Islam"
+                                                {{ $profile['religion'] == 'Islam' ? 'selected' : '' }}>
                                                 Islam</option>
                                             <option value="Iglesia ni Cristo"
-                                                {{ $profile->religion == 'Iglesia ni Cristo' ? 'selected' : '' }}>Iglesia
+                                                {{ $profile['religion'] == 'Iglesia ni Cristo' ? 'selected' : '' }}>Iglesia
                                                 ni Cristo</option>
                                             <option value="Seventh-day Adventist"
-                                                {{ $profile->religion == 'Seventh-day Adventist' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Seventh-day Adventist' ? 'selected' : '' }}>
                                                 Seventh-day Adventist</option>
                                             <option value="Iglesia Filipina Independiente"
-                                                {{ $profile->religion == 'Iglesia Filipina Independiente' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Iglesia Filipina Independiente' ? 'selected' : '' }}>
                                                 Iglesia Filipina Independiente/Aglipayan</option>
                                             <option value="Bible Baptist Church"
-                                                {{ $profile->religion == 'Bible Baptist Church' ? 'selected' : '' }}>Bible
+                                                {{ $profile['religion'] == 'Bible Baptist Church' ? 'selected' : '' }}>
+                                                Bible
                                                 Baptist Church</option>
-                                            <option value="UCCP" {{ $profile->religion == 'UCCP' ? 'selected' : '' }}>
+                                            <option value="UCCP" {{ $profile['religion'] == 'UCCP' ? 'selected' : '' }}>
                                                 United Church of Christ in The Philippines</option>
                                             <option value="Jehovah’s Witnesses"
-                                                {{ $profile->religion == 'Jehovah’s Witnesses' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Jehovah’s Witnesses' ? 'selected' : '' }}>
                                                 Jehovah’s Witnesses</option>
                                             <option value="Church of Christ"
-                                                {{ $profile->religion == 'Church of Christ' ? 'selected' : '' }}>Church of
+                                                {{ $profile['religion'] == 'Church of Christ' ? 'selected' : '' }}>Church
+                                                of
                                                 Christ</option>
                                             <option value="Latter-Day Saints"
-                                                {{ $profile->religion == 'Latter-Day Saints' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Latter-Day Saints' ? 'selected' : '' }}>
                                                 Latter-Day Saints</option>
                                             <option value="Assemblies of God"
-                                                {{ $profile->religion == 'Assemblies of God' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Assemblies of God' ? 'selected' : '' }}>
                                                 Assemblies of God</option>
                                             <option value="Kingdom of Jesus Christ"
-                                                {{ $profile->religion == 'Kingdom of Jesus Christ' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Kingdom of Jesus Christ' ? 'selected' : '' }}>
                                                 Kingdom of Jesus Christ</option>
                                             <option value="Evangelical"
-                                                {{ $profile->religion == 'Evangelical' ? 'selected' : '' }}>Evangelical
+                                                {{ $profile['religion'] == 'Evangelical' ? 'selected' : '' }}>Evangelical
                                             </option>
                                             <option value="Baptists"
-                                                {{ $profile->religion == 'Baptists' ? 'selected' : '' }}>Baptists</option>
+                                                {{ $profile['religion'] == 'Baptists' ? 'selected' : '' }}>Baptists
+                                            </option>
                                             <option value="Methodists"
-                                                {{ $profile->religion == 'Methodists' ? 'selected' : '' }}>Methodists
+                                                {{ $profile['religion'] == 'Methodists' ? 'selected' : '' }}>Methodists
                                             </option>
                                             <option value="Hinduism"
-                                                {{ $profile->religion == 'Hinduism' ? 'selected' : '' }}>Hinduism</option>
+                                                {{ $profile['religion'] == 'Hinduism' ? 'selected' : '' }}>Hinduism
+                                            </option>
                                             <option value="Buddhism"
-                                                {{ $profile->religion == 'Buddhism' ? 'selected' : '' }}>Buddhism</option>
+                                                {{ $profile['religion'] == 'Buddhism' ? 'selected' : '' }}>Buddhism
+                                            </option>
                                             <option value="Judaism"
-                                                {{ $profile->religion == 'Judaism' ? 'selected' : '' }}>Judaism</option>
+                                                {{ $profile['religion'] == 'Judaism' ? 'selected' : '' }}>Judaism</option>
                                             <option value="Baha'i"
-                                                {{ $profile->religion == 'Baha\'i' ? 'selected' : '' }}>Baha'i</option>
+                                                {{ $profile['religion'] == 'Baha\'i' ? 'selected' : '' }}>Baha'i</option>
                                             <option value="Jainism"
-                                                {{ $profile->religion == 'Jainism' ? 'selected' : '' }}>Jainism</option>
-                                            <option value="Others" {{ $profile->religion == 'Others' ? 'selected' : '' }}>
+                                                {{ $profile['religion'] == 'Jainism' ? 'selected' : '' }}>Jainism</option>
+                                            <option value="Others"
+                                                {{ $profile['religion'] == 'Others' ? 'selected' : '' }}>
                                                 Others</option>
                                         </select>
                                     </div>
@@ -233,13 +244,13 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="other_religion"
                                             id="other_religion" maxlength="50" placeholder="Please specify"
-                                            value="{{ $profile->other_religion ? $profile->other_religion : '' }}">
+                                            value="{{ $profile['other_religion'] ? $profile['other_religion'] : '' }}">
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="contact">Contact Number <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="contact" id="contact"
-                                            maxlength="11" value="{{ $profile->contact ? $profile->contact : '' }}">
+                                            maxlength="11" value="{{ $profile['contact'] ? $profile['contact'] : '' }}">
                                     </div>
                                     <div class="row"></div>
                                     <div class="col-md-4">
@@ -248,7 +259,7 @@
                                             <option value="">Select Province</option>
                                             @foreach ($province as $prov)
                                                 <option value="{{ $prov->id }}"
-                                                    {{ $profile->province_id == $prov->id ? 'selected' : '' }}>
+                                                    {{ $profile['province_id'] == $prov->id ? 'selected' : '' }}>
                                                     {{ $prov->description }}</option>
                                             @endforeach
                                         </select>
@@ -260,7 +271,7 @@
                                             <option value="">Select Muncity</option>
                                             @foreach ($muncities as $mun)
                                                 <option value="{{ $mun->id }}"
-                                                    {{ $profile->municipal_id == $mun->id ? 'selected' : '' }}>
+                                                    {{ $profile['municipal_id'] == $mun->id ? 'selected' : '' }}>
                                                     {{ $mun->description }}</option>
                                             @endforeach
                                         </select>
@@ -271,7 +282,7 @@
                                             <option value="">Select Barangay</option>
                                             @foreach ($barangay as $bar)
                                                 <option value="{{ $bar->id }}"
-                                                    {{ $profile->barangay_id == $bar->id ? 'selected' : '' }}>
+                                                    {{ $profile['barangay_id'] == $bar->id ? 'selected' : '' }}>
                                                     {{ $bar->description }}</option>
                                             @endforeach
                                         </select>
@@ -279,27 +290,29 @@
                                     <div class="col-md-4">
                                         <label for="street">Street</label>
                                         <input type="text" class="form-control" name="street" id="street"
-                                            maxlength="25" value="{{ $profile->street ? $profile->street : '' }}">
+                                            maxlength="25" value="{{ $profile['street'] ? $profile['street'] : '' }}">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="purok">Purok</label>
                                         <input type="text" class="form-control" name="purok" id="purok"
-                                            maxlength="25" value="{{ $profile->purok ? $profile->purok : '' }}">
+                                            maxlength="25" value="{{ $profile['purok'] ? $profile['purok'] : '' }}">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="sitio">Sitio</label>
                                         <input type="text" class="form-control" name="sitio" id="sitio"
-                                            maxlength="25" value="{{ $profile->sitio ? $profile->sitio : '' }}">
+                                            maxlength="25" value="{{ $profile['sitio'] ? $profile['sitio'] : '' }}">
                                     </div>
                                     <div class="col-md-5">
                                         <label for="phic_id">PhilHealth No.</label>
                                         <input type="text" class="form-control" name="phic_id" id="phic_id"
-                                            maxlength="12" value="{{ $profile->phic_id ? $profile->phic_id : '' }}"><br>
+                                            maxlength="12"
+                                            value="{{ $profile['phic_id'] ? $profile['phic_id'] : '' }}"><br>
                                     </div>
                                     <div class="col-md-7">
                                         <label for="pwd_id">Persons with Disability ID Card No. if applicable:</label>
                                         <input type="text" class="form-control" name="pwd_id" id="pwd_id"
-                                            maxlength="13" value="{{ $profile->pwd_id ? $profile->pwd_id : '' }}"><br>
+                                            maxlength="13"
+                                            value="{{ $profile['pwd_id'] ? $profile['pwd_id'] : '' }}"><br>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="citizenship">Citizenship</label>
@@ -307,54 +320,59 @@
                                             onchange="showOtherCitizenshipField()">
                                             <option value="">Select Citizenship</option>
                                             <option value="Filipino"
-                                                {{ $profile->citizenship == 'Filipino' ? 'selected' : '' }}>Filipino
+                                                {{ $profile['citizenship'] == 'Filipino' ? 'selected' : '' }}>Filipino
                                             </option>
                                             <option value="Thai"
-                                                {{ $profile->citizenship == 'Thai' ? 'selected' : '' }}>Thai</option>
+                                                {{ $profile['citizenship'] == 'Thai' ? 'selected' : '' }}>Thai</option>
                                             <option value="Vietnamese"
-                                                {{ $profile->citizenship == 'Vietnamese' ? 'selected' : '' }}>Vietnamese
+                                                {{ $profile['citizenship'] == 'Vietnamese' ? 'selected' : '' }}>Vietnamese
                                             </option>
                                             <option value="Indonesian"
-                                                {{ $profile->citizenship == 'Indonesian' ? 'selected' : '' }}>Indonesian
+                                                {{ $profile['citizenship'] == 'Indonesian' ? 'selected' : '' }}>Indonesian
                                             </option>
                                             <option value="Malaysian"
-                                                {{ $profile->citizenship == 'Malaysian' ? 'selected' : '' }}>Malaysian
+                                                {{ $profile['citizenship'] == 'Malaysian' ? 'selected' : '' }}>Malaysian
                                             </option>
                                             <option value="Singaporean"
-                                                {{ $profile->citizenship == 'Singaporean' ? 'selected' : '' }}>Singaporean
+                                                {{ $profile['citizenship'] == 'Singaporean' ? 'selected' : '' }}>
+                                                Singaporean
                                             </option>
                                             <option value="Australian"
-                                                {{ $profile->citizenship == 'Australian' ? 'selected' : '' }}>Australian
+                                                {{ $profile['citizenship'] == 'Australian' ? 'selected' : '' }}>Australian
                                             </option>
                                             <option value="Chinese"
-                                                {{ $profile->citizenship == 'Chinese' ? 'selected' : '' }}>Chinese</option>
+                                                {{ $profile['citizenship'] == 'Chinese' ? 'selected' : '' }}>Chinese
+                                            </option>
                                             <option value="Indian"
-                                                {{ $profile->citizenship == 'Indian' ? 'selected' : '' }}>Indian</option>
+                                                {{ $profile['citizenship'] == 'Indian' ? 'selected' : '' }}>Indian</option>
                                             <option value="American"
-                                                {{ $profile->citizenship == 'American' ? 'selected' : '' }}>American
+                                                {{ $profile['citizenship'] == 'American' ? 'selected' : '' }}>American
                                             </option>
                                             <option value="Canadian"
-                                                {{ $profile->citizenship == 'Canadian' ? 'selected' : '' }}>Canadian
+                                                {{ $profile['citizenship'] == 'Canadian' ? 'selected' : '' }}>Canadian
                                             </option>
                                             <option value="Swiss"
-                                                {{ $profile->citizenship == 'Swiss' ? 'selected' : '' }}>Swiss</option>
+                                                {{ $profile['citizenship'] == 'Swiss' ? 'selected' : '' }}>Swiss</option>
                                             <option value="Japanese"
-                                                {{ $profile->citizenship == 'Japanese' ? 'selected' : '' }}>Japanese
+                                                {{ $profile['citizenship'] == 'Japanese' ? 'selected' : '' }}>Japanese
                                             </option>
                                             <option value="Korean"
-                                                {{ $profile->citizenship == 'Korean' ? 'selected' : '' }}>Korean</option>
+                                                {{ $profile['citizenship'] == 'Korean' ? 'selected' : '' }}>Korean</option>
                                             <option value="British"
-                                                {{ $profile->citizenship == 'British' ? 'selected' : '' }}>British</option>
+                                                {{ $profile['citizenship'] == 'British' ? 'selected' : '' }}>British
+                                            </option>
                                             <option value="Spanish"
-                                                {{ $profile->citizenship == 'Spanish' ? 'selected' : '' }}>Spanish</option>
+                                                {{ $profile['citizenship'] == 'Spanish' ? 'selected' : '' }}>Spanish
+                                            </option>
                                             <option value="French"
-                                                {{ $profile->citizenship == 'French' ? 'selected' : '' }}>French</option>
+                                                {{ $profile['citizenship'] == 'French' ? 'selected' : '' }}>French</option>
                                             <option value="German"
-                                                {{ $profile->citizenship == 'German' ? 'selected' : '' }}>German</option>
+                                                {{ $profile['citizenship'] == 'German' ? 'selected' : '' }}>German</option>
                                             <option value="Russian"
-                                                {{ $profile->citizenship == 'Russian' ? 'selected' : '' }}>Russian</option>
+                                                {{ $profile['citizenship'] == 'Russian' ? 'selected' : '' }}>Russian
+                                            </option>
                                             <option value="Others"
-                                                {{ $profile->citizenship == 'Others' ? 'selected' : '' }}>Others</option>
+                                                {{ $profile['citizenship'] == 'Others' ? 'selected' : '' }}>Others</option>
                                         </select>
                                     </div>
 
@@ -364,19 +382,20 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="other_citizenship"
                                             id="other_citizenship" placeholder="Please specify citizenship"
-                                            value="{{ $profile->other_citizenship ? $profile->other_citizenship : '' }}">
+                                            value="{{ $profile['other_citizenship'] ? $profile['other_citizenship'] : '' }}">
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
                                         <label class="mr-2">Indigenous Person</label><br>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="indigenous_person_yes"
                                                 id="indigenous_person_yes" value="yes"
-                                                {{ $profile->indigenous_person == 'Yes' ? 'checked' : '' }}>
+                                                {{ $profile['indigenous_person'] == 'Yes' ? 'checked' : '' }}>
                                             <label for="indigenous_person_yes" class="ml-2">Yes</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="indigenous_person_no" id="indigenous_person_no"
-                                                value="no" {{ $profile->indigenous_person == 'No' ? 'checked' : '' }}>
+                                                value="no"
+                                                {{ $profile['indigenous_person'] == 'No' ? 'checked' : '' }}>
                                             <label for="indigenous_person_no" class="ml-2">No</label>
                                         </span>
                                     </div>
@@ -388,21 +407,21 @@
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_employed" value="Employed"
-                                                {{ $profile->employment_status == 'Employed' ? 'checked' : '' }}
+                                                {{ $profile['employment_status'] == 'Employed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Employed')">
                                             <label for="employment_status_employed" class="ml-2">Employed</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_unemployed" value="Unemployed"
-                                                {{ $profile->employment_status == 'Unemployed' ? 'checked' : '' }}
+                                                {{ $profile['employment_status'] == 'Unemployed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Unemployed')">
                                             <label for="employment_status_unemployed" class="ml-2">Unemployed</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_self_employed" value="Self-Employed"
-                                                {{ $profile->employment_status == 'Self-Employed' ? 'checked' : '' }}
+                                                {{ $profile['employment_status'] == 'Self-Employed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Self-Employed')">
                                             <label for="emp_status_self_employed" class="ml-2">Self-Employed</label>
                                         </span>
@@ -431,10 +450,10 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="chpYes"
                                                     name="chest_pain"
-                                                    {{ $profile->riskForm->ar_chest_pain == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['ar_chest_pain'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="healthCheckbox" id="chpNo"
                                                     name="chest_pain"
-                                                    {{ $profile->riskForm->ar_chest_pain == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['ar_chest_pain'] == 'No' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
@@ -442,11 +461,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="dfbYes"
                                                     name="difficulty_breathing"
-                                                    {{ $profile->riskForm->ar_difficulty_breathing == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_difficulty_breathing'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="dfbNo"
                                                     name="difficulty_breathing"
-                                                    {{ $profile->riskForm->ar_difficulty_breathing == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_difficulty_breathing'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -455,11 +474,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="lossConYes"
                                                     name="loss_of_consciousness"
-                                                    {{ $profile->riskForm->ar_loss_of_consciousness == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_loss_of_consciousness'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="lossConNo"
                                                     name="loss_of_consciousness"
-                                                    {{ $profile->riskForm->ar_loss_of_consciousness == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_loss_of_consciousness'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -468,11 +487,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="slurredYes"
                                                     name ="slurred_speech"
-                                                    {{ $profile->riskForm->ar_slurred_speech == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_slurred_speech'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="slurredNo"
                                                     name ="slurred_speech"
-                                                    {{ $profile->riskForm->ar_slurred_speech == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_slurred_speech'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -481,11 +500,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="facialYes"
                                                     name= "facial_asymmetry"
-                                                    {{ $profile->riskForm->ar_facial_asymmetry == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_facial_asymmetry'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="facialNo"
                                                     name= "facial_asymmetry"
-                                                    {{ $profile->riskForm->ar_facial_asymmetry == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_facial_asymmetry'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -494,11 +513,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="weaknumbYes"
                                                     name="weakness_numbness"
-                                                    {{ $profile->riskForm->ar_weakness_numbness == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_weakness_numbness'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="weaknumbNo"
                                                     name="weakness_numbness"
-                                                    {{ $profile->riskForm->ar_weakness_numbness == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_weakness_numbness'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -507,11 +526,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="disYes"
                                                     name="disoriented"
-                                                    {{ $profile->riskForm->ar_disoriented == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_disoriented'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="disNo"
                                                     name="disoriented"
-                                                    {{ $profile->riskForm->ar_disoriented == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['ar_disoriented'] == 'No' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
@@ -519,11 +538,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="chestRetractYes"
                                                     name="chest_retractions"
-                                                    {{ $profile->riskForm->ar_chest_retractions == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_chest_retractions'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="chestRetractNo"
                                                     name="chest_retractions"
-                                                    {{ $profile->riskForm->ar_chest_retractions == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_chest_retractions'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -532,11 +551,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="seizureYes"
                                                     name="seizures"
-                                                    {{ $profile->riskForm->ar_seizure_convulsion == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_seizure_convulsion'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="seizuredNo"
                                                     name="seizures"
-                                                    {{ $profile->riskForm->ar_seizure_convulsion == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_seizure_convulsion'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -545,11 +564,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="selfmharmYes"
                                                     name="self_harm"
-                                                    {{ $profile->riskForm->ar_act_self_harm_suicide == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_act_self_harm_suicide'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="selfmharmNo"
                                                     name="self_harm"
-                                                    {{ $profile->riskForm->ar_act_self_harm_suicide == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_act_self_harm_suicide'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -558,11 +577,11 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="agitatedYes"
                                                     name="agitated_behavior"
-                                                    {{ $profile->riskForm->ar_agitated_behavior == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_agitated_behavior'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="agitatedNo"
                                                     name="agitated_behavior"
-                                                    {{ $profile->riskForm->ar_agitated_behavior == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_agitated_behavior'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -571,20 +590,20 @@
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="eyeInjuryYes"
                                                     name="eye_injury"
-                                                    {{ $profile->riskForm->ar_eye_injury == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['ar_eye_injury'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="healthCheckbox" id="eyeInjuryNo"
                                                     name="eye_injury"
-                                                    {{ $profile->riskForm->ar_eye_injury == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['ar_eye_injury'] == 'No' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>2.13 Severe Injuries</td>
                                             <td>
                                                 <input type="checkbox" class="healthCheckbox" id="severeYes"
-                                                    {{ $profile->riskForm->ar_severe_injuries == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_severe_injuries'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="severeNo"
-                                                    {{ $profile->riskForm->ar_severe_injuries == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['ar_severe_injuries'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -597,13 +616,13 @@
                                 <label for="physicianName">Physician Name:</label>
                                 <input type="text" class="form-control" id="physicianName" name="physician_name"
                                     placeholder="Enter physician name"
-                                    value="{{ $profile->riskForm->ar_refer_physician_name ? $profile->riskForm->ar_refer_physician_name : '' }}">
+                                    value="{{ $riskForm['ar_refer_physician_name'] ? $riskForm['ar_refer_physician_name'] : '' }}">
                             </div>
                             <div class="col-md-4">
                                 <label for="reason">Reason:</label>
                                 <input type="text" class="form-control" id="reason" name="reason"
                                     placeholder="Enter reason"
-                                    value="{{ $profile->riskForm->ar_refer_reason ? $profile->riskForm->ar_refer_reason : '' }}">
+                                    value="{{ $riskForm['ar_refer_reason'] ? $riskForm['ar_refer_reason'] : '' }}">
                             </div>
                             <div class="col-md-4">
                                 <label for="facility">What Facility:</label>
@@ -612,14 +631,12 @@
                                     <option value="">Select Facility...</option>
                                     @foreach ($facilities as $fact)
                                         <option value="{{ $fact->id }}"
-                                            {{ $profile->riskForm->ar_refer_facility == $fact->id ? 'selected' : '' }}>
+                                            {{ $riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
                                             {{ $fact->name }} {{ $fact->description }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
-
-
                         </div>
                         <div class="row">
                             <div class="col-md-12 text-center" style="margin-top: 20px;">
@@ -643,8 +660,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                        <th>Option (Yes / No)</th>
-                                        <th>Details</th> -->
+                                                <th>Option (Yes / No)</th>
+                                                <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -653,11 +670,11 @@
                                             <td>
                                                 <input type="checkbox" class="hypertensionCheckbox"
                                                     id="pmh_hypertensionYes" name="pmh_hypertension"
-                                                    {{ $profile->riskForm->pmh_hypertension == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_hypertension'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hypertensionCheckbox"
                                                     id="pmh_hypertensionNo" name="pmh_hypertension"
-                                                    {{ $profile->riskForm->pmh_hypertension == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_hypertension'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -666,11 +683,11 @@
                                             <td>
                                                 <input type="checkbox" class="heartdiseaseCheckbox"
                                                     id="pmh_heartsdiseaseYes" name="pmh_heart_disease"
-                                                    {{ $profile->riskForm->pmh_heart_disease == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_heart_disease'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="heartdiseaseCheckbox"
                                                     id="pmh_heartdiseaseNo" name="pmh_heart_disease"
-                                                    {{ $profile->riskForm->pmh_heart_disease == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_heart_disease'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -679,13 +696,13 @@
                                             <td>
                                                 <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetesYes"
                                                     name="pmh_diabetes"
-                                                    {{ $profile->riskForm->pmh_diabetes == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['pmh_diabetes'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetesNo"
                                                     name="pmh_diabetes"
-                                                    {{ $profile->riskForm->pmh_diabetes == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['pmh_diabetes'] == 'No' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="diabetesDetailsInput" name="pmh_diabetes_details"
-                                                    placeholder="{{ $profile->riskForm->pmh_specify_diabetes ? $profile->riskForm->pmh_specify_diabetes : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
 
                                             </td>
                                         </tr>
@@ -693,14 +710,14 @@
                                             <td>3.4 Cancer</td>
                                             <td>
                                                 <input type="checkbox" class="cancerCheckbox" id="pmh_cancerYes"
-                                                    name= "pmh_cancer"{{ $profile->riskForm->pmh_cancer == 'Yes' ? 'checked' : '' }}>
+                                                    name= "pmh_cancer"{{ $riskForm['pmh_cancer'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="cancerCheckbox" id="pmh_cancerNo"
                                                     name= "pmh_cancer"
-                                                    {{ $profile->riskForm->pmh_cancer == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['pmh_cancer'] == 'No' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="cancerDetailsInput" name="pmh_cancer_details"
-                                                    placeholder="{{ $profile->riskForm->pmh_specify_cancer ? $profile->riskForm->pmh_specify_cancer : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_cancer'] ? $riskForm['pmh_specify_cancer'] : '' }}"></textarea>
                                             </td>
                                         </tr>
                                         </tr>
@@ -710,22 +727,21 @@
                                             <td>
                                                 <input type="checkbox" class="codCheckbox" id="pmh_codYes"
                                                     name="pmh_COPD"
-                                                    {{ $profile->riskForm->pmh_copd == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['pmh_copd'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="codCheckbox" id="pmh_codNo"
-                                                    name="pmh_COPD"{{ $profile->riskForm->pmh_copd == 'No' ? 'checked' : '' }}>
+                                                    name="pmh_COPD"{{ $riskForm['pmh_copd'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>3.6 Asthma</td>
                                             <td>
                                                 <input type="checkbox" class="asthmaCheckbox" id="pmh_asthmaYes"
                                                     name="pmh_asthma"
-                                                    {{ $profile->riskForm->pmh_asthma == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['pmh_asthma'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="asthmaCheckbox" id="pmh_asthmaNo"
                                                     name="pmh_asthma"
-                                                    {{ $profile->riskForm->pmh_asthma == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['pmh_asthma'] == 'No' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -734,13 +750,13 @@
                                             <td>
                                                 <input type="checkbox" class="allergiesCheckbox" id="pmh_allergiesYes"
                                                     name="pmh_allergies"
-                                                    {{ $profile->riskForm->pmh_allergies == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['pmh_allergies'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="allergiesCheckbox" id="pmh_allergiesNo"
                                                     name="pmh_allergies"
-                                                    {{ $profile->riskForm->pmh_allergies == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['pmh_allergies'] == 'No' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="allergiesDetailsInput" name="pmh_allergies_details"
-                                                    placeholder="{{ $profile->riskForm->pmh_specify_allergies ? $profile->riskForm->pmh_specify_allergies : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_allergies'] ? $riskForm['pmh_specify_allergies'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -749,15 +765,15 @@
                                             <td>
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mnsYes"
                                                     name ="pmh_mnsad"
-                                                    {{ $profile->riskForm->pmh_mn_and_s_disorder == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_mn_and_s_disorder'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mnsNo"
                                                     name ="pmh_mnsad"
-                                                    {{ $profile->riskForm->pmh_mn_and_s_disorder == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_mn_and_s_disorder'] == 'No' ? 'checked' : '' }}>
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="mnsDetailsInput" name="pmh_mnsad_details"
-                                                    placeholder="{{ $profile->riskForm->pmh_specify_mn_and_s_disorder ? $profile->riskForm->pmh_specify_mn_and_s_disorder : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_mn_and_s_disorder'] ? $riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -766,11 +782,11 @@
                                             <td>
                                                 <input type="checkbox" class="visionCheckbox" id="pmh_visionYes"
                                                     name= "pmh_vision"
-                                                    {{ $profile->riskForm->pmh_vision_problems == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_vision_problems'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="visionCheckbox" id="pmh_visionNo"
                                                     name= "pmh_vision"
-                                                    {{ $profile->riskForm->pmh_vision_problems == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_vision_problems'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -780,27 +796,25 @@
                                             <td>
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
                                                     id="pmh_surgicalhistoryYes"
-                                                    {{ $profile->riskForm->pmh_previous_surgical == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_previous_surgical'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
                                                     id="pmh_surgicalhistoryNo"
-                                                    {{ $profile->riskForm->pmh_previous_surgical == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_previous_surgical'] == 'No' ? 'checked' : '' }}>
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="surgicalDetailsInput" name="pmh_psh_details"
-                                                    placeholder="{{ $profile->riskForm->pmh_specify_previous_surgical ? $profile->riskForm->pmh_specify_previous_surgical : '' }}"></textarea>
-
+                                                    placeholder="{{ $riskForm['pmh_specify_previous_surgical'] ? $riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>3.11 Thyroid Disorders</td>
                                             <td>
                                                 <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroidYes"
-                                                    {{ $profile->riskForm->pmh_thyroid_disorders == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_thyroid_disorders'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroidNo"
-                                                    {{ $profile->riskForm->pmh_thyroid_disorders == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_thyroid_disorders'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -810,18 +824,17 @@
                                             <td>
                                                 <input type="checkbox" class="kidneyCheckbox" id="pmh_kidneyYes"
                                                     name="pmh_kidney"
-                                                    {{ $profile->riskForm->pmh_kidney_disorders == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_kidney_disorders'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="kidneyCheckbox" id="pmh_kidneyNo"
                                                     name="pmh_kidney"
-                                                    {{ $profile->riskForm->pmh_kidney_disorders == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['pmh_kidney_disorders'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-
                             <div class="col-md-12">
                                 <div>
                                     <h4 class="patient-font mt-4"
@@ -834,8 +847,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                        <th>Option (Yes / No)</th>
-                                        <th>Details</th> -->
+                                                <th>Option (Yes / No)</th>
+                                                <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -844,11 +857,11 @@
                                             <td>
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hyperYes"
                                                     name="fmh_hypertension"
-                                                    {{ $profile->riskForm->fmh_hypertension == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_hypertension'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hyperNo"
                                                     name="fmh_hypertension"
-                                                    {{ $profile->riskForm->fmh_hypertension == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_hypertension'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -858,10 +871,10 @@
                                             <td>
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_strokeYes"
                                                     name="fmh_stroke"
-                                                    {{ $profile->riskForm->fmh_stroke == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['fmh_stroke'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_strokeNo"
                                                     name="fmh_stroke"
-                                                    {{ $profile->riskForm->fmh_stroke == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['fmh_stroke'] == 'No' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -870,11 +883,11 @@
                                             <td>
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heartdisYes"
                                                     name="fmh_heart"
-                                                    {{ $profile->riskForm->fmh_heart_disease == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_heart_disease'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heartdisNo"
                                                     name="fmh_heart"
-                                                    {{ $profile->riskForm->fmh_heart_disease == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_heart_disease'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -884,10 +897,10 @@
                                             <td>
                                                 <input type="checkbox" class="diabetesmelCheckbox"
                                                     id="fmh_diabetesmelYes"
-                                                    {{ $profile->riskForm->fmh_diabetes_mellitus == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_diabetes_mellitus'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="diabetemelCheckbox" id="fmh_diabetesmelNo"
-                                                    {{ $profile->riskForm->fmh_diabetes_mellitus == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_diabetes_mellitus'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -896,9 +909,9 @@
                                             <td>4.5 Asthma</td>
                                             <td>
                                                 <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthmaYes"
-                                                    {{ $profile->riskForm->fmh_asthma == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['fmh_asthma'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthmaNo"
-                                                    {{ $profile->riskForm->fmh_asthma == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['fmh_asthma'] == 'No' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -906,9 +919,9 @@
                                             <td>4.6 Cancer</td>
                                             <td>
                                                 <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_Yes"
-                                                    {{ $profile->riskForm->fmh_cancer == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ $riskForm['fmh_cancer'] == 'Yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="cancer_Checkbox" id="fmh_cancer_No"
-                                                    {{ $profile->riskForm->fmh_cancer == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['fmh_cancer'] == 'No' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -916,10 +929,10 @@
                                             <td> 4.7 Kidney Disease </td>
                                             <td>
                                                 <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_diYes"
-                                                    {{ $profile->riskForm->fmh_kidney_disease == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_kidney_disease'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="kidneyDis_Checkbox" id="fmh_kidney_disNo"
-                                                    {{ $profile->riskForm->fmh_kidney_disease == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_kidney_disease'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -930,11 +943,11 @@
                                             <td>
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degreerelativeYes" name="fmh_degree"
-                                                    {{ $profile->riskForm->fmh_first_degree_relative == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_first_degree_relative'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degreerelativeNo" name="fmh_degree"
-                                                    {{ $profile->riskForm->fmh_first_degree_relative == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_first_degree_relative'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -944,11 +957,11 @@
                                             <td>
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_familytbYes"
                                                     name="fmh_famtb"
-                                                    {{ $profile->riskForm->fmh_having_tuberculosis_5_years == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_having_tuberculosis_5_years'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_familytbNo"
                                                     name="fmh_famtb"
-                                                    {{ $profile->riskForm->fmh_having_tuberculosis_5_years == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_having_tuberculosis_5_years'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -958,11 +971,11 @@
                                             <td>
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsadYes"
                                                     name="fmh_mnsad"
-                                                    {{ $profile->riskForm->fmh_mn_and_s_disorder == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_mn_and_s_disorder'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsadNo"
                                                     name="fmh_mnsad"
-                                                    {{ $profile->riskForm->fmh_mn_and_s_disorder == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['fmh_mn_and_s_disorder'] == 'No' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -970,10 +983,10 @@
                                             <td>4.11 COPD</td>
                                             <td>
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_COPYes"
-                                                    value="Yes"
-                                                    {{ $profile->riskForm->fmh_copd == 'Yes' ? 'checked' : '' }}> Yes
+                                                    value="Yes" {{ $riskForm['fmh_copd'] == 'Yes' ? 'checked' : '' }}>
+                                                Yes
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_COPNo" value="No"
-                                                    {{ $profile->riskForm->fmh_copd == 'No' ? 'checked' : '' }}> No
+                                                    {{ $riskForm['fmh_copd'] == 'No' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -1005,8 +1018,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                        <th>Option (Yes / No)</th>
-                                        <th>Details</th> -->
+                                                <th>Option (Yes / No)</th>
+                                                <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -1016,25 +1029,25 @@
                                                 <!-- Never Used (proceed to Q2) checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q1"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($profile->riskForm->rf_tobacco_use, 'Never') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'Never') !== false ? 'checked' : '' }}>
                                                 Never Used (proceed to Q2) <br>
 
                                                 <!-- Exposure to secondhand smoke checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q2"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($profile->riskForm->rf_tobacco_use, 'Exposure') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'Exposure') !== false ? 'checked' : '' }}>
                                                 Exposure to secondhand smoke <br>
 
                                                 <!-- Former tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q3"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($profile->riskForm->rf_tobacco_use, 'Former') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'Former') !== false ? 'checked' : '' }}>
                                                 Former tobacco user (stopped smoking > 1 year) <br>
 
                                                 <!-- Current tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q4"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($profile->riskForm->rf_tobacco_use, 'Current') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'Current') !== false ? 'checked' : '' }}>
                                                 Current tobacco user (currently smoking or stopped smoking) <br><br>
 
                                                 <p style="font-style: italic; font-size: 15px;">
@@ -1047,18 +1060,18 @@
                                         <td>
                                             <input type="checkbox" class="alcoholCheckbox" id="alcoholNever"
                                                 name="ncd_alcohol"
-                                                {{ $profile->riskForm->rf_alcohol_intake == 'No' ? 'checked' : '' }}>
+                                                {{ $riskForm['rf_alcohol_intake'] == 'No' ? 'checked' : '' }}>
                                             Never Consumed
                                             <input type="checkbox" class="alcoholCheckbox" id="alcoholYes"
                                                 name="ncd_alcohol"
-                                                {{ $profile->riskForm->rf_alcohol_intake == 'Yes' ? 'checked' : '' }}>
+                                                {{ $riskForm['rf_alcohol_intake'] == 'Yes' ? 'checked' : '' }}>
                                             Yes, drinks alcohol
 
                                             <br><br>
                                             <label id="bingeLabel" class="ml-2">
                                                 <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge"
                                                     name="ncd_alcoholBinge"
-                                                    {{ $profile->riskForm->rf_alcohol_binge_drinker == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['rf_alcohol_binge_drinker'] == 'Yes' ? 'checked' : '' }}>
                                                 Do you drink 5 or more standard drinks for men, and 4 or more for women (in
                                                 one sitting/occasion) in the past year?
                                             </label>
@@ -1082,11 +1095,11 @@
                                                 activity? <br><br>
                                                 <input type="checkbox" class="physicalCheckbox" id="physicalYes"
                                                     name="ncd_physical"
-                                                    {{ $profile->riskForm->rf_physical_activity == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['rf_physical_activity'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="physicalCheckbox" id="physicalNo"
                                                     name="ncd_physical"
-                                                    {{ $profile->riskForm->rf_physical_activity == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['rf_physical_activity'] == 'No' ? 'checked' : '' }}>
                                                 No
                                                 <br>
 
@@ -1108,10 +1121,10 @@
                                                 <br><br><br>
                                                 <input type="checkbox" class="nutritionDietCheckbox"
                                                     id="nutritionDietYes"
-                                                    {{ $profile->riskForm->rf_nutrition_dietary == 'Yes' ? 'checked' : '' }}>
+                                                    {{ $riskForm['rf_nutrition_dietary'] == 'Yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo"
-                                                    {{ $profile->riskForm->rf_nutrition_dietary == 'No' ? 'checked' : '' }}>
+                                                    {{ $riskForm['rf_nutrition_dietary'] == 'No' ? 'checked' : '' }}>
                                                 No
                                                 <br><br><br>
                                                 <p style="font-style: italic; font-size: 15px;">
@@ -1128,7 +1141,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="weight" name="rf_weight"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $profile->riskForm->rf_weight ? $profile->riskForm->rf_weight : '' }}">
+                                                    value="{{ $riskForm['rf_weight'] ? $riskForm['rf_weight'] : '' }}">
                                             </td>
                                         </tr>
 
@@ -1139,7 +1152,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="height" name="rf_height"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $profile->riskForm->rf_height ? $profile->riskForm->rf_height : '' }}">
+                                                    value="{{ $riskForm['rf_height'] ? $riskForm['rf_height'] : '' }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -1148,7 +1161,7 @@
                                             </td>
                                             <td>
                                                 <input type="text" class="textbox" id="BMI"
-                                                    value="{{ $profile->riskForm->rf_body_mass ? $profile->riskForm->rf_body_mass : '' }}"
+                                                    value="{{ $riskForm['rf_body_mass'] ? $riskForm['rf_body_mass'] : '' }}"
                                                     name="rf_BMI">
                                                 <p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;"
                                                             id="bmiStrVal"></span></i></p>
@@ -1159,7 +1172,7 @@
                                                 5.8 Waist Circumference (cm): F < 80cm M < 90 </td>
                                             <td>
                                                 <input type="text" class="textbox" id="waist" name ="rf_waist"
-                                                    value="{{ $profile->riskForm->rf_waist_circumference ? $profile->riskForm->rf_waist_circumference : '' }}">
+                                                    value="{{ $riskForm['rf_waist_circumference'] ? $riskForm['rf_waist_circumference'] : '' }}">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1206,13 +1219,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $profile->riskForm->rs_systolic_t1 ? $profile->riskForm->rs_systolic_t1 : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t1'] ? $riskForm['rs_systolic_t1'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $profile->riskForm->rs_diastolic_t1 ? $profile->riskForm->rs_diastolic_t1 : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t1'] ? $riskForm['rs_diastolic_t1'] : '' }}">
                                                 </div>
                                             </div>
                                             <br>
@@ -1222,13 +1235,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $profile->riskForm->rs_systolic_t2 ? $profile->riskForm->rs_systolic_t2 : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t2'] ? $riskForm['rs_systolic_t2'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $profile->riskForm->rs_diastolic_t2 ? $profile->riskForm->rs_diastolic_t2 : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t2'] ? $riskForm['rs_diastolic_t2'] : '' }}">
                                                 </div>
                                             </div>
                                         </td>
@@ -1242,19 +1255,19 @@
                                                 <label>FBS Result:</label>
                                                 <input type="text" name="fbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_blood_sugar_fbs ? $profile->riskForm->rs_blood_sugar_fbs : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_fbs'] ? $riskForm['rs_blood_sugar_fbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>RBS Result:</label>
                                                 <input type="text" name="rbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_blood_sugar_rbs ? $profile->riskForm->rs_blood_sugar_rbs : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_rbs'] ? $riskForm['rs_blood_sugar_rbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="bloodSugar_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_blood_sugar_date_taken ? $profile->riskForm->rs_blood_sugar_date_taken : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_date_taken'] ? $riskForm['rs_blood_sugar_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1264,15 +1277,15 @@
                                         </td>
                                         <td style="border: 1px solid #000; padding: 10px;">
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom1"
-                                                {{ in_array('polyphagia', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ? $profile->riskForm->rs_blood_sugar_symptoms : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyphagia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyphagia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom2"
-                                                {{ in_array('polydipsia', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ? $profile->riskForm->rs_blood_sugar_symptoms : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polydipsia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polydipsia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom3"
-                                                {{ in_array('polyuria', explode(', ', $profile->riskForm->rs_blood_sugar_symptoms ? $profile->riskForm->rs_blood_sugar_symptoms : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyuria', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyuria
                                         </td>
                                     </tr>
@@ -1286,37 +1299,37 @@
                                                 <label>Total Cholesterol:</label>
                                                 <input type="text" name="lipid_cholesterol"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_cholesterol ? $profile->riskForm->rs_lipid_cholesterol : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_cholesterol'] ? $riskForm['rs_lipid_cholesterol'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>HDL:</label>
                                                 <input type="text" name="lipid_hdl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_hdl ? $profile->riskForm->rs_lipid_hdl : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_hdl'] ? $riskForm['rs_lipid_hdl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>LDL:</label>
                                                 <input type="text" name="lipid_ldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_ldl ? $profile->riskForm->rs_lipid_ldl : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_ldl'] ? $riskForm['rs_lipid_ldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>VLDL:</label>
                                                 <input type="text" name="lipid_vldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_vldl ? $profile->riskForm->rs_lipid_vldl : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_vldl'] ? $riskForm['rs_lipid_vldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Triglyceride:</label>
                                                 <input type="text" name="lipid_triglyceride"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_triglyceride ? $profile->riskForm->rs_lipid_triglyceride : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_triglyceride'] ? $riskForm['rs_lipid_triglyceride'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="lipid_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_lipid_date_taken ? $profile->riskForm->rs_lipid_date_taken : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_date_taken'] ? $riskForm['rs_lipid_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1330,25 +1343,25 @@
                                                 <label>Protein:</label>
                                                 <input type="text" name="uri_protein"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_urine_protein ? $profile->riskForm->rs_urine_protein : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein'] ? $riskForm['rs_urine_protein'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_protein_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_urine_protein_date_taken ? $profile->riskForm->rs_urine_protein_date_taken : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein_date_taken'] ? $riskForm['rs_urine_protein_date_taken'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Ketones:</label>
                                                 <input type="text" name="uri_ketones"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_urine_ketones ? $profile->riskForm->rs_urine_ketones : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones'] ? $riskForm['rs_urine_ketones'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_ketones_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $profile->riskForm->rs_urine_ketones_date_taken ? $profile->riskForm->rs_urine_ketones_date_taken : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones_date_taken'] ? $riskForm['rs_urine_ketones_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1367,27 +1380,27 @@
                                                 style="display: flex; gap: 10px; flex-wrap: wrap;">
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_breathlessness"
-                                                        {{ in_array('Breathlessness', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ? $profile->riskForm->rs_chronic_respiratory_disease : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Breathlessness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Breathlessness (or a 'need for air')
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_sputum_production"
-                                                        {{ in_array('Sputum (mucous) production', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ? $profile->riskForm->rs_chronic_respiratory_disease : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Sputum (mucous) production', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Sputum (mucous) production
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chronic_cough"
-                                                        {{ in_array('Chronic cough', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ? $profile->riskForm->rs_chronic_respiratory_disease : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chronic cough', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chronic cough
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chest_tightness"
-                                                        {{ in_array('Chest tightness', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ? $profile->riskForm->rs_chronic_respiratory_disease : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chest tightness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chest tightness
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_wheezing"
-                                                        {{ in_array('Wheezing', explode(', ', $profile->riskForm->rs_chronic_respiratory_disease ? $profile->riskForm->rs_chronic_respiratory_disease : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Wheezing', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Wheezing
                                                 </label>
                                             </div>
@@ -1403,12 +1416,12 @@
                                                 style="display: flex; flex-direction: column; gap: 5px;">
                                                 <label>
                                                     <input type="checkbox" name="pefr_above_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms ? $profile->riskForm->rs_if_yes_any_symptoms : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &gt; 20% change from baseline (consider Probable Asthma)
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="pefr_below_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $profile->riskForm->rs_if_yes_any_symptoms ? $profile->riskForm->rs_if_yes_any_symptoms : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &lt; 20% change from baseline (consider Probable COPD)
                                                 </label>
                                             </div>
@@ -1458,16 +1471,16 @@
                                                             <label>
                                                                 <input type="radio" name="anti_hypertensives"
                                                                     value="{{ strtolower($option) }}"
-                                                                    {{ $profile->riskForm->mngm_med_hypertension === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
                                                     </div>
 
                                                     <div id="antiHypertensivesOptions"
-                                                        style="display: {{ $profile->riskForm->mngm_med_hypertension === 'yes' ? 'block' : 'none' }}">
+                                                        style="display: {{ $riskForm['mngm_med_hypertension'] === 'yes' ? 'block' : 'none' }}">
                                                         <input type="text" name="anti_hypertensives_specify"
-                                                            value="{{ $profile->riskForm->mngm_med_hypertension_specify }}"
+                                                            value="{{ $riskForm['mngm_med_hypertension_specify'] }}"
                                                             placeholder="Specify medicine"
                                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                                     </div>
@@ -1481,14 +1494,14 @@
                                                             <label>
                                                                 <input type="radio" name="anti_diabetes"
                                                                     value="{{ strtolower($option) }}"
-                                                                    {{ $profile->riskForm->mngm_med_diabetes === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_diabetes'] === strtolower($option) ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
                                                     </div>
 
                                                     <div id="antiDiabetesOptions"
-                                                        style="display: {{ $profile->riskForm->mngm_med_diabetes === 'yes' ? 'block' : 'none' }}">
+                                                        style="display: {{ $riskForm['mngm_med_diabetes'] === 'yes' ? 'block' : 'none' }}">
                                                         <div style="display: flex; gap: 10px; margin-top: 5px;">
                                                             @foreach (['Oral Hypoglycemic', 'Insulin', 'Not Known', 'Others'] as $subOption)
                                                                 <label>
@@ -1501,8 +1514,7 @@
                                                                             str_replace(
                                                                                 ' ',
                                                                                 '_',
-                                                                                $profile->riskForm
-                                                                                    ->mngm_med_diabetes_options,
+                                                                                $riskForm->mngm_med_diabetes_options,
                                                                             ),
                                                                         );
                                                                     @endphp
@@ -1516,7 +1528,7 @@
                                                         </div>
 
                                                         <input type="text" name="anti_diabetes_specify"
-                                                            value="{{ $profile->riskForm->mngm_med_diabetes_specify }}"
+                                                            value="{{ $riskForm['mngm_med_diabetes_specify'] }}"
                                                             placeholder="Specify medicine"
                                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                                     </div>
@@ -1529,7 +1541,7 @@
                                             <td style="font-weight: bold; padding: 10px;">Date of Follow-up</td>
                                             <td>
                                                 <input type="date" name="follow_up_date"
-                                                    value="{{ $profile->riskForm->mngm_date_follow_up }}"
+                                                    value="{{ $riskForm['mngm_date_follow_up'] }}"
                                                     style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
                                             </td>
                                         </tr>
@@ -1539,7 +1551,7 @@
                                             <td style="font-weight: bold; padding: 10px;">Remarks</td>
                                             <td>
                                                 <textarea name="remarks" rows="3"
-                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ $profile->riskForm->mngm_remarks }} </textarea>
+                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ $riskForm['mngm_remarks'] }} </textarea>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1559,14 +1571,8 @@
         </div>
     </div>
 
+    <!--Internal JS-->
     <script language="javascript" type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            const dobField = document.getElementById('dob');
-            if (dobField.value) {
-                $(dobField).trigger('change');
-            }
-        });
-
         // controls the anti-hypertensive options
         const toggleAntiHypertensivesOptions = () => {
             const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
@@ -1581,33 +1587,6 @@
                 antiHypertensivesOptionsDiv.style.display = 'none';
             }
         }
-
-        function toggleCheckbox2(selected) {
-            if (selected === 'yes') {
-                document.getElementById('indigenous_person_no').checked = false;
-            } else if (selected === 'no') {
-                document.getElementById('indigenous_person_yes').checked = false;
-            } else if (sellected === 'yes') {
-                document.getElementById('indigenous_person_no').checked = false;
-            }
-
-        }
-
-        function toggleCheckbox(selectedId, oppositeId) {
-            const selectedCheckbox = document.getElementById(selectedId);
-            const oppositeCheckbox = document.getElementById(oppositeId);
-
-            if (selectedCheckbox.checked) {
-                oppositeCheckbox.checked = false;
-            }
-        }
-
-        function toggleEmploymentStatus(selectedStatus) {
-            document.getElementById('employment_status_employed').checked = (selectedStatus === 'Employed');
-            document.getElementById('employment_status_unemployed').checked = (selectedStatus === 'Unemployed');
-            document.getElementById('employment_status_self_employed').checked = (selectedStatus === 'Self-Employed');
-        }
-
 
         // controls the anti-diabetic options
         const toggleAntiDiabetesOptions = () => {
@@ -1628,10 +1607,14 @@
         const showOtherReligionField = () => {
             let religionSelect = document.getElementById("religion");
             let otherReligionDiv = document.getElementById("other-religion-div");
+            let otherReligionInput = document.getElementById("other_religion");
+
             if (religionSelect.value === "Others") {
                 otherReligionDiv.style.display = "block";
+                otherReligionInput.required = true; // Make the 'Other' religion input required
             } else {
                 otherReligionDiv.style.display = "none";
+                otherReligionInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
             }
         }
 
@@ -1639,10 +1622,14 @@
         const showOtherCitizenshipField = () => {
             let citizenshipSelect = document.getElementById("citizenship");
             let otherCitizenshipDiv = document.getElementById("other-citizenship-div");
+            let otherCitizenshipInput = document.getElementById("other_citizenship");
+
             if (citizenshipSelect.value === "Others") {
                 otherCitizenshipDiv.style.display = "block";
+                otherCitizenshipInput.required = true; // Make the 'Other' citizenship input required
             } else {
                 otherCitizenshipDiv.style.display = "none";
+                otherCitizenshipInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
             }
         }
 
@@ -1664,18 +1651,20 @@
             document.getElementById(yesId).addEventListener('change', function() {
                 if (this.checked) {
                     document.getElementById(noId).checked = false;
+                    document.getElementById(noId).dispatchEvent(new Event('change'));
                 }
             });
 
             document.getElementById(noId).addEventListener('change', function() {
                 if (this.checked) {
                     document.getElementById(yesId).checked = false;
+                    document.getElementById(yesId).dispatchEvent(new Event('change'));
                 }
             });
         }
 
         // Function to classify BMI result
-        function bmiResultToStr(bmi) {
+        const bmiResultToStr = (bmi) => {
             let strVal = "";
             if (bmi < 18.5) {
                 strVal = "Underweight";
@@ -1695,8 +1684,30 @@
             return strVal;
         }
 
+        // age calculation function
+        const calculateAge = (birthdate) => {
+            const today = new Date();
+            const birthDate = new Date(birthdate);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            // Check if the birth date hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            return age;
+        }
+
+        // Event listener for date of birth input
+        document.getElementById('dob').addEventListener('change', function() {
+            const birthdate = this.value;
+            const age = calculateAge(birthdate);
+            document.getElementById('age').value = age;
+        });
+
         // BMI calculation function
-        function calculateBMI() {
+        const calculateBMI = () => {
             let weight = parseFloat(document.getElementById('weight').value);
             let height = parseFloat(document.getElementById('height').value);
 
@@ -1705,10 +1716,10 @@
                 let bmi = weight / (heightInMeters * heightInMeters);
 
                 // Set BMI values in the UI
-                document.getElementById('BMI').value = bmi.toFixed(2);
+                document.getElementById('bmi').value = bmi.toFixed(2);
                 document.getElementById('bmiStrVal').textContent = bmiResultToStr(bmi);
             } else {
-                document.getElementById('BMI').value = "";
+                document.getElementById('bmi').value = "";
                 document.getElementById('bmiStrVal').textContent = "";
             }
         }
@@ -1716,36 +1727,37 @@
         // Initialize checkbox toggling for each condition
         document.addEventListener('DOMContentLoaded', () => {
             // Toggle checkboxes for all conditions
-            toggleCheckbox('pmh_hypertensionYes', 'pmh_hypertensionNo');
-            toggleCheckbox('pmh_heartsdiseaseYes', 'pmh_heartdiseaseNo');
-            toggleCheckbox('pmh_diabetesYes', 'pmh_diabetesNo');
-            toggleCheckbox('pmh_cancerYes', 'pmh_cancerNo');
-            toggleCheckbox('pmh_codYes', 'pmh_codNo');
-            toggleCheckbox('pmh_asthmaYes', 'pmh_asthmaNo');
-            toggleCheckbox('pmh_allergiesYes', 'pmh_allergiesNo');
-            toggleCheckbox('pmh_mnsYes', 'pmh_mnsNo');
-            toggleCheckbox('pmh_visionYes', 'pmh_visionNo');
-            toggleCheckbox('pmh_surgicalhistoryYes', 'pmh_surgicalhistoryNo');
-            toggleCheckbox('pmh_thyroidYes', 'pmh_thyroidNo');
-            toggleCheckbox('pmh_kidneyYes', 'pmh_kidneyNo');
+            //past medical history
+            toggleCheckbox('pmh_hypertension_yes', 'pmh_hypertension_no');
+            toggleCheckbox('pmh_heart_disease_yes', 'pmh_heartdiseaseNo');
+            toggleCheckbox('pmh_diabetes_yes', 'pmh_diabetes_no');
+            toggleCheckbox('pmh_cancer_yes', 'pmh_cancer_no');
+            toggleCheckbox('pmh_copd_yes', 'pmh_copd_no');
+            toggleCheckbox('pmh_asthma_yes', 'pmh_asthma_no');
+            toggleCheckbox('pmh_allergies_yes', 'pmh_allergies_no');
+            toggleCheckbox('pmh_mns_yes', 'pmh_mns_no');
+            toggleCheckbox('pmh_vision_yes', 'pmh_vision_no');
+            toggleCheckbox('pmh_surgical_history_yes', 'pmh_surgical_history_no');
+            toggleCheckbox('pmh_thyroid_yes', 'pmh_thyroid_no');
+            toggleCheckbox('pmh_kidney_yes', 'pmh_kidney_no');
 
             //family history
-            toggleCheckbox('fmh_hyperYes', 'fmh_hyperNo');
-            toggleCheckbox('fmh_strokeYes', 'fmh_strokeNo');
-            toggleCheckbox('fmh_heartdisYes', 'fmh_heartdisNo');
-            toggleCheckbox('fmh_diabetesmelYes', 'fmh_diabetesmelNo');
-            toggleCheckbox('fmh_asthmaYes', 'fmh_asthmaNo');
-            toggleCheckbox('fmh_cancer_Yes', 'fmh_cancer_No');
-            toggleCheckbox('fmh_kidney_diYes', 'fmh_kidney_disNo');
-            toggleCheckbox('fmh_degreerelativeYes', 'fmh_degreerelativeNo');
-            toggleCheckbox('fmh_familytbYes', 'fmh_familytbNo');
-            toggleCheckbox('fmh_mnsadYes', 'fmh_mnsadNo');
-            toggleCheckbox('fmh_COPYes', 'fmh_COPNo');
+            toggleCheckbox('fmh_hypertension_yes', 'fmh_hypertension_no');
+            toggleCheckbox('fmh_stroke_yes', 'fmh_stroke_no');
+            toggleCheckbox('fmh_heart_disease_yes', 'fmh_heart_disease_no');
+            toggleCheckbox('fmh_diabetes_mel_yes', 'fmh_diabetes_mel_no');
+            toggleCheckbox('fmh_asthma_yes', 'fmh_asthma_no');
+            toggleCheckbox('fmh_cancer_yes', 'fmh_cancer_no');
+            toggleCheckbox('fmh_kidney_disease_yes', 'fmh_kidney_disease_no');
+            toggleCheckbox('fmh_degree_relative_yes', 'fmh_degree_relative_no');
+            toggleCheckbox('fmh_family_tb_yes', 'fmh_family_tb_no');
+            toggleCheckbox('fmh_mnsad_yes', 'fmh_mnsad_no');
+            toggleCheckbox('fmh_copd_yes', 'fmh_copd_no');
 
             //NCD RISK FACTORS
-            toggleCheckbox('alcoholYes', 'alcoholNever');
-            toggleCheckbox('physicalYes', 'physicalNo');
-            toggleCheckbox('nutritionDietYes', 'nutritionDietNo');
+            toggleCheckbox('alcohol_yes', 'alcohol_never');
+            toggleCheckbox('physical_yes', 'physical_no');
+            toggleCheckbox('nutrition_diet_yes', 'nutrition_diet_no');
 
             // Show/hide additional inputs based on checkbox state
             const additionalInputs = document.querySelector('.additional-inputs');
@@ -1759,93 +1771,97 @@
                     additionalInputs.style.display = anyChecked ? 'block' : 'none';
                 });
             });
-            const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
-            tobaccoCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb
-                    .checked);
+        });
 
-                    if (checkedCheckboxes.length >= 2) {
-                        // Disable all unchecked checkboxes if two are checked
-                        tobaccoCheckboxes.forEach(cb => {
-                            if (!cb.checked) {
-                                cb. = true;
-                            }
-                        });
-                    } else {
-                        // Re-enable all checkboxes if fewer than two are checked
-                        tobaccoCheckboxes.forEach(cb => cb. = false);
-                    }
-                });
-            });
-            const alcoholYes = document.getElementById('alcoholYes');
-            const alcoholNo = document.getElementById('alcoholNever');
-            const bingeLabel = document.getElementById('bingeLabel');
+        const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
 
-            // Check initial state
-            bingeLabel.style.opacity = alcoholYes.checked ? '1' : '0.5';
-
-            // Event listener to toggle opacity
-            alcoholYes.addEventListener('change', function() {
-                if (alcoholYes.checked) {
-                    bingeLabel.style.opacity = '1'; // Full opacity when "Yes, drinks alcohol" is checked
-                } else {
-                    bingeLabel.style.opacity = '0.5'; // Translucent when unchecked
-                    document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
-                }
-            });
-            // Event listener for "No" option to toggle opacity and uncheck binge question
-            alcoholNo.addEventListener('change', function() {
-                if (alcoholNo.checked) {
-                    bingeLabel.style.opacity = '0.5'; // Translucent when "No" is checked
-                    document.getElementById('alcoholBinge').checked = false; // Uncheck binge question
-                }
-            });
-
+        tobaccoCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
-                const checkedBoxes = document.querySelectorAll('.tobaccoCheckbox:checked');
-                if (checkedBoxes.length > 2) {
-                    this.checked = false;
-                    alert("You can select a maximum of 2 options.");
+                const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
+                tobaccoCheckboxCount = checkedCheckboxes.length;
+                if (checkedCheckboxes.length >= 2) {
+                    // Disable all unchecked checkboxes if two are checked
+                    tobaccoCheckboxes.forEach(cb => {
+                        if (!cb.checked) {
+                            cb.disabled = true;
+                        }
+                    });
+                } else {
+                    // Re-enable all checkboxes if fewer than two are checked
+                    tobaccoCheckboxes.forEach(cb => cb.disabled = false);
                 }
             });
+        });
 
-            document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const neverUsed = document.getElementById('q1'); // Option 1
-                    const secondhandExposure = document.getElementById('q2'); // Option 2
-                    const formerUser = document.getElementById('q3'); // Option 3
-                    const currentUser = document.getElementById('q4'); // Option 4
+        const alcoholYes = document.getElementById('alcohol_yes');
+        const alcoholNo = document.getElementById('alcohol_never');
+        const bingeLabel = document.getElementById('bingeLabel');
 
-                    if (this.checked) {
-                        // If "Never Used" is selected, uncheck "Former User" and "Current User"
-                        if (this === neverUsed) {
-                            formerUser.checked = false;
-                            currentUser.checked = false;
-                        }
-                        // If "Former User" is selected, uncheck "Never Used" and "Current User"
-                        else if (this === formerUser) {
-                            neverUsed.checked = false;
-                            currentUser.checked = false;
-                        }
-                        // If "Current User" is selected, uncheck "Never Used" and "Former User"
-                        else if (this === currentUser) {
-                            neverUsed.checked = false;
-                            formerUser.checked = false;
-                        }
+        // Check initial state
+        bingeLabel.style.opacity = alcoholYes.checked ? '1' : '0.5';
+
+        // Event listener to toggle opacity
+        alcoholYes.addEventListener('change', function() {
+            if (alcoholYes.checked) {
+                bingeLabel.style.opacity = '1'; // Full opacity when "Yes, drinks alcohol" is checked
+                alcoholNo.checked = false; // Uncheck "Never Consumed"
+                alcoholNo.disabled = true; // Disable "Never Consumed"
+            } else {
+                bingeLabel.style.opacity = '0.5'; // Translucent when unchecked
+                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+                alcoholNo.disabled = false; // Enable "Never Consumed"
+            }
+        });
+
+        // Event listener for "No" option to toggle opacity and uncheck binge question
+        alcoholNo.addEventListener('change', function() {
+            if (alcoholNo.checked) {
+                bingeLabel.style.opacity = '0.5'; // Translucent when "No" is checked
+                document.getElementById('alcohol_binge').checked = false; // Uncheck binge question
+            }
+        });
+
+
+        document.querySelectorAll('.tobaccoCheckbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const neverUsed = document.getElementById('q1'); // Option 1
+                const secondhandExposure = document.getElementById('q2'); // Option 2
+                const formerUser = document.getElementById('q3'); // Option 3
+                const currentUser = document.getElementById('q4'); // Option 4
+
+                if (this.checked) {
+                    // If "Never Used" is selected, uncheck "Former User" and "Current User"
+                    if (this === neverUsed) {
+                        formerUser.checked = false;
+                        currentUser.checked = false;
                     }
-                });
+                    // If "Former User" is selected, uncheck "Never Used" and "Current User"
+                    else if (this === formerUser) {
+                        neverUsed.checked = false;
+                        currentUser.checked = false;
+                    }
+                    // If "Current User" is selected, uncheck "Never Used" and "Former User"
+                    else if (this === currentUser) {
+                        neverUsed.checked = false;
+                        formerUser.checked = false;
+                    }
+                }
             });
         });
 
         // Function to toggle "No" checkboxes for all conditions
         function checkAllNo() {
-            const noCheckboxes = document.querySelectorAll('input[type="checkbox"][value="No"]');
-            const allChecked = Array.from(noCheckboxes).every(checkbox => checkbox.checked);
+            // Select all checkboxes with value="No" and exclude those with name="indigenous_person"
+            const noCheckboxes = Array.from(document.querySelectorAll('input[type="checkbox"][value="No"]'))
+                .filter(checkbox => checkbox.name !== 'indigenous_person');
+
+            // Check if all relevant "No" checkboxes are already checked
+            const allChecked = noCheckboxes.every(checkbox => checkbox.checked);
 
             // Toggle the state of all "No" checkboxes
             noCheckboxes.forEach(checkbox => {
                 checkbox.checked = !allChecked;
+                checkbox.dispatchEvent(new Event('change'));
             });
 
             // Hide additional inputs if all "No" are checked
@@ -1856,23 +1872,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Handle multiple checkboxes and their corresponding input fields
             const conditions = [{
-                    checkboxId: 'cancerYes',
+                    checkboxId: 'pmh_cancer_yes',
                     detailsInputId: 'cancerDetailsInput'
                 },
                 {
-                    checkboxId: 'allergiesYes',
+                    checkboxId: 'pmh_allergies_yes',
                     detailsInputId: 'allergiesDetailsInput'
                 },
                 {
-                    checkboxId: 'mnsYes',
+                    checkboxId: 'pmh_mns_yes',
                     detailsInputId: 'mnsDetailsInput'
                 },
                 {
-                    checkboxId: 'diabetesYes',
+                    checkboxId: 'pmh_diabetes_yes',
                     detailsInputId: 'diabetesDetailsInput'
                 },
                 {
-                    checkboxId: 'surgicalhistoryYes',
+                    checkboxId: 'pmh_surgical_history_yes',
                     detailsInputId: 'surgicalDetailsInput'
                 }
             ];
@@ -1882,35 +1898,427 @@
                 const detailsInput = document.getElementById(condition.detailsInputId);
 
                 checkbox.addEventListener('change', function() {
-                    if (checkbox.checked) {
-                        detailsInput.style.display = 'block'; // Show the text box
-                    } else {
-                        detailsInput.style.display = 'none'; // Hide the text box
-                    }
+                    checkbox.checked ? detailsInput.style.display = "block" : detailsInput.style
+                        .display = "none";
                 });
             });
         });
+    </script>
 
-        // Lobibox notifications
-        document.addEventListener('DOMContentLoaded', function() {
-            @if (session('success'))
-                Lobibox.notify('success', {
-                    title: 'Success',
-                    msg: "{{ session('success') }}",
-                    rounded: true,
-                    delay: 5000
-                });
-            @endif
+    <!--Validation Functions-->
 
-            @if (session('error'))
-                Lobibox.notify('error', {
-                    title: 'Error',
-                    msg: "{{ session('error') }}",
-                    rounded: true,
-                    delay: 5000
+    <!-- Step 1 validation -->
+    <script language="javascript" type="text/javascript">
+        // Function to reset the error styles (remove red borders and hide error message)
+        const resetErrorStep1Styles = () => {
+            // Remove red border from all fields
+            document.getElementById('lname').style.borderColor = '';
+            document.getElementById('fname').style.borderColor = '';
+            document.getElementById('sex').style.borderColor = '';
+            document.getElementById('contact').style.borderColor = '';
+            document.getElementById('dob').style.borderColor = '';
+            document.getElementById('age').style.borderColor = '';
+            document.getElementById('civil_status').style.borderColor = '';
+            document.getElementById('religion').style.borderColor = '';
+            // document.getElementById('citizenship').style.borderColor = '';
+            document.getElementById('other_religion').style.borderColor = '';
+            document.getElementById('other_citizenship').style.borderColor = '';
+            document.getElementById('province').style.borderColor = '';
+            document.getElementById('municipal').style.borderColor = '';
+            document.getElementById('barangay').style.borderColor = '';
+
+            document.getElementById('no_selected_indigenous_person').style.color = '';
+            document.getElementById('no_selected_indigenous_person').textContent = '';
+
+            document.getElementById('no_selected_employment_status').style.color = '';
+            document.getElementById('no_selected_employment_status').textContent = '';
+
+            // Hide the error message
+            document.getElementById('error-message').style.display = 'none';
+        };
+
+        const validateStep1 = () => {
+            // Get the values of the fields
+            const lname = document.getElementById('lname').value;
+            const fname = document.getElementById('fname').value;
+            const sex = document.getElementById('sex').value;
+            const age = document.getElementById('age').value;
+            const contact = document.getElementById('contact').value;
+            const dateofbirth = document.getElementById('dob').value;
+            const citizenship = document.getElementById('citizenship').value;
+            const otherCitizenship = document.getElementById('other_citizenship').value;
+            const civilStatus = document.getElementById('civil_status').value;
+            const religion = document.getElementById('religion').value;
+            const otherReligion = document.getElementById('other_religion').value;
+            const province = document.getElementById('province').value;
+            const municipal = document.getElementById('municipal').value;
+            const barangay = document.getElementById('barangay').value;
+
+            // indigenous person checkboxes
+            const indigenousPersonYes = document.getElementById('indigenous_person_yes').checked;
+            const indigenousPersonNo = document.getElementById('indigenous_person_no').checked;
+
+            // employment status checkboxes
+            const employmentStatusEmployed = document.getElementById('employment_status_employed').checked;
+            const employmentStatusUnemployed = document.getElementById('employment_status_unemployed').checked;
+            const employmentStatusSelfEmployed = document.getElementById('employment_status_self_employed').checked;
+
+            // Reset previous error styles and message
+            resetErrorStep1Styles();
+
+            const extractNumbers = (str) => {
+                return str.replace(/\D/g, '');
+            };
+
+            let errorMessage = "<strong>Please review and check these fields:</strong> <br/>";
+            let isValid = true;
+
+            // Check if any of the required fields are empty
+            if (!lname) {
+                document.getElementById('lname').style.borderColor = 'red';
+                errorMessage += "Last Name<br>";
+                isValid = false;
+            }
+
+            if (!fname) {
+                document.getElementById('fname').style.borderColor = 'red';
+                errorMessage += "First Name<br>";
+                isValid = false;
+            }
+
+            if (!sex) {
+                document.getElementById('sex').style.borderColor = 'red';
+                errorMessage += "Sex<br>";
+                isValid = false;
+            }
+
+            if (!religion) {
+                document.getElementById('religion').style.borderColor = 'red';
+                errorMessage += "Religion<br>";
+                isValid = false;
+            }
+
+            if (!contact) {
+                document.getElementById('contact').style.borderColor = 'red';
+                errorMessage += "Contact<br>";
+                isValid = false;
+            }
+
+            if (!dateofbirth) {
+                document.getElementById('dob').style.borderColor = 'red';
+                errorMessage += "Date of Birth<br>";
+                isValid = false;
+            }
+
+            // Age validation
+            if (Number(extractNumbers(age)) < 18) {
+                document.getElementById('age').style.borderColor = 'red';
+                errorMessage += "<strong>Patient is not eligible for this form.</strong><i> (Under 18)</i><br>";
+                isValid = false;
+            }
+
+            if (!civilStatus) {
+                document.getElementById('civil_status').style.borderColor = 'red';
+                errorMessage += "Civil Status<br>";
+                isValid = false;
+            }
+
+            if (!province) {
+                document.getElementById('province').style.borderColor = 'red';
+                errorMessage += "Province<br>";
+                isValid = false;
+            }
+
+            if (!municipal) {
+                document.getElementById('municipal').style.borderColor = 'red';
+                errorMessage += "Municipality/City<br>";
+                isValid = false;
+            }
+
+            if (!barangay) {
+                document.getElementById('barangay').style.borderColor = 'red';
+                errorMessage += "Barangay<br>";
+                isValid = false;
+            }
+
+            if (citizenship === "Others" && !otherCitizenship) {
+                document.getElementById('other_citizenship').style.borderColor = 'red';
+                errorMessage += "Other Citizenship is required when 'Others' is selected.<br>";
+                isValid = false;
+            }
+
+            if (religion === "Others" && !otherReligion) {
+                document.getElementById('other_religion').style.borderColor = 'red';
+                errorMessage += "Other Religion is required when 'Others' is selected.<br>";
+                isValid = false;
+            }
+
+            if (!indigenousPersonYes && !indigenousPersonNo) {
+                document.getElementById('no_selected_indigenous_person').style.color = 'red';
+                document.getElementById('no_selected_indigenous_person').textContent = 'Please select one.';
+                errorMessage += "Please tick an option in 'Indigenous Person' field.<br>";
+                isValid = false;
+            }
+
+            if (!employmentStatusEmployed && !employmentStatusUnemployed && !employmentStatusSelfEmployed) {
+                document.getElementById('no_selected_employment_status').style.color = 'red';
+                document.getElementById('no_selected_employment_status').textContent = 'Please select one.';
+                errorMessage += "Please tick an option in 'Employment Status' field.<br>";
+                isValid = false;
+            }
+
+            // If there is an error, display the specific error message
+            if (!isValid) {
+                document.getElementById('error-message').style.display = 'block';
+                document.getElementById('error-message').innerHTML = errorMessage;
+                return; // Prevent moving to the next step if validation fails
+            }
+
+            // If validation passes, hide the error message and proceed
+            document.getElementById('error-message').style.display = 'none'; // Hide the error message
+            console.log("Step 1 is validated");
+            showNextStep(); // Assuming showNextStep() handles the page transition
+        };
+    </script>
+
+    <!-- Step 2 validation -->
+    <script language="javascript" type="text/javascript">
+        const validateStep2 = () => {
+            console.log("Step 2 is validated");
+            showNextStep();
+        }
+    </script>
+
+    <!-- Step 3 validation -->
+    <script language="javascript" type="text/javascript">
+        // Function to reset the error styles (remove red borders and hide error message)
+        const resetErrorStep3Styles = () => {
+            // Remove red border from all fields
+            document.getElementById('weight').style.borderColor = '';
+            document.getElementById('height').style.borderColor = '';
+            document.getElementById('waist').style.borderColor = '';
+            document.getElementById('tobacco-use-label').style.color = ''
+
+            // Hide the error message
+            document.getElementById('error-message-step-3').style.display = 'none';
+        };
+
+        const validateStep3 = () => {
+            // Get the values of the fields
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const waist = document.getElementById('waist').value;
+
+            // Reset previous error styles and message
+            resetErrorStep3Styles();
+
+            let errorMessage = "<strong>Please review and check these fields:</strong><br/>";
+            let isValid = true;
+
+            // Check if any of the required fields are empty
+            if (!weight) {
+                document.getElementById('weight').style.borderColor = 'red';
+                errorMessage += "Weight<br>";
+                isValid = false;
+            }
+
+            if (!height) {
+                document.getElementById('height').style.borderColor = 'red';
+                errorMessage += "Height<br>";
+                isValid = false;
+            }
+
+            if (!waist) {
+                document.getElementById('waist').style.borderColor = 'red';
+                errorMessage += "Waist<br>";
+                isValid = false;
+            }
+
+            // tobacco
+            const getTobaccoCheckboxCount = () => {
+                const tobaccoCheckboxes = document.querySelectorAll('.tobaccoCheckbox');
+
+                const updateCheckboxCount = () => {
+                    const checkedCheckboxes = Array.from(tobaccoCheckboxes).filter(cb => cb.checked);
+                    return checkedCheckboxes.length;
+                }
+
+
+                tobaccoCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateCheckboxCount);
                 });
-            @endif
-        });
+
+                return updateCheckboxCount();
+            }
+
+            if (getTobaccoCheckboxCount() <= 0) {
+                document.getElementById('tobacco-use-label').style.color = 'red';
+                errorMessage += "Please review tobacco use fields.<br>";
+                isValid = false;
+            }
+
+            // alcohol
+            const getAlcoholCheckboxCount = () => {
+                const alcoholCheckboxes = document.querySelectorAll('.alcoholCheckbox');
+
+                const updateCheckboxCount = () => {
+                    const checkedCheckboxes = Array.from(alcoholCheckboxes).filter(cb => cb.checked);
+                    return checkedCheckboxes.length;
+                }
+
+
+                alcoholCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateCheckboxCount);
+                });
+
+                return updateCheckboxCount();
+            }
+
+            if (getAlcoholCheckboxCount() <= 0) {
+                document.getElementById('alcohol-intake-label').style.color = 'red';
+                errorMessage += "Please review alcohol intake fields.<br>";
+                isValid = false;
+            }
+
+            // physical activity
+            const getPhysicalActivityCheckboxCount = () => {
+                const physicalActivityCheckboxes = document.querySelectorAll('.physicalCheckbox');
+
+                const updateCheckboxCount = () => {
+                    const checkedCheckboxes = Array.from(physicalActivityCheckboxes).filter(cb => cb.checked);
+                    return checkedCheckboxes.length;
+                }
+
+
+                physicalActivityCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateCheckboxCount);
+                });
+
+                return updateCheckboxCount();
+            }
+
+            if (getPhysicalActivityCheckboxCount() <= 0) {
+                document.getElementById('physical-activity-label').style.color = 'red';
+                errorMessage += "Please review physical activity fields.<br>";
+                isValid = false;
+            }
+
+            // nutrition and dietary assessment
+            const getNutritionAndDietaryCheckboxCount = () => {
+                const nutritionAndDietaryCheckboxes = document.querySelectorAll('.nutritionDietCheckbox');
+
+                const updateCheckboxCount = () => {
+                    const checkedCheckboxes = Array.from(nutritionAndDietaryCheckboxes).filter(cb => cb
+                        .checked);
+                    return checkedCheckboxes.length;
+                }
+
+
+                nutritionAndDietaryCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateCheckboxCount);
+                });
+
+                return updateCheckboxCount();
+            }
+
+            if (getNutritionAndDietaryCheckboxCount() <= 0) {
+                document.getElementById('nutrition-and-dietary-assessment-label').style.color = 'red';
+                errorMessage += "Please review nutrition and dietary fields.<br>";
+                isValid = false;
+            }
+
+
+            // If there is an error, display the specific error message
+            if (!isValid) {
+                document.getElementById('error-message-step-3').style.display = 'block';
+                document.getElementById('error-message-step-3').innerHTML = errorMessage;
+                return; // Prevent moving to the next step if validation fails
+            }
+
+            // If validation passes, hide the error message and proceed
+            document.getElementById('error-message-step-3').style.display = 'none'; // Hide the error message
+            console.log("Step 3 is validated");
+            showNextStep(); // Assuming showNextStep() handles the page transition
+        };
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        const validateStep4 = () => {
+            console.log("Step 4 is validated");
+            showNextStep();
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        const resetErrorStep5Styles = () => {
+            // Remove red border from all fields
+            document.getElementById('anti_hypertensives_specify').style.borderColor = '';
+            document.getElementById('anti_diabetes_specify').style.borderColor = '';
+
+            document.getElementById('anti-hypertensives-label').style.color = '';
+            document.getElementById('anti-diabetes-label').style.color = '';
+            // Hide the error message
+            document.getElementById('error-message-step-5').style.display = 'none';
+        };
+
+        const validateStep5 = () => {
+            let errorMessage = "";
+            let isValid = true;
+
+            // Reset previous error styles and message
+            resetErrorStep5Styles();
+
+            const antiHypertensivesRadios = document.getElementsByName('anti_hypertensives');
+            const antiHypertensivesSelected = Array.from(antiHypertensivesRadios).find(radio => radio.checked);
+            const antiHypertensivesSpecifyMedicine = document.getElementById('anti_hypertensives_specify').value.trim();
+
+            if (!antiHypertensivesSelected) {
+                document.getElementById('anti-hypertensives-label').style.color = 'red';
+                errorMessage += "Please select an option for anti-hypertensives.<br>";
+                isValid = false;
+            }
+
+            if (antiHypertensivesSelected &&
+                (antiHypertensivesSelected.value === 'yes' || antiHypertensivesSelected.value === 'unknown') &&
+                (antiHypertensivesSpecifyMedicine === "" || antiHypertensivesSpecifyMedicine === null)) {
+                document.getElementById('anti_hypertensives_specify').style.borderColor = 'red';
+                errorMessage +=
+                    "Please specify the anti-hypertensive medicine when 'Yes' or 'Unknown' is selected.<br>";
+                isValid = false;
+            }
+
+            const antiDiabetesRadios = document.getElementsByName('anti_diabetes');
+            const antiDiabetesSelected = Array.from(antiDiabetesRadios).find(radio => radio.checked);
+            const antiDiabetesSpecifyMedicine = document.getElementById('anti_diabetes_specify').value.trim();
+
+            if (!antiDiabetesSelected) {
+                document.getElementById('anti-diabetes-label').style.color = 'red';
+                errorMessage += "Please select an option for anti-diabetes.<br>";
+                isValid = false;
+            }
+
+            if (antiDiabetesSelected &&
+                (antiDiabetesSelected.value === 'yes' || antiDiabetesSelected.value === 'unknown') &&
+                (antiDiabetesSpecifyMedicine === "" || antiDiabetesSpecifyMedicine === null)) {
+                document.getElementById('anti_diabetes_specify').style.borderColor = 'red';
+                errorMessage += "Please specify the anti-diabetes medicine when 'Yes' or 'Unknown' is selected.<br>";
+                isValid = false;
+            }
+
+            // If there is an error, display the specific error message
+            if (!isValid) {
+                document.getElementById('error-message-step-5').style.display = 'block';
+                document.getElementById('error-message-step-5').innerHTML = errorMessage;
+                return false; // Prevent moving to the next step if validation fails
+            }
+
+            // If validation passes, hide the error message and proceed
+            document.getElementById('error-message-step-5').style.display = 'none'; // Hide the error message
+            console.log("Step 5 is validated");
+
+            // Submit the form
+            document.getElementById('form-submit').submit();
+        };
     </script>
 @endsection
 
