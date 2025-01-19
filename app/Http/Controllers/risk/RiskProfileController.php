@@ -14,6 +14,10 @@ use App\RiskFormAssessment;
 
 class RiskProfileController extends Controller
 {
+    private function explodeString($string){
+        return explode(", ", $string);
+    }
+
     public function getMunicipal($provinceid)
     {
         $muncity = Muncity::where('province_id', $provinceid)
@@ -56,7 +60,7 @@ class RiskProfileController extends Controller
         $riskprofile->mname = $request->mname ? $request->mname : null;
         $riskprofile->suffix = $request->suffix ? $request->suffix : null;
         $riskprofile->sex = $request->sex;
-        $riskprofile->dob = $request->dob;
+        $riskprofile->dob = $request->dateofbirth;
         $riskprofile->age = $request->age;
         $riskprofile->civil_status = $request->civil_status;
         $riskprofile->religion = $request->religion;
@@ -234,6 +238,8 @@ class RiskProfileController extends Controller
         // Retrieve the existing risk profile by ID
         $riskprofile = RiskProfile::find($id);
 
+        \Log::info('RiskProfile: ' . json_encode($riskprofile));
+
         if (!$riskprofile) {
             return redirect()->back()->with('error', 'Risk profile not found.');
         }
@@ -257,7 +263,7 @@ class RiskProfileController extends Controller
         $riskprofile->mname = $req->mname ? $req->mname : null;
         $riskprofile->suffix = $req->suffix ? $req->suffix : null;
         $riskprofile->sex = $req->sex;
-        $riskprofile->dob = $req->dob;
+        $riskprofile->dob = $req->dateofbirth;
         $riskprofile->age = $req->age;
         $riskprofile->civil_status = $req->civil_status;
         $riskprofile->religion = $req->religion;
@@ -288,6 +294,8 @@ class RiskProfileController extends Controller
         if (!$riskform) {
             return redirect()->back()->with('error', 'Associated risk form not found.');
         }
+
+        \Log::info('RiskFormAssessment: ' . json_encode($riskform));
 
         // Update the RiskFormAssessment data
         $riskform->ar_chest_pain = $req->ar_chest_pain;
