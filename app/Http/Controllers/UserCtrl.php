@@ -8,7 +8,7 @@ use App\User;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
-use App\UserBrgy;
+use App\UserHealthFacility;
 use Illuminate\Support\Facades\Hash;
 
 class UserCtrl extends Controller
@@ -28,7 +28,7 @@ class UserCtrl extends Controller
 
         $user = Auth::user();
         $id = $user->id;
-        $users = User::whereYear('created_at', 2024) // Filter by year 2024
+        $users = User::whereYear('created_at', "=", 2024) // Filter by year 2024
                     ->where(function ($q) use ($keyword) {
                         $q->where('lname', 'like', "%$keyword%")
                         ->orWhere('mname', 'like', "%$keyword%")
@@ -77,33 +77,50 @@ class UserCtrl extends Controller
 
     public function save(Request $req)
     {
-        $validateName = User::where('fname',$req->fname)
-            ->where('mname',$req->mname)
-            ->where('lname',$req->lname)
+        // Validate if the name already exists
+        $validateName = User::where('fname', $req->fname)
+            ->where('mname', $req->mname)
+            ->where('lname', $req->lname)
             ->first();
-        if($validateName){
+        if ($validateName) {
             return redirect('users?duplicate=name');
         }
-
-        $validateUsername = User::where('username',$req->username)->first();
-        if($validateUsername){
+    
+        // Validate if the username already exists
+        $validateUsername = User::where('username', $req->username)->first();
+        if ($validateUsername) {
             return redirect('users?duplicate=username');
         }
-
-        $q = new User();
-        $q->fname = $req->fname;
-        $q->mname = $req->mname;
-        $q->lname = $req->lname;
-        $q->muncity = $req->muncity;
-        $q->province = $req->province;
-        $q->username = $req->username;
-        $q->password = bcrypt($req->password);
-        $q->contact = $req->contact;
-        $q->user_priv = $req->user_priv;
-        $q->save();
-        Session::put('success',true);
-        return redirect()->back();
+    
+        // Create new user record
+        $user = new User();
+        $user->fname = $req->fname;
+        $user->mname = $req->mname;
+        $user->lname = $req->lname;
+        $user->muncity = $req->muncity;
+        $user->province = $req->province;
+        $user->username = $req->username;
+        $user->password = bcrypt($req->password);
+        $user->facility_id = $req->facility;
+        $user->contact = $req->contact;
+        $user->user_priv = $req->user_priv;
+        $user->save();
+    
+        // Map user to health facility
+        $userHfMapping = new UserHealthFacility();
+        $userHfMapping->user_id = $user->id;
+        $userHfMapping->facility_id = $req->facility;
+        $userHfMapping->user_designation = $req->user_designation;
+        $userHfMapping->assigned_at = \Carbon\Carbon::now(); // set current timestamp
+        $userHfMapping->save();
+    
+        // Success message
+        Session::put('success', 'User successfully saved.');
+        
+        // Redirect to the users list page or wherever needed
+        return redirect('users')->with('success', 'User has been successfully added.');
     }
+    
 
     public function info($id){
         $info = User::find($id);

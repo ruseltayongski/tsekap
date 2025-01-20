@@ -1,10 +1,10 @@
 @extends('resu/app1')
 @section('content')
     <?php
-    use App\Muncity;
-    use App\UserHealthFacility;
     use App\Facilities;
     use App\Province;
+    use App\Muncity;
+    use App\UserHealthFacility;
     use App\Barangay;
     
     $user = Auth::user();
@@ -22,14 +22,15 @@
     use Carbon\Carbon;
     
     $dob = Carbon::parse($profile->dob);
-    $province = Province::select('id', 'description')->get();
+    
     $barangay = Barangay::select('id', 'description')->get();
     
     $muncities = Muncity::select('id', 'description')->get();
+    $province = Province::select('id', 'description')->get();
     $facilities = Facilities::all();
     
     // extract riskform from the profile object
-
+    
     $riskForm = $profile['riskForm'];
     ?>
 
@@ -67,13 +68,14 @@
                                     </div>
 
                                     <!-- <label for="address-facility">Date of Assessment</label>
-                                            <input type="text" class="form-control" name="addressfacility" id="addressfacility"  value="{{ $facility->address }}"> -->
+                                                    <input type="text" class="form-control" name="addressfacility" id="addressfacility"  value="{{ $facility->address }}"> -->
                                     <div class="col-md-6">
                                         <label for="date-of-assessment">Date of Assessment</label>
-                                        <input type="text" class="form-control" name="date_of_assessment"
+                                        <input type="text" class="form-control datepicker" name="date_of_assessment"
                                             id="date-of-assessment"
                                             value="{{ $profile['created_at'] ? Carbon::parse($profile['created_at'])->format('F d, Y') : '' }}">
                                     </div>
+
                                     <br><br>
                                     <br><br>
                                 </div>
@@ -142,14 +144,12 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="dateofbirth">Date Of Birth</label>
-                                        <input type="text" class="form-control" id="dateofbirth" name="dateBirth"
-                                            value="{{ $profile['dob'] ? Carbon::parse($profile['dob'])->format('F d, Y') : '' }}">
+                                        <input type="date" class="form-control" value="{{ $profile['dob'] ? $profile['dob'] : '' }}" id="dateofbirth" name="dateBirth" required/>
                                     </div>
-
                                     <div class="col-md-3">
                                         <label for="age">Age</label>
                                         <input type="text" class="form-control" id="age" name="age"
-                                            value="{{ $profile['age'] ? $profile['age'] : '' }}">
+                                            value="{{ $profile['age'] ? $profile['age'] : '' }}" readonly>
                                     </div>
                                     <div class="col-md-3">
                                         <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
@@ -660,8 +660,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                                <th>Option (Yes / No)</th>
-                                                <th>Details</th> -->
+                                                        <th>Option (Yes / No)</th>
+                                                        <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -847,8 +847,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                                <th>Option (Yes / No)</th>
-                                                <th>Details</th> -->
+                                                        <th>Option (Yes / No)</th>
+                                                        <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">
@@ -1018,8 +1018,8 @@
                                     <thead>
                                         <tr>
                                             <!-- <th>Description</th>
-                                                <th>Option (Yes / No)</th>
-                                                <th>Details</th> -->
+                                                        <th>Option (Yes / No)</th>
+                                                        <th>Details</th> -->
                                         </tr>
                                     </thead>
                                     <tbody style="border: 1px solid #000; padding: 10px; font-weight: bold;">

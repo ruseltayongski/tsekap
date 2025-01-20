@@ -112,8 +112,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-3">
-                                        <label for="dob">Date of Birth <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control" id="dob" name="dob"
+                                        <label for="dateofbirth">Date of Birth <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="dateofbirth" name="dateofbirth"
                                             required>
                                     </div>
                                     <div class="col-md-3">
@@ -1483,7 +1483,7 @@
         }
 
         // Event listener for date of birth input
-        document.getElementById('dob').addEventListener('change', function() {
+        document.getElementById('dateofbirth').addEventListener('change', function() {
             const birthdate = this.value;
             const age = calculateAge(birthdate);
             document.getElementById('age').value = age;
@@ -1687,7 +1687,6 @@
             });
         });
     </script>
-
     <!--Validation Functions-->
 
     <!-- Step 1 validation -->
@@ -1699,7 +1698,7 @@
             document.getElementById('fname').style.borderColor = '';
             document.getElementById('sex').style.borderColor = '';
             document.getElementById('contact').style.borderColor = '';
-            document.getElementById('dob').style.borderColor = '';
+            document.getElementById('dateofbirth').style.borderColor = '';
             document.getElementById('age').style.borderColor = '';
             document.getElementById('civil_status').style.borderColor = '';
             document.getElementById('religion').style.borderColor = '';
@@ -1727,7 +1726,7 @@
             const sex = document.getElementById('sex').value;
             const age = document.getElementById('age').value;
             const contact = document.getElementById('contact').value;
-            const dateofbirth = document.getElementById('dob').value;
+            const dateofbirth = document.getElementById('dateofbirth').value;
             const citizenship = document.getElementById('citizenship').value;
             const otherCitizenship = document.getElementById('other_citizenship').value;
             const civilStatus = document.getElementById('civil_status').value;
@@ -1788,7 +1787,7 @@
             }
 
             if (!dateofbirth) {
-                document.getElementById('dob').style.borderColor = 'red';
+                document.getElementById('dateofbirth').style.borderColor = 'red';
                 errorMessage += "Date of Birth<br>";
                 isValid = false;
             }
