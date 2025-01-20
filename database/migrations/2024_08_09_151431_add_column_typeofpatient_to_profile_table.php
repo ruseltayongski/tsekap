@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class AddColumnTypeofpatientToProfileTable extends Migration
 {
@@ -12,9 +13,11 @@ class AddColumnTypeofpatientToProfileTable extends Migration
      */
     public function up()
     {
-        Schema::table('profile', function (Blueprint $table) {
-            $table->string('typeofpatient')->nullable()->after('Hospital_caseno');
-        });
+        if (!Schema::hasColumn('profile', 'typeofpatient')) {
+            Schema::table('profile', function (Blueprint $table) {
+                $table->string('typeofpatient')->nullable()->after('Hospital_caseno');
+            });
+        }
     }
 
     /**
@@ -24,8 +27,10 @@ class AddColumnTypeofpatientToProfileTable extends Migration
      */
     public function down()
     {
-        Schema::table('profile', function (Blueprint $table) {
-            $table->dropColumn('typeofpatient');
-        });
+        if (Schema::hasColumn('profile', 'typeofpatient')) {
+            Schema::table('profile', function (Blueprint $table) {
+                $table->dropColumn('typeofpatient');
+            });
+        }
     }
 }

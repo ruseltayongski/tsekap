@@ -28,7 +28,7 @@ class UserCtrl extends Controller
 
         $user = Auth::user();
         $id = $user->id;
-        $users = User::whereYear('created_at', 2024) // Filter by year 2024
+        $users = User::whereYear('created_at', "=", 2024) // Filter by year 2024
                     ->where(function ($q) use ($keyword) {
                         $q->where('lname', 'like', "%$keyword%")
                         ->orWhere('mname', 'like', "%$keyword%")
