@@ -1090,25 +1090,25 @@
                                                 <!-- Never Used (proceed to Q2) checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q1"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q1') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q1') !== false ? 'checked' : '' }}>
                                                 Never Used (proceed to Q2) <br>
 
                                                 <!-- Exposure to secondhand smoke checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q2"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q2') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q2') !== false ? 'checked' : '' }}>
                                                 Exposure to secondhand smoke <br>
 
                                                 <!-- Former tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q3"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q3') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q3') !== false ? 'checked' : '' }}>
                                                 Former tobacco user (stopped smoking > 1 year) <br>
 
                                                 <!-- Current tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q4"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q4') !== false ? 'checked' : '' }}>
+                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q4') !== false ? 'checked' : '' }}>
                                                 Current tobacco user (currently smoking or stopped smoking) <br><br>
 
                                                 <p style="font-style: italic; font-size: 15px;">
@@ -1202,7 +1202,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="weight" name="rf_weight"
                                                     oninput="calculateBMI()"
-                                                    value="{{ strtolower($riskForm['rf_weight'] ? strtolower($riskForm['rf_weight'] : '' }}">
+                                                    value="{{ $riskForm['rf_weight'] ? $riskForm['rf_weight'] : '' }}">
                                             </td>
                                         </tr>
 
@@ -1213,7 +1213,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="height" name="rf_height"
                                                     oninput="calculateBMI()"
-                                                    value="{{ strtolower($riskForm['rf_height'] ? strtolower($riskForm['rf_height'] : '' }}">
+                                                    value="{{ $riskForm['rf_height'] ? $riskForm['rf_height'] : '' }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -1222,7 +1222,7 @@
                                             </td>
                                             <td>
                                                 <input type="text" class="textbox" id="bmi"
-                                                    value="{{ strtolower($riskForm['rf_body_mass'] ? strtolower($riskForm['rf_body_mass'] : '' }}"
+                                                    value="{{ $riskForm['rf_body_mass'] ? $riskForm['rf_body_mass'] : '' }}"
                                                     name="rf_bmi">
                                                 <p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;"
                                                             id="bmiStrVal"></span></i></p>
@@ -1233,7 +1233,7 @@
                                                 5.8 Waist Circumference (cm): F < 80cm M < 90 </td>
                                             <td>
                                                 <input type="text" class="textbox" id="waist" name ="rf_waist"
-                                                    value="{{ strtolower($riskForm['rf_waist_circumference'] ? strtolower($riskForm['rf_waist_circumference'] : '' }}">
+                                                    value="{{ $riskForm['rf_waist_circumference'] ? $riskForm['rf_waist_circumference'] : '' }}">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1278,13 +1278,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ strtolower($riskForm['rs_systolic_t1'] ? strtolower($riskForm['rs_systolic_t1'] : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t1'] ? $riskForm['rs_systolic_t1'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ strtolower($riskForm['rs_diastolic_t1'] ? strtolower($riskForm['rs_diastolic_t1'] : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t1'] ? $riskForm['rs_diastolic_t1'] : '' }}">
                                                 </div>
                                             </div>
                                             <br>
@@ -1294,13 +1294,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ strtolower($riskForm['rs_systolic_t2'] ? strtolower($riskForm['rs_systolic_t2'] : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t2'] ? $riskForm['rs_systolic_t2'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ strtolower($riskForm['rs_diastolic_t2'] ? strtolower($riskForm['rs_diastolic_t2'] : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t2'] ? $riskForm['rs_diastolic_t2'] : '' }}">
                                                 </div>
                                             </div>
                                         </td>
@@ -1314,19 +1314,19 @@
                                                 <label>FBS Result:</label>
                                                 <input type="text" name="fbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_blood_sugar_fbs'] ? strtolower($riskForm['rs_blood_sugar_fbs'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_fbs'] ? $riskForm['rs_blood_sugar_fbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>RBS Result:</label>
                                                 <input type="text" name="rbs_result" id="rbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_blood_sugar_rbs'] ? strtolower($riskForm['rs_blood_sugar_rbs'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_rbs'] ? $riskForm['rs_blood_sugar_rbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" id="blood_sugar_date_taken" name="blood_sugar_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_blood_sugar_date_taken'] ? strtolower($riskForm['rs_blood_sugar_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_date_taken'] ? $riskForm['rs_blood_sugar_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1336,15 +1336,15 @@
                                         </td>
                                         <td style="border: 1px solid #000; padding: 10px;">
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom1"
-                                                {{ in_array('polyphagia', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyphagia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyphagia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom2"
-                                                {{ in_array('polydipsia', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polydipsia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polydipsia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom3"
-                                                {{ in_array('polyuria', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyuria', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyuria
                                         </td>
                                     </tr>
@@ -1358,37 +1358,37 @@
                                                 <label>Total Cholesterol:</label>
                                                 <input type="text" name="lipid_cholesterol"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_cholesterol'] ? strtolower($riskForm['rs_lipid_cholesterol'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_cholesterol'] ? $riskForm['rs_lipid_cholesterol'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>HDL:</label>
                                                 <input type="text" name="lipid_hdl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_hdl'] ? strtolower($riskForm['rs_lipid_hdl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_hdl'] ? $riskForm['rs_lipid_hdl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>LDL:</label>
                                                 <input type="text" name="lipid_ldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_ldl'] ? strtolower($riskForm['rs_lipid_ldl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_ldl'] ? $riskForm['rs_lipid_ldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>VLDL:</label>
                                                 <input type="text" name="lipid_vldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_vldl'] ? strtolower($riskForm['rs_lipid_vldl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_vldl'] ? $riskForm['rs_lipid_vldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Triglyceride:</label>
                                                 <input type="text" name="lipid_triglyceride"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_triglyceride'] ? strtolower($riskForm['rs_lipid_triglyceride'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_triglyceride'] ? $riskForm['rs_lipid_triglyceride'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="lipid_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_lipid_date_taken'] ? strtolower($riskForm['rs_lipid_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_date_taken'] ? $riskForm['rs_lipid_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1401,25 +1401,25 @@
                                                 <label>Protein:</label>
                                                 <input type="text" name="uri_protein"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_urine_protein'] ? strtolower($riskForm['rs_urine_protein'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein'] ? $riskForm['rs_urine_protein'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_protein_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_urine_protein_date_taken'] ? strtolower($riskForm['rs_urine_protein_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein_date_taken'] ? $riskForm['rs_urine_protein_date_taken'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Ketones:</label>
                                                 <input type="text" name="uri_ketones"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_urine_ketones'] ? strtolower($riskForm['rs_urine_ketones'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones'] ? $riskForm['rs_urine_ketones'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_ketones_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ strtolower($riskForm['rs_urine_ketones_date_taken'] ? strtolower($riskForm['rs_urine_ketones_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones_date_taken'] ? $riskForm['rs_urine_ketones_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1438,27 +1438,27 @@
                                                 style="display: flex; gap: 10px; flex-wrap: wrap;">
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_breathlessness"
-                                                        {{ in_array('Breathlessness', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Breathlessness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Breathlessness (or a 'need for air')
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_sputum_production"
-                                                        {{ in_array('Sputum (mucous) production', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Sputum (mucous) production', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Sputum (mucous) production
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chronic_cough"
-                                                        {{ in_array('Chronic cough', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chronic cough', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chronic cough
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chest_tightness"
-                                                        {{ in_array('Chest tightness', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chest tightness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chest tightness
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_wheezing"
-                                                        {{ in_array('Wheezing', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Wheezing', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Wheezing
                                                 </label>
                                             </div>
@@ -1474,12 +1474,12 @@
                                                 style="display: flex; flex-direction: column; gap: 5px;">
                                                 <label>
                                                     <input type="checkbox" name="pefr_above_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', strtolower($riskForm['rs_if_yes_any_symptoms'] ? strtolower($riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &gt; 20% change from baseline (consider Probable Asthma)
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="pefr_below_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', strtolower($riskForm['rs_if_yes_any_symptoms'] ? strtolower($riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &lt; 20% change from baseline (consider Probable COPD)
                                                 </label>
                                             </div>
