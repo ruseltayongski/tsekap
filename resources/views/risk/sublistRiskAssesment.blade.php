@@ -729,7 +729,7 @@
                                                     {{ strtolower($riskForm['pmh_diabetes']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="diabetesDetailsInput" name="pmh_diabetes_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
 
                                             </td>
                                         </tr>
@@ -746,7 +746,7 @@
                                                     {{ strtolower($riskForm['pmh_cancer']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="cancerDetailsInput" name="pmh_cancer_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_cancer'] ? strtolower($riskForm['pmh_specify_cancer'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_cancer'] ? $riskForm['pmh_specify_cancer'] : '' }}"></textarea>
                                             </td>
                                         </tr>
                                         </tr>
@@ -792,7 +792,7 @@
                                                     {{ strtolower($riskForm['pmh_allergies']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="allergiesDetailsInput" name="pmh_allergies_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_allergies'] ? strtolower($riskForm['pmh_specify_allergies'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_allergies'] ? $riskForm['pmh_specify_allergies'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -811,7 +811,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="mnsDetailsInput" name="pmh_mnsad_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_mn_and_s_disorder'] ? strtolower($riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_mn_and_s_disorder'] ? $riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -846,7 +846,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="surgicalDetailsInput" name="pmh_psh_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_previous_surgical'] ? strtolower($riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_previous_surgical'] ? $riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
                                             </td>
                                         </tr>
                                         <tr>
