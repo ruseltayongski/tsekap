@@ -639,7 +639,7 @@
                                             <td>3.10 Previous Surgical History</td>
                                             <td>
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
-                                                    id="pmh_surgical_history_yes" name= "pmh_psh"value="Yes"> Yes
+                                                    id="pmh_surgical_history_yes" name= "pmh_psh" value="Yes"> Yes
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
                                                     id="pmh_surgical_history_no" name= "pmh_psh" value="No"
                                                     style="margin-left: flex"> No
@@ -711,10 +711,10 @@
                                             <td>4.3 Heart Disease (change from "Cardiovascular") </td>
                                             <td>
                                                 <input type="checkbox" class="heartdisCheckbox"
-                                                    id="fmh_heart_disease_yes" name="fmh_heart_disease" value="Yes">
+                                                    id="fmh_heart_disease" name="fmh_heart_disease" value="Yes">
                                                 Yes
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heart_disease_no"
-                                                    name="fmh_heart_disease" value="No" style="margin-left: flex"> No
+                                                    name="fmh_heart_disease value="No" style="margin-left: flex"> No
                                             </td>
 
                                         </tr>
@@ -1037,12 +1037,12 @@
                                         <td style="border: 1px solid #000; padding: 10px;">
                                             <div style="margin-bottom: 10px;">
                                                 <label>FBS Result:</label>
-                                                <input type="text" name="fbs_result"
+                                                <input type="text" name="fbs_result" id="fbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>RBS Result:</label>
-                                                <input type="text" name="rbs_result"
+                                                <input type="text" name="rbs_result" id="rbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                             </div>
                                             <div style="margin-bottom: 10px;">
