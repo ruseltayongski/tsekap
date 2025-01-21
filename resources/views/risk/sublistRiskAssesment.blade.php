@@ -387,13 +387,13 @@
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="indigenous_person_yes"
                                                 id="indigenous_person_yes" value="yes"
-                                                {{ $profile['indigenous_person'] == 'Yes' ? 'checked' : '' }}>
+                                                {{ strtolower($profile['indigenous_person']) == 'yes' ? 'checked' : '' }}>
                                             <label for="indigenous_person_yes" class="ml-2">Yes</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="indigenous_person_no" id="indigenous_person_no"
                                                 value="no"
-                                                {{ $profile['indigenous_person'] == 'No' ? 'checked' : '' }}>
+                                                {{ strtolower($profile['indigenous_person']) == 'no' ? 'checked' : '' }}>
                                             <label for="indigenous_person_no" class="ml-2">No</label>
                                         </span>
                                     </div>
@@ -404,21 +404,21 @@
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_employed" value="Employed"
-                                                {{ $profile['employment_status'] == 'Employed' ? 'checked' : '' }}
+                                                {{ strtolower($profile['employment_status']) == 'employed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Employed')" readonly>
                                             <label for="employment_status_employed" class="ml-2">Employed</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_unemployed" value="Unemployed"
-                                                {{ $profile['employment_status'] == 'Unemployed' ? 'checked' : '' }}
+                                                {{ strtolower($profile['employment_status']) == 'unemployed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Unemployed')" readonly>
                                             <label for="employment_status_unemployed" class="ml-2">Unemployed</label>
                                         </span>
                                         <span style="padding-right: 10px;">
                                             <input type="checkbox" name="employment_status"
                                                 id="employment_status_self_employed" value="Self-Employed"
-                                                {{ $profile['employment_status'] == 'Self-Employed' ? 'checked' : '' }}
+                                                {{ strtolower($profile['employment_status']) == 'self-employed' ? 'checked' : '' }}
                                                 onclick="toggleEmploymentStatus('Self-Employed')" readonly>
                                             <label for="emp_status_self_employed" class="ml-2">Self-Employed</label>
                                         </span>
@@ -447,11 +447,11 @@
                                                 <input type="checkbox" class="healthCheckbox" id="chest_pain_yes"
                                                     name="ar_chest_pain"
                                                     onclick="toggleCheckbox('chest_pain_yes', 'chest_pain_no')"
-                                                    {{ $riskForm['ar_chest_pain'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['ar_chest_pain']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="healthCheckbox" id="chest_pain_no"
                                                     name="ar_chest_pain"
                                                     onclick="toggleCheckbox('chest_pain_no', 'chest_pain_yes')"
-                                                    {{ $riskForm['ar_chest_pain'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['ar_chest_pain']) == 'no' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
@@ -460,12 +460,12 @@
                                                 <input type="checkbox" class="healthCheckbox"
                                                     id="difficulty_breathing_yes" name="ar_difficulty_breathing"
                                                     onclick="toggleCheckbox('difficulty_breathing_yes', 'difficulty_breathing_no')"
-                                                    {{ $riskForm['ar_difficulty_breathing'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_difficulty_breathing']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox"
                                                     id="difficulty_breathing_no" name="ar_difficulty_breathing"
                                                     onclick="toggleCheckbox('difficulty_breathing_no', 'difficulty_breathing_yes')"
-                                                    {{ $riskForm['ar_difficulty_breathing'] == 'No' ? 'checked' : '' }}>
+                                                    {{strtolower($riskForm['ar_difficulty_breathing']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -475,12 +475,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="loss_con_yes"
                                                     name="ar_loss_of_consciousness"
                                                     onclick="toggleCheckbox('loss_con_yes', 'loss_con_no')"
-                                                    {{ $riskForm['ar_loss_of_consciousness'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_loss_of_consciousness']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="loss_con_no"
                                                     name="ar_loss_of_consciousness"
                                                     onclick="toggleCheckbox('loss_con_no', 'loss_con_yes')"
-                                                    {{ $riskForm['ar_loss_of_consciousness'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_loss_of_consciousness']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -490,12 +490,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="slurred_yes"
                                                     name ="ar_slurred_speech"
                                                     onclick="toggleCheckbox('slurred_yes', 'slurred_no')"
-                                                    {{ $riskForm['ar_slurred_speech'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_slurred_speech']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="slurred_no"
                                                     name="ar_slurred_speech"
                                                     onclick="toggleCheckbox('slurred_no', 'slurred_yes')"
-                                                    {{ $riskForm['ar_slurred_speech'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_slurred_speech']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -505,12 +505,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="facial_yes"
                                                     name= "ar_facial_asymmetry"
                                                     onclick="toggleCheckbox('facial_yes', 'facial_no')"
-                                                    {{ $riskForm['ar_facial_asymmetry'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_facial_asymmetry']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="facial_no"
                                                     name= "ar_facial_asymmetry"
                                                     onclick="toggleCheckbox('facial_no', 'facial_yes')"
-                                                    {{ $riskForm['ar_facial_asymmetry'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_facial_asymmetry']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -520,12 +520,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="weak_numb_yes"
                                                     name="ar_weakness_numbness"
                                                     onclick="toggleCheckbox('weak_numb_yes', 'weak_numb_no')"
-                                                    {{ $riskForm['ar_weakness_numbness'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_weakness_numbness']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="weak_numb_no"
                                                     name="ar_weakness_numbness"
                                                     onclick="toggleCheckbox('weak_numb_no', 'weak_numb_yes')"
-                                                    {{ $riskForm['ar_weakness_numbness'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_weakness_numbness']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -535,12 +535,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="disoriented_yes"
                                                     name="ar_disoriented"
                                                     onclick="toggleCheckbox('disoriented_yes', 'disoriented_no')"
-                                                    {{ $riskForm['ar_disoriented'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_disoriented']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="disNo"
                                                     name="ar_disoriented"
                                                     onclick="toggleCheckbox('disoriented_no', 'disoriented_yes')"
-                                                    {{ $riskForm['ar_disoriented'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['ar_disoriented']) == 'no' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
@@ -549,12 +549,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="chest_retract_yes"
                                                     name="ar_chest_retractions"
                                                     onclick="toggleCheckbox('chest_retract_yes', 'chest_retract_no')"
-                                                    {{ $riskForm['ar_chest_retractions'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_chest_retractions']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="chest_retract_no"
                                                     name="ar_chest_retractions"
                                                     onclick="toggleCheckbox('chest_retract_no', 'chest_retract_yes')"
-                                                    {{ $riskForm['ar_chest_retractions'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_chest_retractions']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -564,12 +564,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="seizure_yes"
                                                     name="ar_seizure_convulsion"
                                                     onclick="toggleCheckbox('seizure_yes', 'seizure_no)"
-                                                    {{ $riskForm['ar_seizure_convulsion'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_seizure_convulsion']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="seizuredNo"
                                                     name="ar_seizure_convulsion"
                                                     onclick="toggleCheckbox('seizure_no', 'seizure_yes')"
-                                                    {{ $riskForm['ar_seizure_convulsion'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_seizure_convulsion']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -579,12 +579,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="self_harm_yes"
                                                     name="ar_act_self_harm_suicide"
                                                     onclick="toggleCheckbox('self_harm_yes', 'self_harm_no')"
-                                                    {{ $riskForm['ar_act_self_harm_suicide'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_act_self_harm_suicide']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="self_harm_no"
                                                     name="ar_act_self_harm_suicide"
                                                     onclick="toggleCheckbox('self_harm_no', 'self_harm_yes')"
-                                                    {{ $riskForm['ar_act_self_harm_suicide'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_act_self_harm_suicide']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -594,12 +594,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="agitated_yes"
                                                     name="ar_agitated_behavior"
                                                     onclick="toggleCheckbox('agitated_yes', 'agitated_no')"
-                                                    {{ $riskForm['ar_agitated_behavior'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_agitated_behavior']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="agitated_no"
                                                     name="ar_agitated_behavior"
                                                     onclick="toggleCheckbox('agitated_no', 'agitated_yes')"
-                                                    {{ $riskForm['ar_agitated_behavior'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_agitated_behavior']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -609,11 +609,11 @@
                                                 <input type="checkbox" class="healthCheckbox" id="eye_injury_yes"
                                                     name="ar_eye_injury"
                                                     onclick="toggleCheckbox('eye_injury_yes', 'eye_injury_no')"
-                                                    {{ $riskForm['ar_eye_injury'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['ar_eye_injury']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="healthCheckbox" id="eye_injury_no"
                                                     name="ar_eye_injury"
                                                     onclick="toggleCheckbox('eye_injury_no', 'eye_injury_yes')"
-                                                    {{ $riskForm['ar_eye_injury'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['ar_eye_injury']) == 'no' ? 'checked' : '' }}> No
                                             </td>
                                         </tr>
                                         <tr>
@@ -622,12 +622,12 @@
                                                 <input type="checkbox" class="healthCheckbox" id="severe_yes"
                                                 name="ar_severe_injuries"
                                                     onclick="toggleCheckbox('severe_yes', 'severe_no')"
-                                                    {{ $riskForm['ar_severe_injuries'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_severe_injuries']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="healthCheckbox" id="severe_no"
                                                 name="ar_severe_injuries"
                                                     onclick="toggleCheckbox('severe_no', 'severe_yes')"
-                                                    {{ $riskForm['ar_severe_injuries'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['ar_severe_injuries']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -655,7 +655,7 @@
                                     <option value="">Select Facility...</option>
                                     @foreach ($facilities as $fact)
                                         <option value="{{ $fact->id }}"
-                                            {{ $riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
+                                            {{ strtolower($riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
                                             {{ $fact->name }} {{ $fact->description }}
                                         </option>
                                     @endforeach
@@ -692,12 +692,12 @@
                                                 <input type="checkbox" class="hypertensionCheckbox"
                                                     id="pmh_hypertension_yes" name="pmh_hypertension"
                                                     onclick="toggleCheckbox('pmh_hypertension_yes', 'pmh_hypertension_no')"
-                                                    {{ $riskForm['pmh_hypertension'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_hypertension']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hypertensionCheckbox"
                                                     id="pmh_hypertension_no" name="pmh_hypertension"
                                                     onclick="toggleCheckbox('pmh_hypertension_yes', 'pmh_hypertension_no')"
-                                                    {{ $riskForm['pmh_hypertension'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_hypertension']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -707,12 +707,12 @@
                                                 <input type="checkbox" class="heartdiseaseCheckbox"
                                                     id="pmh_heart_disease_yes" name="pmh_heart_disease"
                                                     onclick="toggleCheckbox('pmh_heart_disease_yes', 'pmh_heart_disease_no')"
-                                                    {{ $riskForm['pmh_heart_disease'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_heart_disease']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="heartdiseaseCheckbox"
                                                     id="pmh_heartdisease_no" name="pmh_heart_disease"
                                                     onclick="toggleCheckbox('pmh_heart_disease_no', 'pmh_heart_disease_yes')"
-                                                    {{ $riskForm['pmh_heart_disease'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_heart_disease']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -722,14 +722,14 @@
                                                 <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetes_yes"
                                                     name="pmh_diabetes"
                                                     onclick="toggleCheckbox('pmh_diabetes_yes', 'pmh_diabetes_no')"
-                                                    {{ $riskForm['pmh_diabetes'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['pmh_diabetes']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="diabetesCheckbox" id="pmh_diabetes_no"
                                                     name="pmh_diabetes"
                                                     onclick="toggleCheckbox('pmh_diabetes_no', 'pmh_diabetes_yes')"
-                                                    {{ $riskForm['pmh_diabetes'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['pmh_diabetes']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="diabetesDetailsInput" name="pmh_diabetes_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_diabetes'] ? strtolower($riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
 
                                             </td>
                                         </tr>
@@ -738,15 +738,15 @@
                                             <td>
                                                 <input type="checkbox" class="cancerCheckbox" id="pmh_cancer_yes"
                                                     onclick="toggleCheckbox('pmh_cancer_yes', 'pmh_cancer_no')"
-                                                    name= "pmh_cancer"{{ $riskForm['pmh_cancer'] == 'Yes' ? 'checked' : '' }}>
+                                                    name= "pmh_cancer"{{ strtolower($riskForm['pmh_cancer']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="cancerCheckbox" id="pmh_cancer_no"
                                                     onclick="toggleCheckbox('pmh_cancer_no', 'pmh_cancer_yes')"
                                                     name= "pmh_cancer"
-                                                    {{ $riskForm['pmh_cancer'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['pmh_cancer']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="cancerDetailsInput" name="pmh_cancer_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_cancer'] ? $riskForm['pmh_specify_cancer'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_cancer'] ? strtolower($riskForm['pmh_specify_cancer'] : '' }}"></textarea>
                                             </td>
                                         </tr>
                                         </tr>
@@ -757,11 +757,11 @@
                                                 <input type="checkbox" class="codCheckbox" id="pmh_copd_yes"
                                                     name="pmh_COPD"
                                                     onclick="toggleCheckbox('pmh_copd_yes', 'pmh_copd_no')"
-                                                    {{ $riskForm['pmh_copd'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['pmh_copd']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="codCheckbox" id="pmh_copd_no"
                                                     name="pmh_COPD"
                                                     onclick="toggleCheckbox('pmh_copd_no', 'pmh_copd_yes')"
-                                                    {{ $riskForm['pmh_copd'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_copd']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -771,11 +771,11 @@
                                                 <input type="checkbox" class="asthmaCheckbox" id="pmh_asthma_yes"
                                                     name="pmh_asthma"
                                                     onclick="toggleCheckbox('pmh_asthma_yes', 'pmh_asthma_no')"
-                                                    {{ $riskForm['pmh_asthma'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['pmh_asthma']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="asthmaCheckbox" id="pmh_asthma_no"
                                                     name="pmh_asthma"
                                                     onclick="toggleCheckbox('pmh_asthma_no', 'pmh_asthma_yes')"
-                                                    {{ $riskForm['pmh_asthma'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['pmh_asthma']) == 'no' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -785,14 +785,14 @@
                                                 <input type="checkbox" class="allergiesCheckbox" id="pmh_allergies_yes"
                                                     name="pmh_allergies"
                                                     onclick="toggleCheckbox('pmh_allergies_yes', 'pmh_allergies_no')"
-                                                    {{ $riskForm['pmh_allergies'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['pmh_allergies']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="allergiesCheckbox" id="pmh_allergies_no"
                                                     name="pmh_allergies"
                                                     onclick="toggleCheckbox('pmh_allergies_no', 'pmh_allergies_yes')"
-                                                    {{ $riskForm['pmh_allergies'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['pmh_allergies']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="allergiesDetailsInput" name="pmh_allergies_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_allergies'] ? $riskForm['pmh_specify_allergies'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_allergies'] ? strtolower($riskForm['pmh_specify_allergies'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -802,16 +802,16 @@
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mns_yes"
                                                     name ="pmh_mnsad"
                                                     onclick="toggleCheckbox('pmh_mns_yes', 'pmh_mns_no')"
-                                                    {{ $riskForm['pmh_mn_and_s_disorder'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_mn_and_s_disorder']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mnsNo"
                                                     name ="pmh_mnsad"
                                                     onclick="toggleCheckbox('pmh_mns_no', 'pmh_mns_yes')"
-                                                    {{ $riskForm['pmh_mn_and_s_disorder'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_mn_and_s_disorder']) == 'no' ? 'checked' : '' }}>
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="mnsDetailsInput" name="pmh_mnsad_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_mn_and_s_disorder'] ? $riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_mn_and_s_disorder'] ? strtolower($riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
                                             </td>
 
                                         </tr>
@@ -821,12 +821,12 @@
                                                 <input type="checkbox" class="visionCheckbox" id="pmh_vision_yes"
                                                     name= "pmh_vision"
                                                     onclick="toggleCheckbox('pmh_vision_yes', 'pmh_vision_no')"
-                                                    {{ $riskForm['pmh_vision_problems'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_vision_problems']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="visionCheckbox" id="pmh_visionNo"
                                                     name= "pmh_vision"
                                                     onclick="toggleCheckbox('pmh_vision_no', 'pmh_vision_yes')"
-                                                    {{ $riskForm['pmh_vision_problems'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_vision_problems']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -837,16 +837,16 @@
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
                                                     id="pmh_surgical_history_yes" name="pmh_psh"
                                                     onclick="toggleCheckbox('pmh_surgical_history_yes', 'pmh_surgical_history_no')"
-                                                    {{ $riskForm['pmh_previous_surgical'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_previous_surgical']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="surgicalhistoryCheckbox"
                                                     id="pmh_surgicalhistoryNo"
                                                     onclick="toggleCheckbox('pmh_surgical_history_no', 'pmh_surgical_history_yes')"
-                                                    {{ $riskForm['pmh_previous_surgical'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_previous_surgical']) == 'no' ? 'checked' : '' }}>
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="surgicalDetailsInput" name="pmh_psh_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_previous_surgical'] ? $riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_previous_surgical'] ? strtolower($riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -854,11 +854,11 @@
                                             <td>
                                                 <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroid_yes"
                                                     onclick="toggleCheckbox('pmh_thyroid_yes', 'pmh_thyroid_no')"
-                                                    {{ $riskForm['pmh_thyroid_disorders'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_thyroid_disorders']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="thyroidCheckbox" id="pmh_thyroid_no"
                                                     onclick="toggleCheckbox('pmh_thyroid_no', 'pmh_thyroid_yes')"
-                                                    {{ $riskForm['pmh_thyroid_disorders'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_thyroid_disorders']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -869,12 +869,12 @@
                                                 <input type="checkbox" class="kidneyCheckbox" id="pmh_kidney_yes"
                                                     name="pmh_kidney"
                                                     onclick="toggleCheckbox('pmh_kidney_yes', 'pmh_kidney_no')"
-                                                    {{ $riskForm['pmh_kidney_disorders'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_kidney_disorders']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="kidneyCheckbox" id="pmh_kidney_no"
                                                     name="pmh_kidney"
                                                     onclick="toggleCheckbox('pmh_kidney_no', 'pmh_kidney_yes')"
-                                                    {{ $riskForm['pmh_kidney_disorders'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['pmh_kidney_disorders']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -901,12 +901,12 @@
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_yes"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('fmh_hypertension_yes', 'fmh_hypertension_no')"
-                                                    {{ $riskForm['fmh_hypertension'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_hypertension']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_no"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('loss_con_no', 'loss_con_yes')"
-                                                    {{ $riskForm['fmh_hypertension'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_hypertension']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -917,11 +917,11 @@
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_stroke_yes"
                                                     name="fmh_stroke"
                                                     onclick="toggleCheckbox('fmh_stroke_yes', 'fmh_stroke_no')"
-                                                    {{ $riskForm['fmh_stroke'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['fmh_stroke']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_strokeNo"
                                                     name="fmh_stroke"
                                                     onclick="toggleCheckbox('fmh_stroke_no', 'fmh_stroke_yes')"
-                                                    {{ $riskForm['fmh_stroke'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['fmh_stroke']) == 'no' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -931,12 +931,12 @@
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heart_disease_yes"
                                                     name="fmh_heart_disease"
                                                     onclick="toggleCheckbox('fmh_heart_disease_yes', 'fmh_heart_disease_no')"
-                                                    {{ $riskForm['fmh_heart_disease'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_heart_disease']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heart_disease_no"
                                                     name="fmh_heart_disease"
                                                     onclick="toggleCheckbox('fmh_heart_disease_no', 'fmh_heart_disease_yes')"
-                                                    {{ $riskForm['fmh_heart_disease'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_heart_disease']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -948,12 +948,12 @@
                                                     id="fmh_diabetes_mel_yes"
                                                     name="fmh_diabetes_mellitus"
                                                     onclick="toggleCheckbox('fmh_diabetes_mel_yes', 'fmh_diabetes_mel_no')"
-                                                    {{ $riskForm['fmh_diabetes_mellitus'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_diabetes_mellitus']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="diabetesMelCheckbox" id="fmh_diabetes_mel_no"
                                                 name="fmh_diabetes_mellitus"    
                                                 onclick="toggleCheckbox('fmh_diabetes_mel_no', 'fmh_diabetes_mel_yes')"
-                                                    {{ $riskForm['fmh_diabetes_mellitus'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_diabetes_mellitus']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -962,10 +962,10 @@
                                             <td>
                                                 <input type="checkbox" class="asthmasCheckbox" id="fmh_asthma_yes"
                                                     onclick="toggleCheckbox('fmh_asthma_yes', 'fmh_asthma_no')"
-                                                    {{ $riskForm['fmh_asthma'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['fmh_asthma']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthma_no"
                                                     onclick="toggleCheckbox('fmh_asthma_no', 'fmh_asthma_yes')"
-                                                    {{ $riskForm['fmh_asthma'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['fmh_asthma']) == 'no' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -974,10 +974,10 @@
                                             <td>
                                                 <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_yes"
                                                     onclick="toggleCheckbox('fmh_cancer_yes', 'fmh_cancer_no')"
-                                                    {{ $riskForm['fmh_cancer'] == 'Yes' ? 'checked' : '' }}> Yes
+                                                    {{ strtolower($riskForm['fmh_cancer']) == 'yes' ? 'checked' : '' }}> Yes
                                                 <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_no"
                                                     onclick="toggleCheckbox('fmh_cancer_no', 'fmh_cancer_yes')"
-                                                    {{ $riskForm['fmh_cancer'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['fmh_cancer']) == 'no' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -986,11 +986,11 @@
                                             <td>
                                                 <input type="checkbox" class="kidneyDiseaseCheckbox" name="fmh_kidney" id="fmh_kidney_disease_yes"
                                                     onclick="toggleCheckbox('fmh_kidney_disease_yes', 'fmh_kidney_disease_no')"
-                                                    {{ $riskForm['fmh_kidney_disease'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_kidney_disease']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="kidneyDiseaseCheckbox" id="fmh_kidney_disNo"
                                                     onclick="toggleCheckbox('fmh_kidney_disease_no', 'fmh_kidney_disease_yes')"
-                                                    {{ $riskForm['fmh_kidney_disease'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_kidney_disease']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
 
@@ -1002,12 +1002,12 @@
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degree_relative_yes" name="fmh_first_degree"
                                                     onclick="toggleCheckbox('fmh_degree_relative_yes', 'fmh_degree_relative_no')"
-                                                    {{ $riskForm['fmh_first_degree_relative'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_first_degree_relative']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degree_relative_no" name="fmh_first_degree"
                                                     onclick="toggleCheckbox('fmh_degree_relative_no', 'fmh_degree_relative_yes')"
-                                                    {{ $riskForm['fmh_first_degree_relative'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_first_degree_relative']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -1017,12 +1017,12 @@
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_yes"
                                                     name="fmh_famtb"
                                                     onclick="toggleCheckbox('fmh_family_tb_yes', 'fmh_family_tb_no')"
-                                                    {{ $riskForm['fmh_having_tuberculosis_5_years'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_having_tuberculosis_5_years']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_no"
                                                     name="fmh_famtb"
                                                     onclick="toggleCheckbox('fmh_family_tb_no', 'fmh_family_tb_yes')"
-                                                    {{ $riskForm['fmh_having_tuberculosis_5_years'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_having_tuberculosis_5_years']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -1032,12 +1032,12 @@
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsad_yes"
                                                     name="fmh_mnsad"
                                                     onclick="toggleCheckbox('fmh_mnsad_yes', 'fmh_mnsad_no')"
-                                                    {{ $riskForm['fmh_mn_and_s_disorder'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_mn_and_s_disorder']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsad_no"
                                                     name="fmh_mnsad"
                                                     onclick="toggleCheckbox('fmh_mnsad_no', 'fmh_mnsad_yes')"
-                                                    {{ $riskForm['fmh_mn_and_s_disorder'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_mn_and_s_disorder']) == 'no' ? 'checked' : '' }}>
                                                 No
                                             </td>
                                         </tr>
@@ -1046,11 +1046,11 @@
                                             <td>
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_copd_yes"
                                                     onclick="toggleCheckbox('fmh_copd_yes', 'fmh_copd_no')" value="Yes"
-                                                    {{ $riskForm['fmh_copd'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['fmh_copd']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_copd_no" value="No"
                                                     onclick="toggleCheckbox('fmh_copd_no', 'fmh_copd_yes')"
-                                                    {{ $riskForm['fmh_copd'] == 'No' ? 'checked' : '' }}> No
+                                                    {{ strtolower($riskForm['fmh_copd']) == 'no' ? 'checked' : '' }}> No
                                             </td>
 
                                         </tr>
@@ -1090,25 +1090,25 @@
                                                 <!-- Never Used (proceed to Q2) checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q1"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q1') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q1') !== false ? 'checked' : '' }}>
                                                 Never Used (proceed to Q2) <br>
 
                                                 <!-- Exposure to secondhand smoke checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q2"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q2') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q2') !== false ? 'checked' : '' }}>
                                                 Exposure to secondhand smoke <br>
 
                                                 <!-- Former tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q3"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q3') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q3') !== false ? 'checked' : '' }}>
                                                 Former tobacco user (stopped smoking > 1 year) <br>
 
                                                 <!-- Current tobacco user checkbox -->
                                                 <input type="checkbox" class="tobaccoCheckbox" id="q4"
                                                     name="tobaccoUse[]"
-                                                    {{ strpos($riskForm['rf_tobacco_use'], 'q4') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['rf_tobacco_use'], 'q4') !== false ? 'checked' : '' }}>
                                                 Current tobacco user (currently smoking or stopped smoking) <br><br>
 
                                                 <p style="font-style: italic; font-size: 15px;">
@@ -1121,18 +1121,18 @@
                                         <td>
                                             <input type="checkbox" class="alcoholCheckbox" id="alcoholNever"
                                                 name="ncd_alcohol"
-                                                {{ $riskForm['rf_alcohol_intake'] == 'No' ? 'checked' : '' }}>
+                                                {{ strtolower($riskForm['rf_alcohol_intake']) == 'no' ? 'checked' : '' }}>
                                             Never Consumed
                                             <input type="checkbox" class="alcoholCheckbox" id="alcoholYes"
                                                 name="ncd_alcohol"
-                                                {{ $riskForm['rf_alcohol_intake'] == 'Yes' ? 'checked' : '' }}>
+                                                {{ strtolower($riskForm['rf_alcohol_intake']) == 'yes' ? 'checked' : '' }}>
                                             Yes, drinks alcohol
 
                                             <br><br>
                                             <label id="bingeLabel" class="ml-2">
                                                 <input type="checkbox" class="alcoholCheckbox" id="alcoholBinge"
                                                     name="ncd_alcoholBinge"
-                                                    {{ $riskForm['rf_alcohol_binge_drinker'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['rf_alcohol_binge_drinker']) == 'yes' ? 'checked' : '' }}>
                                                 Do you drink 5 or more standard drinks for men, and 4 or more for women (in
                                                 one sitting/occasion) in the past year?
                                             </label>
@@ -1156,11 +1156,11 @@
                                                 activity? <br><br>
                                                 <input type="checkbox" class="physicalCheckbox" id="physical_yes"
                                                     name="ncd_physical"
-                                                    {{ $riskForm['rf_physical_activity'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['rf_physical_activity']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="physicalCheckbox" id="physical_no"
                                                     name="ncd_physical"
-                                                    {{ $riskForm['rf_physical_activity'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['rf_physical_activity']) == 'no' ? 'checked' : '' }}>
                                                 No
                                                 <br>
 
@@ -1182,10 +1182,10 @@
                                                 <br><br><br>
                                                 <input type="checkbox" class="nutritionDietCheckbox"
                                                     id="nutrition_diet_yes"
-                                                    {{ $riskForm['rf_nutrition_dietary'] == 'Yes' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['rf_nutrition_dietary']) == 'yes' ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="nutritionDietCheckbox" id="nutritionDietNo"
-                                                    {{ $riskForm['rf_nutrition_dietary'] == 'No' ? 'checked' : '' }}>
+                                                    {{ strtolower($riskForm['rf_nutrition_dietary']) == 'no' ? 'checked' : '' }}>
                                                 No
                                                 <br><br><br>
                                                 <p style="font-style: italic; font-size: 15px;">
@@ -1202,7 +1202,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="weight" name="rf_weight"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $riskForm['rf_weight'] ? $riskForm['rf_weight'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rf_weight'] ? strtolower($riskForm['rf_weight'] : '' }}">
                                             </td>
                                         </tr>
 
@@ -1213,7 +1213,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="height" name="rf_height"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $riskForm['rf_height'] ? $riskForm['rf_height'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rf_height'] ? strtolower($riskForm['rf_height'] : '' }}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -1222,7 +1222,7 @@
                                             </td>
                                             <td>
                                                 <input type="text" class="textbox" id="bmi"
-                                                    value="{{ $riskForm['rf_body_mass'] ? $riskForm['rf_body_mass'] : '' }}"
+                                                    value="{{ strtolower($riskForm['rf_body_mass'] ? strtolower($riskForm['rf_body_mass'] : '' }}"
                                                     name="rf_bmi">
                                                 <p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;"
                                                             id="bmiStrVal"></span></i></p>
@@ -1233,7 +1233,7 @@
                                                 5.8 Waist Circumference (cm): F < 80cm M < 90 </td>
                                             <td>
                                                 <input type="text" class="textbox" id="waist" name ="rf_waist"
-                                                    value="{{ $riskForm['rf_waist_circumference'] ? $riskForm['rf_waist_circumference'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rf_waist_circumference'] ? strtolower($riskForm['rf_waist_circumference'] : '' }}">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1278,13 +1278,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_systolic_t1'] ? $riskForm['rs_systolic_t1'] : '' }}">
+                                                        value="{{ strtolower($riskForm['rs_systolic_t1'] ? strtolower($riskForm['rs_systolic_t1'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_diastolic_t1'] ? $riskForm['rs_diastolic_t1'] : '' }}">
+                                                        value="{{ strtolower($riskForm['rs_diastolic_t1'] ? strtolower($riskForm['rs_diastolic_t1'] : '' }}">
                                                 </div>
                                             </div>
                                             <br>
@@ -1294,13 +1294,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_systolic_t2'] ? $riskForm['rs_systolic_t2'] : '' }}">
+                                                        value="{{ strtolower($riskForm['rs_systolic_t2'] ? strtolower($riskForm['rs_systolic_t2'] : '' }}">
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_diastolic_t2'] ? $riskForm['rs_diastolic_t2'] : '' }}">
+                                                        value="{{ strtolower($riskForm['rs_diastolic_t2'] ? strtolower($riskForm['rs_diastolic_t2'] : '' }}">
                                                 </div>
                                             </div>
                                         </td>
@@ -1314,19 +1314,19 @@
                                                 <label>FBS Result:</label>
                                                 <input type="text" name="fbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_fbs'] ? $riskForm['rs_blood_sugar_fbs'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_blood_sugar_fbs'] ? strtolower($riskForm['rs_blood_sugar_fbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>RBS Result:</label>
                                                 <input type="text" name="rbs_result" id="rbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_rbs'] ? $riskForm['rs_blood_sugar_rbs'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_blood_sugar_rbs'] ? strtolower($riskForm['rs_blood_sugar_rbs'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" id="blood_sugar_date_taken" name="blood_sugar_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_date_taken'] ? $riskForm['rs_blood_sugar_date_taken'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_blood_sugar_date_taken'] ? strtolower($riskForm['rs_blood_sugar_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1336,15 +1336,15 @@
                                         </td>
                                         <td style="border: 1px solid #000; padding: 10px;">
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom1"
-                                                {{ in_array('polyphagia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyphagia', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyphagia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom2"
-                                                {{ in_array('polydipsia', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polydipsia', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polydipsia
 
                                             <input type="checkbox" name="rs_blood_sugar_symptoms[]" value="symptom3"
-                                                {{ in_array('polyuria', explode(', ', $riskForm['rs_blood_sugar_symptoms'] ? $riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
+                                                {{ in_array('polyuria', explode(', ', strtolower($riskForm['rs_blood_sugar_symptoms'] ? strtolower($riskForm['rs_blood_sugar_symptoms'] : '')) ? 'checked' : '' }}>
                                             Polyuria
                                         </td>
                                     </tr>
@@ -1358,37 +1358,37 @@
                                                 <label>Total Cholesterol:</label>
                                                 <input type="text" name="lipid_cholesterol"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_cholesterol'] ? $riskForm['rs_lipid_cholesterol'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_cholesterol'] ? strtolower($riskForm['rs_lipid_cholesterol'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>HDL:</label>
                                                 <input type="text" name="lipid_hdl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_hdl'] ? $riskForm['rs_lipid_hdl'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_hdl'] ? strtolower($riskForm['rs_lipid_hdl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>LDL:</label>
                                                 <input type="text" name="lipid_ldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_ldl'] ? $riskForm['rs_lipid_ldl'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_ldl'] ? strtolower($riskForm['rs_lipid_ldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>VLDL:</label>
                                                 <input type="text" name="lipid_vldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_vldl'] ? $riskForm['rs_lipid_vldl'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_vldl'] ? strtolower($riskForm['rs_lipid_vldl'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Triglyceride:</label>
                                                 <input type="text" name="lipid_triglyceride"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_triglyceride'] ? $riskForm['rs_lipid_triglyceride'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_triglyceride'] ? strtolower($riskForm['rs_lipid_triglyceride'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="lipid_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_date_taken'] ? $riskForm['rs_lipid_date_taken'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_lipid_date_taken'] ? strtolower($riskForm['rs_lipid_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1401,25 +1401,25 @@
                                                 <label>Protein:</label>
                                                 <input type="text" name="uri_protein"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_protein'] ? $riskForm['rs_urine_protein'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_urine_protein'] ? strtolower($riskForm['rs_urine_protein'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_protein_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_protein_date_taken'] ? $riskForm['rs_urine_protein_date_taken'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_urine_protein_date_taken'] ? strtolower($riskForm['rs_urine_protein_date_taken'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Ketones:</label>
                                                 <input type="text" name="uri_ketones"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_ketones'] ? $riskForm['rs_urine_ketones'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_urine_ketones'] ? strtolower($riskForm['rs_urine_ketones'] : '' }}">
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_ketones_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_ketones_date_taken'] ? $riskForm['rs_urine_ketones_date_taken'] : '' }}">
+                                                    value="{{ strtolower($riskForm['rs_urine_ketones_date_taken'] ? strtolower($riskForm['rs_urine_ketones_date_taken'] : '' }}">
                                             </div>
                                         </td>
                                     </tr>
@@ -1438,27 +1438,27 @@
                                                 style="display: flex; gap: 10px; flex-wrap: wrap;">
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_breathlessness"
-                                                        {{ in_array('Breathlessness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Breathlessness', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Breathlessness (or a 'need for air')
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_sputum_production"
-                                                        {{ in_array('Sputum (mucous) production', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Sputum (mucous) production', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Sputum (mucous) production
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chronic_cough"
-                                                        {{ in_array('Chronic cough', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chronic cough', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chronic cough
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_chest_tightness"
-                                                        {{ in_array('Chest tightness', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Chest tightness', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Chest tightness
                                                 </label>
                                                 <label style="margin-right: 20px;">
                                                     <input type="checkbox" name="symptom_wheezing"
-                                                        {{ in_array('Wheezing', explode(', ', $riskForm['rs_chronic_respiratory_disease'] ? $riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('Wheezing', explode(', ', strtolower($riskForm['rs_chronic_respiratory_disease'] ? strtolower($riskForm['rs_chronic_respiratory_disease'] : '')) ? 'checked' : '' }}>
                                                     Wheezing
                                                 </label>
                                             </div>
@@ -1474,12 +1474,12 @@
                                                 style="display: flex; flex-direction: column; gap: 5px;">
                                                 <label>
                                                     <input type="checkbox" name="pefr_above_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable Asthma)', explode(', ', strtolower($riskForm['rs_if_yes_any_symptoms'] ? strtolower($riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &gt; 20% change from baseline (consider Probable Asthma)
                                                 </label>
                                                 <label>
                                                     <input type="checkbox" name="pefr_below_20_percent"
-                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', $riskForm['rs_if_yes_any_symptoms'] ? $riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
+                                                        {{ in_array('20% change from baseline (consider Probable COPD)', explode(', ', strtolower($riskForm['rs_if_yes_any_symptoms'] ? strtolower($riskForm['rs_if_yes_any_symptoms'] : '')) ? 'checked' : '' }}>
                                                     &lt; 20% change from baseline (consider Probable COPD)
                                                 </label>
                                             </div>
@@ -1530,16 +1530,16 @@
                                                                 <input type="radio" name="anti_hypertensives"
                                                                     value="{{ strtolower($option) }}"
                                                                     onchange="toggleAntiHypertensivesOptions()"
-                                                                    {{ $riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ strtolower($riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
                                                     </div>
 
                                                     <div id="antiHypertensivesOptions"
-                                                        style="display: {{ $riskForm['mngm_med_hypertension'] === 'yes' ? 'block' : 'none' }}">
+                                                        style="display: {{ strtolower($riskForm['mngm_med_hypertension'] === 'yes' ? 'block' : 'none' }}">
                                                         <input type="text" name="anti_hypertensives_specify"
-                                                            value="{{ $riskForm['mngm_med_hypertension_specify'] }}"
+                                                            value="{{ strtolower($riskForm['mngm_med_hypertension_specify'] }}"
                                                             placeholder="Specify medicine"
                                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                                     </div>
@@ -1610,7 +1610,7 @@
                                             <td style="font-weight: bold; padding: 10px;">Remarks</td>
                                             <td>
                                                 <textarea name="remarks" rows="3"
-                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ $riskForm['mngm_remarks'] }} </textarea>
+                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ strtolower($riskForm['mngm_remarks'] }} </textarea>
                                             </td>
                                         </tr>
                                     </tbody>
