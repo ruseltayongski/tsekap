@@ -655,7 +655,7 @@
                                     <option value="">Select Facility...</option>
                                     @foreach ($facilities as $fact)
                                         <option value="{{ $fact->id }}"
-                                            {{ strtolower($riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
+                                            {{ $riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
                                             {{ $fact->name }} {{ $fact->description }}
                                         </option>
                                     @endforeach
@@ -729,7 +729,7 @@
                                                     {{ strtolower($riskForm['pmh_diabetes']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="diabetesDetailsInput" name="pmh_diabetes_details"
-                                                    placeholder="{{ strtolower($riskForm['pmh_specify_diabetes'] ? strtolower($riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
+                                                    placeholder="{{ strtolower($riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
 
                                             </td>
                                         </tr>
