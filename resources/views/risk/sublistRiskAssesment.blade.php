@@ -1530,16 +1530,16 @@
                                                                 <input type="radio" name="anti_hypertensives"
                                                                     value="{{ strtolower($option) }}"
                                                                     onchange="toggleAntiHypertensivesOptions()"
-                                                                    {{ strtolower($riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_hypertension'] === $option ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
                                                     </div>
 
                                                     <div id="antiHypertensivesOptions"
-                                                        style="display: {{ strtolower($riskForm['mngm_med_hypertension'] === 'yes' ? 'block' : 'none' }}">
+                                                        style="display: {{ $riskForm['mngm_med_hypertension'] === 'yes' ? 'block' : 'none' }}">
                                                         <input type="text" name="anti_hypertensives_specify"
-                                                            value="{{ strtolower($riskForm['mngm_med_hypertension_specify'] }}"
+                                                            value="{{ $riskForm['mngm_med_hypertension_specify'] }}"
                                                             placeholder="Specify medicine"
                                                             style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
                                                     </div>
@@ -1553,7 +1553,7 @@
                                                             <label>
                                                                 <input type="radio" name="anti_diabetes"
                                                                     value="{{ strtolower($option) }}"
-                                                                    {{ $riskForm['mngm_med_diabetes'] === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_diabetes'] === $option ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
@@ -1610,7 +1610,7 @@
                                             <td style="font-weight: bold; padding: 10px;">Remarks</td>
                                             <td>
                                                 <textarea name="remarks" rows="3"
-                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ strtolower($riskForm['mngm_remarks'] }} </textarea>
+                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ $riskForm['mngm_remarks'] }} </textarea>
                                             </td>
                                         </tr>
                                     </tbody>
