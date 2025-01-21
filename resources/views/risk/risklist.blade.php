@@ -38,21 +38,20 @@
             @endif
             <div class="row">
                 <div class="col-md-8">
-                    <form class="form-inline" method="POST" action="{{ url('patientRisk') }}">
-                        {{csrf_field()}}
+                    <form class="form-inline" method="POST" action="{{ route('patientRisk') }}">
+                        {{ csrf_field() }}
                         <div class="form-group">
-                            <input type="text" class="form-control" id="search-keyword" placeholder="Quick Search" name="keyword" autofocus>
+                            <input type="text" class="form-control" id="search-keyword" placeholder="Quick Search" name="keyword" value="" autofocus>
                         </div>
                         <div class="form-group">
                             <button type="submit" id="search-button" class="btn btn-default col-xs-12">
                                 <i class="fa fa-search"></i> Search
                             </button>
-                        </div>
+                        </div>  
                         <div class="form-group">
                             <div class="clearfix"></div>
                         </div>
-
-                        @if(isset($user_priv) && $user_priv->user_priv == 6)
+                        @if(isset($user_priv) && !in_array($user_priv->user_priv, [6,1]))
                             <div class="form-group">
                                 <a class="btn btn-info col-xs-12" href="{{ url('RiskAssessment') }}"> 
                                     <i class="fa fa-user-plus"></i> Add Risk Forms
@@ -60,7 +59,6 @@
                                 <div class="clearfix"></div>
                             </div>
                         @endif
-
                         <br><br> 
                     </form>
                 </div>
@@ -101,13 +99,14 @@
                                         </a>
                                     </td>
                                     <td nowrap="TRUE">
-                                        <form action="{{ url('patientrisk/delete/'.$profile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
-                                            {{csrf_field()}}
+                                        <form action="{{ route('patient-risk-delete', $profile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            {{ csrf_field() }}
                                             <button type="submit" class="btn btn-xs btn-danger">
                                                 <i class="fa fa-trash"></i> Delete
                                             </button>
                                         </form>
                                     </td>
+
                                     @if(isset($user_priv) && !in_array($user_priv->user_priv, [6,1]))
                                         <td>{{ $patientFacilityMapping->name ? $patientFacilityMapping->name : 'N/A' }}</td>
                                     @endif
