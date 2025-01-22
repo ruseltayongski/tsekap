@@ -54,28 +54,28 @@ class RiskProfileController extends Controller
         $riskprofile = new RiskProfile();
     
         // Assign all the necessary values
-        $riskprofile->profile_id = $request->profile_id ?: null;
+        $riskprofile->profile_id = $request->profile_id ? $request->profile_id : null;
         $riskprofile->lname = $request->lname;
         $riskprofile->fname = $request->fname;
-        $riskprofile->mname = $request->mname ?: null;
-        $riskprofile->suffix = $request->suffix ?: null;
+        $riskprofile->mname = $request->mname ? $request->mname : null;
+        $riskprofile->suffix = $request->suffix ? $request->suffix : null;
         $riskprofile->sex = $request->sex;
         $riskprofile->dob = $request->dateofbirth;
         $riskprofile->age = $request->age;
         $riskprofile->civil_status = $request->civil_status;
         $riskprofile->religion = $request->religion;
-        $riskprofile->other_religion = $request->other_religion ?: null;
+        $riskprofile->other_religion = $request->other_religion ? $request->other_religion : null;
         $riskprofile->contact = $request->contact;
         $riskprofile->province_id = $request->province;
         $riskprofile->municipal_id = $request->municipal;
         $riskprofile->barangay_id = $request->barangay;
-        $riskprofile->street = $request->street ?: null;
-        $riskprofile->purok = $request->purok ?: null;
-        $riskprofile->sitio = $request->sitio ?: null;
-        $riskprofile->phic_id = $request->phic_id ?: null;
-        $riskprofile->pwd_id = $request->pwd_id ?: null;
+        $riskprofile->street = $request->street ? $request->street : null;
+        $riskprofile->purok = $request->purok ? $request->purok : null;
+        $riskprofile->sitio = $request->sitio ? $request->sitio : null;
+        $riskprofile->phic_id = $request->phic_id ? $request->phic_id : null;
+        $riskprofile->pwd_id = $request->pwd_id ? $request->pwd_id : null;
         $riskprofile->citizenship = $request->citizenship;
-        $riskprofile->other_citizenship = $request->other_citizenship ?: null;
+        $riskprofile->other_citizenship = $request->other_citizenship ? $request->other_citizenship : null;
         $riskprofile->indigenous_person = $request->indigenous_person;
         $riskprofile->employment_status = $request->employment_status;
         $riskprofile->facility_id_updated = $request->facility_id_updated;
@@ -326,7 +326,6 @@ class RiskProfileController extends Controller
         return redirect()->route('patientRisk')->with('success', 'Patient Successfully Added');
     }
 
-
     private function getHealthFacilityForUser($user)
     {
         $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
@@ -406,10 +405,10 @@ class RiskProfileController extends Controller
     public function PatientRiskFormList(Request $request)
     {
         $user = Auth::user();
-        $keyword = $request->input('keyword');  // Corrected variable name
-
+        $keyword = $request->input('keyword');  
+    
         $facility = $this->getHealthFacilityForUser($user);
-
+    
         $query = RiskProfile::select(
             'id',
             'fname',
@@ -424,21 +423,23 @@ class RiskProfileController extends Controller
             'facility_id_updated',
             'created_at'
         )->with([
-                    'facility' => function ($query) {
-                        $query->select('id', 'name');
-                    },
-                    'province' => function ($query) {
-                        $query->select('id', 'description');
-                    },
-                    'muncity' => function ($query) {
-                        $query->select('id', 'province_id', 'description');
-                    },
-                    'barangay' => function ($query) {
-                        $query->select('id', 'muncity_id', 'description');
-                    },
-                ])->orderBy('id', 'desc');
-
-        if ($user->user_priv == 6) { // Facility view
+            'facility' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'province' => function ($query) {
+                $query->select('id', 'description');
+            },
+            'muncity' => function ($query) {
+                $query->select('id', 'province_id', 'description');
+            },
+            'barangay' => function ($query) {
+                $query->select('id', 'muncity_id', 'description');
+            },
+        ])->orderBy('id', 'desc');
+    
+        if ($user->user_priv == 1) {
+            // No restrictions, retrieve everything
+        } elseif ($user->user_priv == 6) { // Facility view
             $this->applyFilters($query, $user, $keyword);
             $query->where('facility_id_updated', $facility->id);
         } elseif ($user->user_priv == 10) { // DSOs view
@@ -453,9 +454,9 @@ class RiskProfileController extends Controller
             // Default empty pagination if no condition is met
             $query->where('id', 0);
         }
-
+    
         $riskprofiles = $query->simplePaginate(15);
-
+    
         // Log the query results
         if ($riskprofiles->isEmpty()) {
             \Log::info('No risk profiles found', [
@@ -471,11 +472,11 @@ class RiskProfileController extends Controller
                 'results_count' => $riskprofiles->count(),
             ]);
         }
-
+    
         if ($request->ajax()) {
             return view('risk.riskprofilelist', compact('riskprofiles', 'user'))->render();
         }
-
+    
         return view('risk.risklist', [
             'user_priv' => $user,
             'riskprofiles' => $riskprofiles,

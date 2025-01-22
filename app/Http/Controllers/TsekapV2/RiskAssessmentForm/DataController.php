@@ -407,12 +407,21 @@ class DataController extends Controller
         }
 
         // Check for duplicates
-        $existingRiskProfile = RiskProfile::where('profile_id', $fields['profile_id'])
-            ->where('fname', $fields['fname'])
+        $existingRiskProfile = RiskProfile::where('fname', $fields['fname'])
             ->where('lname', $fields['lname'])
-            ->where('mname', $fields['mname'] ? $fields['mname'] : null)
-            ->where('dob', $fields['dob'])
-            ->first();
+            ->where('dob', $fields['dob']);
+
+        if (!empty($fields['mname'])) {
+            $existingRiskProfile->where('mname', $fields['mname']);
+        } else {
+            $existingRiskProfile->whereNull('mname');
+        }
+
+        if (!empty($fields['profile_id'])) {
+            $existingRiskProfile->where('profile_id', $fields['profile_id']);
+        }
+
+        $existingRiskProfile = $existingRiskProfile->first();
 
         if ($existingRiskProfile) {
             return response()->json(['error' => 'Duplicate in entered data. Please recheck.'], 409);
@@ -554,6 +563,13 @@ class DataController extends Controller
         }
 
         try {
+            // Check for duplicate risk_profile_id
+            $existingRiskForm = RiskFormAssessment::where('risk_profile_id', $fields['risk_profile_id'])->first();
+
+            if ($existingRiskForm) {
+                return response()->json(['error' => 'Duplicate risk_profile_id detected. Please recheck.'], 409);
+            }
+
             $riskform = new RiskFormAssessment();
 
             // Dynamically populate the model with validated data
@@ -573,6 +589,7 @@ class DataController extends Controller
 
             return response()->json(['error' => 'Something went wrong. Please try again later.'], 500);
         }
+
     }
 
 
