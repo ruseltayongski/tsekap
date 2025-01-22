@@ -437,22 +437,26 @@ class RiskProfileController extends Controller
             },
         ])->orderBy('id', 'desc');
     
-        if ($user->user_priv == 1) {
-            // No restrictions, retrieve everything
-        } elseif ($user->user_priv == 6) { // Facility view
-            $this->applyFilters($query, $user, $keyword);
-            $query->where('facility_id_updated', $facility->id);
-        } elseif ($user->user_priv == 10) { // DSOs view
-            $this->applyFilters($query, $user, $keyword);
-            $query->where('facility_id_updated', $facility->id);
-        } elseif ($user->user_priv == 7) { // Region view
-            $this->applyFilters($query, $user, $keyword);
-        } elseif ($user->user_priv == 3) { // Provincial view
-            $this->applyFilters($query, $user, $keyword);
-            $query->where('province_id', $user->province);
-        } else {
+        switch ($user->user_priv) {
+            case 1:
+            // No filters applied
+                break;
+            case 6: // Facility view
+            case 10: // DSOs view
+                $this->applyFilters($query, $user, $keyword);
+                $query->where('facility_id_updated', $facility->id);
+            break;
+            case 7: // Region view
+                $this->applyFilters($query, $user, $keyword);
+            break;
+            case 3: // Provincial view
+                $this->applyFilters($query, $user, $keyword);
+                $query->where('province_id', $user->province);
+            break;
+            default:
             // Default empty pagination if no condition is met
-            $query->where('id', 0);
+                $query->where('id', 0);
+            break;
         }
     
         $riskprofiles = $query->simplePaginate(15);
