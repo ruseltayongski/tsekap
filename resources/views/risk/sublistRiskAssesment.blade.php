@@ -624,33 +624,6 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="additional-inputs">
-                            <div class="col-md-4">
-                                <label for="physicianName">Physician Name:</label>
-                                <input type="text" class="form-control" id="physicianName" name="physician_name"
-                                    placeholder="Enter physician name"
-                                    value="{{ $riskForm['ar_refer_physician_name'] ? $riskForm['ar_refer_physician_name'] : '' }}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="reason">Reason:</label>
-                                <input type="text" class="form-control" id="ar_refer_reason" name="reason"
-                                    placeholder="Enter reason"
-                                    value="{{ $riskForm['ar_refer_reason'] ? $riskForm['ar_refer_reason'] : '' }}">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="facility">What Facility:</label>
-                                <select class="form-control" name="ar_refer_facility" id="facility"
-                                    style="width: 100%; max-width: 100%;">
-                                    <option value="">Select Facility...</option>
-                                    @foreach ($facilities as $fact)
-                                        <option value="{{ $fact->id }}"
-                                            {{ $riskForm['ar_refer_facility'] == $fact->id ? 'selected' : '' }}>
-                                            {{ $fact->name }} {{ $fact->description }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12 text-center" style="margin-top: 20px;">
                                 <button type="button" class="btn btn-primary mx-2"

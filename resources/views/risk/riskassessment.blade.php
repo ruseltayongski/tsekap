@@ -493,28 +493,6 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="additional-inputs">
-                            <div class="col-md-4">
-                                <label for="physician_name">Physician Name:</label>
-                                <input type="text" class="form-control" id="physician_name"
-                                    name="ar_refer_physician_name" placeholder="Enter physician name">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="reason">Reason:</label>
-                                <input type="text" class="form-control" id="reason" name="ar_refer_reason"
-                                    placeholder="Enter reason">
-                            </div>
-                            <div class="col-md-4">
-                                <label for="ar_refer_facility">What Facility:</label>
-                                <select class="form-control chosen-select" name="ar_refer_facility" id="facility"
-                                    style="width: 100%; max-width: 100%;">
-                                    <option value="">Select Facility...</option>
-                                    @foreach ($facilities as $fact)
-                                        <option value="{{ $fact->id }}">{{ $fact->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                         <div id="error-message" style="color: red; display: none;">Please fill out all required fields.
                         </div>
                         <div class="row">
@@ -628,9 +606,9 @@
                                             <td>3.8 Mental, Neurological, and Substance-Abuse Disorder</td>
                                             <td>
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mns_yes"
-                                                    name ="pmh_mnsad" value="Yes"> Yes
+                                                    name="pmh_mnsad" value="Yes"> Yes
                                                 <input type="checkbox" class="mnsCheckbox" id="pmh_mns_no"
-                                                    name ="pmh_mnsad" value="No" style="margin-left: flex"> No
+                                                    name="pmh_mnsad" value="No" style="margin-left: flex"> No
                                                 <br />
                                                 <textarea class="col-md-12" id="mnsDetailsInput" style="display:none;" name="pmh_mnsad_details"
                                                     placeholder="Please provide"></textarea>
@@ -723,10 +701,10 @@
                                             <td>4.3 Heart Disease (change from "Cardiovascular") </td>
                                             <td>
                                                 <input type="checkbox" class="heartdisCheckbox"
-                                                    id="fmh_heart_disease" name="fmh_heart_disease" value="Yes">
+                                                    id="fmh_heart_disease_yes" name="fmh_heart_disease" value="Yes">
                                                 Yes
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heart_disease_no"
-                                                    name="fmh_heart_disease value="No" style="margin-left: flex"> No
+                                                    name="fmh_heart_disease" value="No" style="margin-left: flex"> No
                                             </td>
 
                                         </tr>
@@ -1524,7 +1502,7 @@
             // Toggle checkboxes for all conditions
             //past medical history
             toggleCheckbox('pmh_hypertension_yes', 'pmh_hypertension_no');
-            toggleCheckbox('pmh_heart_disease_yes', 'pmh_heartdiseaseNo');
+            toggleCheckbox('pmh_heart_disease_yes', 'pmh_heart_disease_no');
             toggleCheckbox('pmh_diabetes_yes', 'pmh_diabetes_no');
             toggleCheckbox('pmh_cancer_yes', 'pmh_cancer_no');
             toggleCheckbox('pmh_copd_yes', 'pmh_copd_no');
@@ -1554,16 +1532,16 @@
             toggleCheckbox('physical_yes', 'physical_no');
             toggleCheckbox('nutrition_diet_yes', 'nutrition_diet_no');
 
-            // Show/hide additional inputs based on checkbox state
-            const additionalInputs = document.querySelector('.additional-inputs');
-            additionalInputs.style.display = 'none'; // Hide by default
+            // // Show/hide additional inputs based on checkbox state
+            // const additionalInputs = document.querySelector('.additional-inputs');
+            // additionalInputs.style.display = 'none'; // Hide by default
 
             const healthCheckboxes = document.querySelectorAll('.healthCheckbox');
             healthCheckboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', () => {
                     const anyChecked = Array.from(healthCheckboxes).some(cb => cb.checked && cb.id
                         .endsWith('Yes'));
-                    additionalInputs.style.display = anyChecked ? 'block' : 'none';
+                    // additionalInputs.style.display = anyChecked ? 'block' : 'none';
                 });
             });
         });
@@ -1659,9 +1637,9 @@
                 checkbox.dispatchEvent(new Event('change'));
             });
 
-            // Hide additional inputs if all "No" are checked
-            const additionalInputs = document.querySelector('.additional-inputs');
-            additionalInputs.style.display = 'none';
+            // // Hide additional inputs if all "No" are checked
+            // const additionalInputs = document.querySelector('.additional-inputs');
+            // additionalInputs.style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', function() {
