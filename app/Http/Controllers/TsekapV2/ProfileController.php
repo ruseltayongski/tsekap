@@ -158,7 +158,7 @@ class ProfileController extends Controller
         }
 
         // Check if profile exists
-        $profile = Profile::find($fields->id);
+        $profile = Profile::find($fields['id']);
 
         if (!$profile) {
             return response()->json(['message' => 'Profile not found'], 404);
@@ -242,7 +242,7 @@ class ProfileController extends Controller
             return response()->json(['error' => 'Unauthorized.'], 401);
         }
 
-        $profile = Profile::find($fields->id);
+        $profile = Profile::find($fields['id']);
         $profile->delete();
         return response()->json(['message' => 'Deleted profile.'], 200);
     }

@@ -20,7 +20,7 @@
 @section('content')
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header">Risk Patient Assessment List {{ isset($not_updated) && $not_updated ? '(NOT UPDATED)' : "" }}</h2>
+            <h2 class="page-header">Patient Risk Assessment List {{ isset($not_updated) && $not_updated ? '(NOT UPDATED)' : "" }}</h2>
             @if(Session::has('deng_add'))
                 <div class="alert alert-success">
                     <font class="text-success">

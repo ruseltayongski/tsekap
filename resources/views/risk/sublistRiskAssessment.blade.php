@@ -868,15 +868,20 @@
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_yes"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('fmh_hypertension_yes', 'fmh_hypertension_no')"
-                                                    {{ strtolower($riskForm['fmh_hypertension']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_no"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('loss_con_no', 'loss_con_yes')"
-                                                    {{ strtolower($riskForm['fmh_hypertension']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+                                                <span class="ml-2" id="fmh_hypertension_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>4.2 Stroke</td>
@@ -884,14 +889,21 @@
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_stroke_yes"
                                                     name="fmh_stroke"
                                                     onclick="toggleCheckbox('fmh_stroke_yes', 'fmh_stroke_no')"
-                                                    {{ strtolower($riskForm['fmh_stroke']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="strokeCheckbox" id="fmh_strokeNo"
                                                     name="fmh_stroke"
                                                     onclick="toggleCheckbox('fmh_stroke_no', 'fmh_stroke_yes')"
-                                                    {{ strtolower($riskForm['fmh_stroke']) == 'no' ? 'checked' : '' }}> No
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'no') !== false ? 'checked' : '' }}>
+                                                No
+                                                
+                                                <span class="ml-2" id="fmh_stroke_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>4.3 Heart Disease (change from "Cardiovascular") </td>
@@ -899,15 +911,21 @@
                                                 <input type="checkbox" class="heartdisCheckbox"
                                                     id="fmh_heart_disease_yes" name="fmh_heart_disease"
                                                     onclick="toggleCheckbox('fmh_heart_disease_yes', 'fmh_heart_disease_no')"
-                                                    {{ strtolower($riskForm['fmh_heart_disease']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="heartdisCheckbox" id="fmh_heart_disease_no"
                                                     name="fmh_heart_disease"
                                                     onclick="toggleCheckbox('fmh_heart_disease_no', 'fmh_heart_disease_yes')"
-                                                    {{ strtolower($riskForm['fmh_heart_disease']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+                                                
+                                                <span class="ml-2" id="fmh_heart_disease_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>4.4 Diabetes Mellitus</td>
@@ -915,13 +933,20 @@
                                                 <input type="checkbox" class="diabetesmelCheckbox"
                                                     id="fmh_diabetes_mel_yes" name="fmh_diabetes_mellitus"
                                                     onclick="toggleCheckbox('fmh_diabetes_mel_yes', 'fmh_diabetes_mel_no')"
-                                                    {{ strtolower($riskForm['fmh_diabetes_mellitus']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="diabetesMelCheckbox"
                                                     id="fmh_diabetes_mel_no" name="fmh_diabetes_mellitus"
                                                     onclick="toggleCheckbox('fmh_diabetes_mel_no', 'fmh_diabetes_mel_yes')"
-                                                    {{ strtolower($riskForm['fmh_diabetes_mellitus']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+
+                                                <span class="ml-2" id="fmh_diabetes_mellitus_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -929,26 +954,38 @@
                                             <td>
                                                 <input type="checkbox" class="asthmasCheckbox" id="fmh_asthma_yes"
                                                     onclick="toggleCheckbox('fmh_asthma_yes', 'fmh_asthma_no')"
-                                                    {{ strtolower($riskForm['fmh_asthma']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="asthmas_Checkbox" id="fmh_asthma_no"
                                                     onclick="toggleCheckbox('fmh_asthma_no', 'fmh_asthma_yes')"
-                                                    {{ strtolower($riskForm['fmh_asthma']) == 'no' ? 'checked' : '' }}> No
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'no') !== false ? 'checked' : '' }}> No
+                                            
+                                                <span class="ml-2" id="fmh_asthma_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td>4.6 Cancer</td>
                                             <td>
                                                 <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_yes"
                                                     onclick="toggleCheckbox('fmh_cancer_yes', 'fmh_cancer_no')"
-                                                    {{ strtolower($riskForm['fmh_cancer']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="cancerCheckbox" id="fmh_cancer_no"
                                                     onclick="toggleCheckbox('fmh_cancer_no', 'fmh_cancer_yes')"
-                                                    {{ strtolower($riskForm['fmh_cancer']) == 'no' ? 'checked' : '' }}> No
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'no') !== false ? 'checked' : '' }}> No
+                                            
+                                                <span class="ml-2" id="fmh_cancer_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                         <tr>
                                             <td> 4.7 Kidney Disease </td>
@@ -956,15 +993,21 @@
                                                 <input type="checkbox" class="kidneyDiseaseCheckbox" name="fmh_kidney"
                                                     id="fmh_kidney_disease_yes"
                                                     onclick="toggleCheckbox('fmh_kidney_disease_yes', 'fmh_kidney_disease_no')"
-                                                    {{ strtolower($riskForm['fmh_kidney_disease']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="kidneyDiseaseCheckbox"
-                                                    id="fmh_kidney_disNo"
+                                                    id="fmh_kidney_disease_no"
                                                     onclick="toggleCheckbox('fmh_kidney_disease_no', 'fmh_kidney_disease_yes')"
-                                                    {{ strtolower($riskForm['fmh_kidney_disease']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'no') !== false ? 'checked' : '' }}>
                                                 No
-                                            </td>
 
+                                                <span class="ml-2" id="fmh_kidney_disease_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>4.8 1st Degree relative with premature coronary <br> disease or vascular
@@ -973,13 +1016,20 @@
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degree_relative_yes" name="fmh_first_degree"
                                                     onclick="toggleCheckbox('fmh_degree_relative_yes', 'fmh_degree_relative_no')"
-                                                    {{ strtolower($riskForm['fmh_first_degree_relative']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="degreerelativeCheckbox"
                                                     id="fmh_degree_relative_no" name="fmh_first_degree"
                                                     onclick="toggleCheckbox('fmh_degree_relative_no', 'fmh_degree_relative_yes')"
-                                                    {{ strtolower($riskForm['fmh_first_degree_relative']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+
+                                                <span class="ml-2" id="fmh_degree_relative_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -988,13 +1038,20 @@
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_yes"
                                                     name="fmh_famtb"
                                                     onclick="toggleCheckbox('fmh_family_tb_yes', 'fmh_family_tb_no')"
-                                                    {{ strtolower($riskForm['fmh_having_tuberculosis_5_years']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="familytbCheckbox" id="fmh_family_tb_no"
                                                     name="fmh_famtb"
                                                     onclick="toggleCheckbox('fmh_family_tb_no', 'fmh_family_tb_yes')"
-                                                    {{ strtolower($riskForm['fmh_having_tuberculosis_5_years']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+
+                                                <span class="ml-2" id="fmh_having_tb_5_years">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1003,13 +1060,20 @@
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsad_yes"
                                                     name="fmh_mnsad"
                                                     onclick="toggleCheckbox('fmh_mnsad_yes', 'fmh_mnsad_no')"
-                                                    {{ strtolower($riskForm['fmh_mn_and_s_disorder']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsad_no"
                                                     name="fmh_mnsad"
                                                     onclick="toggleCheckbox('fmh_mnsad_no', 'fmh_mnsad_yes')"
-                                                    {{ strtolower($riskForm['fmh_mn_and_s_disorder']) == 'no' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'no') !== false ? 'checked' : '' }}>
                                                 No
+
+                                                <span class="ml-2" id="fmh_mn_and_s_disorder_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1017,13 +1081,19 @@
                                             <td>
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_copd_yes"
                                                     onclick="toggleCheckbox('fmh_copd_yes', 'fmh_copd_no')" value="Yes"
-                                                    {{ strtolower($riskForm['fmh_copd']) == 'yes' ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'yes') !== false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="COPCheckbox" id="fmh_copd_no"
                                                     value="No" onclick="toggleCheckbox('fmh_copd_no', 'fmh_copd_yes')"
-                                                    {{ strtolower($riskForm['fmh_copd']) == 'no' ? 'checked' : '' }}> No
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'no') !== false ? 'checked' : '' }}> No
+                                                
+                                                <span class="ml-2" id="fmh_copd_side">
+                                                    Side: 
+                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'both') !== false ? 'Both' : '' }}
+                                                </span>
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 </table>
@@ -1502,7 +1572,7 @@
                                                                 <input type="radio" name="anti_hypertensives"
                                                                     value="{{ strtolower($option) }}"
                                                                     onchange="toggleAntiHypertensivesOptions()"
-                                                                    {{ $riskForm['mngm_med_hypertension'] === $option ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
@@ -1525,7 +1595,7 @@
                                                             <label>
                                                                 <input type="radio" name="anti_diabetes"
                                                                     value="{{ strtolower($option) }}"
-                                                                    {{ $riskForm['mngm_med_diabetes'] === $option ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_diabetes'] === strtolower($option) ? 'checked' : '' }}>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
@@ -1545,7 +1615,7 @@
                                                                             str_replace(
                                                                                 ' ',
                                                                                 '_',
-                                                                                $riskForm->mngm_med_diabetes_options,
+                                                                                $riskForm['mngm_med_diabetes_options'],
                                                                             ),
                                                                         );
                                                                     @endphp

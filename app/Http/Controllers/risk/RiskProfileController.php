@@ -177,7 +177,7 @@ class RiskProfileController extends Controller
         $riskform->rs_lipid_ldl = $request->lipid_ldl;
         $riskform->rs_lipid_vldl = $request->lipid_vldl;
         $riskform->rs_lipid_triglyceride = $request->lipid_triglyceride;
-        $riskform->rs_lipid_date_taken = $request->lipid_date_take;
+        $riskform->rs_lipid_date_taken = $request->lipid_date_taken;
         $riskform->rs_urine_protein = $request->uri_protein;
         $riskform->rs_urine_protein_date_taken = $request->uri_protein_date_taken;
         $riskform->rs_urine_ketones = $request->uri_ketones;
@@ -368,7 +368,7 @@ class RiskProfileController extends Controller
         $riskform->rf_physical_activity = $req->ncd_physical;
         $riskform->rf_nutrition_dietary = $req->ncd_nutrition;
         $riskform->rf_weight = $req->rf_weight;
-        $riskform->rf_height = $req->f_height;
+        $riskform->rf_height = $req->rf_height;
         $riskform->rf_body_mass = $req->rf_bmi;
         $riskform->rf_waist_circumference = $req->rf_waist;
 
@@ -390,7 +390,7 @@ class RiskProfileController extends Controller
         $riskform->rs_lipid_ldl = $req->lipid_ldl;
         $riskform->rs_lipid_vldl = $req->lipid_vldl;
         $riskform->rs_lipid_triglyceride = $req->lipid_triglyceride;
-        $riskform->rs_lipid_date_taken = $req->lipid_date_take;
+        $riskform->rs_lipid_date_taken = $req->lipid_date_taken;
         $riskform->rs_urine_protein = $req->uri_protein;
         $riskform->rs_urine_protein_date_taken = $req->uri_protein_date_taken;
         $riskform->rs_urine_ketones = $req->uri_ketones;
@@ -517,10 +517,8 @@ class RiskProfileController extends Controller
             'riskForm' => $riskform
         ];
 
-        // \Log::info('Profile: ' . json_encode($profile));
-
         // Return the structured data to the view
-        return view('risk.sublistRiskAssesment', compact('profile'));
+        return view('risk.sublistRiskAssessment', compact('profile'));
     }
 
 
