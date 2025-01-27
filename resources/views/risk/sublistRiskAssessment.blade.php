@@ -876,9 +876,9 @@
                                                     {{ strpos(strtolower($riskForm['fmh_hypertension']), 'no') != false ? 'checked' : '' }}>
                                                 No
                                                 <span class="ml-2" id="fmh_hypertension_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? '(Mother)' : '' }}
@@ -901,9 +901,9 @@
                                                 No
                                                 
                                                 <span class="ml-2" id="fmh_stroke_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? '(Mother)' : '' }}
@@ -926,9 +926,9 @@
                                                 No
                                                 
                                                 <span class="ml-2" id="fmh_heart_disease_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? '(Mother)' : '' }}
@@ -951,9 +951,9 @@
                                                 No
 
                                                 <span class="ml-2" id="fmh_diabetes_mellitus_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? '(Mother)' : '' }}
@@ -973,9 +973,9 @@
                                                     {{ strpos(strtolower($riskForm['fmh_asthma']), 'no') !== false ? 'checked' : '' }}> No
                                             
                                                 <span class="ml-2" id="fmh_asthma_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? '(Mother)' : '' }}
@@ -995,9 +995,9 @@
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'no') !== false ? 'checked' : '' }}> No
                                             
                                                 <span class="ml-2" id="fmh_cancer_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? '(Mother)' : '' }}
@@ -1020,9 +1020,9 @@
                                                 No
 
                                                 <span class="ml-2" id="fmh_kidney_disease_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? '(Mother)' : '' }}
@@ -1046,9 +1046,9 @@
                                                 No
 
                                                 <span class="ml-2" id="fmh_degree_relative_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? '(Mother)' : '' }}
@@ -1071,9 +1071,9 @@
                                                 No
 
                                                 <span class="ml-2" id="fmh_having_tb_5_years" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? '(Mother)' : '' }}
@@ -1096,9 +1096,9 @@
                                                 No
 
                                                 <span class="ml-2" id="fmh_mn_and_s_disorder_side" style="color: 
-                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? 'blue' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? 'pink' : '' }}
-                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? 'purple' : '' }};
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? '#000435' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? '#D90166' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? '#800080' : '' }};
                                             font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? '(Mother)' : '' }}
@@ -1118,9 +1118,9 @@
                                                     {{ strpos(strtolower($riskForm['fmh_copd']), 'no') !== false ? 'checked' : '' }}> No
                                                 
                                                 <span class="ml-2" id="fmh_copd_side" style="color: 
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? 'blue' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? 'pink' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? 'purple' : '' }};
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? '#000435' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? '#D90166' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? '#800080' : '' }};
                                                 font-weight: 300">
                                                     {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? '(Mother)' : '' }}
