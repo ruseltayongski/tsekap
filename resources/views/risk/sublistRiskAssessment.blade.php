@@ -868,18 +868,18 @@
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_yes"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('fmh_hypertension_yes', 'fmh_hypertension_no')"
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'yes') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'yes') != false ? 'checked' : '' }}>
                                                 Yes
                                                 <input type="checkbox" class="hyperCheckbox" id="fmh_hypertension_no"
                                                     name="fmh_hypertension"
                                                     onclick="toggleCheckbox('loss_con_no', 'loss_con_yes')"
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'no') !== false ? 'checked' : '' }}>
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'no') != false ? 'checked' : '' }}>
                                                 No
                                                 <span class="ml-2" id="fmh_hypertension_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -899,9 +899,9 @@
                                                 
                                                 <span class="ml-2" id="fmh_stroke_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -921,9 +921,9 @@
                                                 
                                                 <span class="ml-2" id="fmh_heart_disease_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -943,9 +943,9 @@
 
                                                 <span class="ml-2" id="fmh_diabetes_mellitus_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -962,9 +962,9 @@
                                             
                                                 <span class="ml-2" id="fmh_asthma_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -981,9 +981,9 @@
                                             
                                                 <span class="ml-2" id="fmh_cancer_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1003,9 +1003,9 @@
 
                                                 <span class="ml-2" id="fmh_kidney_disease_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1026,9 +1026,9 @@
 
                                                 <span class="ml-2" id="fmh_degree_relative_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1048,14 +1048,14 @@
 
                                                 <span class="ml-2" id="fmh_having_tb_5_years">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>4.10 Mental, Neuroligical and Substance Abuse Disorder</td>
+                                            <td>4.10 Mental, Neurological and Substance Abuse Disorder</td>
                                             <td>
                                                 <input type="checkbox" class="mnsadCheckbox" id="fmh_mnsad_yes"
                                                     name="fmh_mnsad"
@@ -1070,9 +1070,9 @@
 
                                                 <span class="ml-2" id="fmh_mn_and_s_disorder_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1089,9 +1089,9 @@
                                                 
                                                 <span class="ml-2" id="fmh_copd_side">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd'], 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? 'Father' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? 'Mother' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? 'Both' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
