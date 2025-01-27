@@ -930,7 +930,6 @@
                                                 {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? 'pink' : '' }}
                                                 {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? 'purple' : '' }};
                                             font-weight: 300">
-                                                    Side: 
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? '(Mother)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? '(Both)' : '' }}
@@ -1000,7 +999,6 @@
                                                 {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? 'pink' : '' }}
                                                 {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? 'purple' : '' }};
                                             font-weight: 300">
-                                                    Side: 
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? '(Father)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? '(Mother)' : '' }}
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? '(Both)' : '' }}
