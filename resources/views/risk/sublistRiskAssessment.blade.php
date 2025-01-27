@@ -875,11 +875,14 @@
                                                     onclick="toggleCheckbox('loss_con_no', 'loss_con_yes')"
                                                     {{ strpos(strtolower($riskForm['fmh_hypertension']), 'no') != false ? 'checked' : '' }}>
                                                 No
-                                                <span class="ml-2" id="fmh_hypertension_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_hypertension_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_hypertension']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -897,11 +900,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_stroke']), 'no') !== false ? 'checked' : '' }}>
                                                 No
                                                 
-                                                <span class="ml-2" id="fmh_stroke_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_stroke_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_stroke']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -919,11 +925,15 @@
                                                     {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'no') !== false ? 'checked' : '' }}>
                                                 No
                                                 
-                                                <span class="ml-2" id="fmh_heart_disease_side">
+                                                <span class="ml-2" id="fmh_heart_disease_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_heart_disease']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -941,11 +951,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'no') !== false ? 'checked' : '' }}>
                                                 No
 
-                                                <span class="ml-2" id="fmh_diabetes_mellitus_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_diabetes_mellitus_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_diabetes_mellitus']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -960,11 +973,14 @@
                                                     onclick="toggleCheckbox('fmh_asthma_no', 'fmh_asthma_yes')"
                                                     {{ strpos(strtolower($riskForm['fmh_asthma']), 'no') !== false ? 'checked' : '' }}> No
                                             
-                                                <span class="ml-2" id="fmh_asthma_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_asthma_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_asthma']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -979,11 +995,15 @@
                                                     onclick="toggleCheckbox('fmh_cancer_no', 'fmh_cancer_yes')"
                                                     {{ strpos(strtolower($riskForm['fmh_cancer']), 'no') !== false ? 'checked' : '' }}> No
                                             
-                                                <span class="ml-2" id="fmh_cancer_side">
+                                                <span class="ml-2" id="fmh_cancer_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
                                                     Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? 'Both' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_cancer']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1001,11 +1021,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'no') !== false ? 'checked' : '' }}>
                                                 No
 
-                                                <span class="ml-2" id="fmh_kidney_disease_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_kidney_disease_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_kidney_disease']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1024,11 +1047,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'no') !== false ? 'checked' : '' }}>
                                                 No
 
-                                                <span class="ml-2" id="fmh_degree_relative_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_degree_relative_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_first_degree_relative']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1046,11 +1072,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'no') !== false ? 'checked' : '' }}>
                                                 No
 
-                                                <span class="ml-2" id="fmh_having_tb_5_years">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_having_tb_5_years" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_having_tuberculosis_5_years']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1068,11 +1097,14 @@
                                                     {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'no') !== false ? 'checked' : '' }}>
                                                 No
 
-                                                <span class="ml-2" id="fmh_mn_and_s_disorder_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_mn_and_s_disorder_side" style="color: 
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? 'blue' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? 'pink' : '' }}
+                                                {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? 'purple' : '' }};
+                                            font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_mn_and_s_disorder']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
@@ -1087,11 +1119,14 @@
                                                     value="No" onclick="toggleCheckbox('fmh_copd_no', 'fmh_copd_yes')"
                                                     {{ strpos(strtolower($riskForm['fmh_copd']), 'no') !== false ? 'checked' : '' }}> No
                                                 
-                                                <span class="ml-2" id="fmh_copd_side">
-                                                    Side: 
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? 'Father' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? 'Mother' : '' }}
-                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? 'Both' : '' }}
+                                                <span class="ml-2" id="fmh_copd_side" style="color: 
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? 'blue' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? 'pink' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? 'purple' : '' }};
+                                                font-weight: 300">
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'father') !== false ? '(Father)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'mother') !== false ? '(Mother)' : '' }}
+                                                    {{ strpos(strtolower($riskForm['fmh_copd']), 'both') !== false ? '(Both)' : '' }}
                                                 </span>
                                             </td>
                                         </tr>
