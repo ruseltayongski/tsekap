@@ -29,10 +29,12 @@ Route::group(['middleware' => ['api']], function () {
     
     // User Data Controllers
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
+    Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
     Route::post($apiVersions[0] . 'user/updatepass', 'TsekapV2\UserController@updateUserPassword');
     Route::post($apiVersions[0] . 'user/updatename', 'TsekapV2\UserController@updateUserFullName');
     Route::post($apiVersions[0] . 'user/updatecontact', 'TsekapV2\UserController@updateUserContact');
-
+    Route::post($apiVersions[0] . 'user/updateemail', 'TsekapV2\UserController@updateUserEmail');
+    
     // Facility Controllers
     Route::get($apiVersions[0] . 'facility/getallfacility', 'TsekapV2\FacilityController@getAllFacility');
     Route::post($apiVersions[0] . 'facility/retrievefacilitybycode', 'TsekapV2\FacilityController@retrieveFacilityByCode');
