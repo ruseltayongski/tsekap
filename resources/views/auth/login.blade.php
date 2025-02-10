@@ -28,16 +28,16 @@
     </div>
 @endif
 
-<div class="modal fade" tabindex="-1" role="dialog" id="loginModal" style="margin-top: 30px;z-index: 99999 ">
+{{-- <div class="modal fade" tabindex="-1" role="dialog" id="loginModal" style="margin-top: 30px;z-index: 99999 ">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="text-success">
                     <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4><b>PHILIPPINE HEALTH AGENDA CHECK-UP SYSTEM</b></h4>
+                    <h4><b>PHILIPPINE HEALTH AGENDA SYSTEM</b></h4>
                 </div><br>
                 <div class="">
-                    <div style="font-size:1.1em;">
+                    <div style="font-size:1.1em;"> --}}
                         {{--<i class="fa fa-phone"></i> <b class="text-warning">Main Contact Person:</b>--}}
                         {{--<ul>--}}
                             {{--<li style="font-size: 0.95em;">--}}
@@ -45,8 +45,8 @@
                             {{--</li>--}}
                         {{--</ul><br>--}}
 
-                        <span style="font-size: 0.95em; color: darkslategray;">
-                            <b class="text-warning">For further assistance, you may contact the following:</b>
+                        {{-- <span style="font-size: 0.95em; color: darkslategray;"> --}}
+                            {{-- <b class="text-warning">For further assistance, you may contact the following:</b>
                             <ol type="I">
                                 <li>System Concerns/Reset Password</li>
                                 <ol type="1">
@@ -56,20 +56,20 @@
                                 <li>Non - Technical</li>
                                 <ol type="1">
                                     <li>HSDS Office - 260-9740 local 204</li>
-                                    <li>Dr. Nelner D. Omus, HSDS Head - 09175748119</li>
+                                    <li>Dr. Nelner D. Omus, HSDS Head - 09175748119</li> --}}
                                     {{--<li>Jane Michelle E. Raagas, DMO IV - 09173100611 </li>--}}
                                     {{--<li>Prince Japee Neil C. Seno, PDO II - 09928947312</li>--}}
                                     {{--<li>Gian Ricki M. Bontilao, Nurse II - 09608522236</li>--}}
-                                </ol>
+                                {{-- </ol>
                             </ol>
                         </span>
 
                     </div>
                 </div>
-            </div>
-        </div><!-- /.modal-content -->
+            </div> --}}
+        {{-- </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div><!-- /.modal --> --}}
 
 <div class="login-box">
     <div class="login-logo">
@@ -82,7 +82,7 @@
         {{--<a href="#"><b>PHA</b> CHECK-UP</a>--}}
     </div><!-- /.login-logo -->
 
-    <form role="form" method="POST" action="{{ url('/login') }}">
+    <form role="form" method="POST" action="{{ url('/login') }}"> 
         {{ csrf_field() }}
         <div class="login-box-body">
             {{--<p class="login-box-msg">Sign in to start your session</p>--}}
@@ -119,6 +119,7 @@
                     <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
                 </div><!-- /.col -->
             </div>
+
             {{--<i class="fa fa-phone-square"></i> For further assistance/questions, please contact--}}
             {{--<strong><span class="text-success">Amalio S. Enero Jr.</span></strong>--}}
                 {{--<ul>--}}

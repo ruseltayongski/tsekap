@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BhertApiCtrl extends Controller{
-    public function login($username,$password){
+    public function login($username,$password){   //this is where the refer login controller
         $user = $username;
         $pass = $password;
 
