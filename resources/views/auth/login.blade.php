@@ -46,20 +46,27 @@
                         {{--</ul><br>--}}
 
                         <span style="font-size: 0.95em; color: darkslategray;">
-                            <b class="text-warning">For further assistance, you may contact the following:</b>
+                            <b class="text-warning">For further assistance, you may contact/reach out to the following:</b>
+                            <br/><br/>
                             <ol type="I">
                                 <li>System Concerns/Reset Password</li>
-                                <ol type="1">
-                                    <li>Jondy Gonzales - 09917382477</li>
-                                    <li>Christine Anne Catubig - 09226204186</li>
-                                </ol>
+                                <ol type="1">                     
+                                    <li>Non - Mobile</li>
+                                    <ul type="bullet">
+                                        <li>CDC (Center for Disease Control) IT Team - doh7cdc.dev@gmail.com</li>
+                                    </ul>
+                                    <li>Mobile</li>
+                                    <ul type="bullet">
+                                        <li>Ysabel Marie Colina - (+63) 9913956463</li>
+                                        <li>Elijah Nicholas Esguerra - (+63) 9205155537</li>
+                                        <li>Andrew Louie Abella - (+63) 9565348646</li>
+                                        <li>Angelo Niño Telamo - (+63) 9458569655</li>
+                                    </ul>
+                                </ol><br/>
                                 <li>Non - Technical</li>
                                 <ol type="1">
                                     <li>HSDS Office - 260-9740 local 204</li>
-                                    <li>Dr. Nelner D. Omus, HSDS Head - 09175748119</li>
-                                    {{--<li>Jane Michelle E. Raagas, DMO IV - 09173100611 </li>--}}
-                                    {{--<li>Prince Japee Neil C. Seno, PDO II - 09928947312</li>--}}
-                                    {{--<li>Gian Ricki M. Bontilao, Nurse II - 09608522236</li>--}}
+                                    <li>Dr. Nelner D. Omus, HSDS Head - (+63) 9175748119</li>
                                 </ol>
                             </ol>
                         </span>
