@@ -350,7 +350,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     Route::post('deng/profile_id', 'DengController@sessionProfileId');
 
     //BHERT API
-    Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}', 'BhertApiCtrl@login'); //login
+    Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}', 'BhertApiCtrl@login'); //login for tsekap
     Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{sitio_id}/{offset}/{limit}', 'BhertApiCtrl@getProfileSitio'); //get profile where sitio_id
     Route::get('mR9tbLLFIwxnWCKWMFS3EMyKrrNHrxYE/{userid}/{purok_id}/{offset}/{limit}', 'BhertApiCtrl@getProfilePurok'); //get profile where purok_id
     Route::match(['GET', 'POST'], 'IhBKItxoEpTK425HpIMtyKCqan2IdRUn', 'BhertApiCtrl@insertBhert'); //insert bhert
@@ -476,7 +476,6 @@ Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
 Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
 Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
-
 
 
 //accident type
