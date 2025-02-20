@@ -213,6 +213,30 @@ class UserCtrl extends Controller
         }
     }
 
+    public function adminAndProvincialChangePassword(Request $req){
+        $user = Auth::user();
+
+        if($user->user_priv != 1 || $user->user_priv != 3){
+            return redirect()->back()->with('status','unauthorized');
+        }
+        
+        $username = $req->username;
+        $targetUser = User::where('username', $username)->first();
+
+        if (!$targetUser) {
+            return redirect()->back()->with('status', 'user_not_found');
+        }
+
+        $update = array(
+            'password' => bcrypt($req->password)
+        );
+
+        User::where('username', $username)
+            ->update($update);
+
+        return redirect()->back()->with('status', 'updated');
+    }
+
     static function validateBrgy()
     {
         return true;

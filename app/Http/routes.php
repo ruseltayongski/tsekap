@@ -141,6 +141,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     Route::post('users/update', 'UserCtrl@update');
     Route::get('users/info/{id}', 'UserCtrl@info');
     Route::get('users/assign/{id}', 'UserCtrl@assign');
+    Route::post('users/adminchangepass', 'UserCtrl@adminChangePassword');
     //end users
 
     //location
@@ -279,6 +280,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     //Download login Info
     Route::get('user/download', 'ClientCtrl@downloadLogin');
     //end reports
+
     //users
     Route::get('user/add', 'ClientCtrl@addUser');
     Route::post('user/add', 'ClientCtrl@searchUser');
