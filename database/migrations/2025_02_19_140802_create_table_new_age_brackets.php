@@ -16,7 +16,7 @@ class CreateTableNewAgeBrackets extends Migration
     {
         // You may recreate the table here if needed
         Schema::create('new_age_brackets', function (Blueprint $table) {
-            $table->integer('age_id')->autoIncrement();
+            $table->integer('id')->autoIncrement();
             $table->string('range');
             $table->string('description')->nullable();
             $table->timestamps();
