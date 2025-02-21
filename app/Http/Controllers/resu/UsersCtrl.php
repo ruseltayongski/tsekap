@@ -10,14 +10,13 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 
-
 class UsersCtrl extends Controller
 {
     //
     public function index(){
 
-        if (!Auth::check() || Auth::user()->user_priv !== 1 || Auth::user()->user_priv !== 3 || Auth::user()->user_priv !== 10) {
-            abort(403, 'Unauthorized access.');
+        if (Auth::user()->user_priv !== 1 || Auth::user()->user_priv !== 3 || Auth::user()->user_priv !== 10) {
+            return redirect()->back();
         }
       
       //  $keyword = $request->input('keyword');      
