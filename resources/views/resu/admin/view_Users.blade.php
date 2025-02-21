@@ -14,6 +14,7 @@
   $selectedMuncity = Muncity::select('id','description')
   ->whereIn('id', ['63','76','80'])
   ->get();
+  $priv = Auth::user()->user_priv;
 ?>
 
 @extends('resu/app1')
@@ -87,18 +88,20 @@
                                         @endif
                                         </td>
                                         <td>
+                                        @if($priv==1 || $priv==3 || $priv==10)
                                         <button type="button" class="btn btn-danger btn-sm openDeleteModal" 
                                                 data-id="{{ $u->id }}" 
                                                 data-toggle="modal" 
                                                 data-target="#deleteModal">
                                             <i class="fa fa-trash"></i> Delete
-                                        </button>                                        
+                                        </button>
                                         <button type="button" class="btn btn-success btn-sm updateUser" 
                                                     data-id="{{ $u->id }}" 
                                                     data-toggle="modal" 
                                                     data-target="#updateUser">
                                                 <i class="fa fa-edit"></i> Update
                                         </button>
+                                        @endif
                                             {{-- <button type="button" class="btn btn-primary btn-sm resetPassword" 
                                                     data-id="{{ $u->id }}">
                                                     <i class="fa fa-key"></i> Reset

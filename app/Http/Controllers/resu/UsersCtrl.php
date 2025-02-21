@@ -14,6 +14,10 @@ class UsersCtrl extends Controller
 {
     //
     public function index(){
+
+        if (!Auth::check() || Auth::user()->user_priv !== 1 || Auth::user()->user_priv !== 3 || Auth::user()->user_priv !== 10) {
+            abort(403, 'Unauthorized access.');
+        }
       
       //  $keyword = $request->input('keyword');      
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
