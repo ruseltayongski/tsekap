@@ -14,6 +14,7 @@
   $selectedMuncity = Muncity::select('id','description')
   ->whereIn('id', ['63','76','80'])
   ->get();
+  $priv = Auth::user()->user_priv;
 ?>
 
 @extends('resu/app1')
@@ -25,16 +26,16 @@
     <div class="alert alert-jim">
         <h2 class="page-header">Users</h2>
             <div class="clearfix"></div>
-            <div class="table-responsive">
-                <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6">
+            <div class="table-responsive" style ="width: 100%; max-width: 100%; overflow-x: auto;">
+                <table class="table table-striped table-hover" style="border: 1px solid #d6e9c6;">
                     <thead>
                         <tr>
-                            <th>Full Name</th>
+                            <th >Full Name</th>
                             <th>Address</th>
                             <th>Contact Number</th>
                             <th>Username</th>
                             <th>Level</th>
-                            <th></th>
+                            <th style="width: 20%;"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,18 +88,24 @@
                                         @endif
                                         </td>
                                         <td>
+                                        @if($priv==1 || $priv==3 || $priv==10)
                                         <button type="button" class="btn btn-danger btn-sm openDeleteModal" 
                                                 data-id="{{ $u->id }}" 
                                                 data-toggle="modal" 
                                                 data-target="#deleteModal">
                                             <i class="fa fa-trash"></i> Delete
-                                        </button>                                        
-                                            <button type="button" class="btn btn-success btn-sm updateUser" 
+                                        </button>
+                                        <button type="button" class="btn btn-success btn-sm updateUser" 
                                                     data-id="{{ $u->id }}" 
                                                     data-toggle="modal" 
                                                     data-target="#updateUser">
                                                 <i class="fa fa-edit"></i> Update
-                                            </button>
+                                        </button>
+                                        @endif
+                                            {{-- <button type="button" class="btn btn-primary btn-sm resetPassword" 
+                                                    data-id="{{ $u->id }}">
+                                                    <i class="fa fa-key"></i> Reset
+                                            </button> --}}
                                         </td>
                                     </tr>                                    
                                 @endforeach
@@ -150,17 +157,16 @@
                 </button>
             </div>
             <hr>
-            <div class="modal-body"> 
-                <!-- Form for update action -->
+            <div class="modal-body">
                 <form id="updateUserForm" action="{{ route('update-User', ['id' => ':id']) }}" method="POST">
                     {{ csrf_field() }}
                     <input type="hidden" name="_method" value="POST">
-                    <input type="hidden" name="user_id" id="update_user_ids">  <!-- Hidden Input for user ID -->
+                    <input type="hidden" name="user_id" id="update_user_ids">
                     
                     <!-- First Name -->
                     <div class="form-group">
                         <label for="fname">First Name</label>
-                        <input type="text" class="form-control" name="fname" id="fname">
+                        <input type="text" class="form-control" name="fname" id="fname" >
                     </div>
 
                     <!-- Middle Name -->
@@ -266,7 +272,7 @@
                 var selectedMuncity = JSON.parse(document.getElementById("get_muncity").value);
                 $('#SelectedMuncity').empty().append('<option value="">Select Municipal / City...</option>');
                 $.each(selectedMuncity, function(index, muncity) {
-                    console.log('muncity:' ,muncity.description);
+                    // console.log('muncity:' ,muncity.description);
                     $('#SelectedMuncity').append('<option value="' + muncity.id + '">' + muncity.description + '</option>');
                 });
 
@@ -314,7 +320,7 @@
                 var selectedMuncityUpdate = JSON.parse(document.getElementById("get_muncity").value);
                 $('#SelectedMuncity-update').empty().append('<option value="">Select Municipal / City...</option>');
                 $.each(selectedMuncityUpdate, function(index, muncity) {
-                    console.log('muncity:' ,muncity.description);
+                    // console.log('muncity:' ,muncity.description);
                     $('#SelectedMuncity-update').append('<option value="' + muncity.id + '">' + muncity.description + '</option>');
                 });
 
@@ -420,7 +426,36 @@
             $('#updateUserForm').attr('action', '{{ route("update-User", ["id" => ""]) }}' + userId);
         });
     });
+</script>
+  {{--for resetting password--}}
+  <script>
+        // document.querySelectorAll('.resetPassword').forEach(button => {
+        //     button.addEventListener('click', function () {
+        //         const userId = this.getAttribute('data-id');
+        //         const confirmReset = confirm('Are you sure you want to reset the password to the default value?');
 
+        //         if (confirmReset) {
+        //             fetch('/reset-password', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json',
+        //                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        //                 },
+        //                 body: JSON.stringify({ id: userId }),
+        //             })
+        //                 .then((response) => response.text()) // Use .text() instead of .json() for debugging
+        //                 .then((data) => {
+        //                     console.log(data); // Log the HTML response
+        //                     alert('Response received.');
+        //                 })
+        //                 .catch((error) => {
+        //                     console.error('Error:', error);
+        //                     alert('An error occurred: ' + error.message);
+        //                 });
+
+        //         }
+        //     });
+        // });
 </script>
 
 @endsection

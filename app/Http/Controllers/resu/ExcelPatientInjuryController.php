@@ -1017,7 +1017,7 @@ class ExcelPatientInjuryController extends Controller
             $csvData = [];
             // Add headers to CSV
             $csvData[] = [
-               'Hospital CaseNo', 'Fname', 'Mname', 'Lname', 'Suffix', 'Age', 'Sex', 'DOB', 'Permanent Province/HUC address', 'Permanent Municipal Acddress', 'Permanent Barangay address', 'Place Injury',
+               'Hospital CaseNo', 'First name', 'Middle name', 'Last name', 'Suffix', 'Age', 'Sex', 'DOB','Contact Number', 'Permanent Province/HUC address', 'Permanent Municipal Acddress', 'Permanent Barangay address', 'Place Injury / Province HUC','Place Injury / Municipal', 'Place Injury / Barangay',
                'Injury Intent','First Aid','What','By Whom','Multiple Injuries','ER/OPD/BHS/RHU Transferred Facility', 'ER/OPD/BHS/RHU Referred Facility', 'ER/OPD/BHS/RHU Originating Hospital',
                'ER/OPD/BHS/RHU Status Facility','ER/OPD/BHS/RHU If Alive', 'ER/OPD/BHS/RHU Mode of Transport','ER/OPD/BHS/RHU Other Details','ER/OPD/BHS/RHU Initial Impression', 'ER/OPD/BHS/RHU ICD10 Code Nature', 'ER/OPD/BHS/RHU ICD10 Code External',
                'ER/OPD/BHS/RHU Disposition','ER/OPD/BHS/RHU Details','ER/OPD/BHS/RHU Outcome',
@@ -1353,13 +1353,13 @@ class ExcelPatientInjuryController extends Controller
                   
                         $csvData[] = [
                             $p->Hospital_caseNo,
-                            $p->fname, $p->mname, $p->lname, $suffix, $age, $p->sex, $p->dob,
+                            $p->fname, $p->mname, $p->lname, $suffix, $age, $p->sex, $p->dob, $p->contact,
                             $p->province ? $p->province->description : 'N/A',
                             $p->muncity ? $p->muncity->description : 'N/A',
                             $p->barangay ? $p->barangay->description : 'N/A',
-                            ($p->preadmission->POIProvince_id ? $p->preadmission->province->description : 'N/A') . ' , ' .
-                            ($p->preadmission->POImuncity_id ? $p->preadmission->muncity->description : 'N/A') . ' , ' .
-                            ($p->preadmission->POIBarangay_id ? $p->preadmission->barangay->description : 'N/A'),
+                            $p->preadmission->POIProvince_id ? $p->preadmission->province->description : 'N/A',
+                            $p->preadmission->POImuncity_id ? $p->preadmission->muncity->description : 'N/A',
+                            $p->preadmission->POIBarangay_id ? $p->preadmission->barangay->description : 'N/A',
                             $p->preadmission->injury_intent, $p->preadmission->first_aid, $p->preadmission->what,$p->preadmission->bywhom,$p->preadmission->multipleInjury,   
                             $transferredFac, $referredFac, $originatedHos,$statusFacility,$ifAlive,  $modeTransport, $otherDetails, $initialImpression,  $icdCodeNature,  $icdCodeExternal,
                             $disposition,  $details,  $outcome,  $diagnose, $disposition,$det, $outC , $icdCode_Nature,   $icdCode_External, $p->preadmission->id,

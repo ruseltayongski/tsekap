@@ -8,12 +8,16 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Support\Facades\Auth;
 
 class UsersCtrl extends Controller
 {
     //
     public function index(){
+
+        if (!in_array(Auth::user()->user_priv, [1, 3, 10])) {
+            return redirect()->back();
+        }        
       
       //  $keyword = $request->input('keyword');      
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
@@ -153,4 +157,16 @@ class UsersCtrl extends Controller
                 return redirect()->route('resu.admin.view_Users')->with('error', 'User not found.');
             }
         }
+        
+        public function getUser($id)
+            {
+                $user = User::find($id);
+
+                if (!$user) {
+                    return response()->json(['error' => 'User not found'], 404);
+                }
+
+                return response()->json($user);
+            }
+
 }

@@ -34,6 +34,16 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            
+            // TsekapV2
+            'corsMiddleware',
+            'verifyXsrfToken',
+        ],
+
+        'less-protected-api' => [
+            'throttle:60,1',
+            // TsekapV2
+            'corsMiddleware',
         ],
     ];
 
@@ -50,9 +60,13 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Foundation\Http\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'user_priv' =>  \App\Http\Middleware\UserPriv::class,
+        'user_priv' => \App\Http\Middleware\UserPriv::class,
         'admin' => \App\Http\Middleware\Admin::class,
         'client' => \App\Http\Middleware\Client::class,
         'checkUserPrivilege' => \App\Http\Middleware\ResUserPrivilege::class, // I add this for not access resu
+
+        // TsekapV2
+        'verifyXsrfToken' => \App\Http\Middleware\TsekapV2\VerifyXsrfTokenV2::class,
+        'corsMiddleware' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 }
