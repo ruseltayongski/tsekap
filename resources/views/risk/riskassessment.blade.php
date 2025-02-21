@@ -176,7 +176,7 @@
                                     <div class="row"></div>
                                     <div class="col-md-4">
                                         <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="province" id="province" required>
+                                        <select class="form-control" name="province" id="province_risk" required>
                                             <option value="">Select Province</option>
                                             @foreach ($province as $prov)
                                                 <option value="{{ $prov->id }}">{{ $prov->description }}</option>
@@ -1697,7 +1697,7 @@
             // document.getElementById('citizenship').style.borderColor = '';
             document.getElementById('other_religion').style.borderColor = '';
             document.getElementById('other_citizenship').style.borderColor = '';
-            document.getElementById('province').style.borderColor = '';
+            document.getElementById('province_risk').style.borderColor = '';
             document.getElementById('municipal').style.borderColor = '';
             document.getElementById('barangay').style.borderColor = '';
 
@@ -1724,7 +1724,7 @@
             const civilStatus = document.getElementById('civil_status').value;
             const religion = document.getElementById('religion').value;
             const otherReligion = document.getElementById('other_religion').value;
-            const province = document.getElementById('province').value;
+            const province = document.getElementById('province_risk').value;
             const municipal = document.getElementById('municipal').value;
             const barangay = document.getElementById('barangay').value;
 
@@ -1798,7 +1798,7 @@
             }
 
             if (!province) {
-                document.getElementById('province').style.borderColor = 'red';
+                document.getElementById('province_risk').style.borderColor = 'red';
                 errorMessage += "Province<br>";
                 isValid = false;
             }

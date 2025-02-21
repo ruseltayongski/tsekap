@@ -155,7 +155,7 @@ class RiskProfileController extends Controller
         $riskform->rf_physical_activity = $request->ncd_physical;
         $riskform->rf_nutrition_dietary = $request->ncd_nutrition;
         $riskform->rf_weight = $request->rf_weight;
-        $riskform->rf_height = $request->f_height;
+        $riskform->rf_height = $request->rf_height;
         $riskform->rf_body_mass = $request->rf_bmi;
         $riskform->rf_waist_circumference = $request->rf_waist;
 

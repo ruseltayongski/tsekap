@@ -272,7 +272,7 @@
                 var selectedMuncity = JSON.parse(document.getElementById("get_muncity").value);
                 $('#SelectedMuncity').empty().append('<option value="">Select Municipal / City...</option>');
                 $.each(selectedMuncity, function(index, muncity) {
-                    console.log('muncity:' ,muncity.description);
+                    // console.log('muncity:' ,muncity.description);
                     $('#SelectedMuncity').append('<option value="' + muncity.id + '">' + muncity.description + '</option>');
                 });
 
@@ -320,7 +320,7 @@
                 var selectedMuncityUpdate = JSON.parse(document.getElementById("get_muncity").value);
                 $('#SelectedMuncity-update').empty().append('<option value="">Select Municipal / City...</option>');
                 $.each(selectedMuncityUpdate, function(index, muncity) {
-                    console.log('muncity:' ,muncity.description);
+                    // console.log('muncity:' ,muncity.description);
                     $('#SelectedMuncity-update').append('<option value="' + muncity.id + '">' + muncity.description + '</option>');
                 });
 

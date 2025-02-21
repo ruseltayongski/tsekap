@@ -121,9 +121,9 @@
 
                                             <!-- Default "N/A" option if suffix is null or empty -->
                                             @if (is_null($profile['suffix']) || $profile['suffix'] === '')
-                                                <option value="N/A" selected>N/A</option>
+                                                <option value="N/A" selected></option>
                                             @else
-                                                <option value="N/A">N/A</option>
+                                                <option value="N/A"></option>
                                             @endif
                                         </select>
                                     </div>
@@ -1716,6 +1716,10 @@
 </style>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        showOtherCitizenshipField();
+        showOtherReligionField();
+    });
     // controls the other religion field
     const showOtherReligionField = () => {
         let religionSelect = document.getElementById("religion");
