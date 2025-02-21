@@ -15,9 +15,9 @@ class UsersCtrl extends Controller
     //
     public function index(){
 
-        if (Auth::user()->user_priv !== 1 || Auth::user()->user_priv !== 3 || Auth::user()->user_priv !== 10) {
+        if (!in_array(Auth::user()->user_priv, [1, 3, 10])) {
             return redirect()->back();
-        }
+        }        
       
       //  $keyword = $request->input('keyword');      
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')
