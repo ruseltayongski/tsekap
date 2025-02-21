@@ -365,7 +365,7 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="other_citizenship"
                                             id="other_citizenship" placeholder="Please specify citizenship"
-                                            value="{{ $profile['other_citizenship'] ? $profile['other_citizenship'] : '' }}">
+                                            value="{{ $profile['other_citizenship'] ? $profile['other_citizenship'] : '' }}" readonly disabled>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
                                         <label class="mr-2">Indigenous Person</label><br>
@@ -1714,3 +1714,35 @@
         pointer-events: none;
     }
 </style>
+
+<script>
+    // controls the other religion field
+    const showOtherReligionField = () => {
+        let religionSelect = document.getElementById("religion");
+        let otherReligionDiv = document.getElementById("other-religion-div");
+        let otherReligionInput = document.getElementById("other_religion");
+
+        if (religionSelect.value === "Others") {
+            otherReligionDiv.style.display = "block";
+            otherReligionInput.required = true; // Make the 'Other' religion input required
+        } else {
+            otherReligionDiv.style.display = "none";
+            otherReligionInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
+
+    // controls the other citizenship field
+    const showOtherCitizenshipField = () => {
+        let citizenshipSelect = document.getElementById("citizenship");
+        let otherCitizenshipDiv = document.getElementById("other-citizenship-div");
+        let otherCitizenshipInput = document.getElementById("other_citizenship");
+
+        if (citizenshipSelect.value === "Others") {
+            otherCitizenshipDiv.style.display = "block";
+            otherCitizenshipInput.required = true; // Make the 'Other' citizenship input required
+        } else {
+            otherCitizenshipDiv.style.display = "none";
+            otherCitizenshipInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
+</Script>
