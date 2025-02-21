@@ -21,9 +21,10 @@ class UserController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        $user = Auth::user();
+
         // Validate the input
         $fieldsValidator = Validator::make($fields, [
-            'username' => 'required|string',
             'currentPassword' => 'required|string',
             'newPassword' => 'required|string|min:8' 
         ]);
@@ -34,7 +35,7 @@ class UserController extends Controller
 
         $currentPassword = $fields['currentPassword'];
         $newPassword = $fields['newPassword'];
-        $username = $fields['username'];
+        $username = $user->username; // user auth
 
         // Fetch the user based on the provided username
         $queryUser = User::where('username', $username)->first();
@@ -68,7 +69,6 @@ class UserController extends Controller
 
         // Validate the input
         $fieldsValidator = Validator::make($fields, [
-            'username' => 'required|string',
             'fname' => 'string|max:255',
             'mname' => 'string|max:255',
             'lname' => 'string|max:255',
@@ -78,10 +78,12 @@ class UserController extends Controller
             return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
         }
 
-        $username = $fields['username'];
+        $user = Auth::user();
+
+        $username = $user->username; // user auth
 
         // Fetch the user based on the provided username
-        $queryUser = User::where('username', $username)->first();
+        $queryUser = User::where('username', '=', $username)->first();
 
         if (!$queryUser) {
             return response()->json(['error' => 'User not found'], 404);
@@ -116,20 +118,21 @@ class UserController extends Controller
         }
 
         $fieldsValidator = Validator::make($fields, [
-            'username' => 'required|string',
             'contact' => 'required|string|min:11|max:11'
         ]);
+
+        $user = Auth::user();
 
         if ($fieldsValidator->fails()) {
             return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
         }
 
         // Get username and contact from the fields
-        $username = $fields['username'];
+        $username = $user->username; // user auth
         $contact = $fields['contact'];
 
         // Fetch the user based on the provided username
-        $queryUser = User::where('username', $username)->first();
+        $queryUser = User::where('username', '=', $username)->first();
 
         if (!$queryUser) {
             return response()->json(['error' => 'User not found'], 404);
@@ -137,6 +140,47 @@ class UserController extends Controller
 
         // Update the user's contact
         $queryUser->contact = $contact;
+
+        // Save the changes
+        $queryUser->save();
+
+        // Return a success response
+        return response()->json(['message' => 'Contact updated successfully'], 200);
+    }
+
+    // changes the user's email
+    public function updateUserEmail(Request $request)
+    {
+        $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if(!Auth::check()){
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $fieldsValidator = Validator::make($fields, [
+            'email' => 'required|string|max:50'
+        ]);
+
+        if ($fieldsValidator->fails()) {
+            return response()->json(['error' => array_merge($fieldsValidator->errors()->all())], 400);
+        }
+
+        $user = Auth::user();
+
+        // Get username and contact from the fields
+        $username = $user->username; // user auth
+        $email = $fields['email'];
+
+        // Fetch the user based on the provided username
+        $queryUser = User::where('username', '=', $username)->first();
+
+        if (!$queryUser) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Update the user's contact
+        $queryUser->email = $email;
 
         // Save the changes
         $queryUser->save();

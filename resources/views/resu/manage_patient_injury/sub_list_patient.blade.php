@@ -70,7 +70,7 @@
             <i class="fa fa-user"></i>&nbsp; Patient: {{ $profile->fname.' '.$profile->mname.'. '.$profile->lname.' '.$profile->suffix }}
         </h2 >
         <!-- <div class="page-divider"></div> -->
-        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">
+        <form class="form-horizontal form-submit" id="form-submit" method="POST" action="{{ route('update-patient-form') }}">  
             {{ csrf_field() }}
             <input type="hidden" id="muncities-data" value="{{ json_encode($muncities) }}">
             <input type="hidden" name="report_facilityId" value="{{ $facility->id }}">
@@ -142,13 +142,26 @@
                                 <label for="mname">Middle Name</label>
                                 <input type="text" class="form-control" name="mname" id="mname" value="{{ $profile->mname}}">
                             </div>
+                            <div class="col-md-2">
+                                <label for="suffix">Suffix</label>
+                                <select class="form-control chosen-select" name="suffix" id="suffix">
+                                    <option value="">Select suffix</option>
+                                    <option value="Jr."{{ trim($profile->suffix == 'Jr.' ? 'selected' : '')}}>Jr.</option>
+                                    <option value="Sr."{{ trim($profile->suffix == 'Sr.' ? 'selected' : '')}}>Sr.</option>
+                                    <option value="I" {{ trim($profile->suffix == 'I' ? 'selected' : '')}}>I</option>
+                                    <option value="II" {{ trim($profile->suffix == 'II' ? 'selected' : '')}}>II</option>
+                                    <option value="III" {{ trim($profile->suffix == 'III' ? 'selected' : '')}}>III</option>
+                                    <option value="IV" {{ trim($profile->suffix == 'IV' ? 'selected' : '')}}>IV</option>
+                                    <option value="V" {{ trim($profile->suffix == 'V' ? 'selected' : '')}}>V</option>
+                                </select>
+                            </div>
 
                             <div class="col-md-2">
                                 <label for="sex">Sex</label>
                                 <select class="form-control chosen-select" name="sex" id="sex">
                                     <option value="">Select sex</option>
-                                    <option value="male" {{ trim($profile->sex) == 'male' ? 'selected' : '' }}>male</option>
-                                    <option value="female" {{trim($profile->sex) == 'female' ? 'selected' : '' }}>female</option>
+                                    <option value="male" {{ trim($profile->sex) == 'Male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{trim($profile->sex) == 'Female' ? 'selected' : '' }}>Female</option>
                                 </select>
 
                                 <!-- <select class="form-control chosen-select" name="sex" id="sex">
@@ -168,7 +181,11 @@
                                 <input type="text" class="form-control" id="age" name="age" readonly 
                                     value="{{ $age }}">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
+                                <label for="contact">Contact Number: <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="contact" id="contact" value="{{ $profile->contact }}">
+                            </div>
+                            <div class="col-md-4">
                                 <label for="province">Province/HUC</label>
                                 <select class="form-control chosen-select" name="province" id="update-province" value="{{$profile->province_id}}" required>
                                     <option value="">Select Province</option>
@@ -177,17 +194,17 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="municipal">Municipal</label>
                                 <select class="form-control chosen-select" name="municipal" id="update-municipal" data-selected="{{ $profile->muncity_id }}" required>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="barangay">Barangay</label>
                                 <select class="form-control chosen-select" name="barangay" id="update-barangay" data-selected="{{ $profile->barangay_id }}" required>
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <label for="phil_no">PhilHealth No.</label>
                                 <input type="text" class="form-control" name="phil_no" id="phil_no" value="{{$profile->phicID}}"><br>
                             </div>
@@ -276,23 +293,25 @@
                     </div>
                   
                     <div class="col-md-12">  <hr>
-                    <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">First Aid Given</h4>
-                        <!-- <label>First Aid Given:</label> -->
+                            <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 3px;margin-top: -10px; ">First Aid Given</h4>
+                                <!-- <label>First Aid Given:</label> -->
                     </div>
-                    @php
-                        $firstaid = $profile->preadmission->first_aid ? explode(',', $profile->preadmission->first_aid) : [];
-                    @endphp
-                    <div class="col-md-1 col-md-offset-2">
-                        <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes" {{ in_array('Yes', $firstaid) ? 'checked' : '' }}> Yes
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;" value="{{ $profile->preadmission->what}}">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;" value="{{ $profile->preadmission->bywhom }}">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="radio" name="firstAidGive" id="firstAidNo" value="No" {{ in_array('No', $firstaid) ? 'checked' : '' }}> No
+                    <div class="col-md-12" style="display: flex; align-items: center;">
+                        @php
+                             $firstaid = $profile->preadmission->first_aid ? explode(',', $profile->preadmission->first_aid) : [];
+                        @endphp
+                        <div style="margin-right: 15px;">
+                            <input type="radio" name="firstAidGive" id="firstAidYes" value="Yes" {{ in_array('Yes', $firstaid) ? 'checked' : '' }}> Yes
+                        </div>
+                        <div style="margin-right: 15px;">
+                            <input type="text" class="form-control" name="druWhat" id="druWhat" placeholder="What:" style="display: none;" value="{{ $profile->preadmission->what}}">
+                        </div>
+                        <div style="margin-right: 15px;">
+                            <input type="text" class="form-control" name="druByWhom" id="druByWhom" placeholder="By whom:" style="display: none;" value="{{ $profile->preadmission->bywhom }}">
+                        </div>
+                        <div>
+                            <input type="radio" name="firstAidGive" id="firstAidNo" value="No" {{ in_array('No', $firstaid) ? 'checked' : '' }}> No
+                        </div>
                     </div>
                     <!----------------------------- Nature of Injury ------------------------------>
                     <div class="col-md-12">
@@ -304,13 +323,16 @@
                         $minjuries = explode(',', $profile->preadmission->multipleInjury);
                     @endphp
                     <div class="col-md-3 col-md-offset-1">
-                        <p>multiple Injuries? &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" {{ in_array('Yes', $minjuries) ? 'checked' : '' }}> Yes
-                        <input type="radio" id="single_injured" name="multiple_injured" value="No" {{ in_array('No', $minjuries) ? 'checked' : '' }}>No</p>
+                        <p style="display: flex; align-items: center; margin: 0">
+                            <p style="margin: 0; padding-right: 10px">Multiple Injuries ? <span class="text-danger">*</span></p>
+                            <input type="radio" id="multiple_injured" name="multiple_injured" value="Yes" {{ in_array('Yes', $minjuries) ? 'checked' : '' }} style="margin: 0 10px">Yes 
+                            <input type="radio" id="single_injured" name="multiple_injured" value="No" {{ in_array('No', $minjuries) ? 'checked' : '' }} style="margin: 0 10px">No
+                        </p>
                     </div>
-                    <div class="col-md-12 col-md-offset-.05">
+
+                    <div class="col-md-12 col-md-offset-.05">  
                         <p class="underline-text text-center" id="underline-text">
-                            Check all applicable, indicate in the blank space opposite each type of injury the body location [site] and affected and other details
+                            Check all applicable indicate in the blank space opposite each type of injury the body location [site] and affected and other details
                         </p>
                     </div>
                     <div class="col-md-3">
@@ -1039,7 +1061,6 @@
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 
@@ -1135,32 +1156,38 @@
   box-sizing: border-box;
 }
 
-/* Ensure chosen choices align horizontally */
 .chosen-container-multi .chosen-choices {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 5px;
-  gap: 5px;
-  border: none;
+    display: flex;
+    flex-wrap: nowrap; /* Keep selected items in one line */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: hidden; /* Hide vertical overflow */
+    white-space: nowrap; /* Prevent wrapping of selected items */
+    max-width: 100%; /* Restrict the width to the container */
+    padding: 5px;
+    gap: 5px;
+    border: 1px solid #ccc; /* Optional: Border for better visibility */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    box-sizing: border-box; /* Include padding in width calculations */
 }
 
-/* Each choice aligned inline */
-.chosen-container-multi .chosen-choices li {
-  display: inline-block;
-  margin: 0 5px;
-  list-style: none;
+.chosen-container-multi .chosen-choices::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
 }
 
-/* Prevent shrinking of input field */
-.chosen-container-multi .chosen-choices input[type="text"] {
-  flex: 1;
-  min-width: 50px;
-  background: transparent;
-  border: none;
-  outline: none;
+.chosen-container-multi .chosen-choices::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar thumb (handle) color */
+    border-radius: 4px; /* Rounded thumb */
 }
+
+.chosen-container-multi .chosen-choices::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Thumb color on hover */
+}
+
+.chosen-container-multi .chosen-choices::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Scrollbar track color */
+}
+
+
 
 .bold-line {
     border: none;            /* Remove default hr styling */

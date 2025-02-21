@@ -29,10 +29,12 @@ Route::group(['middleware' => ['api']], function () {
     
     // User Data Controllers
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
+    Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
     Route::post($apiVersions[0] . 'user/updatepass', 'TsekapV2\UserController@updateUserPassword');
     Route::post($apiVersions[0] . 'user/updatename', 'TsekapV2\UserController@updateUserFullName');
     Route::post($apiVersions[0] . 'user/updatecontact', 'TsekapV2\UserController@updateUserContact');
-
+    Route::post($apiVersions[0] . 'user/updateemail', 'TsekapV2\UserController@updateUserEmail');
+    
     // Facility Controllers
     Route::get($apiVersions[0] . 'facility/getallfacility', 'TsekapV2\FacilityController@getAllFacility');
     Route::post($apiVersions[0] . 'facility/retrievefacilitybycode', 'TsekapV2\FacilityController@retrieveFacilityByCode');
@@ -41,21 +43,22 @@ Route::group(['middleware' => ['api']], function () {
     Route::post($apiVersions[0] . 'facility/deletefacility', 'TsekapV2\FacilityController@deleteFacility');
 
     // Profile Controllers
-    Route::post($apiVersions[0] . 'facility/retrieveprofile', 'TsekapV2\ProfileController@retrieveProfile');
-    Route::post($apiVersions[0] . 'facility/addprofile', 'TsekapV2\ProfileController@addProfile');
-    Route::post($apiVersions[0] . 'facility/updateprofile', 'TsekapV2\ProfileController@updateProfile');
-    Route::post($apiVersions[0] . 'facility/deleteprofile', 'TsekapV2\ProfileController@deleteProfile');
+    Route::post($apiVersions[0] . 'profile/retrieveprofile', 'TsekapV2\ProfileController@retrieveProfile');
+    Route::post($apiVersions[0] . 'profile/addprofile', 'TsekapV2\ProfileController@addProfile');
+    Route::post($apiVersions[0] . 'profile/updateprofile', 'TsekapV2\ProfileController@updateProfile');
+    Route::post($apiVersions[0] . 'profile/deleteprofile', 'TsekapV2\ProfileController@deleteProfile');
 
     // User Health Facility Controllers
-    Route::post($apiVersions[0] . 'facility/retrieveuserhf', 'TsekapV2\UserHealthFacilityController@retrieveUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/adduserhf', 'TsekapV2\UserHealthFacilityController@addUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/updateuserhf', 'TsekapV2\UserHealthFacilityController@updateUserHealthFacility');
-    Route::post($apiVersions[0] . 'facility/deleteuserhf', 'TsekapV2\UserHealthFacilityController@deleteUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/retrieveuserhf', 'TsekapV2\UserHealthFacilityController@retrieveUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/adduserhf', 'TsekapV2\UserHealthFacilityController@addUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/updateuserhf', 'TsekapV2\UserHealthFacilityController@updateUserHealthFacility');
+    Route::post($apiVersions[0] . 'userhf/deleteuserhf', 'TsekapV2\UserHealthFacilityController@deleteUserHealthFacility');
 
     // Forms
     // ---- Risk Assessment and Profile ---- //
     Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskassessment', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskAssessment');
-    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfile');
+    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofilebyfacility', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfileByFacility');
+    Route::post($apiVersions[0] . 'forms/riskassessment/retrievepatientriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@retrievePatientRiskProfileWithoutFacility');
     Route::post($apiVersions[0] . 'forms/riskassessment/addriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@addRiskProfile');
     Route::post($apiVersions[0] . 'forms/riskassessment/addriskform', 'TsekapV2\RiskAssessmentForm\DataController@addRiskForm');
     Route::post($apiVersions[0] . 'forms/riskassessment/updateriskprofile', 'TsekapV2\RiskAssessmentForm\DataController@updateRiskProfile');
@@ -138,6 +141,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     Route::post('users/update', 'UserCtrl@update');
     Route::get('users/info/{id}', 'UserCtrl@info');
     Route::get('users/assign/{id}', 'UserCtrl@assign');
+    Route::post('users/adminchangepass', 'UserCtrl@adminChangePassword');
     //end users
 
     //location
@@ -276,6 +280,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     //Download login Info
     Route::get('user/download', 'ClientCtrl@downloadLogin');
     //end reports
+
     //users
     Route::get('user/add', 'ClientCtrl@addUser');
     Route::post('user/add', 'ClientCtrl@searchUser');
@@ -347,7 +352,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     Route::post('deng/profile_id', 'DengController@sessionProfileId');
 
     //BHERT API
-    Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}', 'BhertApiCtrl@login'); //login
+    Route::get('kbwk5SMQYatyNsZDM36RzndUHYOXn1nC/{username}/{password}', 'BhertApiCtrl@login'); //login for tsekap
     Route::get('K0LslN7GOrirjxWKpmssymMWukBF2X4b/{userid}/{sitio_id}/{offset}/{limit}', 'BhertApiCtrl@getProfileSitio'); //get profile where sitio_id
     Route::get('mR9tbLLFIwxnWCKWMFS3EMyKrrNHrxYE/{userid}/{purok_id}/{offset}/{limit}', 'BhertApiCtrl@getProfilePurok'); //get profile where purok_id
     Route::match(['GET', 'POST'], 'IhBKItxoEpTK425HpIMtyKCqan2IdRUn', 'BhertApiCtrl@insertBhert'); //insert bhert
@@ -451,6 +456,8 @@ Route::post('delete-external', 'resu\InjuryController@deleteExternalInjury')->na
 
 Route::get('patientInjury', 'resu\PatientInjuryController@PatientInjured')->name('patientInjury');
 Route::get('/search-patient-injured', 'resu\PatientInjuryController@PatientInjured')->name('search.patient_injured'); // for search imjury
+Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
+
 // Route::get('sublist-patient/{id}', 'resu\PatientInjuryController@SublistPatient');
 Route::get('patient-form', 'resu\PatientInjuryController@PatientForm');
 
@@ -468,9 +475,10 @@ Route::get('get/municipal/{id}', 'resu\PatientInjuryController@getMunicipal');
 Route::get('get/barangay/{id}', 'resu\PatientInjuryController@getBarangay');
 
 //add patient injury
-// Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
-// Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
-// Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
+Route::post('submit-patient-form', 'resu\PatientInjuryController@SubmitPatientInjury')->name('submit-patient-form');
+Route::post('update-patient-form', 'resu\PatientInjuryController@UpdatePatientInjury')->name('update-patient-form');
+Route::post('/patient/{id}', 'resu\PatientInjuryController@destroy')->name('patient.delete');
+
 
 //accident type
 Route::get('accidentType', 'resu\InjuryController@viewAccident')->name('accidentType');
@@ -488,7 +496,7 @@ Route::post('addSafety', 'resu\InjuryController@Savesafety')->name('addSafety');
 Route::get('user/population/head', 'ClientCtrl@addHeadProfile');
 
 //delete nature injury categories
-// Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
+Route::post('/delete-nature', 'resu\PatientInjuryController@Deletenature')->name('delete-nature');
 
 Route::get('view-Import', 'resu\ExcelPatientInjuryController@ViewImport');
 Route::post('/import-excel', 'resu\ExcelPatientInjuryController@import')->name('import.excel');
@@ -500,8 +508,16 @@ Route::post('users-search', 'resu\UsersCtrl@SearchUsers')->name('users-search');
 Route::post('/admin/delete_user', 'resu\UsersCtrl@deleteUser')->name('resu.admin.delete_user');
 Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User');
 
+
+
+
 // csv files patient injury
 Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');
+
+//risk assessment
+Route::get('/RiskAssessment', function () {
+    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+})->name('riskassessment');
 
 //risk assessment
 Route::get('/RiskAssessment', function () {
@@ -512,7 +528,9 @@ Route::get('/RiskAssessment', function () {
 Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
 Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
 Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
+Route::post('/update-risk-profile', 'risk\RiskProfileController@UpdateRiskPForm')->name('update-patient-risk-form');
 
 Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
-Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@SublistRiskPatient')->name('sublist.risk.patient');
+Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@PatientRiskProfileAndFormSubList')->name('sublist.risk.patient');
 Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
+Route::post('/risk-patient/{id}', 'risk\RiskProfileController@destroy')->name('patient-risk-delete');

@@ -18,7 +18,7 @@ class MiscDataController extends Controller
         $province = Province::select('id', 'description')->get();
         return response()->json($province);
     } 
-    // get municipality/city
+    // get muncityity/city
     public function getMuncity(Request $request){
         $provinceId = $request->query('province_id');
 
@@ -39,7 +39,7 @@ class MiscDataController extends Controller
         return response()->json($barangay);
     }
     
-    // get all municipalities/cities
+    // get all muncityities/cities
     public function getAllMuncities(){
         $muncities = Muncity::select('id', 'province_id', 'description')->get();
         return response()->json($muncities);

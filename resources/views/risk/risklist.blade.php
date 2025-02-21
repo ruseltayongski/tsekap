@@ -1,15 +1,26 @@
 @php
     use Carbon\Carbon;
-    use App\Facility;
-    use App\ResuReportFacility;
-    $priv_fact = Auth::user()->facility_id_updated;
+    use App\Facilities;
+    use App\UserHealthFacility;
+    use Illuminate\Support\Facades\Auth;
+
+    $user = Auth::user();
+    $facility = null;
+
+    $user_priv = Auth::user()->user_priv;
+
+    $userHealthFacilityMapping = UserHealthFacility::where('user_id', $user->id)->first();
+    if ($userHealthFacilityMapping) {
+        $facility = Facilities::find($userHealthFacilityMapping->facility_id);
+    }
 @endphp
 
 @extends('resu/app1')
+
 @section('content')
     <div class="col-md-12 wrapper">
         <div class="alert alert-jim">
-            <h2 class="page-header">Risk Patient Assessment List {{ $not_updated ? '(NOT UPDATED)' : "" }}</h2>
+            <h2 class="page-header">Patient Risk Assessment List {{ isset($not_updated) && $not_updated ? '(NOT UPDATED)' : "" }}</h2>
             @if(Session::has('deng_add'))
                 <div class="alert alert-success">
                     <font class="text-success">
@@ -39,7 +50,7 @@
                         <div class="form-group">
                             <div class="clearfix"></div>
                         </div>
-                        @if($user_priv->user_priv == 6)
+                        @if(isset($user_priv) && !in_array($user_priv->user_priv, [6,1]))
                             <div class="form-group">
                                 <a class="btn btn-info col-xs-12" href="{{ url('RiskAssessment') }}"> 
                                     <i class="fa fa-user-plus"></i> Add Risk Forms
@@ -59,46 +70,59 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                @if($user_priv->user_priv !== 6)
+                                <th></th>
+                                @if(isset($user_priv) && !in_array($user_priv->user_priv, [6,1]))
                                     <th>Facility Name</th>
                                 @endif
-                                <th>Full Name<br>&nbsp;</th>
-                                <th>Age<br>&nbsp;</th>
-                                <th>Sex<br>&nbsp;</th>
-                                <th>Civil Status<br>&nbsp;</th>
-                                <th>Province/HUC<br>&nbsp;</th>
-                                <th>Municipal<br>&nbsp;</th>
-                                <th>Barangay<br>&nbsp;</th>
-                                <th>Date Inputted<br>&nbsp;</th>
-                               
+                                <th>Full Name</th>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>Civil Status</th>
+                                <th>Province/HUC</th>
+                                <th>Municipal</th>
+                                <th>Barangay</th>
+                                <th>Date Inputted</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($riskprofiles as $profile)
+                                @php
+                                    $patientFacilityMapping = Facilities::where('id', $profile->facility_id_updated)
+                                        ->select('id', 'name', 'address', 'hospital_type')
+                                        ->first();
+                                @endphp
                                 <tr>
                                     <td nowrap="TRUE">
-                                        <a href="{{ asset('sublist-risk-patient/'.$profile->id) }}" class="btn btn-xs btn-success">
+                                        <a href="{{ url('sublist-risk-patient/'.$profile->id) }}" class="btn btn-xs btn-success">
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                     </td>
-                                    @if($user_priv->user_priv !== 6)
-                                        <td>{{ $profile->facility->name ?? 'N/A' }}</td>
+                                    <td nowrap="TRUE">
+                                        <form action="{{ route('patient-risk-delete', $profile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            {{ csrf_field() }}
+                                            <button type="submit" class="btn btn-xs btn-danger">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+
+                                    @if(isset($user_priv) && !in_array($user_priv->user_priv, [6,1]))
+                                        <td>{{ $patientFacilityMapping->name ? $patientFacilityMapping->name : 'N/A' }}</td>
                                     @endif
                                     <td>{{ $profile->fname }} {{ $profile->mname }} {{ $profile->lname }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($profile->dob)->age }}</td>
+                                    <td>{{ Carbon::parse($profile->dob)->age }}</td>
                                     <td>{{ $profile->sex }}</td>
                                     <td>{{ $profile->civil_status }}</td>
-                                    <td>{{ $profile->province->description ?? 'N/A' }}</td>
-                                    <td>{{ $profile->muncity->description ?? 'N/A' }}</td>
-                                    <td>{{ $profile->barangay->description ?? 'N/A' }}</td>
-                                    <td>{{ $profile->created_at ? \Carbon\Carbon::parse($profile->created_at)->format('F j, Y') : 'N/A' }}</td>
-                                  
+                                    <td>{{ $profile->province->description ? $profile->province->description : 'N/A' }}</td>
+                                    <td>{{ $profile->muncity->description ? $profile->muncity->description : 'N/A' }}</td>
+                                    <td>{{ $profile->barangay->description ? $profile->barangay->description : 'N/A' }}</td>
+                                    <td>{{ $profile->created_at->format('F j, Y') ? $profile->created_at->format('F j, Y') : 'N/A' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                     <div class="text-center">
-                        {{ $riskprofiles->links () }} <!-- This should now work as $riskprofiles is the correct variable -->
+                        {{ $riskprofiles->links() }}
                     </div>
                 </div>
             </div>
@@ -120,17 +144,17 @@
     <script>
         $(document).ready(function() {
             $('#search-button').on('click', function(e) {
-                e.preventDefault(); // Prevent form submission
+                e.preventDefault();
                 var keyword = $('#search-keyword').val();
                 $.ajax({
-                    url: '{{ route("patientRisk") }}',
+                    url: '{{ url("patientRisk") }}',
                     type: 'GET',
                     data: { keyword: keyword },
                     beforeSend: function () {
                         $('.loading').show();
                     },
                     success: function (response) {
-                        $('tbody').html(response);
+                        $('#results-container').html(response);
                     },
                     complete: function () {
                         $('.loading').hide();

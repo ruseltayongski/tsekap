@@ -83,7 +83,7 @@
                                 <label for="hospital_no">Hospital Case No. <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="hospital_no" id="hospital_no" value="">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="lname">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="lname" id="lname" value="" required>
                             </div>
@@ -96,11 +96,24 @@
                                 <input type="text" class="form-control" name="mname" id="mname" value="">
                             </div>
                             <div class="col-md-2">
+                                <label for="suffix">Suffix</label>
+                                <select class="form-control chosen-select" name="suffix" id="suffix">
+                                    <option value="">Select suffix</option>
+                                    <option value="Jr.">Jr.</option>
+                                    <option value="Sr.">Sr.</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                    <option value="V">V</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
                                 <label for="sex">Sex</label>
-                                <select class="form-control chosen-select" name="sex" id="sex" required>
+                                <select class="form-control" name="sex" id="sex" required>
                                     <option value="">Select sex</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
@@ -111,7 +124,11 @@
                                 <label for="age">Age <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="ages" name="ages" value="" readonly>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
+                                <label for="contact">Contact Number: <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="contact" id="contact" value="" required>
+                            </div>
+                            <div class="col-md-4">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="province" id="province" required>
                                     <option value="">Select Province</option>
@@ -120,17 +137,17 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="municipal">Municipal <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="municipal" id="municipal" required>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="barangay">Barangay <span class="text-danger">*</span></label>
                                 <select class="form-control chosen-select" name="barangay" id="barangay" required>
                                 </select>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <label for="phil_no">PhilHealth No.</label>
                                 <input type="text" class="form-control" name="phil_no" id="phil_no" value=""><br>
                             </div>
@@ -142,8 +159,8 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                <select class="form-control chosen-select" name="provinceInjury" id="provinceId" >
-                                    <option value="">Select Province</option>
+                                <select class="form-control chosen-select"  name="provinceInjury" id="provinceId" >
+                                    <option value="" >Select Province</option>
                                     @foreach($province as $prov)
                                           <option value="{{ $prov->id }}">{{ $prov->description }}</option>
                                     @endforeach
@@ -179,7 +196,7 @@
                 <div id="error-message" style="color: red; display: none;">Please fill out all required fields.</div>
                 <div class="row">
                         <div class="col-md-12 text-center" style="margin-top: 20px;">
-                            <!-- <button type="button" class="btn btn-primary mx-2" >Next</button> -->
+                            {{-- <button type="button" class="btn btn-primary mx-2" onclick="showNextStep()">Next</button> --}}
                              <button type="button" id="first-page-button" class="btn btn-primary mx-2" onclick="validateStep1()">Next</button>
                         </div>
                  </div>
@@ -362,7 +379,7 @@
                             @elseif($injured->name == "Fracture" || $injured->name == "fracture")
                             <br><br>
                                 <label>Fracture details</label>
-                                <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder=" fracture close type details" disabled>
+                                <input type="text" class="form-control" name="fracture_detail" id="fracture_close_detail" placeholder="Fracture close type details" disabled>
                                 <!-- <input type="text" class="form-control" name="fracture_open_detail" id="fracture_open_detail" placeholder=" fracture open type details" disabled> -->
 
                             @elseif($injured->name == "others" || $injured->name == "other" || $injured->name == "Other" || $injured->name == "Others")
@@ -455,7 +472,6 @@
                                     <input type="checkbox" id="ex_burn" name="ex_burn" value="{{$exInjury->id}}"> {{$exInjury->name}}
                                 </label><br>
                                 <div class="col-md-5">
-                                
                                     <div class="checkbox">
                                         <label>
                                             <input type="radio" name="burn_type" id="burn1" value="heat" disabled>
@@ -475,12 +491,12 @@
                                         </label>
                                         <label>
                                             <input type="radio" name="friction" id="burn5" value="friction" disabled>
-                                            friction
+                                            Friction
                                         </label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="specify here" disabled><br>
+                                    <input type="text" class="form-control inline-input2" name="exburnDetails" id="exburnDetails" placeholder="Specify here" disabled><br>
                                 </div>
                             </div>
                         @elseif($externalSingle == "Drowning" || $externalSingle == "drowning")
@@ -557,7 +573,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form-step" id="form-step-4" style="display: none;">
+           <div class="form-step" id="form-step-4" style="display: none;">
                <div class="row">
                 <!-- for Transport Group -->
                 <div class="Transport-group" style="display: none;">        
@@ -590,7 +606,6 @@
                     <div class="col-md-2 transport-related">
                         <input type="checkbox" id="non_collision" name="transport_vehic" value="Non-Collision"> Non-Collision
                     </div> -->
-            
                     <div class="col-md-6 transport-related"><hr class="bold-line">
                         <label>Vehicles Involved:</label>
                         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Patient's Vehicle</p>
@@ -689,7 +704,7 @@
                                     <label>Safety: (check all that apply)</label><br>
                                     @foreach($safety as $safe)
                                         <div class="col-md-6">
-                                            <input type="checkbox" id="safe_{{ $safe->id }}" name="safe[]" value="{{ $safe->id }}">{{ $safe->name }}<br>
+                                            <input type="checkbox" id="safe_{{ $safe->id }}" name="safe[]" value="{{ $safe->id }}"> {{ $safe->name }}<br>
                                         </div>
                                         @if(trim($safe->name) == 'Others')
                                             <input type="hidden" name="safety_others_id" value="{{ $safe->id }}">
@@ -703,9 +718,8 @@
                     </div>
                 </div>
                 <!-- end of transport-group -->
-          
                     <div class="col-md-12">
-                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: -10px; ">Hospital/Facility Data</h4>
+                        <h4 class="patient-font mt-4" style="background-color: #727DAB;color:white;padding: 2px;margin-top: 10px; ">Hospital/Facility Data</h4>
                         @foreach($hospital_type as $hos)
                             @if(isSimilar($hos->category_name, "ER/OPD/BHS/RHU"))
                             <div class="A_ErOpdGroup">
@@ -759,12 +773,10 @@
                                         <div class="col-md-2"><br><br>
                                             <input type="radio" id="private_vehicle" name="mode_transport" value="Private Vehicle" onclick="togglePlaceInput()"> Private Vehicle
                                         </div>
-                                        <div class="col-md-1"><br><br>
-                                            <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()"> Others:
-                                        </div>
                                         <div class="col-md-2"><br><br>
-                                            <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="others specify here">
-                                    </div>
+                                            <input type="radio" id="ModeOthers" name="mode_transport" value="Others" onclick="togglePlaceInput()">Others:
+                                            <input type="text" class="form-control" id="mode_others_details" name="mode_others_details" placeholder="Specify here">
+                                        </div>
                                     <div class="col-md-12"> <hr class="bold-line">
                                     <label for="initial_imp">Initial Impression</label>
                                         <input type="text" class="form-control" id="Initial_Impression" name="Initial_Impression"> <br>
@@ -777,37 +789,30 @@
                                         <label for="">ICD-10 Code/s: External Cause injury</label>
                                         <input type="text" class="form-control" id="icd10_external" name="icd10_external" id="icd10_external" >
                                     </div>
-                                    <div class="col-md-12"> 
-                                    <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="Disposition">Disposition:</label>
-                                            </div>
+                                    <hr><hr><hr>
+                                    <div class="col-md-12"><hr>
+                                        <label for="Disposition">Disposition:</label><br>
+                                        <div class="col-md-3 col-md-offset-1">
+                                            <input type="radio" id="discharged" name="disposition" value="discharged" onclick="togglePlaceInput()"> Discharged <br>
+                                            <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <input type="radio" id="admitted" name="disposition" value="Admitted" onclick="togglePlaceInput()"> Admitted <br>
-                                                <input type="radio" id="hama" name="disposition" value="HAMA"> HAMA
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="treated_sent" name="disposition" value="Treated and Sent Home" onclick="togglePlaceInput()"> Treated and Sent Home <br>
-                                                <input type="radio" id="Absconded" name="disposition" value="Absconded" onclick="togglePlaceInput()"> Absconded
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital,<br>
-                                                <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details" value="" placeholder="Please specify">
-                                            </div>
-                                            
-                                            <div class="col-md-2">
-                                                <input type="radio" id="refused_admiss" name="disposition" value="Refused Admission" onclick="togglePlaceInput()"> Refused Admission <br>
-                                                <input type="radio" id="died" name="disposition" value="died" onclick="togglePlaceInput()"> Died
-                                            </div>
+                                        <div class="col-md-2">
+                                            <input type="radio" id="hama" name="disposition" value="HAMA" onclick="togglePlaceInput()"> HAMA <br>
+                                            <input type="radio" id="died" name="disposition" value="died" onclick="togglePlaceInput()"> Died
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" id="trans_facility_hos" name="disposition" value="Transferred to Another facility/hospital" onclick="togglePlaceInput()"> Transferred to Another facility/hospital <br>
+                                            <input type="text" class="form-control" id="trans_facility_hos_details" name="trans_facility_hos_details2" value="" placeholder="Please specify">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="radio" id="absconded1" name="disposition" value="Absconded" onclick="togglePlaceInput()"> Absconded <br>
+                                            {{-- <input type="radio" id="disposition_others" name="disposition" value="Others" onclick="togglePlaceInput()"> Others: 
+                                            <input type="textbox" class="form-control" id="disposition_others_details" name="disposition_others_details" value="" placeholder="Others"> --}}
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-2">
-                                            <label for="Outcome">Outcome</label>
-                                        </div>
-                                        <div class="col-md-2">
+                                    <div class="col-md-12"><hr>
+                                        <label for="Outcome">Outcome</label><br>
+                                        <div class="col-md-2 col-md-offset-1">
                                             <input type="radio" id="Improved" name="outcome" value="Improved"> Improved
                                         </div>
                                         <div class="col-md-2">
@@ -817,8 +822,9 @@
                                             <input type="radio" id="Died1" name="outcome" value="died"> Died
                                         </div>
                                     </div>
+
                                 </div>
-                            </div>
+                              </div>
                             @endif
                         @endforeach
                     </div>                      
@@ -833,6 +839,14 @@
                                         <div class="col-md-12">
                                             <label for="complete_final">Complete Final Diagnosis</label>
                                             <input type="text" class="form-control" id="complete_final" name="final_diagnose" id="" value="">
+                                        </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: Nature of injury</label>
+                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
+                                        </div>
+                                        <div class="col-md-6"><br>
+                                            <label for="">ICD-10 Code/s: External Cause injury</label>
+                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
                                         </div>
                                         <div class="col-md-12"><hr>
 
@@ -867,14 +881,7 @@
                                                 <input type="radio" id="died1" name="Outcome1" value="died"> Died
                                             </div>
                                         </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: Nature of injury</label>
-                                            <input type="text" class="form-control" id="icd10_nature1" name="icd10_nature1">    
-                                        </div>
-                                        <div class="col-md-6"><br>
-                                            <label for="">ICD-10 Code/s: External Cause injury</label>
-                                            <input type="text" class="form-control" id="icd10_external1" name="icd10_external1">
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -928,112 +935,152 @@
 </script>
 
 <!--Validation Functions-->
-
 <!-- Step 1 validation -->
-<script>
+<script language="javascript" type="text/javascript">
+
     const resetErrorStep1Styles = () => {
-        const fields = [
-            'hospital_no', 'lname', 'fname', 'mname', 'sex', 'dateofbirth', 'ages', 
-            'province', 'municipal', 'barangay', 'phil_no',
-            'provinceId', 'municipal_injury', 'barangay_injury', 'purok_injury',
-            'date_injury', 'time_injury', 'date_consultation', 'time_consultation'
-        ];
 
-        fields.forEach((id) => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.style.borderColor = ''; // Reset border color
-                element.classList.remove('is-invalid'); // Remove invalid class if present
-            }
-        });
-
-        const errorMessage = document.getElementById('error-message');
-        if (errorMessage) errorMessage.style.display = 'none'; // Hide the error message
-    };
+        document.getElementById('lname').style.borderColor = ' ';
+        document.getElementById('fname').style.borderColor = '';
+        document.getElementById('sex').style.borderColor = '';
+        document.getElementById('contact').style.borderColor = '';
+        document.getElementById('dateofbirth').style.borderColor = '';
+        document.getElementById('province').style.borderColor = '';
+        document.getElementById('municipal').style.borderColor = '';
+        document.getElementById('barangay').style.borderColor = '';     
+        
+        document.getElementById('provinceId').style.borderColor = '';
+        document.getElementById('municipal_injury').style.borderColor = '';
+        document.getElementById('barangay_injury').style.borderColor = '';  
+        
+        document.getElementById('date_injury').style.borderColor = '';
+        document.getElementById('time_injury').style.borderColor = '';
+        document.getElementById('date_consultation').style.borderColor = '';
+        document.getElementById('time_consultation').style.borderColor = '';
+        
+    }
 
     const validateStep1 = () => {
-        resetErrorStep1Styles(); // Reset all error styles first
+        const lname = document.getElementById('lname').value;
+        const fname = document.getElementById('fname').value;
+        const sex = document.getElementById('sex').value;
+        const contact = document.getElementById('contact').value;
+        const dateofbirth = document.getElementById('dateofbirth').value;
+        const province = document.getElementById('province').value;
+        const municipal = document.getElementById('municipal').value;
+        const barangay = document.getElementById('barangay').value;
+        const provinceInjury = document.getElementById('provinceId').value;
+        const municipal_injury = document.getElementById('municipal_injury').value;
+        const barangay_injury = document.getElementById('barangay_injury').value;
+   
+        const date_injury = document.getElementById('date_injury').value;
+        const time_injury = document.getElementById('time_injury').value;
+        const date_consult = document.getElementById('date_consultation').value;
+        const time_consult = document.getElementById('time_consultation').value;
 
-        const requiredFields = [
-            { id: 'hospital_no', label: 'Hospital Case No.' },
-            { id: 'lname', label: 'Last Name' },
-            { id: 'fname', label: 'First Name' },
-            { id: 'sex', label: 'Sex' },
-            { id: 'dateofbirth', label: 'Date of Birth' },
-            { id: 'ages', label: 'Age' },
-            { id: 'province', label: 'Province/HUC' },
-            { id: 'municipal', label: 'Municipality' },
-            { id: 'barangay', label: 'Barangay' },
-        ];
 
-        let errorMessage = "<strong>Please review and check these fields:</strong><br/>";
+         resetErrorStep1Styles();
+
+        const extractNumbers = (str) => {
+            return str.replace(/\D/g, '');
+        };
+
+        let errorMessage = "<strong>Please fill out all required fields:</strong> <br/>";
         let isValid = true;
 
-        // Loop through required fields and validate them
-        requiredFields.forEach(({ id, label }) => {
-            const element = document.getElementById(id);
-            if (element && (!element.value || element.value.trim() === '')) {
-                element.style.borderColor = 'red'; // Highlight field in red
-                element.classList.add('is-invalid'); // Add invalid class
-                errorMessage += `${label}<br>`;
-                isValid = false;
-            }
-        });
-
-        // Check for specific date and time fields
-        const dateInjury = document.getElementById('date_injury');
-        const timeInjury = document.getElementById('time_injury');
-        const dateConsult = document.getElementById('date_consultation');
-        const timeConsult = document.getElementById('time_consultation');
-
-        if (dateInjury && !dateInjury.value) {
-            dateInjury.style.borderColor = 'red';
-            dateInjury.classList.add('is-invalid');
-            errorMessage += "Date of Injury<br>";
+        if (!lname) {
+            document.getElementById('lname').style.borderColor = 'red';
+           // errorMessage += "Last Name<br>";
             isValid = false;
         }
 
-        if (timeInjury && !timeInjury.value) {
-            timeInjury.style.borderColor = 'red';
-            timeInjury.classList.add('is-invalid');
-            errorMessage += "Time of Injury<br>";
+        if (!fname) {
+            document.getElementById('fname').style.borderColor = 'red';
+           // errorMessage += "First Name<br>";
             isValid = false;
         }
 
-        if (dateConsult && !dateConsult.value) {
-            dateConsult.style.borderColor = 'red';
-            dateConsult.classList.add('is-invalid');
-            errorMessage += "Date of Consultation<br>";
+        if (!sex) {
+            document.getElementById('sex').style.borderColor = 'red';
+           // errorMessage += "Sex<br>";
             isValid = false;
         }
 
-        if (timeConsult && !timeConsult.value) {
-            timeConsult.style.borderColor = 'red';
-            timeConsult.classList.add('is-invalid');
-            errorMessage += "Time of Consultation<br>";
+        if (!contact) {
+            document.getElementById('contact').style.borderColor = 'red';
+            //errorMessage += "Contact<br>";
             isValid = false;
         }
 
-        // If validation fails, display the error message
+        if (!dateofbirth) {
+            document.getElementById('dateofbirth').style.borderColor = 'red';
+            //errorMessage += "Date of Birth<br>";
+            isValid = false;
+        }
+
+        if (!province) {
+            document.getElementById('province').style.borderColor = 'red';
+            errorMessage += "Province<br>";
+            isValid = false;
+        }
+        if (!municipal) {
+            document.getElementById('municipal').style.borderColor = 'red';
+            //errorMessage += "Municipal<br>";
+            isValid = false;
+        }
+        if (!barangay) {
+            document.getElementById('barangay').style.borderColor = 'red';
+            //errorMessage += "Barangay<br>";
+            isValid = false;
+        }
+        if (!provinceInjury) {
+            document.querySelector('#provinceId').style.borderColor = 'red';
+            isValid = false;
+        }
+        if (!municipal_injury) {
+            document.getElementById('municipal_injury').style.borderColor = 'red';
+            //errorMessage += "Please Enter Municipal <br>";
+            isValid = false;
+        }
+        if (!barangay_injury) {
+            document.getElementById('barangay_injury').style.borderColor = 'red';
+            //errorMessage += "Please Enter Barangay <br>";
+            isValid = false;
+        }
+        if (!date_injury) {
+            document.getElementById('date_injury').style.borderColor = 'red';
+          //  errorMessage += "Date of Injury<br>";
+            isValid = false;
+        }
+
+        if (!time_injury) {
+            document.getElementById('time_injury').style.borderColor = 'red';
+            //errorMessage += "Time of Injury<br>";
+            isValid = false;
+        }
+        if (!date_consult) {
+            document.getElementById('date_consultation').style.borderColor = 'red';
+            //errorMessage += "Date of Consultation<br>";
+            isValid = false;
+        }
+        if (!time_consult) {
+            document.getElementById('time_consultation').style.borderColor = 'red';
+            //errorMessage += "Time of Consultation <br>";
+            isValid = false;
+        }
         if (!isValid) {
-            const errorMessageElement = document.getElementById('error-message');
-            if (errorMessageElement) {
-                errorMessageElement.style.display = 'block';
-                errorMessageElement.innerHTML = errorMessage;
-            }
-            return; // Stop further execution if there are errors
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('error-message').innerHTML = errorMessage;
+            return;  // Prevent moving to the next step if validation fails
         }
 
         // If validation passes, hide the error message and proceed
-        const errorMessageElement = document.getElementById('error-message');
-        if (errorMessageElement) errorMessageElement.style.display = 'none';
-
-        console.log("Step 1 is validated.");
-        showNextStep(); // Assuming this function handles page transitions
-    };
+        document.getElementById('error-message').style.display = 'none';  // Hide the error message
+        console.log("Step 1 is validated");
+        showNextStep();  // Assuming showNextStep() handles the page transition
+    }
 
 </script>
-
 <!-- Step 2 validation -->
 <script language="javascript" type="text/javascript">
     const validateStep2 = () => {
@@ -1042,6 +1089,7 @@
     }
 </script>
 @endsection
+
 <!-- @include('resu.manage_patient_injury.checkProfile') -->
 <style>
     .json-display-style {
@@ -1134,7 +1182,6 @@
         border: none;
         outline: none;
     }
-
     .bold-line {
         border: none;            /* Remove default hr styling */
         border-top: 2px solid #000; /* Bold line with black color */
@@ -1167,6 +1214,4 @@
         25% { transform: translateX(-5px); }
         75% { transform: translateX(5px); }
     }
-   
-
 </style>
