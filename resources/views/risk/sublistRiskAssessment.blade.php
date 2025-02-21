@@ -65,6 +65,7 @@
                                         <label for="date-of-assessment">Date of Assessment</label>
                                         <input type="text" class="form-control datepicker" name="date_of_assessment"
                                             id="date-of-assessment"
+                                            readonly
                                             value="{{ $profile['created_at'] ? Carbon::parse($profile['created_at'])->format('F d, Y') : '' }}">
                                     </div>
 
@@ -101,7 +102,7 @@
 
                                     <div class="col-md-3">
                                         <label for="suffix">Suffix</label>
-                                        <select class="form-control " name="suffix" id="suffix" readonly>
+                                        <select class="form-control " name="suffix" id="suffix" disabled>
                                             <option value="">Select suffix</option>
                                             <option value="Jr." {{ $profile['suffix'] == 'Jr.' ? 'selected' : '' }}>Jr.
                                             </option>
@@ -118,18 +119,18 @@
                                             <option value="V" {{ $profile['suffix'] == 'V' ? 'selected' : '' }}>V
                                             </option>
 
-                                            <!-- Default "N/a" option if suffix is null or empty -->
+                                            <!-- Default "N/A" option if suffix is null or empty -->
                                             @if (is_null($profile['suffix']) || $profile['suffix'] === '')
-                                                <option value="N/a" selected>N/a</option>
+                                                <option value="N/A" selected></option>
                                             @else
-                                                <option value="N/a">N/a</option>
+                                                <option value="N/A"></option>
                                             @endif
                                         </select>
                                     </div>
 
                                     <div class="col-md-3">
                                         <label for="sex">Sex <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="sex" id="sex" readonly>
+                                        <select class="form-control" name="sex" id="sex" disabled>
                                             <option value="">Select sex</option>
                                             <option value="Male" {{ $profile['sex'] == 'Male' ? 'selected' : '' }}>Male
                                             </option>
@@ -150,7 +151,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="civil_status">Civil Status <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="civil_status" id="civil_status" readonly>
+                                        <select class="form-control" name="civil_status" id="civil_status" disabled>
                                             <option value="">Select status</option>
                                             <option value="Single"
                                                 {{ $profile['civil_status'] == 'Single' ? 'selected' : '' }}>Single
@@ -169,7 +170,7 @@
                                     <div class="col-md-3">
                                         <label for="religion">Religion <span class="text-danger">*</span></label>
                                         <select class="form-control" name="religion" id="religion"
-                                            onchange="showOtherReligionField()" readonly>
+                                            onchange="showOtherReligionField()" disabled>
                                             <option value="">Select Religion</option>
                                             <option value="Roman Catholic"
                                                 {{ $profile['religion'] == 'Roman Catholic' ? 'selected' : '' }}>Roman
@@ -254,7 +255,7 @@
                                     <div class="row"></div>
                                     <div class="col-md-4">
                                         <label for="province">Province/HUC <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="province" id="province" readonly>
+                                        <select class="form-control" name="province" id="province" disabled>
                                             <option value="">Select Province</option>
                                             @foreach ($province as $prov)
                                                 <option value="{{ $prov->id }}"
@@ -266,7 +267,7 @@
                                     <div class="col-md-4">
                                         <label for="municipal">Municipality/City <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control" name="municipal" id="municipal" readonly>
+                                        <select class="form-control" name="municipal" id="municipal" disabled>
                                             <option value="">Select Muncity</option>
                                             @foreach ($muncities as $mun)
                                                 <option value="{{ $mun->id }}"
@@ -277,7 +278,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="barangay">Barangay <span class="text-danger">*</span></label>
-                                        <select class="form-control" name="barangay" id="barangay" readonly>
+                                        <select class="form-control" name="barangay" id="barangay" disabled>
                                             <option value="">Select Barangay</option>
                                             @foreach ($barangay as $bar)
                                                 <option value="{{ $bar->id }}"
@@ -318,7 +319,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <label for="citizenship">Citizenship</label>
-                                        <select class="form-control" name="citizenship" id="citizenship" readonly
+                                        <select class="form-control" name="citizenship" id="citizenship" disabled
                                             onchange="showOtherCitizenshipField()">
                                             <option value="">Select Citizenship</option>
                                             <option value="Filipino" {{ $profile['citizenship'] == 'Filipino' ? 'selected' : '' }}>Filipino</option>
@@ -364,7 +365,7 @@
                                                 class="text-danger">*</span></label>
                                         <input type="text" class="form-control" name="other_citizenship"
                                             id="other_citizenship" placeholder="Please specify citizenship"
-                                            value="{{ $profile['other_citizenship'] ? $profile['other_citizenship'] : '' }}">
+                                            value="{{ $profile['other_citizenship'] ? $profile['other_citizenship'] : '' }}" readonly disabled>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center">
                                         <label class="mr-2">Indigenous Person</label><br>
@@ -693,7 +694,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="diabetesDetailsInput" name="pmh_diabetes_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_diabetes'] ? $riskForm['pmh_specify_diabetes'] : '' }}" readonly disabled></textarea>
 
                                             </td>
                                         </tr>
@@ -710,7 +711,7 @@
                                                     {{ strtolower($riskForm['pmh_cancer']) == 'no' ? 'checked' : '' }}> No
                                                 <br />
                                                 <textarea class="col-md-12" id="cancerDetailsInput" name="pmh_cancer_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_cancer'] ? $riskForm['pmh_specify_cancer'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_cancer'] ? $riskForm['pmh_specify_cancer'] : '' }}"  readonly disabled></textarea>
                                             </td>
                                         </tr>
                                         </tr>
@@ -759,7 +760,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="allergiesDetailsInput" name="pmh_allergies_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_allergies'] ? $riskForm['pmh_specify_allergies'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_allergies'] ? $riskForm['pmh_specify_allergies'] : '' }}" readonly disabled></textarea>
                                             </td>
 
                                         </tr>
@@ -778,7 +779,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="mnsDetailsInput" name="pmh_mnsad_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_mn_and_s_disorder'] ? $riskForm['pmh_specify_mn_and_s_disorder'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_mn_and_s_disorder'] ? $riskForm['pmh_specify_mn_and_s_disorder'] : '' }}" readonly disabled></textarea>
                                             </td>
 
                                         </tr>
@@ -813,7 +814,7 @@
                                                 No
                                                 <br />
                                                 <textarea class="col-md-12" id="surgicalDetailsInput" name="pmh_psh_details"
-                                                    placeholder="{{ $riskForm['pmh_specify_previous_surgical'] ? $riskForm['pmh_specify_previous_surgical'] : '' }}"></textarea>
+                                                    placeholder="{{ $riskForm['pmh_specify_previous_surgical'] ? $riskForm['pmh_specify_previous_surgical'] : '' }}" readonly disabled></textarea>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1276,7 +1277,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="weight" name="rf_weight"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $riskForm['rf_weight'] ? $riskForm['rf_weight'] : '' }}">
+                                                    value="{{ $riskForm['rf_weight'] ? $riskForm['rf_weight'] : '' }}" readonly disabled>
                                             </td>
                                         </tr>
 
@@ -1287,7 +1288,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="height" name="rf_height"
                                                     oninput="calculateBMI()"
-                                                    value="{{ $riskForm['rf_height'] ? $riskForm['rf_height'] : '' }}">
+                                                    value="{{ $riskForm['rf_height'] ? $riskForm['rf_height'] : '' }}" readonly disabled>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1297,7 +1298,7 @@
                                             <td>
                                                 <input type="text" class="textbox" id="bmi"
                                                     value="{{ $riskForm['rf_body_mass'] ? $riskForm['rf_body_mass'] : '' }}"
-                                                    name="rf_bmi">
+                                                    name="rf_bmi" readonly disabled>
                                                 <p><i><span style="font-size: 13.5px; font-weight: 300; padding-left: 5px;"
                                                             id="bmiStrVal"></span></i></p>
                                             </td>
@@ -1307,7 +1308,7 @@
                                                 5.8 Waist Circumference (cm): F < 80cm M < 90 </td>
                                             <td>
                                                 <input type="text" class="textbox" id="waist" name ="rf_waist"
-                                                    value="{{ $riskForm['rf_waist_circumference'] ? $riskForm['rf_waist_circumference'] : '' }}">
+                                                    value="{{ $riskForm['rf_waist_circumference'] ? $riskForm['rf_waist_circumference'] : '' }}" readonly disabled>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1352,13 +1353,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_systolic_t1'] ? $riskForm['rs_systolic_t1'] : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t1'] ? $riskForm['rs_systolic_t1'] : '' }}" readonly disabled>
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t1"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_diastolic_t1'] ? $riskForm['rs_diastolic_t1'] : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t1'] ? $riskForm['rs_diastolic_t1'] : '' }}" readonly disabled>
                                                 </div>
                                             </div>
                                             <br>
@@ -1368,13 +1369,13 @@
                                                     <label>Systolic:</label>
                                                     <input type="text" name="systolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_systolic_t2'] ? $riskForm['rs_systolic_t2'] : '' }}">
+                                                        value="{{ $riskForm['rs_systolic_t2'] ? $riskForm['rs_systolic_t2'] : '' }}" readonly disabled>
                                                 </div>
                                                 <div style="margin-bottom: 10px; display: flex; flex-direction: column;">
                                                     <label>Diastolic:</label>
                                                     <input type="text" name="diastolic_t2"
                                                         style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                        value="{{ $riskForm['rs_diastolic_t2'] ? $riskForm['rs_diastolic_t2'] : '' }}">
+                                                        value="{{ $riskForm['rs_diastolic_t2'] ? $riskForm['rs_diastolic_t2'] : '' }}" readonly disabled>
                                                 </div>
                                             </div>
                                         </td>
@@ -1388,20 +1389,20 @@
                                                 <label>FBS Result:</label>
                                                 <input type="text" name="fbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_fbs'] ? $riskForm['rs_blood_sugar_fbs'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_fbs'] ? $riskForm['rs_blood_sugar_fbs'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>RBS Result:</label>
                                                 <input type="text" name="rbs_result" id="rbs_result"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_rbs'] ? $riskForm['rs_blood_sugar_rbs'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_rbs'] ? $riskForm['rs_blood_sugar_rbs'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" id="blood_sugar_date_taken"
                                                     name="blood_sugar_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_blood_sugar_date_taken'] ? $riskForm['rs_blood_sugar_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_blood_sugar_date_taken'] ? $riskForm['rs_blood_sugar_date_taken'] : '' }}" readonly disabled>
                                             </div>
                                         </td>
                                     </tr>
@@ -1433,37 +1434,37 @@
                                                 <label>Total Cholesterol:</label>
                                                 <input type="text" name="lipid_cholesterol"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_cholesterol'] ? $riskForm['rs_lipid_cholesterol'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_cholesterol'] ? $riskForm['rs_lipid_cholesterol'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>HDL:</label>
                                                 <input type="text" name="lipid_hdl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_hdl'] ? $riskForm['rs_lipid_hdl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_hdl'] ? $riskForm['rs_lipid_hdl'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>LDL:</label>
                                                 <input type="text" name="lipid_ldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_ldl'] ? $riskForm['rs_lipid_ldl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_ldl'] ? $riskForm['rs_lipid_ldl'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>VLDL:</label>
                                                 <input type="text" name="lipid_vldl"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_vldl'] ? $riskForm['rs_lipid_vldl'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_vldl'] ? $riskForm['rs_lipid_vldl'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Triglyceride:</label>
                                                 <input type="text" name="lipid_triglyceride"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_triglyceride'] ? $riskForm['rs_lipid_triglyceride'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_triglyceride'] ? $riskForm['rs_lipid_triglyceride'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="lipid_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_lipid_date_taken'] ? $riskForm['rs_lipid_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_lipid_date_taken'] ? $riskForm['rs_lipid_date_taken'] : '' }}" readonly disabled>
                                             </div>
                                         </td>
                                     </tr>
@@ -1476,25 +1477,25 @@
                                                 <label>Protein:</label>
                                                 <input type="text" name="uri_protein"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_protein'] ? $riskForm['rs_urine_protein'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein'] ? $riskForm['rs_urine_protein'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_protein_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_protein_date_taken'] ? $riskForm['rs_urine_protein_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_protein_date_taken'] ? $riskForm['rs_urine_protein_date_taken'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Ketones:</label>
                                                 <input type="text" name="uri_ketones"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_ketones'] ? $riskForm['rs_urine_ketones'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones'] ? $riskForm['rs_urine_ketones'] : '' }}" readonly disabled>
                                             </div>
                                             <div style="margin-bottom: 10px;">
                                                 <label>Date Taken:</label>
                                                 <input type="date" name="uri_ketones_date_taken"
                                                     style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                                    value="{{ $riskForm['rs_urine_ketones_date_taken'] ? $riskForm['rs_urine_ketones_date_taken'] : '' }}">
+                                                    value="{{ $riskForm['rs_urine_ketones_date_taken'] ? $riskForm['rs_urine_ketones_date_taken'] : '' }}" readonly disabled>
                                             </div>
                                         </td>
                                     </tr>
@@ -1605,7 +1606,7 @@
                                                                 <input type="radio" name="anti_hypertensives"
                                                                     value="{{ strtolower($option) }}"
                                                                     onchange="toggleAntiHypertensivesOptions()"
-                                                                    {{ $riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_hypertension'] === strtolower($option) ? 'checked' : '' }} disabled>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
@@ -1616,7 +1617,7 @@
                                                         <input type="text" name="anti_hypertensives_specify"
                                                             value="{{ $riskForm['mngm_med_hypertension_specify'] }}"
                                                             placeholder="Specify medicine"
-                                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly disabled>
                                                     </div>
                                                 </div>
 
@@ -1628,7 +1629,7 @@
                                                             <label>
                                                                 <input type="radio" name="anti_diabetes"
                                                                     value="{{ strtolower($option) }}"
-                                                                    {{ $riskForm['mngm_med_diabetes'] === strtolower($option) ? 'checked' : '' }}>
+                                                                    {{ $riskForm['mngm_med_diabetes'] === strtolower($option) ? 'checked' : '' }} disabled>
                                                                 {{ $option }}
                                                             </label>
                                                         @endforeach
@@ -1654,7 +1655,7 @@
                                                                     @endphp
                                                                     <input type="radio" name="anti_diabetes_type"
                                                                         value="{{ $optionValue }}"
-                                                                        {{ $storedValue === $optionValue ? 'checked' : '' }}>
+                                                                        {{ $storedValue === $optionValue ? 'checked' : '' }} disabled>
                                                                     {{ $subOption }}
                                                                 </label>
                                                             @endforeach
@@ -1664,7 +1665,7 @@
                                                         <input type="text" name="anti_diabetes_specify"
                                                             value="{{ $riskForm['mngm_med_diabetes_specify'] }}"
                                                             placeholder="Specify medicine"
-                                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                                                            style="width: 95%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly disabled>
                                                     </div>
                                                 </div>
                                             </td>
@@ -1676,7 +1677,7 @@
                                             <td>
                                                 <input type="date" name="follow_up_date"
                                                     value="{{ $riskForm['mngm_date_follow_up'] }}"
-                                                    style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
+                                                    style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px;" readonly disabled>
                                             </td>
                                         </tr>
 
@@ -1685,7 +1686,7 @@
                                             <td style="font-weight: bold; padding: 10px;">Remarks</td>
                                             <td>
                                                 <textarea name="remarks" rows="3"
-                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">{{ $riskForm['mngm_remarks'] }} </textarea>
+                                                    style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" readonly disabled>{{ $riskForm['mngm_remarks'] }} </textarea>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -1713,3 +1714,39 @@
         pointer-events: none;
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        showOtherCitizenshipField();
+        showOtherReligionField();
+    });
+    // controls the other religion field
+    const showOtherReligionField = () => {
+        let religionSelect = document.getElementById("religion");
+        let otherReligionDiv = document.getElementById("other-religion-div");
+        let otherReligionInput = document.getElementById("other_religion");
+
+        if (religionSelect.value === "Others") {
+            otherReligionDiv.style.display = "block";
+            otherReligionInput.required = true; // Make the 'Other' religion input required
+        } else {
+            otherReligionDiv.style.display = "none";
+            otherReligionInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
+
+    // controls the other citizenship field
+    const showOtherCitizenshipField = () => {
+        let citizenshipSelect = document.getElementById("citizenship");
+        let otherCitizenshipDiv = document.getElementById("other-citizenship-div");
+        let otherCitizenshipInput = document.getElementById("other_citizenship");
+
+        if (citizenshipSelect.value === "Others") {
+            otherCitizenshipDiv.style.display = "block";
+            otherCitizenshipInput.required = true; // Make the 'Other' citizenship input required
+        } else {
+            otherCitizenshipDiv.style.display = "none";
+            otherCitizenshipInput.required = false; // Remove the 'required' attribute if not selecting 'Others'
+        }
+    }
+</Script>

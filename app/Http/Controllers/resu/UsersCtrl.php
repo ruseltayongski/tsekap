@@ -8,12 +8,16 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
-
+use Illuminate\Support\Facades\Auth;
 
 class UsersCtrl extends Controller
 {
     //
     public function index(){
+
+        if (!in_array(Auth::user()->user_priv, [1, 3, 10])) {
+            return redirect()->back();
+        }        
       
       //  $keyword = $request->input('keyword');      
         $users = User::select('id','fname','mname','lname','muncity','province','contact','username','user_priv')

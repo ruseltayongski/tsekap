@@ -439,6 +439,18 @@ $(document).ready(function () {
     return age;
   }
 
+  $("#dob").on("change", function () {
+    const dob = $(this).val();
+    const ageField = $("#age");
+
+    if (dob) {
+      const age = calculateAgeRisk(dob);
+      ageField.val(age);
+    } else {
+      ageField.val("");
+    }
+  });
+
   $("#dateofbirth").on("change", function () {
     const dob = $(this).val();
     const ageField = $("#age");
@@ -835,7 +847,7 @@ $(document).ready(function () {
           $("#fname").val(data.fname);
           $("#mname").val(data.mname);
           $("#lname").val(data.lname);
-          $("#dateofbirth").val(data.dob);
+          $("#dob").val(data.dob);
           $("#checkProfiles").modal("hide");
         }
         $(".loading").hide(); // Hide loading indicator
@@ -892,7 +904,7 @@ $(document).ready(function () {
           $("#fname").val(data.fname);
           $("#mname").val(data.mname);
           $("#lname").val(data.lname);
-          $("#dateofbirth").val(data.dob);
+          $("#dob").val(data.dob);
         }
         $(".loading").hide(); // Hide loading indicator
       },
@@ -921,7 +933,7 @@ $(document).ready(function () {
         $('#mname').val(record.mname || '').trigger("change");  // Set middle name
         $('#suffix').val(record.suffix || '').trigger("chosen:updated");
         $('#contact').val(record.contact || '').trigger("change");
-        $('#dateofbirth').val(record.dob || '').trigger("change");
+        $('#dob').val(record.dob || '').trigger("change");
         $('#sex').val(record.sex || '').trigger("chosen:updated");
         $('#civil_status').val(record.civil_status || '').trigger("chosen:updated");
         $('#religion').val(record.religion || '').trigger("change");
@@ -933,7 +945,6 @@ $(document).ready(function () {
         setDropdownValue('#province_risk', record.province_id || '', function() {
           setDropdownValue('#municipal', record.muncity_id || '', function() {
               setDropdownValue('#barangay', record.barangay_id || '', function() {
-                  console.log("All dropdowns set!");
               });
           });
         })
@@ -972,7 +983,6 @@ $(document).ready(function () {
 
   $(document).on('click', '.btn-risk-update-profile', function() {
     var id = $(this).data('id');
-    console.log(id);
 
     fetchSpecificProfile(id);
   });
