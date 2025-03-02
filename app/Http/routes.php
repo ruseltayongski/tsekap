@@ -141,7 +141,7 @@ Route::group(['middleware' => 'checkUserPrivilege'], function () {
     Route::post('users/update', 'UserCtrl@update');
     Route::get('users/info/{id}', 'UserCtrl@info');
     Route::get('users/assign/{id}', 'UserCtrl@assign');
-    Route::post('users/adminchangepass', 'UserCtrl@adminChangePassword');
+    Route::post('users/adminchangepass', 'UserCtrl@adminAndProvincialChangePassword');
     //end users
 
     //location
