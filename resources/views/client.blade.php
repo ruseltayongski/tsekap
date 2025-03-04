@@ -266,12 +266,12 @@ use App\Province;
 </div> <!-- /container -->
 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fa fa-arrow-up"></i> Go Top</button>
 
-<footer class="footer">
-    <div class="container">
+<footer class="footer" style="background-color:#2F4054; padding-right: 100%; padding-left: -5%">
+    <div class="container" style="color: white;">
         <p class="pull-right">
             version 3.1
         </p>
-        <p>Copyright &copy; 2024 DOH-RO7 All rights reserved</p>
+        <p>Copyright &copy; 2025 DOH-RO7 All rights reserved</p>
     </div>
 </footer>
 @include('modal')

@@ -213,11 +213,11 @@
     <div class="clearfix"></div>
 </div> <!-- /container -->
 <footer class="footer" style="background-color:#2F4054; padding-right: 100%; padding-left: -5%">
-    <div class="container"style= "color: black;" >
+    <div class="container" style="color: white;" >
         <p class="pull-right">
             version 3.1
         </p>
-        <p>Copyright &copy; 2024 DOH-RO7 All right reserved</p>
+        <p>Copyright &copy; 2025 DOH-RO7 All right reserved</p>
     </div>
 </footer>
 
