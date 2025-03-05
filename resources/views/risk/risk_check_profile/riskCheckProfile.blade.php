@@ -1,5 +1,5 @@
 <div class="modal fade" id="riskCheckProfile" tabIndex="-1" role="dialog">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <i class="fa fa-user-plus"></i> PROFILE VERIFICATION
@@ -51,3 +51,31 @@
         </div>
     </div>
 </div>
+
+<style>
+    #riskCheckProfile .modal-auto {
+        max-width: 70%; /* Adjust as needed */
+        min-width: 800px; /* Ensures a minimum width */
+    }
+    th, td {
+        text-align: left; /* Ensures proper text alignment */
+        vertical-align: middle; /* Aligns content properly */
+        padding: 8px; /* Improves spacing */
+    }
+
+    th {
+        font-weight: bold; /* Makes headers clearer */
+        white-space: nowrap;
+    }
+
+    th:last-child, td:last-child {
+        text-align: center; /* Centers the action buttons */
+        white-space: nowrap; /* Prevents buttons from wrapping */
+    }
+    .btn-deceased {
+    background-color: #555555; /* Dark Gray */
+    color: white;
+    border-color: #444444; /* Slightly Darker Border */
+}
+  </style>
+</style>

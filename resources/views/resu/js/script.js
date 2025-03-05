@@ -874,7 +874,7 @@ $(document).ready(function () {
         let closeButton = "";
         if (record.length > 0) {
           content +=
-            '<table class="table table-hover table-striped">' +
+            '<table class="table table-hover table-striped w-auto">' +
             "<thead>" +
             "<tr>" +
             "<th>First Name</th>" +
@@ -891,7 +891,10 @@ $(document).ready(function () {
               "<td>" + (val.mname || "") + "</td>" + // Handle null values
               "<td>" + val.lname + "</td>" +
               "<td>" + val.dob + "</td>" +
-              `<td><a class="btn btn-xs btn-success btn-risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
+              `<td>
+                <a class="btn btn-xs btn-success btn-risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update Profile</a>
+                <a class="btn btn-xs btn-deceased btn-risk-profile-deceased" data-id="${val.id}"><i class="fa fa-exclamation-triangle"></i> Mark as Deceased</a>
+              </td>` +
               "</tr>";
           });
 
@@ -997,6 +1000,8 @@ $(document).ready(function () {
         // Show the second modal body and footer
         $('.searched-body').show();
         $('.searched-footer').show();
+
+        $('#riskCheckProfile .modal-dialog').addClass('modal-auto'); // Change 'modal-auto' to your actual class
     });
 
     // Function to handle the "Return" button click
@@ -1008,6 +1013,8 @@ $(document).ready(function () {
         // Show the first modal body and footer again
         $('.default-body').show();
         $('.default-footer').show();
+
+        $('#riskCheckProfile .modal-dialog').removeClass('modal-auto'); // Change 'modal-auto' to your actual class
     });
   });
   // $(document).on('click', '.btn-risk-profile', function() {
