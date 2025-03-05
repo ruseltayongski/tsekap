@@ -97,11 +97,11 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" pattern=".{3,}" title="Password - minimum of 3 characters" class="form-control" id="password1" name="password" required onkeyup="checkPassword()">
+                        <input type="password" pattern=".{8}" title="Password must be exactly 8 characters long" class="form-control" id="password1" name="password" required onkeyup="checkPassword()">
                     </div>
                     <div class="form-group">
                         <label>Confirm Password</label>
-                        <input type="password" pattern=".{3,}" title="Confirm password - minimum of 3 characters" class="form-control" id="password2" name="confirm" required onkeyup="checkPassword()">
+                        <input type="password" pattern=".{8}" title="Password must be exactly 8 characters long" class="form-control" id="password2" name="confirm" required onkeyup="checkPassword()">
                         <div class="has-error text-bold text-danger hide">
                             <small>Password does not match!</small>
                         </div>

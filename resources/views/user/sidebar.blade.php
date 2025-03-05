@@ -59,7 +59,7 @@ $provinces = $provinces->get();
                 <div class="form-group">
                     <button type="button" class="col-xs-12 btn btn-success" style="margin-top:10px;" data-toggle="modal" data-target="#addUser"><i class="fa fa-user-plus"></i> Add User</button>
                 </div>
-                @if ($user->user_priv == 1 || $user->user_priv == 3)
+                @if ($user->user_priv == 1 || $user->user_priv == 3 || $user->user_priv == 10)
                     <div class="form-group">
                         <button type="button" class="col-xs-12 btn btn-success" style="margin-top:10px;" data-toggle="modal" data-target="#changePass"><i class="fa fa-key"></i> Change a User's Password</button>
                     </div>
