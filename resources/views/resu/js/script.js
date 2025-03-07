@@ -886,13 +886,18 @@ $(document).ready(function () {
 
                 jQuery.each(record, function (i, val) {
                     let deceasedButton = "";
+                    let deceasedIndicator = "";
 
                     // Show the "Mark as Deceased" button only if userPriv is 1, 3, or 10
-                    if ([1, 3, 10].includes(userPriv)) {
+                    if ([1, 3, 10].includes(userPriv) && val.deceased != "yes") {
                         deceasedButton = `<a class="btn btn-xs btn-danger btn-risk-profile-deceased" 
                                             data-id="${val.id}">
                                             <i class="fa fa-exclamation-triangle"></i> Mark as Deceased
                                           </a>`;
+                    }
+
+                    if (val.deceased == "yes") {
+                      deceasedIndicator = `<span class="badge"> Deceased</span>`;
                     }
 
                     content += `
@@ -901,12 +906,13 @@ $(document).ready(function () {
                             <td>${val.mname || ""}</td>
                             <td>${val.lname}</td>
                             <td>${val.dob}</td>
-                            <td>
+                            <td style="text-align: left;">
                                 <a class="btn btn-xs btn-success btn-risk-update-profile" 
                                    data-id="${val.id}">
                                    <i class="fa fa-pencil"></i> Update Profile
                                 </a>
-                                ${deceasedButton} 
+                                ${deceasedButton}
+                                ${deceasedIndicator}
                             </td>
                         </tr>`;
                 });

@@ -11,7 +11,14 @@
             <div class="modal-body">
                 <p>Are you sure you want to mark <strong id="profileName"></strong> as deceased?</p>
                 <input type="hidden" id="deceasedProfileId"> <!-- Hidden field to store profile ID -->
+
+                <!-- New Date of Death Input -->
+                <div class="mb-3">
+                    <label for="deceasedDate" class="form-label">Date of Death:</label>
+                    <input type="date" id="deceasedDate" class="form-control">
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="cancelDeceasedBtn">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDeceasedBtn">Yes, mark as deceased</button>

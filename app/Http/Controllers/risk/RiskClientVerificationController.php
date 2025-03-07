@@ -15,7 +15,7 @@ class RiskClientVerificationController extends Controller
         $mname = $req->input('mname');
         $dob = $req->input('dob');
    
-        $profile = Profile::select('unique_id','fname','mname','lname','dob','id');
+        $profile = Profile::select('unique_id','fname','mname','lname','dob','id','deceased');
 
         if($req->fname){
             $profile = $profile->where('fname','like',"%$fname%");
