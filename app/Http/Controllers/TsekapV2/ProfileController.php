@@ -287,6 +287,7 @@ class ProfileController extends Controller
 
         $profile->update([
             'deceased' => $fields['deceased'],
+            'deceased_date' => $fields['deceased_date'],
             'updated_by' => $fields['updated_by'],
         ]);
 

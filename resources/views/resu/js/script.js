@@ -1052,6 +1052,7 @@ $(document).ready(function () {
           fields: {
               id: id,
               deceased: "yes", 
+              deceased_date: $("#deceasedDate").val(),
               updated_by: userId,
           },
         },
