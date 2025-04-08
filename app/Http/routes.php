@@ -9,24 +9,25 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 // -- all with CORS --- //
 Route::group(['middleware' => ['less-protected-api']], function () {
     $apiVersions = ['v2/api/rev1/'];
-    
+
     // System
     Route::post($apiVersions[0] . 'logout', 'TsekapV2\SystemController@logout');
     Route::post($apiVersions[0] . 'login', 'TsekapV2\SystemController@login');
+    Route::post($apiVersions[0] . 'register', 'TsekapV2\SystemController@selfRegisterUser');
     Route::get($apiVersions[0] . 'version', 'TsekapV2\SystemController@getVersion');
 });
 
 // Protected endpoints (with XSRF token validation)
 Route::group(['middleware' => ['api']], function () {
     $apiVersions = ['v2/api/rev1/'];
-    
+
     // Misc Data Controllers
     Route::get($apiVersions[0] . 'misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
     Route::get($apiVersions[0] . 'misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
     Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
     Route::get($apiVersions[0] . 'misc/getallmuncities', 'TsekapV2\Misc\MiscDataController@getAllMuncities');
     Route::get($apiVersions[0] . 'misc/getallbarangay', 'TsekapV2\Misc\MiscDataController@getAllBarangays');
-    
+
     // User Data Controllers
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
@@ -34,7 +35,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::post($apiVersions[0] . 'user/updatename', 'TsekapV2\UserController@updateUserFullName');
     Route::post($apiVersions[0] . 'user/updatecontact', 'TsekapV2\UserController@updateUserContact');
     Route::post($apiVersions[0] . 'user/updateemail', 'TsekapV2\UserController@updateUserEmail');
-    
+
     // Facility Controllers
     Route::get($apiVersions[0] . 'facility/getallfacility', 'TsekapV2\FacilityController@getAllFacility');
     Route::post($apiVersions[0] . 'facility/retrievefacilitybycode', 'TsekapV2\FacilityController@retrieveFacilityByCode');
