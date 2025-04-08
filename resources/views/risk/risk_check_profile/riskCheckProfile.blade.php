@@ -1,5 +1,9 @@
+<?php
+    $priv = Auth::user()->user_priv
+?>
+
 <div class="modal fade" id="riskCheckProfile" tabIndex="-1" role="dialog">
-    <div class="modal-dialog modal-md" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <i class="fa fa-user-plus"></i> PROFILE VERIFICATION
@@ -38,7 +42,8 @@
                 </script>
             </div>
             <div class="modal-body searched-body" style="display: none;">
-                
+            
+
             </div>
             <div class="modal-footer searched-footer" style="display: none;">
                 <div class="col-md-6" style="display:flex;">
@@ -51,3 +56,33 @@
         </div>
     </div>
 </div>
+
+<!-- Include the Deceased Modal Component -->
+@include('risk.risk_check_profile.deceasedConfirmationModal')
+
+<style>
+    #riskCheckProfile .modal-auto {
+        max-width: 70%; /* Adjust as needed */
+        min-width: 800px; /* Ensures a minimum width */
+    }
+    th, td {
+        text-align: left; /* Ensures proper text alignment */
+        vertical-align: middle; /* Aligns content properly */
+        padding: 8px; /* Improves spacing */
+    }
+
+    th {
+        font-weight: bold; /* Makes headers clearer */
+        white-space: nowrap;
+    }
+
+    th:last-child, td:last-child {
+        text-align: center; /* Centers the action buttons */
+        white-space: nowrap; /* Prevents buttons from wrapping */
+    }
+</style>
+
+<script>
+    var userPriv = {!! json_encode(Auth::user()->user_priv) !!}; // Properly encode the variable for JavaScript
+    var userId = {!! json_encode(Auth::user()->id) !!};
+</script>

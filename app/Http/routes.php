@@ -47,6 +47,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::post($apiVersions[0] . 'profile/addprofile', 'TsekapV2\ProfileController@addProfile');
     Route::post($apiVersions[0] . 'profile/updateprofile', 'TsekapV2\ProfileController@updateProfile');
     Route::post($apiVersions[0] . 'profile/deleteprofile', 'TsekapV2\ProfileController@deleteProfile');
+    Route::post($apiVersions[0] . 'profile/setdeceasedprofile', 'TsekapV2\ProfileController@setDeceasedProfile');
 
     // User Health Facility Controllers
     Route::post($apiVersions[0] . 'userhf/retrieveuserhf', 'TsekapV2\UserHealthFacilityController@retrieveUserHealthFacility');

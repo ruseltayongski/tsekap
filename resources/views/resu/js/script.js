@@ -862,56 +862,73 @@ $(document).ready(function () {
 
   function fetchRiskProfiles(data) {
     $(".loading").show();
-    $.ajax({     //check profiles
-      url: "get/riskCheckProfile",
-      method: "GET",
-      headers: {
-        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-      },
-      data: data,
-      success: function (record) {
-        let content = "";
-        let closeButton = "";
-        if (record.length > 0) {
-          content +=
-            '<table class="table table-hover table-striped">' +
-            "<thead>" +
-            "<tr>" +
-            "<th>First Name</th>" +
-            "<th>Middle Name</th>" +
-            "<th>Last Name</th>" +
-            "<th>Date of Birth</th>" +
-            "<th>Action</th>" +
-            "</tr></thead>" +
-            "<tbody>";
-          jQuery.each(record, function (i, val) {
-            content +=
-              "<tr>" +
-              "<td>" + val.fname + "</td>" +
-              "<td>" + (val.mname || "") + "</td>" + // Handle null values
-              "<td>" + val.lname + "</td>" +
-              "<td>" + val.dob + "</td>" +
-              `<td><a class="btn btn-xs btn-success btn-risk-update-profile" data-id="${val.id}"><i class="fa fa-pencil"></i> Update</a></td>` +
-              "</tr>";
-          });
+    $.ajax({
+        url: "get/riskCheckProfile",
+        method: "GET",
+        headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+        },
+        data: data,
+        success: function (record) {
+            let content = "";
+            if (record.length > 0) {
+                content += `<table class="table table-hover table-striped w-auto">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Date of Birth</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
 
-          content += "</tbody></table>";
-          $("#riskCheckProfile").find(".searched-body").html(content);
+                jQuery.each(record, function (i, val) {
+                    let deceasedButton = "";
+                    let deceasedIndicator = "";
 
-        } else {
-          alert("No matching profiles found.");
-          console.log("where is my data", data);
-          $("#fname").val(data.fname);
-          $("#mname").val(data.mname);
-          $("#lname").val(data.lname);
-          $("#dob").val(data.dob);
-        }
-        $(".loading").hide(); // Hide loading indicator
-      },
-      error: function () {
-        $(".loading").hide(); // Hide loading indicator
-        alert("An error occurred while fetching profiles.");
-      },
+                    // Show the "Mark as Deceased" button only if userPriv is 1, 3, or 10
+                    if ([1, 3, 10].includes(userPriv) && val.deceased != "yes") {
+                        deceasedButton = `<a class="btn btn-xs btn-danger btn-risk-profile-deceased" 
+                                            data-id="${val.id}">
+                                            <i class="fa fa-exclamation-triangle"></i> Mark as Deceased
+                                          </a>`;
+                    }
+
+                    if (val.deceased == "yes") {
+                      deceasedIndicator = `<span class="badge"> Deceased</span>`;
+                    }
+
+                    content += `
+                        <tr>
+                            <td>${val.fname}</td>
+                            <td>${val.mname || ""}</td>
+                            <td>${val.lname}</td>
+                            <td>${val.dob}</td>
+                            <td style="text-align: left;">
+                                <a class="btn btn-xs btn-success btn-risk-update-profile" 
+                                   data-id="${val.id}">
+                                   <i class="fa fa-pencil"></i> Update Profile
+                                </a>
+                                ${deceasedButton}
+                                ${deceasedIndicator}
+                            </td>
+                        </tr>`;
+                });
+
+                content += "</tbody></table>";
+                $("#riskCheckProfile").find(".searched-body").html(content);
+            } else {
+                alert("No matching profiles found.");
+            }
+
+            $(".loading").hide();
+        },
+        error: function () {
+            $(".loading").hide();
+            alert("An error occurred while fetching profiles.");
+        },
     });
   }
 
@@ -971,6 +988,28 @@ $(document).ready(function () {
     fetchProfiles(data);
   });
 
+  function fetchSpecificProfile(id) {
+    $(".loading").show();
+
+    $.ajax({     //check profiles
+      url: "get/riskGetSpecificProfile",
+      method: "GET",
+      headers: {
+        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+      },
+      data: {id: id},
+      success: function (record) {
+
+        $("#riskCheckProfile").modal("hide");
+        $(".loading").hide(); // Hide loading indicator
+      },
+      error: function () {
+        $(".loading").hide(); // Hide loading indicator
+        alert("An error occurred while fetching profile.");
+      },
+    });
+  }
+
   $(".btn-riskCheckProfiles").on("click", function () {
     const data = {
       fname: $(".fname").val(),
@@ -987,6 +1026,59 @@ $(document).ready(function () {
     fetchSpecificProfile(id);
   });
 
+  $(document).on('click', '.btn-risk-profile-deceased', function () {
+    var id = $(this).data('id');
+    var profileName = $(this).closest("tr").find("td:first").text(); // Get first name from table
+
+    // Set data in modal
+    $("#profileName").text(profileName);
+    $("#deceasedProfileId").val(id);
+
+    // Show modal
+    $("#confirmDeceasedModal").modal("show");
+    $("#riskCheckProfile").modal("hide");
+  });
+
+  $("#confirmDeceasedBtn").on("click", function () {
+    var id = $("#deceasedProfileId").val();
+
+    $.ajax({
+        url: "v2/api/rev1/profile/setdeceasedprofile", // Adjust this based on actual API URL
+        method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": "{{ csrf_token() }}",
+        },
+        data: {
+          fields: {
+              id: id,
+              deceased: "yes", 
+              deceased_date: $("#deceasedDate").val(),
+              updated_by: userId,
+          },
+        },
+        success: function (response) {
+          alert(response.message);
+          $("#confirmDeceasedModal").modal("hide");
+          location.reload(); // Refresh to update status
+        },
+        error: function (xhr) {
+            var errorMessage = xhr.responseJSON?.errors || "An error occurred";
+            alert(errorMessage);
+        },
+    });
+  }); 
+
+  $('#cancelDeceasedBtn').on('click', function () {
+    $('#confirmDeceasedModal').modal('hide'); // Hide the confirm modal
+
+    // Ensure that riskCheckProfile is shown only AFTER confirmDeceasedModal is fully hidden
+    $('#confirmDeceasedModal').on('hidden.bs.modal', function () {
+        $('#riskCheckProfile').modal('show'); // Show riskCheckProfile modal
+        $('#riskCheckProfile').focus(); // Ensure focus goes to the modal
+    });
+  });
+
+
   $(document).ready(function() {
     // Function to handle the "Check" button click
     $('.btn-riskCheckProfiles').on('click', function() {
@@ -997,6 +1089,8 @@ $(document).ready(function () {
         // Show the second modal body and footer
         $('.searched-body').show();
         $('.searched-footer').show();
+
+        $('#riskCheckProfile .modal-dialog').addClass('modal-auto'); // Change 'modal-auto' to your actual class
     });
 
     // Function to handle the "Return" button click
@@ -1008,6 +1102,8 @@ $(document).ready(function () {
         // Show the first modal body and footer again
         $('.default-body').show();
         $('.default-footer').show();
+
+        $('#riskCheckProfile .modal-dialog').removeClass('modal-auto'); // Change 'modal-auto' to your actual class
     });
   });
   // $(document).on('click', '.btn-risk-profile', function() {

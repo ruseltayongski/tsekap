@@ -246,4 +246,52 @@ class ProfileController extends Controller
         $profile->delete();
         return response()->json(['message' => 'Deleted profile.'], 200);
     }
+
+    public function setDeceasedProfile(Request $request)
+    {
+        $fields = $request->input('fields');
+
+        // check authentication if user is logged in
+        if (!Auth::check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // get user
+        $user = Auth::user();
+
+        // Do not authorize update unless user_priv is 1, 3, or 10
+        if (!in_array($user['user_priv'], [1, 3, 10])) {
+            return response()->json(['error' => 'Unauthorized.'], 401);
+        }
+
+        // Check if profile exists
+        $profile = Profile::find($fields['id']);
+
+        if (!$profile) {
+            return response()->json(['message' => 'Profile not found'], 404);
+        }
+
+        // Validation rules
+        $rules = [
+            'deceased' => 'required',
+            'updated_by' => 'required',
+        ];
+
+        // Validate input
+        $validator = Validator::make($request->fields, $rules);
+
+        // Check for validation errors
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $profile->update([
+            'deceased' => $fields['deceased'],
+            'deceased_date' => $fields['deceased_date'],
+            'updated_by' => $fields['updated_by'],
+        ]);
+
+        return response()->json(['message' => 'Profile updated successfully', 'profile' => $profile], 200);
+
+    }
 }
