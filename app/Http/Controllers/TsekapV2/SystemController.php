@@ -39,6 +39,11 @@ class SystemController extends Controller
             ->first();
 
         if ($user) {
+            // Check if the user is verified
+            if (!$user->verified) {
+                return response()->json(['status' => 'error', 'message' => 'Your account is not yet verified. Please contact the administrator.'], 403);
+            }
+            
             if (Hash::check($password, $user->password)) {
                 // Log the user in
                 Auth::login($user);
@@ -74,13 +79,13 @@ class SystemController extends Controller
 
         // Validate the input
         $fieldsValidator = \Validator::make($fields, [
-            'fname' => 'string|max:255',
+            'fname' => 'required|string|max:255',
             'mname' => 'string|max:255',
-            'lname' => 'string|max:255',
+            'lname' => 'required|string|max:255',
             'muncity' => 'required|integer',
             'province' => 'required|integer',
             'facility_id' => 'required|integer',
-            'user_designation' => 'string|max:255',
+            'user_designation' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
             'password' => 'required|string|min:8|max:255',
             'contact' => 'required|string|max:11',
@@ -92,7 +97,7 @@ class SystemController extends Controller
             return response()->json(['error' => $fieldsValidator->errors()->all()], 400);
         }
 
-        $validatedFields = $fieldsValidator->validated();
+        $validatedFields = $fieldsValidator->getData();
 
         // Check if the username already exists
         if (User::where('username', $validatedFields['username'])->exists()) {
@@ -100,20 +105,21 @@ class SystemController extends Controller
         }
 
         try {
-            // Create and save new user
-            $user = User::create([
-                'fname' => $validatedFields['fname'] ?? null,
-                'mname' => $validatedFields['mname'] ?? null,
-                'lname' => $validatedFields['lname'] ?? null,
-                'muncity' => $validatedFields['muncity'],
-                'province' => $validatedFields['province'],
-                'username' => $validatedFields['username'],
-                'password' => \Hash::make($validatedFields['password']), // Encrypt password
-                'contact' => $validatedFields['contact'],
-                'user_priv' => $validatedFields['user_priv'],
-                'verified' => 0, // make this field zero because it is self-registered and still needs to be verified
-                'email' => $validatedFields['email'] ?? null,
-            ]);
+            // Create new user record
+            $user = new User();
+            $user->fname = $validatedFields['fname'];
+            $user->mname = $validatedFields['mname'] ?? null;
+            $user->lname = $validatedFields['lname'];
+            $user->muncity = $validatedFields['muncity'];
+            $user->province = $validatedFields['province'];
+            $user->username = $validatedFields['username'];
+            $user->password = \Hash::make($validatedFields['password']); // Encrypt password
+            $user->contact = $validatedFields['contact'];
+            $user->user_priv = $validatedFields['user_priv'];
+            $user->email = $validatedFields['email'] ?? null;
+            $user->verified = 0; // Make this field zero because it is self-registered and still needs to be verified
+            $user->save();
+
 
             $userHfMapping = \App\UserHealthFacility::create([
                 'user_id' => $user->id,

@@ -22,6 +22,9 @@ Route::group(['middleware' => ['less-protected-api']], function () {
     Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
     Route::get($apiVersions[0] . 'misc/getallmuncities', 'TsekapV2\Misc\MiscDataController@getAllMuncities');
     Route::get($apiVersions[0] . 'misc/getallbarangay', 'TsekapV2\Misc\MiscDataController@getAllBarangays');
+
+    // Facility Data Controllers
+    Route::get($apiVersions[0] . 'facility/getallfacilityunauth', 'TsekapV2\FacilityController@getAllFacilityUnauth');
 });
 
 // Protected endpoints (with XSRF token validation)

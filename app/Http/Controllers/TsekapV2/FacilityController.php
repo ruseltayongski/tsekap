@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class FacilityController extends Controller
 {
     // ---- GET FUNCTIONS ----- //
-    // get facilities
+    // get all facilities
     public function getAllFacility(Request $request)
     {
         // Check if user is authenticated
@@ -35,6 +35,23 @@ class FacilityController extends Controller
         if ($municipality) {
             $query->where('muncity', $municipality);
         }
+    
+        // Log the query for debugging
+        \Log::info('Facilities Query:', [
+            'query' => $query->toSql(),
+            'bindings' => $query->getBindings(),
+        ]);
+    
+        $facilities = $query->get();
+    
+        return response()->json($facilities);
+    }
+
+    public function getAllFacilityUnauth()
+    {
+        $query = Facilities::select(
+            'id', 'name',
+        );
     
         // Log the query for debugging
         \Log::info('Facilities Query:', [
