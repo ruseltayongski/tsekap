@@ -14,18 +14,25 @@ Route::group(['middleware' => ['less-protected-api']], function () {
     Route::post($apiVersions[0] . 'logout', 'TsekapV2\SystemController@logout');
     Route::post($apiVersions[0] . 'login', 'TsekapV2\SystemController@login');
     Route::get($apiVersions[0] . 'version', 'TsekapV2\SystemController@getVersion');
-});
 
-// Protected endpoints (with XSRF token validation)
-Route::group(['middleware' => ['api']], function () {
-    $apiVersions = ['v2/api/rev1/'];
-    
     // Misc Data Controllers
     Route::get($apiVersions[0] . 'misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
     Route::get($apiVersions[0] . 'misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
     Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
     Route::get($apiVersions[0] . 'misc/getallmuncities', 'TsekapV2\Misc\MiscDataController@getAllMuncities');
     Route::get($apiVersions[0] . 'misc/getallbarangay', 'TsekapV2\Misc\MiscDataController@getAllBarangays');
+});
+
+// Protected endpoints (with XSRF token validation)
+Route::group(['middleware' => ['api']], function () {
+    $apiVersions = ['v2/api/rev1/'];
+    
+    // // Misc Data Controllers
+    // Route::get($apiVersions[0] . 'misc/getprovince', 'TsekapV2\Misc\MiscDataController@getProvince');
+    // Route::get($apiVersions[0] . 'misc/getmuncity', 'TsekapV2\Misc\MiscDataController@getMuncity');
+    // Route::get($apiVersions[0] . 'misc/getbarangay', 'TsekapV2\Misc\MiscDataController@getBarangay');
+    // Route::get($apiVersions[0] . 'misc/getallmuncities', 'TsekapV2\Misc\MiscDataController@getAllMuncities');
+    // Route::get($apiVersions[0] . 'misc/getallbarangay', 'TsekapV2\Misc\MiscDataController@getAllBarangays');
     
     // User Data Controllers
     Route::post($apiVersions[0] . 'user/checkauth', 'TsekapV2\UserController@checkAuth');
