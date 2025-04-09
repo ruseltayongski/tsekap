@@ -9,10 +9,11 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
 // -- all with CORS --- //
 Route::group(['middleware' => ['less-protected-api']], function () {
     $apiVersions = ['v2/api/rev1/'];
-    
+
     // System
     Route::post($apiVersions[0] . 'logout', 'TsekapV2\SystemController@logout');
     Route::post($apiVersions[0] . 'login', 'TsekapV2\SystemController@login');
+    Route::post($apiVersions[0] . 'register', 'TsekapV2\SystemController@selfRegisterUser');
     Route::get($apiVersions[0] . 'version', 'TsekapV2\SystemController@getVersion');
 
     // Misc Data Controllers
@@ -41,7 +42,7 @@ Route::group(['middleware' => ['api']], function () {
     Route::post($apiVersions[0] . 'user/updatename', 'TsekapV2\UserController@updateUserFullName');
     Route::post($apiVersions[0] . 'user/updatecontact', 'TsekapV2\UserController@updateUserContact');
     Route::post($apiVersions[0] . 'user/updateemail', 'TsekapV2\UserController@updateUserEmail');
-    
+
     // Facility Controllers
     Route::get($apiVersions[0] . 'facility/getallfacility', 'TsekapV2\FacilityController@getAllFacility');
     Route::post($apiVersions[0] . 'facility/retrievefacilitybycode', 'TsekapV2\FacilityController@retrieveFacilityByCode');
