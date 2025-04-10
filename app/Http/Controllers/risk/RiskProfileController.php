@@ -110,9 +110,9 @@ class RiskProfileController extends Controller
         $riskform->ar_agitated_behavior = $request->input('ar_agitated_behavior', 'No');
         $riskform->ar_eye_injury = $request->input('ar_eye_injury', 'No');
         $riskform->ar_severe_injuries = $request->input('ar_severe_injuries', 'No');
-        $riskform->ar_refer_physician_name = $request->input('ar_refer_physician_name');
-        $riskform->ar_refer_reason = $request->input('ar_refer_reason');
-        $riskform->ar_refer_facility = $request->input('ar_refer_facility');
+        // $riskform->ar_refer_physician_name = $request->input('ar_refer_physician_name');
+        // $riskform->ar_refer_reason = $request->input('ar_refer_reason');
+        // $riskform->ar_refer_facility = $request->input('ar_refer_facility');
 
         //PAST MEDICAL HISTORY 
         $riskform->pmh_hypertension = $request->input('pmh_hypertension');

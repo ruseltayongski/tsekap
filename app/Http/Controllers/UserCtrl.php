@@ -104,6 +104,7 @@ class UserCtrl extends Controller
         $user->facility_id = $req->facility;
         $user->contact = $req->contact;
         $user->user_priv = $req->user_priv;
+        $user->verified = 1;
         $user->save();
     
         // Map user to health facility

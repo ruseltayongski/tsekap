@@ -272,9 +272,9 @@ class DataController extends Controller
             'ar_agitated_behavior',
             'ar_eye_injury',
             'ar_severe_injuries',
-            'ar_refer_physician_name',
-            'ar_refer_reason',
-            'ar_refer_facility',
+            // 'ar_refer_physician_name',
+            // 'ar_refer_reason',
+            // 'ar_refer_facility',
             'pmh_hypertension',
             'pmh_heart_disease',
             'pmh_diabetes',
@@ -473,9 +473,9 @@ class DataController extends Controller
             'fields.ar_agitated_behavior' => 'required|string|max:8',
             'fields.ar_eye_injury' => 'required|string|max:8',
             'fields.ar_severe_injuries' => 'required|string|max:8',
-            'fields.ar_refer_physician_name' => 'string|max:255',
-            'fields.ar_refer_reason' => 'string|max:255',
-            'fields.ar_refer_facility' => 'string|max:255',
+            // 'fields.ar_refer_physician_name' => 'string|max:255',
+            // 'fields.ar_refer_reason' => 'string|max:255',
+            // 'fields.ar_refer_facility' => 'string|max:255',
 
             // pmh
             'fields.pmh_hypertension' => 'required|string|max:8',
@@ -686,9 +686,9 @@ class DataController extends Controller
             'fields.ar_agitated_behavior' => 'required|string|max:8',
             'fields.ar_eye_injury' => 'required|string|max:8',
             'fields.ar_severe_injuries' => 'required|string|max:8',
-            'fields.ar_refer_physician_name' => 'string|max:255',
-            'fields.ar_refer_reason' => 'string|max:255',
-            'fields.ar_refer_facility' => 'string|max:255',
+            // 'fields.ar_refer_physician_name' => 'string|max:255',
+            // 'fields.ar_refer_reason' => 'string|max:255',
+            // 'fields.ar_refer_facility' => 'string|max:255',
 
             // pmh
             'fields.pmh_hypertension' => 'required|string|max:8',
