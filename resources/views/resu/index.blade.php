@@ -25,7 +25,7 @@
         </div>
         
         <!-- Risk Assessment Form Section -->
-        <div class="col-md-6 wrapper">
+        {{-- <div class="col-md-6 wrapper">
             <div class="alert alert-jim">
                 <h2 class="page-header"><i class="fa fa-folder"></i> Risk Assessment Form </h2>
                 <div class="page-divider"></div>
@@ -38,7 +38,7 @@
                     @endif
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 

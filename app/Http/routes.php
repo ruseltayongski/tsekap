@@ -511,22 +511,22 @@ Route::post('/update/User{id}', 'resu\UsersCtrl@updateUser')->name('update-User'
 Route::get('/export/csv', 'resu\ExcelPatientInjuryController@exportCSV')->name('export.csv');
 
 //risk assessment
-Route::get('/RiskAssessment', function () {
-    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
-})->name('riskassessment');
+// Route::get('/RiskAssessment', function () {
+//     return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+// })->name('riskassessment');
 
 //risk assessment
-Route::get('/RiskAssessment', function () {
-    return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
-})->name('riskassessment');
+// Route::get('/RiskAssessment', function () {
+//     return view('risk\riskAssessment'); // Assuming the view file is 'resources/views/riskassessment.blade.php'
+// })->name('riskassessment');
 
 //risk get profile verification
-Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
-Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
-Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
-Route::post('/update-risk-profile', 'risk\RiskProfileController@UpdateRiskPForm')->name('update-patient-risk-form');
+// Route::get('get/riskCheckProfile', 'risk\RiskClientVerificationController@riskCheckClient')->name('get.riskcheckprofiles');
+// Route::get('get/riskGetSpecificProfile', 'risk\RiskClientExtractionController@riskGetSpecificClient')->name('get.riskgetspecificprofile');
+// Route::post('/submit-risk-profile', 'risk\RiskProfileController@SubmitRiskPForm')->name('submit-patient-risk-form');
+// Route::post('/update-risk-profile', 'risk\RiskProfileController@UpdateRiskPForm')->name('update-patient-risk-form');
 
-Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
-Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@PatientRiskProfileAndFormSubList')->name('sublist.risk.patient');
-Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
-Route::post('/risk-patient/{id}', 'risk\RiskProfileController@destroy')->name('patientrisk.delete');
+// Route::get('patientRisk', 'risk\RiskProfileController@PatientRiskFormList')->name('patientRisk');
+// Route::get('sublist-risk-patient/{id}', 'risk\RiskProfileController@PatientRiskProfileAndFormSubList')->name('sublist.risk.patient');
+// Route::get('get/municipalRisk/{id}', 'risk\RiskProfileController@getMunicipal');
+// Route::post('/risk-patient/{id}', 'risk\RiskProfileController@destroy')->name('patientrisk.delete');
